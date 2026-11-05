@@ -1,5 +1,13 @@
 {
   "name": "digikidsedu",
+  "main": "src/worker.js",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "./" }
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "digikidsedu-users", "database_id": "8c1beb2f-fb9f-4a97-b8f6-fe0354d3e144" }
+  ]
 }
