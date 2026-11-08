@@ -24,7 +24,7 @@ nav{display:flex;gap:6px}
 nav a{text-decoration:none;font-weight:700;padding:8px 16px;border-radius:99px;border:3px solid transparent}
 nav a:hover{border-color:var(--line);background:var(--sun);color:#1a1446}
 .dd{position:relative}.ddb{font:inherit;font-weight:700;padding:8px 16px;border-radius:99px;border:3px solid transparent;background:none;color:inherit;cursor:pointer}.ddb:hover,.dd.open .ddb{border-color:var(--line);background:var(--sun);color:#1a1446}
-.ddm{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:300px;max-width:92vw;background:var(--card);color:var(--tx);border:3px solid var(--line);border-radius:16px;box-shadow:0 6px 0 var(--line);padding:8px;z-index:60}.dd.open .ddm{display:block}
+.ddm{display:none;position:absolute;right:0;top:calc(100% + 8px);min-width:300px;max-width:92vw;background:var(--card);color:var(--tx);border:3px solid var(--line);border-radius:16px;box-shadow:0 6px 0 var(--line);padding:8px;z-index:60;max-height:78vh;overflow-y:auto}.dd.open .ddm{display:block}
 .ddm h4{margin:8px 10px 2px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;opacity:.7}.ddm .it{display:flex;align-items:center;gap:6px;border-radius:10px}.ddm .it a{flex:1;display:block;padding:8px 10px;border:0;border-radius:10px;font-weight:700;text-decoration:none}.ddm .it a:hover{background:var(--sun);color:#1a1446;border:0}.ddm .it a.dl{flex:none;font-size:13px;padding:6px 8px;opacity:.8}.ddm .it a small{display:block;font-weight:400;opacity:.75}
 .hero{background:var(--screen);color:#fff;position:relative;border-bottom:5px solid var(--line);overflow:hidden}
 .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.08) 2px,transparent 2px);background-size:44px 44px}
@@ -124,6 +124,15 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 <h4>Κάρτες και αφίσες</h4>
 <div class="it"><a href="yliko/mere_ypologisti.pdf" target="_blank" rel="noopener">Μέρη του υπολογιστή και χρήσιμοι όροι<small>13 σελίδες · PDF</small></a></div>
 <div class="it"><a href="yliko/afisa_ergastirio.pdf" target="_blank" rel="noopener">Αφίσα «Εργαστήριο ηλεκτρονικών υπολογιστών»<small>1 σελίδα · PDF</small></a></div>
+<h4>Ασφάλεια στο Διαδίκτυο</h4>
+<div class="it"><a href="yliko/kanones_asfaleias.pdf" target="_blank" rel="noopener">Κανόνες για να είμαστε ασφαλείς<small>Αφίσα · 1 σελίδα · PDF</small></a></div>
+<div class="it"><a href="yliko/diadiktyothite.pdf" target="_blank" rel="noopener">Διαδικτυωθείτε, αλλά μην μπλεχτείτε<small>Αφίσα · 1 σελίδα · PDF</small></a></div>
+<div class="it"><a href="yliko/eglima_sto_diadiktyo.pdf" target="_blank" rel="noopener">Έγκλημα στο Διαδίκτυο<small>Αφίσα · 1 σελίδα · PDF</small></a></div>
+<div class="it"><a href="yliko/pragmata_den_einai_opos_fainontai.pdf" target="_blank" rel="noopener">Τα πράγματα δεν είναι πάντα όπως φαίνονται<small>Αφίσα · 2 σελίδες · PDF</small></a></div>
+<div class="it"><a href="yliko/prin_dimosieuseis_skepsou.pdf" target="_blank" rel="noopener">Πριν δημοσιεύσεις, σκέψου<small>Αφίσα · 1 σελίδα · PDF</small></a></div>
+<div class="it"><a href="yliko/agnostoi_diadiktyo.pdf" target="_blank" rel="noopener">Άγνωστοι στο Διαδίκτυο<small>Φύλλο · 1 σελίδα · PDF</small></a><a class="dl" href="yliko/agnostoi_diadiktyo.docx" download title="Λήψη για επεξεργασία">⬇ docx</a></div>
+<h4>Για το εργαστήριο</h4>
+<div class="it"><a href="yliko/kratisi_ergastiriou.pdf" target="_blank" rel="noopener">Πρόγραμμα κράτησης εργαστηρίου<small>Εβδομαδιαίος πίνακας · PDF</small></a><a class="dl" href="yliko/kratisi_ergastiriou.docx" download title="Λήψη για επεξεργασία">⬇ docx</a></div>
 </div></div><a href="ergaleia.html" id="logiLink"><span class="lf">Χρήσιμα </span>Εργαλεία</a><button class="accbtn" id="accbtn" onclick="accClick()">Σύνδεση</button></nav></div></header>
 
 <div class="hero" id="top"><div class="wrap">
