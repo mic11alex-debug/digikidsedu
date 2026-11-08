@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#3d5afe">
+<title>Εποπτικό υλικό – DigiKidsEdu</title>
+<meta name="description" content="Εποπτικό υλικό για την τάξη: παρουσιάσεις, κάρτες, αφίσες ασφάλειας στο Διαδίκτυο και υλικό για το εργαστήριο πληροφορικής.">
+<link rel="canonical" href="https://digikidsedu.com/epoptiko.html">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1a1446;--paper:#f3f0ff;--card:#fff;--grape:#7b4dff;--sun:#ffd23f;--mu:#5a5390;--dot:#d4cdf7;--tx:#1a1446;--line:#1a1446;--ok:#16a34a;--bad:#dc2626;--warn:#fff3c4;--warnb:#d99a00;--code:#efeaff}
+@media(prefers-color-scheme:dark){:root{--paper:#130e35;--card:#241b5e;--tx:#f1eeff;--mu:#b3abe6;--dot:#2b2270;--line:#0a0622;--warn:#3d3300;--warnb:#ffd23f;--code:#1a1446}}
+*{box-sizing:border-box}body{margin:0;font-family:"Anek Greek",system-ui,sans-serif;font-weight:500;color:var(--tx);background:var(--paper);background-image:radial-gradient(var(--dot) 2px,transparent 2.5px);background-size:28px 28px;font-size:18px;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 20px 70px}
+.back{display:inline-block;margin-bottom:18px;font-weight:800;color:var(--tx);background:var(--sun);border:3px solid var(--line);border-radius:14px;padding:8px 16px;text-decoration:none;box-shadow:0 4px 0 var(--line);font-size:17px;cursor:pointer;font-family:inherit}
+h1{font-weight:800;font-size:clamp(28px,5vw,42px);line-height:1.15;margin:0 0 6px}
+h2{font-weight:800;font-size:clamp(21px,3.2vw,28px);margin:30px 0 4px}
+h3{font-weight:800;font-size:20px;margin:0 0 4px}
+.lead{color:var(--mu);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;margin:14px 0}
+.tool{all:unset;box-sizing:border-box;cursor:pointer;display:block;background:var(--card);border:4px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 6px 0 var(--line);transition:transform .12s;text-align:left}
+.tool:hover,.tool:focus-visible{transform:translateY(-3px);outline:4px solid var(--sun)}
+.tool:active{transform:translateY(3px);box-shadow:0 2px 0 var(--line)}
+.tool .ico{width:72px;height:72px;border-radius:20px;border:3px solid var(--line);display:grid;place-items:center;font-size:42px;margin-bottom:10px}
+.tool b{display:block;font-size:19px;line-height:1.2;margin-bottom:4px}
+.tool span{display:block;color:var(--mu);font-size:15px;line-height:1.35}
+.badge{display:inline-block;background:var(--sun);color:#1a1446;border:2px solid var(--line);border-radius:999px;padding:0 10px;font-weight:800;font-size:12px;margin-top:6px}
+/* panel */
+#panel{position:fixed;inset:0;z-index:50;background:var(--paper);background-image:radial-gradient(var(--dot) 2px,transparent 2.5px);background-size:28px 28px;overflow:auto;display:none}
+#panel.on{display:block}
+.pbar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--card);border-bottom:4px solid var(--line)}
+.pbar .pi{font-size:30px}.pbar h2{margin:0;font-size:22px;flex:1}
+.pbar button{font:800 16px "Anek Greek",system-ui;background:var(--sun);color:#1a1446;border:3px solid var(--line);border-radius:12px;padding:6px 14px;box-shadow:0 3px 0 var(--line);cursor:pointer}
+.pbody{max-width:980px;margin:0 auto;padding:20px 18px 70px}
+/* widgets */
+.card{background:var(--card);border:4px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 0 var(--line);margin:14px 0}
+.btn{font:800 18px "Anek Greek",system-ui;background:var(--grape);color:#fff;border:3px solid var(--line);border-radius:14px;padding:9px 18px;box-shadow:0 4px 0 var(--line);cursor:pointer;margin:4px 4px 4px 0}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.btn.y{background:var(--sun);color:#1a1446}.btn.g{background:var(--ok)}.btn.r{background:var(--bad)}.btn.s{background:var(--card);color:var(--tx)}
+.btn:disabled{opacity:.5;cursor:default}
+input[type=text],input[type=number],input[type=date],textarea,select{font:inherit;color:var(--tx);background:var(--card);border:3px solid var(--line);border-radius:12px;padding:7px 10px;max-width:100%}
+textarea{width:100%;min-height:120px;resize:vertical}
+label.f{display:block;font-weight:800;margin:10px 0 3px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.row>*{margin:0}
+.big{font-size:clamp(40px,10vw,110px);font-weight:800;text-align:center;line-height:1.1}
+.note{background:var(--warn);border:3px solid var(--warnb);border-radius:16px;padding:10px 14px;margin:12px 0;font-size:16px}
+.mu{color:var(--mu);font-size:15px}
+code,.k{background:var(--code);border:2px solid var(--dot);border-radius:8px;padding:0 7px;font-family:ui-monospace,Consolas,monospace;font-size:.9em}
+pre.code{background:var(--code);border:3px solid var(--dot);border-radius:12px;padding:10px;max-height:260px;overflow:auto;font:13px ui-monospace,Consolas,monospace;white-space:pre-wrap}
+table.t{border-collapse:collapse;width:100%;font-size:16px}table.t th,table.t td{border:2px solid var(--dot);padding:7px 9px;text-align:left;vertical-align:top}table.t th{background:var(--code)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.tabs button{font:800 16px "Anek Greek",system-ui;background:var(--card);color:var(--tx);border:3px solid var(--line);border-radius:12px;padding:6px 14px;cursor:pointer}.tabs button.on{background:var(--grape);color:#fff}
+details{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:8px 16px;margin:10px 0}summary{cursor:pointer;font-weight:800}
+.step{display:grid;grid-template-columns:48px 1fr;gap:12px;margin:12px 0}.step .n{width:42px;height:42px;border-radius:50%;background:var(--grape);color:#fff;border:3px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:20px}
+.feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0}.feat div{background:var(--paper);border:3px solid var(--line);border-radius:14px;padding:10px 12px}.feat b{display:block}
+ul{padding-left:22px}li{margin:3px 0}
+/* print */
+#printRoot{display:none}
+@media print{body>*:not(#printRoot){display:none!important}#printRoot{display:block!important;background:#fff;color:#000}body{background:#fff!important}}
+@media(max-width:560px){.pbar h2{font-size:17px}.grid{grid-template-columns:repeat(2,1fr);gap:12px}.tool{padding:12px}.tool .ico{width:56px;height:56px;font-size:32px}.tool b{font-size:16px}.tool span{font-size:13px}}
+
+.it2{display:flex;flex-direction:column;background:var(--card);border:4px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 6px 0 var(--line)}
+.it2 .ico{width:60px;height:60px;border-radius:18px;border:3px solid var(--line);display:grid;place-items:center;font-size:34px;margin-bottom:8px}
+.it2 b{font-size:19px;line-height:1.25}.it2 span.s{color:var(--mu);font-size:15px;margin:2px 0 10px}
+.it2 .row{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
+.bt{font:800 15px "Anek Greek",system-ui;background:var(--sun);color:#1a1446;border:3px solid var(--line);border-radius:12px;padding:5px 12px;box-shadow:0 3px 0 var(--line);text-decoration:none;cursor:pointer}.bt.s2{background:var(--card);color:var(--tx)}
+</style></head><body>
+<div class="wrap"><a class="back" href="/" id="backLink">← Πίσω στα παιχνίδια</a>
+<h1>📚 Εποπτικό υλικό</h1>
+<p class="lead">Υλικό για την τάξη και το εργαστήριο πληροφορικής. Πάτα «Άνοιγμα» για να το δεις ή «⬇» για να κατεβάσεις το αρχείο που επεξεργάζεται.</p>
+<h2>Παρουσιάσεις</h2><p class="lead" style="margin:0">Για προβολή στον πίνακα</p><div class="grid"><div class="it2"><div class="ico" style="background:#c7d2fe">🖥️</div><b>Η ιστορία των Η/Υ</b><span class="s">30 διαφάνειες · από τον άβακα στους σύγχρονους υπολογιστές</span><div class="row"><a class="bt" href="yliko/istoria_ypologiston.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a><a class="bt s2" href="yliko/istoria_ypologiston.ppt" download>⬇ ppt</a></div></div><div class="it2"><div class="ico" style="background:#fde68a">📜</div><b>Υπολογιστές – Ιστορική αναδρομή</b><span class="s">23 διαφάνειες</span><div class="row"><a class="bt" href="yliko/ypologistes_istoriki_anadromi.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a><a class="bt s2" href="yliko/ypologistes_istoriki_anadromi.ppt" download>⬇ ppt</a></div></div></div><h2>Κάρτες και αφίσες</h2><p class="lead" style="margin:0">Για εκτύπωση και για τον τοίχο της τάξης</p><div class="grid"><div class="it2"><div class="ico" style="background:#bbf7d0">🧩</div><b>Μέρη του υπολογιστή και χρήσιμοι όροι</b><span class="s">13 σελίδες με κάρτες</span><div class="row"><a class="bt" href="yliko/mere_ypologisti.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#fecaca">🏫</div><b>Αφίσα «Εργαστήριο ηλεκτρονικών υπολογιστών»</b><span class="s">1 σελίδα</span><div class="row"><a class="bt" href="yliko/afisa_ergastirio.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div></div><h2>Ασφάλεια στο Διαδίκτυο</h2><p class="lead" style="margin:0">Αφίσες και φυλλάδια για ασφαλή περιήγηση</p><div class="grid"><div class="it2"><div class="ico" style="background:#bbf7d0">✅</div><b>Κανόνες για να είμαστε ασφαλείς</b><span class="s">Αφίσα · 1 σελίδα</span><div class="row"><a class="bt" href="yliko/kanones_asfaleias.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#bae6fd">🧑‍💻</div><b>Διαδικτυωθείτε, αλλά μην μπλεχτείτε</b><span class="s">Αφίσα · 1 σελίδα</span><div class="row"><a class="bt" href="yliko/diadiktyothite.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#fde68a">🚨</div><b>Έγκλημα στο Διαδίκτυο</b><span class="s">Αφίσα · 1 σελίδα</span><div class="row"><a class="bt" href="yliko/eglima_sto_diadiktyo.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#fbcfe8">🎭</div><b>Τα πράγματα δεν είναι πάντα όπως φαίνονται</b><span class="s">Αφίσα · 2 σελίδες</span><div class="row"><a class="bt" href="yliko/pragmata_den_einai_opos_fainontai.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#c7d2fe">🤔</div><b>Πριν δημοσιεύσεις, σκέψου</b><span class="s">Αφίσα · 1 σελίδα</span><div class="row"><a class="bt" href="yliko/prin_dimosieuseis_skepsou.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div><div class="it2"><div class="ico" style="background:#fecaca">🕵️</div><b>Άγνωστοι στο Διαδίκτυο</b><span class="s">Φύλλο · 1 σελίδα</span><div class="row"><a class="bt" href="yliko/agnostoi_diadiktyo.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a><a class="bt s2" href="yliko/agnostoi_diadiktyo.docx" download>⬇ docx</a></div></div><div class="it2"><div class="ico" style="background:#bae6fd">💬</div><b>Διαδικτυακός εκφοβισμός: τι πρέπει να γνωρίζω</b><span class="s">Φυλλάδιο · 2 σελίδες</span><div class="row"><a class="bt" href="yliko/diadiktyakos_ekfovismos.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a></div></div></div><h2>Για το εργαστήριο</h2><p class="lead" style="margin:0">Οργάνωση και διαχείριση</p><div class="grid"><div class="it2"><div class="ico" style="background:#fde68a">📅</div><b>Πρόγραμμα κράτησης εργαστηρίου</b><span class="s">Εβδομαδιαίος πίνακας · το .docx επεξεργάζεται</span><div class="row"><a class="bt" href="yliko/kratisi_ergastiriou.pdf" target="_blank" rel="noopener">Άνοιγμα (PDF)</a><a class="bt s2" href="yliko/kratisi_ergastiriou.docx" download>⬇ docx</a></div></div></div>
+<p class="mu" style="margin-top:30px;color:var(--mu)">Θα προστίθεται συνεχώς νέο υλικό.</p></div></body></html>
