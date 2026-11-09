@@ -126,7 +126,7 @@ tool({id:'vathmologia',g:0,icon:'🏆',bg:'#a7f3d0',title:'Βαθμολογία 
  b.append(h('div',{class:'row'},h('button',{class:'btn y',onclick:()=>{if(T.length<6){T.push({n:'Ομάδα '+(T.length+1),s:0});save();draw()}}},'➕ Προσθήκη ομάδας'),h('button',{class:'btn s',onclick:()=>{if(T.length>2){T.pop();save();draw()}}},'➖ Αφαίρεση ομάδας'),h('button',{class:'btn r',onclick:()=>{T.forEach(t=>t.s=0);save();draw()}},'↺ Μηδενισμός')),box);draw()}});
 
 /* 5. Δημιουργός κουίζ */
-tool({id:'kouiz',g:0,icon:'❓',bg:'#c4b5fd',title:'Δημιουργός κουίζ',desc:'Γράψε τις δικές σου ερωτήσεις και παίξε κουίζ στην τάξη.',run(b){
+tool({id:'kouiz',g:1,icon:'❓',bg:'#c4b5fd',title:'Δημιουργός κουίζ',desc:'Γράψε τις δικές σου ερωτήσεις και παίξε κουίζ στην τάξη.',run(b){
  const SAMPLE=[{name:'Δείγμα: Υπολογιστές',qs:[{q:'Ποιο μέρος του υπολογιστή χρησιμοποιούμε για να γράφουμε;',a:['Πληκτρολόγιο','Οθόνη','Ηχείο','Εκτυπωτής'],c:0},{q:'Τι κάνει το αριστερό κλικ του ποντικιού;',a:['Επιλέγει','Σβήνει όλα','Κλείνει τον υπολογιστή','Τυπώνει'],c:0},{q:'Ποιο πλήκτρο αλλάζει γραμμή;',a:['Space','Enter','Esc','Tab'],c:1}]}];
  let S=store.get('quizzes',SAMPLE),cur=store.get('quizcur',0);if(cur>=S.length)cur=0;const save=()=>{store.set('quizzes',S);store.set('quizcur',cur)};const root=h('div');b.append(root);
  const edit=()=>{root.innerHTML='';const sel=h('select',null,S.map((s,i)=>h('option',{value:i,selected:i===cur},s.name)));sel.onchange=()=>{cur=+sel.value;save();edit()};const q=S[cur];
