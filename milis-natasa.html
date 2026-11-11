@@ -1961,5 +1961,8 @@ G.pic=(ar,T)=>{const W=[['🐟','ΨΑΡΙ'],['🐢','ΧΕΛΩΝΑ'],['🦀','Κ�
 G.ton2=(ar,T)=>seq(ar,T,'ton2',[['Λέξεις της θάλασσας',()=>sh(['θάλασσα','ψάρι','καράβι','κοχύλι','δελφίνι','χταπόδι','νησί','κύμα','άμμος','ήλιος']).slice(0,5).map(w=>[...w].map(c=>tok(c)))],['Πόλεις της Κύπρου',()=>sh(['Λευκωσία','Λεμεσός','Λάρνακα','Πάφος','Κερύνεια']).slice(0,4).map(w=>[...w.toLowerCase()].map((c,i)=>tok(c,i==0)))]],'🐬');
 hub();
 </script>
+<script>/*FACEFIX*/(()=>{const R=/[\u{1F436}\u{1F431}]/u,im=c=>{const i=document.createElement('img');i.src=c==='\u{1F436}'?FACE.dog:FACE.cat;i.alt=c==='\u{1F436}'?'Μίλης':'Νάσα';i.style.cssText='height:1.15em;width:auto;vertical-align:-.2em;display:inline-block';return i};
+const fix=n=>{if(n.nodeType===3){if(!R.test(n.nodeValue))return;const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|TITLE|OPTION)$/.test(p.nodeName)||p.namespaceURI!=='http://www.w3.org/1999/xhtml')return;const f=document.createDocumentFragment();n.nodeValue.split(/([\u{1F436}\u{1F431}])/u).forEach(t=>{if(!t)return;f.appendChild(/^[\u{1F436}\u{1F431}]$/u.test(t)?im(t):document.createTextNode(t))});p.replaceChild(f,n)}else if(n.nodeType===1&&!/^(SCRIPT|STYLE|TEXTAREA|CANVAS|svg)$/i.test(n.nodeName)){[...n.childNodes].forEach(fix)}};
+let busy=0;new MutationObserver(ms=>{if(busy)return;busy=1;ms.forEach(m=>{m.addedNodes.forEach(fix);if(m.type==='characterData')fix(m.target)});busy=0}).observe(document.body,{childList:true,subtree:true,characterData:true});fix(document.body)})()</script>
 </body>
 </html>
