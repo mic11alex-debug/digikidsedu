@@ -51,10 +51,10 @@ h2{font-weight:800;font-size:clamp(30px,4.6vw,46px);line-height:1.1;margin:0 0 8
 .key:hover{transform:translateY(3px);box-shadow:0 6px 0 var(--line)}
 .key.on{transform:translateY(9px);box-shadow:0 0 0 var(--line);background:#fff;outline:5px solid var(--sun);outline-offset:3px}
 .sh{grid-column:1/-1;margin:14px 0 0;font-size:26px;border-bottom:4px solid var(--line);padding-bottom:6px}.sh:first-child{margin-top:0}
-.thg{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:900px;margin:0 auto}@media(max-width:520px){.thg{gap:12px}.thc{padding:14px 8px 12px}.thc b{font-size:16px}.thc .ti{font-size:60px;height:96px}.thc .ti svg{height:90px}.thc .ti img{max-height:92px;max-width:100%}}
+.thg{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;max-width:900px;margin:0 auto}@media(max-width:520px){.thg{gap:12px}.thc{padding:14px 8px 12px}.thc b{font-size:16px}.thc .ti{font-size:72px;height:112px}.thc .ti svg{height:106px}.thc .ti img{max-height:108px;max-width:100%}}
 .thc{min-width:0;font:inherit;text-align:center;cursor:pointer;border:4px solid var(--line);border-radius:26px;box-shadow:0 7px 0 var(--line);padding:22px 14px 18px;color:#1a1446;transition:transform .12s}
 .thc:hover{transform:translateY(3px);box-shadow:0 4px 0 var(--line)}
-.thc .ti{font-size:96px;line-height:1.1;height:140px;display:flex;align-items:center;justify-content:center}.thc .ti svg{height:132px;width:auto;max-width:100%}.thc .ti img{max-height:136px;max-width:100%;width:auto;border-radius:16px}
+.thc .ti{font-size:120px;line-height:1.1;height:172px;display:flex;align-items:center;justify-content:center}.thc .ti svg{height:166px;width:auto;max-width:100%}.thc .ti img{max-height:170px;max-width:100%;width:auto;border-radius:16px}
 .thc b{display:block;font-size:21px;margin:8px 0 4px}.thc small{font-weight:700;opacity:.75}
 .cats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
 .cat{font:inherit;font-weight:700;cursor:pointer;border:4px solid var(--line);background:var(--card);color:var(--tx);padding:6px 16px;border-radius:99px;box-shadow:0 4px 0 var(--line)}
@@ -220,7 +220,7 @@ const SUBT=[['Γεωγραφία',`<svg viewBox="0 0 120 100" aria-hidden="true"
 let view='home',th=null,sb=null;
 function show(v,t,s){view=v;th=t||null;sb=s||null;draw();scrollTo(0,v=='home'?0:document.getElementById('games').offsetTop-70)}
 function back(){if(view=='th'&&sb)show('th',th);else show('home')}
-function drawHome(){document.getElementById('thg').innerHTML=THEMES.map(([n,ic,c],i)=>{const k=GAMES.filter(x=>x.th.split('|').includes(n)).length;const im=n=='Μίλης και Νάσα'&&GAMES.find(x=>x.id=='milis').im;return `<button class="thc" style="background:${c}" onclick="show('th',THEMES[${i}][0])"><div class="ti">${im||ic}</div><b>${n}</b><small>${k} ${k==1?'εφαρμογή':'εφαρμογές'}</small></button>`}).join('')}
+function drawHome(){document.getElementById('thg').innerHTML=THEMES.map(([n,ic,c],i)=>{const k=GAMES.filter(x=>x.th.split('|').includes(n)).length;const im=n=='Μίλης και Νάσα'&&GAMES.find(x=>x.id=='milis').im;return `<button class="thc" style="background:${c}" onclick="show('th',THEMES[${i}][0])"><div class="ti">${im||ic}</div><b>${n}</b></button>`}).join('')}
 function draw(){
  document.getElementById('home').style.display=view=='home'?'':'none';document.getElementById('games').style.display=view=='home'?'none':'';const T=view=='th';keys.style.display=document.getElementById('cats').style.display=T?'none':'';bk.style.display=T?'':'none';gh.textContent=T?(sb?th+' · '+sb:th):'Ποια τάξη είσαι;';gs.textContent=T?'Διάλεξε εφαρμογή και παίξε.':'Πάτα το πλήκτρο της τάξης σου και δες τα παιχνίδια σου.';if(view=='home')drawHome();
  keys.innerHTML=KEYS.map(([v,l,s,c])=>`<button class="key ${v==kl?'on':''}" style="--c:${c}" aria-pressed="${v==kl}" onclick="kl='${v}';cat='Όλα';show('all')"><b>${l}</b><small>${s}</small></button>`).join('');
