@@ -1080,12 +1080,11 @@ const CATS=[['hair','💇','Μαλλιά'],['hat','🎩','Καπέλα'],['face'
  const byId={};ITEMS.forEach(i=>byId[i.id]=i);
  const FILT=`<defs><filter id="mkbev" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="3.4" result="b"/><feSpecularLighting in="b" surfaceScale="4.5" specularConstant=".75" specularExponent="16" lighting-color="#fff" result="sp"><feDistantLight azimuth="225" elevation="50"/></feSpecularLighting><feComposite in="sp" in2="SourceAlpha" operator="in" result="sp2"/><feComposite in="SourceGraphic" in2="sp2" operator="arithmetic" k1="0" k2="1" k3=".55" k4="0"/></filter></defs>`;
  const charSVG=(who,worn,newId,stag)=>{const ch=who==='dog'?dog():cat();let n=0;
-   const FIT={dog:{hat:[150,86,166,80,-14,1.02],hair:[150,125,168,126,-12,1.05],eyes:[150,112,169,118,-18,1.05],nose:[150,140,204,147,-18,1.5],mouth:[150,176,196,162,-16,.8],neck:[150,200,168,214,-6,1]},
-    cat:{hat:[150,86,148,90,6,1.02],hair:[150,125,150,125,6,1.0],eyes:[150,112,148,126,9,1.12],nose:[150,140,135,147,8,1],mouth:[150,176,136,160,8,.62],neck:[150,200,148,210,4,1]}}[who];
+   const FIT={dog:{},cat:{}}[who];
    const fk=it=>it.id==='face_nose'?'nose':it.id==='face_must'?'mouth':it.slot==='face'?'eyes':it.slot;
    const layer=(s,part)=>{const id=worn[s];if(!id)return'';const it=byId[id],body=part==='bk'?(it.bk||''):it.d;if(!body)return'';const pop=stag?`class="mk-pop" style="animation-delay:${(n)*.09}s;animation-fill-mode:backwards"`:(id===newId?'class="mk-pop"':'');if(part!=='bk')n++;const o=FIT[fk(it)];return`<g ${pop}>${o?`<g transform="translate(${o[2]} ${o[3]}) rotate(${o[4]}) scale(${o[5]}) translate(${-o[0]} ${-o[1]})">${body}</g>`:body}</g>`};
   let s=layer('back','d')+layer('hair','bk');
-  s+=ch.tail+ch.body;['shoes','bottom','top'].forEach(k=>s+=layer(k,'d'));s+=who==='dog'?`<image href="${FACE.dog}" x="30" y="30" width="240" height="192"/>`:`<image href="${FACE.cat}" x="38" y="14" width="224" height="202"/>`;['neck','hair','face','hat','hand'].forEach(k=>s+=layer(k,'d'));
+  s+=ch.tail+ch.body;['shoes','bottom','top'].forEach(k=>s+=layer(k,'d'));s+=ch.head;['neck','hair','face','hat','hand'].forEach(k=>s+=layer(k,'d'));
   return`${FILT}<g class="mk-char"><g filter="url(#mkbev)">${s}</g></g>`};
  const icon=(it,px)=>`<svg viewBox="${it.bb.join(' ')}" ${px?`width="${px}" height="${px}"`:''} preserveAspectRatio="xMidYMid meet">${FILT}<g filter="url(#mkbev)">${it.bk||''}${it.d}</g></svg>`;
  return{ITEMS,CATS,ORDER,byId,charSVG,icon,OL,S,dog,cat,FILT}})();
