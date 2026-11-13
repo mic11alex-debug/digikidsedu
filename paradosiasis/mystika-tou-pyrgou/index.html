@@ -77,7 +77,7 @@ body.fs #slide{border-radius:0;box-shadow:none}
       th.appendChild(b);
     })(k);
   }
-  function go(n){
+  function go(n,fromHash,init){
     if(n<0||n>=N)return;
     i=n;
     img.src='slides/'+pad(i+1)+'.webp';
@@ -90,8 +90,9 @@ body.fs #slide{border-radius:0;box-shadow:none}
     for(var j=0;j<bs.length;j++)bs[j].className=(j===i?'on':'');
     if(bs[i]&&bs[i].scrollIntoView)bs[i].scrollIntoView({block:'nearest',inline:'center'});
     if(i+1<N){var pre=new Image();pre.src='slides/'+pad(i+2)+'.webp'}
-    try{location.hash='#'+(i+1)}catch(e){}
+    if(!fromHash){try{var u=location.pathname+location.search+'#'+(i+1);if(init)history.replaceState(null,'',u);else if(location.hash!=='#'+(i+1))history.pushState(null,'',u)}catch(e){}}
   }
+  window.addEventListener('popstate',function(){var h=parseInt((location.hash||'').slice(1),10);go(h>=1&&h<=N?h-1:0,true)});
   $('prev').onclick=$('p2').onclick=function(){go(i-1)};
   $('next').onclick=$('n2').onclick=function(){go(i+1)};
   document.addEventListener('keydown',function(e){
@@ -127,7 +128,7 @@ body.fs #slide{border-radius:0;box-shadow:none}
   });
   $('fs').onclick=toggleFs;
   var h=parseInt((location.hash||'').slice(1),10);
-  go(h>=1&&h<=N?h-1:0);
+  go(h>=1&&h<=N?h-1:0,false,true);
 })();
 </script>
 </body>

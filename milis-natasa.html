@@ -184,7 +184,7 @@ const ico=(e,k)=>{if(typeof cat!=="undefined"&&cat==="p"&&SCN[k])return ico2(k);
 if(e==='@@MAZE@@')return `<span style="${B};background:linear-gradient(135deg,#bbf7d0,#86efac)"><svg viewBox="0 0 170 100" width="170" height="100" style="position:absolute;inset:0"><g fill="none" stroke="#7c4a1e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="162" height="92" rx="12" stroke="#5b3410"/><path d="M36 4V62M36 62H70M70 28V96M70 28H104M104 28V70M104 70H136M136 4V48M136 48H166"/></g><text x="148" y="82" font-size="26" text-anchor="middle">🦴</text><path d="M20 78H52" stroke="#fff" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round" fill="none"/></svg><img src="${FACE.dog}" alt="" style="position:absolute;left:10px;top:60px;height:34px;width:auto"></span>`;
 if(e==='@@CHASE@@')return `<span style="${B};background:linear-gradient(#bae6fd 0 58%,#86efac 58%)"><svg viewBox="0 0 170 100" width="170" height="100" style="position:absolute;inset:0"><circle cx="150" cy="18" r="11" fill="#fde047"/><g stroke="#fff" stroke-width="4" stroke-linecap="round"><path d="M10 52H34M4 64H28M12 76H32" opacity=".9"/></g><text x="64" y="94" font-size="14">🐾</text><text x="88" y="84" font-size="14">🐾</text><text x="112" y="94" font-size="14">🐾</text><text x="84" y="22" font-size="18">💨</text></svg><img src="${FACE.dog}" alt="" style="position:absolute;left:30px;top:34px;height:48px;width:auto;transform:rotate(-8deg)"><img src="${FACE.cat}" alt="" style="position:absolute;right:10px;top:26px;height:48px;width:auto;transform:rotate(6deg)"></span>`;
 return e};
-function hub(){cleanup();ttl.textContent='Ο Μίλης και η Νάσα 🐶🐱';const s=getS();
+function hub(){cleanup();try{parent.postMessage({dkDepth:0},'*')}catch(e){}ttl.textContent='Ο Μίλης και η Νάσα 🐶🐱';const s=getS();
  const list=GAMES.filter(g=>CAT[g[0]].includes(cat)&&(cat!=='t'||!sub||(SUB[g[0]]||'').includes(sub)));
  app.innerHTML=`<div class="card ctl"><button class="btn ${comp?'g':''}" id="cm">⏱️ Ανταγωνιστικό: ${comp?'ΝΑΙ':'ΟΧΙ'}</button><label>👤 <input id="pn" maxlength="14" placeholder="Όνομα παίκτη" value="${esc(pname)}"></label><button class="btn" id="lb">🏆 Κορυφαίοι χρόνοι</button></div>
  <div class="tabs"><button class="tab tabhero ${cat==='p'?'on':''}" data-c="p"><img class="hf" src="${FACE.dog}" alt=""><span class="ht"><b>Ο Μίλης και η Νάσα</b><small>Παιχνίδια με τους φίλους μας!</small></span><img class="hf" src="${FACE.cat}" alt=""></button></div>
@@ -204,10 +204,10 @@ function hub(){cleanup();ttl.textContent='Ο Μίλης και η Νάσα 🐶�
  app.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{cat=b.dataset.c;sub='';hub()});
  app.querySelectorAll('.sub').forEach(b=>b.onclick=()=>{sub=b.dataset.s;hub()});
  app.querySelectorAll('.gc').forEach(b=>b.onclick=()=>play(b.dataset.k))}
-function board(){cleanup();ttl.textContent='🏆 Κορυφαίοι χρόνοι';const b=getLB();let sure=false;
+function board(){cleanup();try{parent.postMessage({dkDepth:1},'*')}catch(e){}ttl.textContent='🏆 Κορυφαίοι χρόνοι';const b=getLB();let sure=false;
  app.innerHTML=`<p class="tip">Οι καλύτεροι χρόνοι από το ανταγωνιστικό παιχνίδι. Μένουν σε αυτόν τον υπολογιστή.</p>${GAMES.filter(g=>(b[g[0]]||[]).length).map(g=>`<div class="card"><b>${g[1]} ${g[2]}</b><ol class="lbl">${b[g[0]].slice(0,5).map(r=>`<li>${esc(r.n)} · ${fmt(r.t)} ${'⭐'.repeat(r.s)}</li>`).join('')}</ol></div>`).join('')||'<div class="card">Δεν υπάρχουν ακόμα χρόνοι. Άνοιξε το «Ανταγωνιστικό» στο μενού και παίξε!</div>'}<p style="text-align:center"><button class="btn" id="bk">← Πίσω</button> <button class="btn r" id="cl">🗑 Καθάρισε τον πίνακα</button></p>`;
  $('#bk').onclick=hub;$('#cl').onclick=()=>{if(!sure){sure=true;$('#cl').textContent='Σίγουρα; Πάτα ξανά';return}try{localStorage.removeItem(LBK)}catch(e){}board()}}
-function play(k){cleanup();const g=GAMES.find(x=>x[0]===k);ttl.textContent=g[1]+' '+g[2];app.innerHTML='<p class="tip" id="tip"></p><div class="arena" id="ar"></div>';
+function play(k){cleanup();try{parent.postMessage({dkDepth:1},'*')}catch(e){}const g=GAMES.find(x=>x[0]===k);ttl.textContent=g[1]+' '+g[2];app.innerHTML='<p class="tip" id="tip"></p><div class="arena" id="ar"></div>';
  t0=Date.now();const tm=$('#tmr');if(comp){tm.classList.add('on');tick();tmI=setInterval(tick,250)}
  cur=G[k]($('#ar'),t=>$('#tip').textContent=t)}
 $('#home').onclick=hub;$('#snd').onclick=e=>{mute=!mute;e.target.textContent=mute?'🔇':'🔊'};
@@ -1978,6 +1978,7 @@ hub();
 </script>
 <script>/*FACEFIX*/(()=>{const R=/[\u{1F436}\u{1F431}]/u,im=c=>{const i=document.createElement('img');i.src=c==='\u{1F436}'?FACE.dog:FACE.cat;i.alt=c==='\u{1F436}'?'Μίλης':'Νάσα';i.style.cssText='height:1.15em;width:auto;vertical-align:-.2em;display:inline-block';return i};
 const fix=n=>{if(n.nodeType===3){if(!R.test(n.nodeValue))return;const p=n.parentNode;if(!p||/^(SCRIPT|STYLE|TEXTAREA|TITLE|OPTION)$/.test(p.nodeName)||p.namespaceURI!=='http://www.w3.org/1999/xhtml')return;const f=document.createDocumentFragment();n.nodeValue.split(/([\u{1F436}\u{1F431}])/u).forEach(t=>{if(!t)return;f.appendChild(/^[\u{1F436}\u{1F431}]$/u.test(t)?im(t):document.createTextNode(t))});p.replaceChild(f,n)}else if(n.nodeType===1&&!/^(SCRIPT|STYLE|TEXTAREA|CANVAS|svg)$/i.test(n.nodeName)){[...n.childNodes].forEach(fix)}};
-let busy=0;new MutationObserver(ms=>{if(busy)return;busy=1;ms.forEach(m=>{m.addedNodes.forEach(fix);if(m.type==='characterData')fix(m.target)});busy=0}).observe(document.body,{childList:true,subtree:true,characterData:true});fix(document.body)})()</script>
+let busy=0;new MutationObserver(ms=>{if(busy)return;busy=1;ms.forEach(m=>{m.addedNodes.forEach(fix);if(m.type==='characterData')fix(m.target)});busy=0}).observe(document.body,{childList:true,subtree:true,characterData:true});fix(document.body)})();addEventListener('message',e=>{if(e.data&&e.data.dkBack){try{hub()}catch(x){}}});
+</script>
 </body>
 </html>
