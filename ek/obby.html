@@ -155,6 +155,6 @@ $('rp').onclick=reset;$('nx').onclick=()=>setLvl(lvl+1);
 keyMap(code=>{if(mode==='2d')return{ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j'}[code];return{ArrowUp:'fw',KeyW:'fw',ArrowDown:'bk',KeyS:'bk',ArrowLeft:'tl',KeyA:'tl',ArrowRight:'tr',KeyD:'tr',Space:'j'}[code]});
 let lt=performance.now();
 function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(!won){t+=dt;$('tm').textContent=t.toFixed(1);mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():draw3();requestAnimationFrame(loop)}
-setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
+addEventListener('pointerdown',()=>window.focus());window.focus();setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
 
 </script></body></html>

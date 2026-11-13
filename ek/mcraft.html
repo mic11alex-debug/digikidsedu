@@ -159,6 +159,6 @@ cv.addEventListener('pointerleave',()=>{if(!dn)mouse.in=false});
 cv.addEventListener('pointerup',e=>{const p=pos(e);if(dn&&dn.mv<8){const place=dn.b===2||tool==='build';if(mode==='2d')act2(Math.floor(p.x/T+cam2.x),Math.floor(p.y/T+cam2.y),place);else{mouse={...p,in:true};act3(E3.pick(last3,p.x,p.y),place)}}dn=null});
 let lt=performance.now(),svT=0;
 function loop(t){const dt=Math.min(.05,(t-lt)/1000);lt=t;if(mode==='2d'){up2(dt);draw2()}else{up3(dt);draw3()}svT+=dt;if(dirty&&svT>3){save();svT=0}requestAnimationFrame(loop)}
-load();setMode(mode);setCast(cast);setTool('break');requestAnimationFrame(loop);addEventListener('pagehide',save);
+addEventListener('pointerdown',()=>window.focus());window.focus();load();setMode(mode);setCast(cast);setTool('break');requestAnimationFrame(loop);addEventListener('pagehide',save);
 
 </script></body></html>
