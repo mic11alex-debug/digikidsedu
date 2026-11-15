@@ -80,6 +80,51 @@ async function api(req, env, url) {
     if (m) await env.DB.prepare('DELETE FROM sessions WHERE token_hash=?').bind(await sha(m[1])).run();
     return J({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
   }
+  // ── Κοινή συλλογή ερωτηματολογίου (ανώνυμα, με κωδικό τάξης) ──
+  if (path.startsWith('/api/class/')) {
+    const CODE = /^[A-Z2-9]{6}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄'];
+    const code = String(b.code || url.searchParams.get('code') || '').toUpperCase().trim();
+    const key = String(b.key || url.searchParams.get('key') || '');
+    if (path === '/api/class/create') {
+      if (await limited(env, ip)) return J({ error: 'Πολλές προσπάθειες. Δοκίμασε ξανά σε λίγα λεπτά.' }, 429);
+      await env.DB.prepare('INSERT INTO attempts(user_id,ip,ts) VALUES(0,?,?)').bind(ip, now()).run();
+      const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rnd = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((x) => A[x % A.length]).join('');
+      const k = rnd(10);
+      for (let i = 0; i < 5; i++) {
+        const c = rnd(6);
+        try { await env.DB.prepare('INSERT INTO classes(code,key_hash,subs,created_at) VALUES(?,?,0,?)').bind(c, await sha(k), now()).run(); return J({ ok: true, code: c, key: k }); } catch (e) {}
+      }
+      return J({ error: 'Δοκίμασε ξανά.' }, 500);
+    }
+    if (!CODE.test(code)) return J({ error: 'Ο κωδικός τάξης έχει 6 χαρακτήρες (γράμματα και αριθμούς).' }, 400);
+    const c = await env.DB.prepare('SELECT key_hash,subs FROM classes WHERE code=?').bind(code).first();
+    if (!c) return J({ error: 'Δεν βρέθηκε αυτός ο κωδικός τάξης.' }, 404);
+    if (path === '/api/class/submit') {
+      const cl = String(b.cl || ''), a = Array.isArray(b.a) ? b.a : [];
+      if (!CL.includes(cl) || !a.length || a.length > 30) return J({ error: 'Μη έγκυρα δεδομένα.' }, 400);
+      if (c.subs >= 3000) return J({ error: 'Ο κωδικός γέμισε. Φτιάξε νέο.' }, 429);
+      const st = [];
+      for (const x of a) {
+        const q = String(x[0] || ''), o = Number(x[1]);
+        if (!/^[a-z0-9]{1,8}$/.test(q) || !Number.isInteger(o) || o < 0 || o > 20) return J({ error: 'Μη έγκυρα δεδομένα.' }, 400);
+        st.push(env.DB.prepare('INSERT INTO class_ans(code,cl,qid,opt,n) VALUES(?,?,?,?,1) ON CONFLICT(code,cl,qid,opt) DO UPDATE SET n=n+1').bind(code, cl, q, o));
+      }
+      st.push(env.DB.prepare('UPDATE classes SET subs=subs+1 WHERE code=?').bind(code));
+      await env.DB.batch(st);
+      return J({ ok: true });
+    }
+    if ((await sha(key)) !== c.key_hash) return J({ error: 'Λάθος κλειδί δασκάλου.' }, 403);
+    if (path === '/api/class/results') {
+      const r = await env.DB.prepare('SELECT cl,qid,opt,n FROM class_ans WHERE code=?').bind(code).all();
+      return J({ ok: true, subs: c.subs, rows: r.results.map((x) => [x.cl, x.qid, x.opt, x.n]) });
+    }
+    if (path === '/api/class/reset') {
+      await env.DB.batch([env.DB.prepare('DELETE FROM class_ans WHERE code=?').bind(code), env.DB.prepare('UPDATE classes SET subs=0 WHERE code=?').bind(code)]);
+      return J({ ok: true });
+    }
+    return J({ error: 'Δεν βρέθηκε.' }, 404);
+  }
+
   const u = await auth(req, env);
   if (path === '/api/me') return u ? J(await snapshot(env, u)) : J({ user: null });
   if (!u) return J({ error: 'Χρειάζεται σύνδεση.' }, 401);
