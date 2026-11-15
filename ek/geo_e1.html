@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Γεωγραφία Ε΄ — Οι κινήσεις της Γης</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350;--hl:#4a3f10}}
+*{box-sizing:border-box}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:18px}
+header{background:linear-gradient(135deg,var(--teal),var(--blue),var(--purple));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:2px 0 0;opacity:.9;font-size:15px}
+#dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px 8px 0}
+#dots button{border:3px solid var(--bd);background:var(--card);color:var(--tx);width:44px;height:44px;border-radius:50%;font:700 18px Fredoka;cursor:pointer;position:relative}
+#dots button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#dots button.ok::after{content:"✓";position:absolute;right:-4px;top:-6px;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-size:13px;display:grid;place-items:center}
+main{max-width:900px;margin:0 auto;padding:12px 14px 90px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 14px}
+.btn{border:0;cursor:pointer;font:700 18px Fredoka;color:#fff;background:var(--teal);padding:12px 24px;border-radius:16px;box-shadow:0 5px 0 #0d9488}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.b{background:var(--blue);box-shadow:0 5px 0 #1d4ed8}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn:disabled{opacity:.45}
+nav.n{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:3px solid var(--bd);display:flex;justify-content:space-between;padding:10px 14px;gap:10px;z-index:9}
+.step{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.step b.num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font-size:20px}
+.url{display:flex;align-items:center;gap:8px;background:var(--soft);border:3px solid var(--bd);border-radius:99px;padding:6px 14px}
+.url input,.f input,.f textarea{font:600 20px Fredoka;border:0;background:transparent;color:var(--tx);outline:0;flex:1;min-width:0;width:100%}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.grid21{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px;margin:10px 0}
+.grid21 button{font:700 20px Fredoka;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;padding:8px 0;cursor:pointer}
+.grid21 button.on{background:var(--blue);color:#fff;border-color:#1d4ed8}
+.addr{font:700 clamp(20px,5vw,32px) Fredoka;text-align:center;padding:12px;background:var(--hl);border-radius:18px;margin:10px 0;word-break:break-all}
+.addr .n1{color:var(--red)}.addr .n2{color:var(--blue)}.addr .n3{color:var(--purple)}.addr .n4{color:var(--green)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:15px;margin-bottom:8px}.legend span{padding:2px 10px;border-radius:99px;background:var(--soft)}
+.secret{background:#fee2e2;border:3px dashed var(--red);border-radius:18px;padding:12px;margin:12px 0;color:#7f1d1d}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .secret{background:#450a0a;color:#fecaca}}
+.mock{border:3px solid var(--bd);border-radius:18px;overflow:hidden;background:var(--card)}
+.mock .bar{background:var(--soft);padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:15px;flex-wrap:wrap}
+.mock .body{display:grid;grid-template-columns:150px 1fr}
+.side{background:var(--soft);padding:8px;display:flex;flex-direction:column;gap:6px}
+.hot{border:3px dashed transparent;border-radius:12px;padding:6px 8px;cursor:pointer;background:transparent;font:600 16px Fredoka;color:var(--tx);text-align:left}
+.hot:hover{border-color:var(--amber)}.hot.done{background:#bbf7d0;color:#14532d;border-style:solid;border-color:var(--green)}
+.mails{padding:8px;display:flex;flex-direction:column;gap:6px}.mails div{padding:8px 10px;border-radius:10px;background:var(--soft);font-size:15px}
+#info{margin-top:12px;min-height:58px;padding:12px;border-radius:16px;background:var(--hl)}
+.mc{display:grid;gap:8px}.opt{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;padding:12px;font:600 19px Fredoka;cursor:pointer;text-align:left}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.email{border:3px solid var(--bd);border-radius:18px;overflow:hidden;background:var(--card)}
+.email .hd{background:var(--blue);color:#fff;padding:8px 14px;font-weight:700;display:flex;justify-content:space-between}
+.f{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--bd);padding:8px 14px;min-height:52px}
+.f label{flex:none;width:76px;font-weight:700;color:var(--purple)}
+.f.area{align-items:flex-start;border-bottom:0}.f textarea{height:130px;resize:none}
+.reg{cursor:pointer}.reg.sel{outline:4px solid var(--amber);outline-offset:-4px}
+.tbar{display:flex;gap:10px;padding:10px 14px;align-items:center;background:var(--soft);flex-wrap:wrap}
+.chip{display:inline-flex;gap:6px;align-items:center;background:#dbeafe;color:#1e3a8a;border-radius:99px;padding:4px 12px;font-size:16px}
+.chk{list-style:none;padding:0;margin:12px 0}.chk li{padding:4px 0}.chk li::before{content:"⬜ "}.chk li.y::before{content:"✅ "}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;place-items:center;z-index:50;padding:14px}.modal.on{display:grid}
+.modal .box{background:var(--card);border-radius:22px;padding:18px;max-width:420px;width:100%}
+.file{display:flex;gap:12px;align-items:center;padding:10px;border-radius:14px;border:3px solid var(--bd);margin:8px 0;cursor:pointer;font-weight:600}.file:hover{border-color:var(--amber)}
+.win{text-align:center;padding:10px}.win .big{font-size:70px}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:12px}
+.cert input{font:700 24px Fredoka;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+@media(max-width:560px){.mock .body{grid-template-columns:1fr}.side{flex-direction:row;flex-wrap:wrap}.f label{width:60px}}
+</style><style id="prcss">
+#prn{display:none}
+#prn .ph{margin:0 0 3mm;font-size:22pt;text-align:center}
+#prn .pn{display:flex;gap:6mm;align-items:flex-end;font-size:12pt;margin:0 0 6mm;color:#444}
+#prn .pn i{flex:1;border-bottom:1.5px solid #888;height:1em}
+#prn .pf{margin-top:8mm;text-align:center;font-size:9pt;color:#777}
+#prn svg{max-width:100%;height:auto}
+#prn .ptb{border-collapse:collapse;margin:4mm 0;font-size:13pt}#prn .ptb th,#prn .ptb td{border:1.5px solid #94a3b8;padding:2mm 4mm;text-align:left}#prn .ptb th{background:#e2e8f0}#prn .ptb td.n{text-align:right}
+#prn .ds,#prn .slide{max-width:none!important;width:75%;margin:0 auto 4mm!important;break-inside:avoid}
+#prn .pdoc{font:16pt/1.5 'Times New Roman',Georgia,serif;color:#000;padding:4mm 2mm;min-height:120mm}
+#prn .pslide{aspect-ratio:16/9;width:78%;margin:0 auto 7mm;border:2px solid #94a3b8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;break-inside:avoid;padding:4mm;overflow:hidden}
+#prn .pslide .pe{font-size:54pt;line-height:1.1}#prn .pslide .pt{font-size:28pt;font-weight:700}#prn .pslide .px{font-size:16pt;margin-top:2mm}#prn .pslide .pn2{position:absolute;right:8px;bottom:5px;font-size:10pt;color:#64748b}
+#prn .hero{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;border:1.5px solid #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;break-inside:avoid}
+#prn .prpg{position:relative;width:680px;height:382px;overflow:hidden;margin:0 auto 8mm;border:2px solid #94a3b8;break-inside:avoid}#prn .prpg>div{transform:scale(.85);transform-origin:0 0}
+#prn .pimg{display:block;width:100%;height:auto;border:2px solid #94a3b8;margin:0 auto}
+#prn .dip{border:8px double #d97706;border-radius:18px;padding:16mm 10mm;text-align:center;margin:20mm auto 0;break-inside:avoid}#prn .dip .dt{font-size:34pt;font-weight:700;margin:4mm 0}#prn .dip .dn{font-size:30pt;font-weight:700;margin:8mm 0;border-bottom:2px solid #d97706;display:inline-block;min-width:60%}#prn .dip .dx{font-size:18pt}
+#prn-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 18px;border-radius:14px;font:600 16px system-ui,sans-serif;z-index:99999;max-width:90vw;text-align:center}
+@media print{
+ body.printing>*:not(#prn){display:none!important}
+ body.printing{background:#fff!important;color:#111!important;margin:0!important;--bg:#fff;--card:#fff;--tx:#111;--mu:#555;--bd:#cbd5e1;--soft:#f1f5f9;--hl:#fef9c3}
+ body.printing #prn{display:block!important;font-family:Fredoka,system-ui,sans-serif;color:#111;font-size:14pt}
+ #prn,#prn *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style><style>
+main{max-width:1150px!important}
+.panel{border:3px solid var(--bd);border-radius:18px;padding:10px 14px;margin:10px 0;background:var(--card)}
+.panel h4{margin:0 0 8px;font-size:19px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.row label{font-weight:600;font-size:16px}
+.bt{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:600 16px Fredoka;border-radius:12px;padding:6px 12px;cursor:pointer}.bt:hover{border-color:var(--amber)}.bt.on{background:var(--amber);color:#fff;border-color:#d97706}.bt:disabled{opacity:.4;cursor:default}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--bd);cursor:pointer;padding:0}.sw.on{outline:4px solid var(--blue);outline-offset:1px}
+select,input[type=text],textarea{font:600 17px Fredoka;border:3px solid var(--bd);border-radius:12px;padding:6px 10px;background:var(--card);color:var(--tx);max-width:100%}
+textarea{width:100%;resize:vertical}
+canvas.cnv{width:100%;height:auto;display:block;border:4px solid var(--bd);border-radius:14px;background:#fff;touch-action:none}
+.hint2{color:var(--mu);font-size:15px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}@media(max-width:880px){.grid2{grid-template-columns:1fr}}
+.stk{display:flex;flex-wrap:wrap;gap:4px}.stk button{font-size:28px;border:2px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;padding:2px 6px}.stk button:hover{border-color:var(--amber)}
+#msg{min-height:1.6em;font-weight:700;color:var(--purple);text-align:center}
+input[type=range]{vertical-align:middle;max-width:160px}
+
+.topbar{position:sticky;top:0;z-index:20;background:var(--card);padding:6px 0;margin:-6px 0 10px}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:4px 2px}
+.st{flex:0 0 auto;min-width:78px;border:3px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:600 12px Fredoka;padding:6px 6px;cursor:pointer;position:relative;text-align:center}
+.st .ic{display:block;font-size:24px}.st.on{border-color:var(--blue);background:#dbeafe;color:#111}.st.ok{border-color:var(--green)}.st i{position:absolute;top:-6px;right:-4px;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-style:normal;font-size:12px;line-height:20px}
+.pbar{display:flex;justify-content:space-between;align-items:center;margin-top:6px}#pts{font:700 20px Fredoka;color:var(--amber)}
+.act{border:3px solid var(--bd);border-radius:18px;padding:12px 16px;margin:14px 0;background:var(--card)}.act h3{margin:0 0 6px;font-size:21px}.sub{color:var(--mu);font-size:16px;margin:4px 0 8px}
+.info,.story,.qs{background:#eff6ff;border-left:6px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:17px;line-height:1.5;color:#111}.fig{font-size:46px}
+.vid video{width:100%;max-height:420px;border-radius:14px;background:#000;margin-top:8px}
+.qz,.ord,.srt{margin-top:8px}.qq{font-size:19px;font-weight:600;margin:6px 0}.qn,.sc{color:var(--mu);font-size:14px}
+.qo{display:flex;flex-wrap:wrap;gap:8px}.qb,.pb{flex:1 1 200px}.bt.good{background:var(--green)!important;color:#fff;border-color:#15803d}.bt.bad{background:#fecaca!important;color:#7f1d1d;border-color:var(--red)}
+.qf p{background:#dcfce7;color:#14532d;padding:8px 12px;border-radius:10px}.res{font:700 22px Fredoka;margin:8px 0}
+.slots,.pool{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.slot{min-width:84px;min-height:70px;border:3px dashed var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;padding:4px}.slot b{position:absolute;top:2px;left:6px;font-size:12px;color:var(--mu)}.slot.full{border-style:solid;border-color:var(--green);background:#f0fdf4;color:#111}
+.tok{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:6px 10px;cursor:pointer;font:600 15px Fredoka}.tok:hover{border-color:var(--blue)}.tok:disabled{opacity:.9}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}.fb{min-height:1.4em;font-weight:600;color:var(--purple)}
+.pl{display:flex;flex-direction:column;align-items:center;font-size:12px;min-width:56px}.pl.big{font-size:18px;font-weight:700}.sunline{font-weight:700;color:#d97706;margin:6px 0}
+.card2{font-size:22px;text-align:center;padding:16px;border:3px solid var(--bd);border-radius:16px;margin:8px 0;background:#fffbeb;color:#111}.sc2{font-size:22px;font-weight:700}
+.bins{display:flex;flex-wrap:wrap;gap:10px}.bin{flex:1 1 140px;border:4px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:700 19px Fredoka;padding:14px;cursor:pointer}.bin.good{background:var(--green);color:#fff}.bin.bad{background:#fecaca;color:#7f1d1d}
+.sunbox p{font-size:17px}.sunbig{background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:16px;height:110px;position:relative;display:flex;align-items:center;padding:0 20px;font:700 24px Fredoka;color:#78350f}.dot{position:absolute;right:20px;bottom:12px;width:5px;height:5px;background:#2563eb;border-radius:50%}
+.race{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}.rc{border:3px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);padding:8px;cursor:pointer;font:600 14px Fredoka;display:flex;flex-direction:column;align-items:center;gap:2px}.rc span{font-size:30px}.rc .rt{display:none}.rc.open{border-color:var(--green);background:#f0fdf4;color:#111}.rc .rv{font-size:16px}
+.tilt{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.big{font:700 34px Fredoka}
+.rsim{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.rc2{flex:1 1 240px}.clk{display:flex;gap:10px;align-items:center;border:3px solid var(--bd);border-radius:12px;padding:6px 10px;margin:6px 0}.clk span{font:700 30px Fredoka}.clk i{font-style:normal}
+.orb{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.oinfo{flex:1 1 240px;background:#fffbeb;color:#111;border-radius:12px;padding:10px 14px;font-size:17px;min-height:80px}
+.ev{display:flex;flex-direction:column;align-items:center;font-size:16px}.ev small{font-weight:400}
+.bar{display:flex;height:46px;border-radius:12px;overflow:hidden;font:700 16px Fredoka;margin:8px 0}.day{background:#fbbf24;color:#78350f;display:flex;align-items:center;justify-content:center}.night{background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center}
+.rays{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.rays>div{flex:1 1 240px}.clm{max-width:520px}
+.bagbox{display:flex;flex-wrap:wrap;gap:14px}.bpool{flex:1 1 260px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}.suit{flex:1 1 260px;border:4px solid #92400e;border-radius:18px;background:#fef3c7;color:#111;padding:8px;min-height:180px}.suit .sl{font-weight:700;color:#92400e}.bin2{display:flex;flex-wrap:wrap;gap:6px}.bin2 .tok{background:#fff;color:#111;border-color:var(--green)}
+.pass{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:10px 0}.stamp{border:4px dashed var(--bd);border-radius:14px;padding:8px;text-align:center;opacity:.5}.stamp span{font-size:34px;display:block}.stamp small{display:block}.stamp.on{opacity:1;border-color:#dc2626;color:#dc2626;transform:rotate(-3deg);border-style:solid}.stamp b{font-size:12px}
+.pq{margin:8px 0}.foot{display:flex;justify-content:space-between;gap:10px;margin:18px 0 6px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:14px;font:700 18px Fredoka;z-index:9999}
+.gd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;overflow:auto;padding:16px}.gdc{max-width:760px;margin:0 auto;background:var(--card);border-radius:18px;padding:18px;font-size:16px;line-height:1.5}
+.wk li{margin:14px 0;font-size:14pt}
+</style></head><body>
+<header style="background:linear-gradient(135deg,#1e3a8a,#7c3aed)"><h1>🪐 Οι κινήσεις της Γης — Αποστολή Αδελαΐδα</h1><p>Γεωγραφία Ε΄ Δημοτικού · 8 σταθμοί παιχνιδιών, 2 βίντεο, διαβατήριο και δίπλωμα</p></header>
+<main><div class="card"><div class="topbar"><div id="nav" class="nav"></div><div class="pbar"><span id="pts">⭐ 0</span><button class="bt" id="gb">👩‍🏫 Οδηγός</button></div></div>
+<div id="stage"></div>
+<div id="gd" class="gd"><div class="gdc"><button class="bt" id="gx" style="float:right">✖ Κλείσιμο</button><h3>👩‍🏫 Οδηγός εκπαιδευτικού</h3>
+<p><b>Τάξη/Μάθημα:</b> Ε΄ Δημοτικού, Γεωγραφία — «Οι κινήσεις της Γης και οι εποχές» (βιβλίο, σελ. 11–39). Διάρκεια: 2–3 διδακτικές ώρες.</p>
+<p><b>Στόχοι:</b> να αναγνωρίζουν τα ουράνια σώματα του ηλιακού συστήματος· να περιγράφουν το σχήμα και την κλίση του άξονα της Γης· να διακρίνουν περιστροφή (μέρα/νύχτα, ώρα) από περιφορά (εποχές)· να εξηγούν τις εποχές με την κλίση του άξονα· να διαβάζουν κλιμογράφημα.</p>
+<p><b>Προτεινόμενη ροή:</b> 1) Σταθμός 0: προβλέψεις στην ολομέλεια (3′). 2) Σταθμοί 1–2 σε ζεύγη. 3) Σταθμός 3 με το βίντεο της περιστροφής και τη σφαίρα/φακό της τάξης. 4) Σταθμοί 4–5 με το βίντεο της περιφοράς. 5) Σταθμοί 6–7. 6) Διαβατήριο, αναστοχασμός προβλέψεων, δίπλωμα.</p>
+<p><b>Βίντεο:</b> περιστροφή (28″, Σταθμός 3) και περιφορά (40″, Σταθμός 4). Αρχικά αρχεία συμπιεσμένα για γρήγορη φόρτωση.</p>
+<p><b>Παρατηρήσεις:</b> η διαφορά ώρας Κύπρου–Αδελαΐδας τον Δεκέμβριο είναι 8:30 (το βιβλίο αναφέρει 7:30 — άλλη περίοδος ωρολογίου). Τα κλιματογραφήματα της εφαρμογής έχουν ενδεικτικές τιμές. Η πρόοδος αποθηκεύεται τοπικά στη συσκευή.</p>
+<p><b>Προτάσεις:</b> δείξτε στην υδρόγειο της τάξης την κλίση 23,4° με φακό· ζητήστε από τα παιδιά να εξηγήσουν με δικά τους λόγια γιατί τα Χριστούγεννα στην Αυστραλία είναι καλοκαίρι.</p></div></div><div id="msg"></div></div></main>
+<script>
+
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+function msg(t){const m=$('msg');if(!m)return;m.textContent=t;clearTimeout(msg.t);msg.t=setTimeout(()=>m.textContent='',4500)}
+async function saveFile(name,blob){let dl=null;try{dl=window.claude&&await claude.use('downloads')}catch(e){}
+ if(dl&&dl.save){try{const buf=new Uint8Array(await blob.arrayBuffer());await dl.save({filename:name,data:buf,mimeType:blob.type});return true}catch(e){}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();return true}
+function dlCanvas(cv,name){cv.toBlob(async b=>{if(await saveFile(name,b))msg('💾 Σώθηκε ως εικόνα!')},'image/png')}
+function prCanvas(cv,title,land){prnOut(title,'<img class="pimg" src="'+cv.toDataURL('image/jpeg',.92)+'" alt="">',{noName:1,land:!!land})}
+const rngS=s=>()=>{s=(s*16807)%2147483647;return (s-1)/2147483646};
+/* ===== Πυρήνας ===== */
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[<&>]/g,c=>({'<':'&lt;','&':'&amp;','>':'&gt;'}[c]));
+let P={done:{},pts:0,pred:{},name:''};
+try{P=Object.assign(P,JSON.parse(localStorage.getItem('dk_geo_e1')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('dk_geo_e1',JSON.stringify(P))}catch(e){}};
+const ST=[
+ {id:'intro',ic:'🧳',t:'Η αποστολή',n:1},
+ {id:'sys',ic:'🪐',t:'Ηλιακό σύστημα',n:4},
+ {id:'shape',ic:'🌍',t:'Σχήμα Γης',n:2},
+ {id:'rot',ic:'🔄',t:'Περιστροφή',n:5},
+ {id:'rev',ic:'☀️',t:'Περιφορά',n:4},
+ {id:'seas',ic:'🍂',t:'Εποχές',n:4},
+ {id:'zones',ic:'🌡️',t:'Ζώνες & κλίμα',n:3},
+ {id:'bag',ic:'🧳',t:'Βαλίτσα',n:1},
+ {id:'end',ic:'🏅',t:'Διαβατήριο',n:0}];
+let cur=0;
+const cnt=id=>Object.keys(P.done).filter(k=>k.startsWith(id+':')).length;
+const stDone=s=>s.n>0&&cnt(s.id)>=s.n;
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+function act(id,key,pts,txt){const k=id+':'+key;if(P.done[k])return;P.done[k]=1;P.pts+=(pts==null?10:pts);save();toast(txt||'⭐ +'+(pts==null?10:pts));drawNav()}
+function drawNav(){const n=$('nav');n.innerHTML='';ST.forEach((s,i)=>{const b=document.createElement('button');b.className='st'+(i==cur?' on':'')+(stDone(s)?' ok':'');b.innerHTML='<span class="ic">'+s.ic+'</span><small>'+s.t+'</small>'+(stDone(s)?'<i>✔</i>':'');b.onclick=()=>go(i);n.appendChild(b)});$('pts').textContent='⭐ '+P.pts}
+function go(i){cur=i;drawNav();const s=$('stage');s.innerHTML='';FN[ST[i].id](s);document.getElementById('nav').scrollIntoView({block:'start',behavior:'smooth'})}
+function foot(root){const d=document.createElement('div');d.className='foot';const i=cur;d.innerHTML=(i>0?'<button class="btn g" id="pv">⬅️ Πίσω</button>':'')+(i<ST.length-1?'<button class="btn" id="nx">Επόμενος σταθμός ➡️</button>':'');root.appendChild(d);if($('pv'))$('pv').onclick=()=>go(i-1);if($('nx'))$('nx').onclick=()=>go(i+1)}
+const sec=(root,h,sub)=>{const d=document.createElement('section');d.className='act';d.innerHTML='<h3>'+h+'</h3>'+(sub?'<p class="sub">'+sub+'</p>':'');root.appendChild(d);return d};
+/* video */
+function video(root,id,src,poster,cap){const d=document.createElement('div');d.className='vid';d.innerHTML='<video controls preload="metadata" playsinline poster="'+poster+'" src="'+src+'"></video><p class="sub">'+cap+'</p>';root.appendChild(d);const v=d.querySelector('video');v.addEventListener('timeupdate',()=>{if(v.duration&&v.currentTime/v.duration>.85)act(id,'video',5,'🎬 Είδες το βίντεο! +5')});v.addEventListener('error',()=>{d.querySelector('.sub').innerHTML='⚠️ Το βίντεο δεν φορτώθηκε. Άνοιξε τη σελίδα από το digikidsedu.com.'});return v}
+/* quiz: Q=[{q,o:[..],a:idx,w:'γιατί'}], fixed:true=δεν ανακατεύονται */
+function quiz(root,id,key,Q,fixed,pts){const box=document.createElement('div');box.className='qz';root.appendChild(box);let i=0,ok=0;
+ function show(){if(i>=Q.length){box.innerHTML='<div class="res">'+(ok==Q.length?'🏆 Τέλεια!':'👍 Μπράβο!')+' '+ok+'/'+Q.length+' σωστά</div><button class="bt" id="rq'+key+'">🔁 Ξανά</button>';act(id,key,Math.round((pts||15)*ok/Q.length)+5);$('rq'+key).onclick=()=>{i=0;ok=0;show()};return}
+  const q=Q[i];let o=q.o.map((t,k)=>[t,k]);if(!fixed)o=shuf(o);
+  box.innerHTML='<div class="qn">Ερώτηση '+(i+1)+'/'+Q.length+'</div><div class="qq">'+q.q+'</div><div class="qo">'+o.map(([t,k])=>'<button class="bt qb" data-k="'+k+'" data-ok="'+(k==q.a?1:0)+'">'+t+'</button>').join('')+'</div><div class="qf"></div>';
+  let tries=0;box.querySelectorAll('.qb').forEach(b=>b.onclick=()=>{if(b.dataset.ok=='1'){b.classList.add('good');if(!tries)ok++;box.querySelectorAll('.qb').forEach(x=>x.disabled=true);box.querySelector('.qf').innerHTML='<p>'+(q.w?'✅ '+q.w:'✅ Σωστά!')+'</p><button class="btn" id="qn'+key+'">'+(i+1<Q.length?'Επόμενη ➡️':'Τέλος ✔️')+'</button>';$('qn'+key).onclick=()=>{i++;show()}}else{tries++;b.classList.add('bad');b.disabled=true}})}
+ show()}
+/* σειρά: items σωστή σειρά [{h:html,k:'..'}] */
+function order(root,id,key,items,label,pts){const box=document.createElement('div');box.className='ord';root.appendChild(box);let pos=0;
+ const slots=document.createElement('div');slots.className='slots';slots.innerHTML=items.map((_,i)=>'<div class="slot" data-i="'+i+'"><b>'+(i+1)+'</b></div>').join('');
+ const pool=document.createElement('div');pool.className='pool';
+ shuf(items.map((x,i)=>[x,i])).forEach(([x,i])=>{const t=document.createElement('button');t.className='tok';t.innerHTML=x.h;t.dataset.i=i;t.onclick=()=>{if(+t.dataset.i==pos){const s=slots.children[pos];s.innerHTML=x.h;s.classList.add('full');t.remove();pos++;if(pos==items.length){box.querySelector('.fb').textContent='🎉 Σωστή σειρά!';act(id,key,pts||15)}else box.querySelector('.fb').textContent=''}else{t.classList.add('shake');setTimeout(()=>t.classList.remove('shake'),400);box.querySelector('.fb').textContent='🤔 Όχι ακόμα — δοκίμασε άλλο. '+(label||'')}};pool.appendChild(t)});
+ box.appendChild(slots);box.appendChild(pool);const fb=document.createElement('div');fb.className='fb';box.appendChild(fb)}
+/* ταξινόμηση: items [{t,b}], bins [{id,t,h}] */
+function sortg(root,id,key,items,bins,pts){const box=document.createElement('div');box.className='srt';root.appendChild(box);let L=shuf(items),i=0,err=0;
+ function show(){if(i>=L.length){box.innerHTML='<div class="res">'+(err?'👍 Τα κατάφερες! ('+err+' λάθη)':'🏆 Χωρίς κανένα λάθος!')+'</div><button class="bt" id="rs'+key+'">🔁 Ξανά</button>';act(id,key,Math.max(5,(pts||15)-2*err));$('rs'+key).onclick=()=>{L=shuf(items);i=0;err=0;show()};return}
+  box.innerHTML='<div class="sc">'+(i+1)+'/'+L.length+'</div><div class="card2">'+L[i].t+'</div><div class="bins">'+bins.map(b=>'<button class="bin" data-b="'+b.id+'">'+(b.h||b.t)+'</button>').join('')+'</div><div class="fb"></div>';
+  box.querySelectorAll('.bin').forEach(b=>b.onclick=()=>{if(b.dataset.b==L[i].b){b.classList.add('good');box.querySelectorAll('.bin').forEach(x=>x.disabled=true);setTimeout(()=>{i++;show()},450)}else{err++;b.classList.add('bad');box.querySelector('.fb').textContent='🤔 Δοκίμασε ξανά!';setTimeout(()=>b.classList.remove('bad'),450)}})}
+ show()}
+/* πλανήτες */
+const PL=[['Ερμής','#9ca3af',20,'g'],['Αφροδίτη','#f6c453',26,'g'],['Γη','#3b82f6',28,'g'],['Άρης','#ef4444',22,'g'],['Δίας','#d6a066',52,'a'],['Κρόνος','#f2d58a',46,'a'],['Ουρανός','#7dd3e8',36,'a'],['Ποσειδώνας','#3b5bdb',36,'a']];
+const plSVG=(i,s)=>{const [n,c,r]=PL[i],R=s||r,w=R*2+(i==5?30:4);return '<svg width="'+w+'" height="'+(R*2+4)+'" viewBox="0 0 '+w+' '+(R*2+4)+'"><defs><radialGradient id="pg'+i+'" cx="35%" cy="30%"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".35" stop-color="'+c+'"/><stop offset="1" stop-color="'+c+'"/></radialGradient></defs>'+(i==5?'<ellipse cx="'+w/2+'" cy="'+(R+2)+'" rx="'+(R+14)+'" ry="'+R*.28+'" fill="none" stroke="#b08a3e" stroke-width="4" transform="rotate(-14 '+w/2+' '+(R+2)+')"/>':'')+'<circle cx="'+w/2+'" cy="'+(R+2)+'" r="'+R+'" fill="url(#pg'+i+')"/>'+(i==2?'<path d="M'+(w/2-8)+' '+(R-4)+' q8 -6 14 0 q-2 8 -10 8z M'+(w/2+4)+' '+(R+8)+' q6 -2 8 4 q-4 4 -8 -4z" fill="#22c55e"/>':'')+(i==4?'<path d="M'+(w/2-R+4)+' '+(R-6)+' q'+R+' 8 '+(R*2-8)+' 0 M'+(w/2-R+3)+' '+(R+10)+' q'+R+' -6 '+(R*2-6)+' 0" stroke="#a16207" stroke-width="3" fill="none" opacity=".7"/><ellipse cx="'+(w/2+R*.3)+'" cy="'+(R+10)+'" rx="7" ry="4" fill="#b45309"/>':'')+(i==5?'<path d="M'+(w/2-R+3)+' '+(R+2)+'q'+R+' 6 '+(R*2-6)+' 0" stroke="#b08a3e" stroke-width="3" fill="none" opacity=".5"/>':'')+'</svg>'};
+const FN={};
+/* ===== Σταθμός 0: Η αποστολή ===== */
+const PRED=[
+ {q:'Όταν στην Κύπρο είναι 8:00 το βράδυ, τι ώρα νομίζεις ότι είναι στην Αδελαΐδα της Αυστραλίας;',o:['Η ίδια ώρα (8:00 μ.μ.)','Περίπου 4:30 τα ξημερώματα','Μεσημέρι'],a:1},
+ {q:'Τι εποχή νομίζεις ότι έχει η Αυστραλία τα Χριστούγεννα;',o:['Χειμώνα','Καλοκαίρι','Άνοιξη'],a:1},
+ {q:'Γιατί νομίζεις ότι αλλάζουν οι εποχές;',o:['Γιατί η Γη πλησιάζει και απομακρύνεται από τον Ήλιο','Γιατί ο άξονας της Γης είναι λοξός και η Γη γυρίζει γύρω από τον Ήλιο','Γιατί ο Ήλιος μεγαλώνει και μικραίνει'],a:1}];
+FN.intro=root=>{
+ const s=sec(root,'🧳 Η αποστολή της Σοφίας και του Βασίλη');
+ s.innerHTML+=`<div class="story"><div class="fig">🧒🏽 🧒🏻</div><p>Η <b>Σοφία</b> και ο <b>Βασίλης</b> είναι δίδυμα αδέρφια, 11 χρονών, από την <b>Πάφο</b>. Σχεδιάζουν να επισκεφθούν τα ξαδέρφια τους, την <b>Άννα</b> και τον <b>Πέτρο</b>, που ζουν στην <b>Αδελαΐδα</b> της Αυστραλίας ✈️🇦🇺. Οι γονείς τους λένε ότι η καλύτερη περίοδος για το μακρινό ταξίδι είναι οι <b>διακοπές των Χριστουγέννων</b>.</p><p>Τα παιδιά έχουν πολλές απορίες! Θα τα βοηθήσουμε να ανακαλύψουν πώς κινείται η <b>Γη</b> μέσα στο ηλιακό σύστημα και πώς αυτό αλλάζει την ώρα, τις εποχές και τον καιρό. Σε κάθε <b>σταθμό</b> κερδίζεις ⭐ και μια <b>σφραγίδα</b> στο ταξιδιωτικό σου διαβατήριο!</p></div>
+ <div class="qs"><b>Οι απορίες των παιδιών:</b><ul><li>Τι ώρα να τους πάρουμε τηλέφωνο; Εκεί θα είναι ξύπνιοι;</li><li>Γιατί τα Χριστούγεννα εκεί μπορεί να πάμε για μπάνιο;</li><li>Τι θα βάλουμε στη βαλίτσα μας;</li></ul></div>`;
+ const p=sec(root,'🔮 Πρώτα μάντεψε!','Δεν πειράζει αν δεν ξέρεις — στο τέλος θα δούμε αν τα κατάφερες.');
+ const box=document.createElement('div');p.appendChild(box);
+ box.innerHTML=PRED.map((q,i)=>'<div class="pq"><div class="qq">'+(i+1)+'. '+q.q+'</div><div class="qo">'+q.o.map((t,k)=>'<button class="bt pb'+(P.pred[i]===k?' on':'')+'" data-i="'+i+'" data-k="'+k+'">'+t+'</button>').join('')+'</div></div>').join('');
+ box.querySelectorAll('.pb').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;P.pred[i]=+b.dataset.k;save();box.querySelectorAll('.pb[data-i="'+i+'"]').forEach(x=>x.classList.toggle('on',x===b));if(Object.keys(P.pred).length>=PRED.length)act('intro','pred',5,'🔮 Έκανες τις προβλέψεις σου! +5')});
+ foot(root)};
+/* ===== Σταθμός 1: Ηλιακό σύστημα ===== */
+FN.sys=root=>{
+ const a=sec(root,'🪐 1. Τα ουράνια σώματα του ηλιακού μας συστήματος');
+ a.innerHTML+=`<div class="info">Το ηλιακό μας σύστημα έχει <b>οκτώ πλανήτες</b> που γυρίζουν γύρω από τον <b>Ήλιο</b> σε ελλειπτικές τροχιές. Έχει και νάνους πλανήτες, δορυφόρους, αστεροειδείς, μετεωρίτες και κομήτες. Ο <b>Ήλιος</b> είναι αστέρας: ένα λαμπερό, αέριο σώμα που <b>φωτίζει και θερμαίνει</b> τον πλανήτη μας και έχει το 99,86% της μάζας του συστήματος.</div>`;
+ const o=sec(root,'🚀 Άσκηση 1 — Τακτοποίησε τους πλανήτες','Πάτα τους πλανήτες με τη σειρά, <b>από τον πιο κοντινό στον πιο μακρινό</b> από τον Ήλιο.');
+ o.insertAdjacentHTML('beforeend','<div class="sunline">☀️ ΗΛΙΟΣ ➜</div>');
+ order(o,'sys','order',PL.map((p,i)=>({h:'<div class="pl">'+plSVG(i,Math.min(p[2],30))+'<span>'+p[0]+'</span></div>'})),'Ο πιο κοντινός είναι ο Ερμής.',15);
+ const g=sec(root,'🪨 Άσκηση 2 — Γήινοι ή αέριοι γίγαντες;',
+  'Οι 4 <b>εσωτερικοί</b> πλανήτες είναι <b>γήινοι</b> (στερεοί, από πετρώματα και μέταλλα). Οι 4 <b>εξωτερικοί</b> είναι <b>αέριοι γίγαντες</b> (μεγάλοι, από αέρια, με δακτυλίους).');
+ sortg(g,'sys','sort',PL.map((p,i)=>({t:'<div class="pl big">'+plSVG(i,40)+'<span>'+p[0]+'</span></div>',b:p[3]})),[{id:'g',t:'🪨 Γήινος πλανήτης'},{id:'a',t:'💨 Αέριος γίγαντας'}],15);
+ const h=sec(root,'📏 3. Πόσο μεγάλος είναι ο Ήλιος;');
+ h.innerHTML+=`<div class="sunbox"><div class="sunbig"><span>☀️ ΗΛΙΟΣ</span><i class="dot" title="Η Γη"></i></div><p>Ο Ήλιος είναι περίπου <b>109 φορές</b> μεγαλύτερος σε διάμετρο από τη Γη! Αν η Γη ήταν ένας <b>σπόρος φακής</b> (η μικρή κουκκίδα στην εικόνα 👆), ο Ήλιος θα ήταν σαν τον <b>τροχό ενός κανονικού ποδηλάτου</b> 🚲.</p></div>
+ <p class="sub"><b>Πόσο θα κρατούσε ένας γύρος γύρω από τον Ήλιο;</b> Πάτησε κάθε μέσο:</p><div class="race">${[['🚶','με τα πόδια (5 km/h)','περίπου 100 χρόνια'],['🚗','με αυτοκίνητο (100 km/h)','περίπου 5 χρόνια'],['✈️','με αεροπλάνο (965 km/h)','περίπου 6 μήνες'],['🚀','με πύραυλο (23.324 km/h)','περίπου 6,5 μέρες'],['💡','με ταχύτητα φωτός','μόλις 9 δευτερόλεπτα!']].map(r=>'<button class="rc"><span>'+r[0]+'</span><small>'+r[1]+'</small><b class="rv">?</b><i class="rt">'+r[2]+'</i></button>').join('')}</div>`;
+ h.querySelectorAll('.rc').forEach(b=>b.onclick=()=>{b.classList.add('open');b.querySelector('.rv').textContent=b.querySelector('.rt').textContent;if(h.querySelectorAll('.rc.open').length==5)act('sys','race',5,'📏 Τα είδες όλα! +5')});
+ const q=sec(root,'❓ Άσκηση 3 — Κουίζ');
+ quiz(q,'sys','quiz',[
+  {q:'Ποιος είναι ο <b>τρίτος</b> πλανήτης από τον Ήλιο;',o:['Ο Άρης','Η Γη','Η Αφροδίτη'],a:1,w:'Η σειρά είναι: Ερμής, Αφροδίτη, Γη, Άρης, Δίας, Κρόνος, Ουρανός, Ποσειδώνας.'},
+  {q:'Ποιος πλανήτης ξεχωρίζει για τους εντυπωσιακούς <b>δακτυλίους</b> του;',o:['Ο Κρόνος','Ο Ερμής','Ο Άρης'],a:0,w:'Ο Κρόνος! Έχουν δακτυλίους και οι άλλοι αέριοι γίγαντες, αλλά του Κρόνου είναι οι πιο εντυπωσιακοί.'},
+  {q:'Ο Ήλιος είναι…',o:['πλανήτης','αστέρας','δορυφόρος'],a:1,w:'Ο Ήλιος είναι αστέρας: ένα λαμπερό αέριο σώμα που παράγει ενέργεια.'},
+  {q:'Με ποιο μέσο θα έκανες έναν γύρο γύρω από τον Ήλιο σε περίπου <b>6 μήνες</b>;',o:['Με αυτοκίνητο','Με αεροπλάνο','Με πύραυλο'],a:1,w:'Με αεροπλάνο (965 km/h) — αλλά χρειάζονται περίπου 6 μήνες πτήση!'}],false,20);
+ foot(root)};
+/* ===== Σταθμός 2: Σχήμα Γης ===== */
+FN.shape=root=>{
+ const a=sec(root,'🌍 Το σχήμα της Γης και ο άξονάς της');
+ a.innerHTML+=`<div class="info">Η Γη έχει σχήμα <b>ελλειψοειδές ή γεωειδές</b> (σχεδόν σφαιρικό): είναι λίγο <b>συμπιεσμένη στους πόλους</b> και <b>εξογκωμένη στον Ισημερινό</b>, εξαιτίας της κίνησης γύρω από τον άξονά της. Ο <b>άξονας</b> είναι μια νοητή ευθεία που περνά από το κέντρο της Γης και ενώνει τον <b>Βόρειο</b> με τον <b>Νότιο Πόλο</b>. Δεν είναι κατακόρυφος: έχει <b>κλίση περίπου 23,4°</b>.</div>`;
+ const t=sec(root,'📐 Άσκηση 1 — Βάλε τη σωστή κλίση!','Σύρε το ρυθμιστικό ώσπου ο άξονας της Γης να γείρει <b>περίπου 23,4°</b> (πρόσεξε το νούμερο!).');
+ t.insertAdjacentHTML('beforeend',`<div class="tilt"><svg viewBox="0 0 240 240" width="240" height="240"><defs><radialGradient id="tg" cx="35%" cy="30%"><stop offset="0" stop-color="#86efac"/><stop offset="1" stop-color="#16a34a"/></radialGradient></defs><line x1="120" y1="8" x2="120" y2="232" stroke="#94a3b8" stroke-dasharray="6 6" stroke-width="2"/><g id="gl"><circle cx="120" cy="120" r="74" fill="url(#tg)"/><path d="M80 90q20-16 36 0t-6 24q-22 4-30-24z M130 130q22-6 26 16t-18 14q-10-12-8-30z" fill="#15803d" opacity=".7"/><line x1="120" y1="20" x2="120" y2="220" stroke="#1d4ed8" stroke-width="4" stroke-dasharray="10 5"/><text x="120" y="16" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">ΒΠ</text><text x="120" y="238" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">ΝΠ</text></g></svg><div><div class="big" id="tv">0°</div><input type="range" id="ts" min="0" max="45" step="0.1" value="0"><p class="sub" id="tm">Η Γη στέκεται ίσια. Αλλά στην πραγματικότητα γέρνει!</p></div></div>`);
+ $('ts').oninput=()=>{const v=+$('ts').value;$('tv').textContent=v.toFixed(1).replace('.',',')+'°';$('gl').setAttribute('transform','rotate('+v+' 120 120)');if(Math.abs(v-23.4)<=1){$('tm').textContent='🎯 Μπράβο! Έτσι γέρνει ο άξονας της Γης: περίπου 23,4°.';act('shape','tilt',10)}else $('tm').textContent=v<22?'Γείρε την περισσότερο…':'Λίγο λιγότερο…'};
+ const q=sec(root,'✅ Άσκηση 2 — Ορθό ή Λάθος;');
+ quiz(q,'shape','tf',[
+  {q:'Η Γη είναι μια <b>τέλεια σφαίρα</b>.',o:['Ορθό','Λάθος'],a:1,w:'Λάθος! Είναι λίγο πεπιεσμένη στους πόλους και εξογκωμένη στον Ισημερινό.'},
+  {q:'Η <b>περιστροφή</b> της Γης επηρεάζει το σχήμα της.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! Το σχήμα της οφείλεται στην κίνηση γύρω από τον άξονά της.'},
+  {q:'Ο άξονας της Γης έχει κλίση περίπου <b>23,4°</b>.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! Ο άξονας δεν είναι κατακόρυφος.'},
+  {q:'Η <b>υδρόγειος σφαίρα</b> της τάξης μας είναι ένα μοντέλο της Γης και της κλίσης του άξονά της.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! Κοίτα την υδρόγειο της τάξης: γέρνει κι εκείνη!'}],true,15);
+ foot(root)};
+/* ===== Σταθμός 3: Περιστροφή ===== */
+const CY=33,AD=138.6; // γεωγραφικά μήκη (Ανατολικά)
+const hh=h=>{h=((h%24)+24)%24;const H=Math.floor(h),M=Math.round((h-H)*60);return String(M==60?(H+1)%24:H).padStart(2,'0')+':'+String(M==60?0:M).padStart(2,'0')};
+const isDay=h=>{h=((h%24)+24)%24;return h>=6&&h<18};
+FN.rot=root=>{
+ const a=sec(root,'🎬 Το βίντεο της περιστροφής');
+ a.innerHTML+='<div class="info">Η Γη <b>περιστρέφεται γύρω από τον άξονά της</b> από τα <b>δυτικά προς τα ανατολικά</b> και κάνει μια πλήρη στροφή σε <b>24 ώρες</b> (μία ημέρα). Έτσι έχουμε <b>μέρα και νύχτα</b>, και ο Ήλιος φαίνεται να ανατέλλει από την ανατολή και να δύει στη δύση.</div>';
+ video(a,'rot','geo_e1/peristrofi.mp4','geo_e1/peristrofi.jpg','Παρακολούθησε το βίντεο μέχρι το τέλος και πρόσεξε προς ποια κατεύθυνση γυρίζει η Γη.');
+ const s=sec(root,'🌗 Άσκηση 1 — Μέρα στην Κύπρο, νύχτα στην Αδελαΐδα;','Δες τη Γη από ψηλά, πάνω από τον Βόρειο Πόλο. Ο Ήλιος φωτίζει τη δεξιά πλευρά. Γύρνα τη Γη (ρυθμιστικό ώρας) και βρες <b>πότε στην Κύπρο είναι μέρα ενώ στην Αδελαΐδα είναι νύχτα</b>!');
+ s.insertAdjacentHTML('beforeend',`<div class="rsim"><svg viewBox="0 0 300 300" width="300" height="300"><defs><clipPath id="lf"><rect x="0" y="0" width="150" height="300"/></clipPath></defs><circle cx="150" cy="150" r="120" fill="#bfdbfe"/><g id="rg"><circle cx="150" cy="150" r="120" fill="#4ade80" opacity=".35"/></g><circle cx="150" cy="150" r="120" fill="#0f172a" opacity=".6" clip-path="url(#lf)"/><circle cx="150" cy="150" r="120" fill="none" stroke="#1d4ed8" stroke-width="4"/><text x="290" y="156" font-size="34" text-anchor="end">☀️</text><g id="pc"><circle r="10" fill="#fde047" stroke="#111" stroke-width="2"/><text y="-14" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">Κύπρος</text></g><g id="pa"><circle r="10" fill="#f472b6" stroke="#111" stroke-width="2"/><text y="-14" text-anchor="middle" font-size="13" font-weight="700" fill="#fff" stroke="#000" stroke-width="3" paint-order="stroke">Αδελαΐδα</text></g></svg>
+ <div class="rc2"><div class="clk"><b>🇨🇾 Κύπρος</b><span id="c1">--:--</span><i id="d1"></i></div><div class="clk"><b>🇦🇺 Αδελαΐδα</b><span id="c2">--:--</span><i id="d2"></i></div>
+ <label class="sub">Ώρα στην Κύπρο: <b id="hv"></b></label><input type="range" id="hs" min="0" max="24" step="0.25" value="12" style="width:100%;max-width:none"><p class="sub" id="rm"></p></div></div>`);
+ const upd=()=>{const c=+$('hs').value,ad=c+8.5,sun=(12-(c-2))*15; // υποηλιακό μήκος (UTC=c-2)
+  const pos=(g,id)=>{const f=(g-sun)*Math.PI/180;$(id).setAttribute('transform','translate('+(150+120*Math.cos(f))+' '+(150-120*Math.sin(f))+')')};
+  pos(CY,'pc');pos(AD,'pa');$('hv').textContent=hh(c);$('c1').textContent=hh(c);$('c2').textContent=hh(ad);$('d1').textContent=isDay(c)?'☀️ Μέρα':'🌙 Νύχτα';$('d2').textContent=isDay(ad)?'☀️ Μέρα':'🌙 Νύχτα';
+  if(isDay(c)&&!isDay(ad)){$('rm').textContent='🎯 Βρήκες! Η Κύπρος έχει μέρα και η Αδελαΐδα νύχτα.';act('rot','sim',10)}else if(!isDay(c)&&isDay(ad))$('rm').textContent='Κι αντίστροφα γίνεται! Βρες όμως: μέρα στην Κύπρο, νύχτα στην Αδελαΐδα.';else $('rm').textContent='Και οι δύο πόλεις έχουν το ίδιο: συνέχισε να γυρίζεις…'};
+ $('hs').oninput=upd;upd();
+ const q=sec(root,'❓ Άσκηση 2 — Κουίζ περιστροφής');
+ quiz(q,'rot','quiz',[
+  {q:'Σε πόσο χρόνο κάνει η Γη μια πλήρη περιστροφή γύρω από τον άξονά της;',o:['24 ώρες','365 ημέρες','12 ώρες'],a:0,w:'Σε περίπου 24 ώρες, δηλαδή μία ημέρα.'},
+  {q:'Προς ποια κατεύθυνση περιστρέφεται η Γη;',o:['Από ανατολή προς δύση','Από δύση προς ανατολή','Από βορρά προς νότο'],a:1,w:'Από δύση προς ανατολή — γι’ αυτό ο Ήλιος φαίνεται να κινείται από την ανατολή στη δύση.'},
+  {q:'Ποιο φαινόμενο οφείλεται στην περιστροφή της Γης;',o:['Οι εποχές','Η μέρα και η νύχτα','Η αλλαγή του έτους'],a:1,w:'Η μέρα και η νύχτα. Οι εποχές οφείλονται στην περιφορά.'},
+  {q:'Από πού ανατέλλει ο Ήλιος;',o:['Από τη δύση','Από τον βορρά','Από την ανατολή'],a:2,w:'Από την ανατολή (και δύει στη δύση).'}],false,20);
+ const m=sec(root,'🔄 Άσκηση 3 — Περιστροφή ή περιφορά;','Ταξινόμησε κάθε φαινόμενο: το προκαλεί η <b>περιστροφή</b> (γύρω από τον άξονα) ή η <b>περιφορά</b> (γύρω από τον Ήλιο);');
+ sortg(m,'rot','sort',[['Η μέρα και η νύχτα','r'],['Οι τέσσερις εποχές','v'],['Μία πλήρης στροφή σε 24 ώρες','r'],['Μία πλήρης στροφή σε 365 ημέρες','v'],['Ο Ήλιος ανατέλλει και δύει','r'],['Αλλάζει η διάρκεια της ημέρας μέσα στον χρόνο','v']].map(x=>({t:'<div class="sc2">'+x[0]+'</div>',b:x[1]})),[{id:'r',t:'🔄 Περιστροφή'},{id:'v',t:'☀️ Περιφορά'}],15);
+ const t=sec(root,'📞 Άσκηση 4 — Τι ώρα είναι στην Αδελαΐδα;','Η Αδελαΐδα είναι <b>8 ώρες και 30 λεπτά μπροστά</b> από την Κύπρο τον Δεκέμβριο (γιατί βρίσκεται πιο ανατολικά). Βοήθησε τα παιδιά να κανονίσουν τα τηλεφωνήματα!');
+ quiz(t,'rot','time',[
+  {q:'Η Σοφία παίρνει τηλέφωνο στις <b>8:00 το βράδυ</b> (ώρα Κύπρου). Τι ώρα είναι στην Αδελαΐδα;',o:['11:30 το πρωί','4:30 τα ξημερώματα','8:00 το βράδυ'],a:1,w:'20:00 + 8:30 = 28:30 → 4:30 π.μ. της επόμενης μέρας. Ξυπνητήρι δεν είναι αυτό!'},
+  {q:'Στην Αδελαΐδα είναι <b>5:00 το απόγευμα</b>. Τι ώρα είναι στην Κύπρο;',o:['8:30 το πρωί','1:30 το μεσημέρι','1:30 τα ξημερώματα'],a:0,w:'17:00 − 8:30 = 8:30 π.μ.'},
+  {q:'Ποια ώρα Κύπρου να τηλεφωνήσει ο Βασίλης ώστε η Άννα στην Αδελαΐδα να είναι ξύπνια το απόγευμα;',o:['Στις 10:00 το πρωί','Στις 11:00 το βράδυ','Στις 3:00 τα ξημερώματα'],a:0,w:'10:00 + 8:30 = 18:30 στην Αδελαΐδα. Τέλεια ώρα!'}],true,15);
+ foot(root)};
+/* ===== Σταθμός 4: Περιφορά ===== */
+const SD=[{k:'mar',d:'21 Μαρτίου',n:'Εαρινή ισημερία',ang:180,t:'Η μέρα και η νύχτα έχουν ίση διάρκεια (12 ώρες). Στο Βόρειο ημισφαίριο αρχίζει η <b>άνοιξη</b>, στο Νότιο το <b>φθινόπωρο</b>.'},
+ {k:'jun',d:'21 Ιουνίου',n:'Θερινό ηλιοστάσιο',ang:270,t:'Η μεγαλύτερη μέρα για το Βόρειο ημισφαίριο. Εκεί αρχίζει το <b>καλοκαίρι</b>, ενώ στο Νότιο ημισφαίριο ο <b>χειμώνας</b>.'},
+ {k:'sep',d:'23 Σεπτεμβρίου',n:'Φθινοπωρινή ισημερία',ang:0,t:'Μέρα και νύχτα πάλι ίσες. Στο Βόρειο ημισφαίριο αρχίζει το <b>φθινόπωρο</b>, στο Νότιο η <b>άνοιξη</b>.'},
+ {k:'dec',d:'21/22 Δεκεμβρίου',n:'Χειμερινό ηλιοστάσιο',ang:90,t:'Η μικρότερη μέρα για το Βόρειο ημισφαίριο: αρχίζει ο <b>χειμώνας</b>. Στο Νότιο ημισφαίριο αρχίζει το <b>καλοκαίρι</b>!'}];
+FN.rev=root=>{
+ const a=sec(root,'🎬 Το βίντεο της περιφοράς');
+ a.innerHTML+='<div class="info">Η Γη <b>περιφέρεται γύρω από τον Ήλιο</b> σε ελλειπτική τροχιά και κάνει μια πλήρη διαδρομή σε <b>365 ημέρες και 6 ώρες</b> (ένα έτος). Ο άξονάς της δείχνει πάντα προς την ίδια κατεύθυνση. Κάθε 4 χρόνια το έτος έχει <b>366 ημέρες</b> (δίσεκτο έτος) λόγω των επιπλέον ωρών.</div>';
+ video(a,'rev','geo_e1/perifora.mp4','geo_e1/perifora.jpg','Πρόσεξε στο βίντεο ότι ο άξονας της Γης δείχνει πάντα προς την ίδια πλευρά, καθώς η Γη κινείται γύρω από τον Ήλιο.');
+ const s=sec(root,'🛰️ Άσκηση 1 — Ταξίδι στην τροχιά','Πάτησε τις <b>4 θέσεις</b> της Γης στην τροχιά της και διάβασε τι συμβαίνει. Πρόσεξε: ο άξονας γέρνει πάντα προς την ίδια πλευρά!');
+ let h='<div class="orb"><svg viewBox="0 0 340 300" width="100%" style="max-width:420px"><ellipse cx="170" cy="150" rx="140" ry="105" fill="none" stroke="#94a3b8" stroke-width="3" stroke-dasharray="7 6"/><circle cx="170" cy="150" r="30" fill="#fbbf24"/><text x="170" y="156" text-anchor="middle" font-size="26">☀️</text>';
+ SD.forEach((d,i)=>{const r=d.ang*Math.PI/180,x=170+140*Math.cos(r),y=150-105*Math.sin(r);h+='<g class="ep" data-i="'+i+'" tabindex="0" role="button" aria-label="'+d.d+'" style="cursor:pointer" transform="translate('+x+' '+y+')"><circle r="19" fill="#3b82f6" stroke="#fff" stroke-width="3"/><path d="M-6 -4q6-8 10 0t-4 8q-8 2-6-8z" fill="#22c55e"/><line x1="5" y1="-26" x2="-5" y2="26" stroke="#1e3a8a" stroke-width="3" stroke-linecap="round"/><text y="'+(y>150?36:-30)+'" x="'+(x>250?-20:x<90?20:0)+'" text-anchor="middle" font-size="12" font-weight="700" fill="currentColor">'+d.d+'</text></g>'});
+ s.insertAdjacentHTML('beforeend',h+'</svg><div class="oinfo" id="oi">👆 Πάτησε μια Γη στην τροχιά.</div></div>');
+ const seen=new Set();s.querySelectorAll('.ep').forEach(g=>{const f=()=>{const d=SD[+g.dataset.i];$('oi').innerHTML='<b>'+d.n+' — '+d.d+'</b><br>'+d.t;seen.add(d.k);s.querySelectorAll('.ep circle').forEach(c=>c.setAttribute('fill','#3b82f6'));g.querySelector('circle').setAttribute('fill','#f59e0b');if(seen.size==4)act('rev','sim',10,'🛰️ Τις είδες όλες! +10')};g.onclick=f;g.onkeydown=e=>{if(e.key=='Enter'||e.key==' ')f()}});
+ const o=sec(root,'📅 Άσκηση 2 — Η σωστή σειρά','Βάλε τα 4 σημαντικά γεγονότα της χρονιάς με τη σειρά, ξεκινώντας από τον Μάρτιο.');
+ order(o,'rev','order',SD.map(d=>({h:'<div class="ev"><b>'+d.d+'</b><small>'+d.n+'</small></div>'})),'Ξεκίνα από τον Μάρτιο.',15);
+ const q=sec(root,'❓ Άσκηση 3 — Κουίζ περιφοράς');
+ quiz(q,'rev','quiz',[
+  {q:'Σε πόσο χρόνο κάνει η Γη μια πλήρη περιφορά γύρω από τον Ήλιο;',o:['24 ώρες','Περίπου 365 ημέρες','30 ημέρες'],a:1,w:'Περίπου 365 ημέρες και 6 ώρες = ένα έτος.'},
+  {q:'Κάθε πότε έχουμε <b>δίσεκτο έτος</b> (366 ημέρες);',o:['Κάθε χρόνο','Κάθε 4 χρόνια','Κάθε 10 χρόνια'],a:1,w:'Οι έξτρα 6 ώρες κάθε χρόνο γίνονται μια ολόκληρη μέρα (24 ώρες) κάθε 4 χρόνια.'},
+  {q:'Ο άξονας της Γης κατά την περιφορά…',o:['δείχνει πάντα προς την ίδια κατεύθυνση','στρέφεται προς τον Ήλιο','ισιώνει το καλοκαίρι'],a:0,w:'Η κλίση και η κατεύθυνση του άξονα μένουν σταθερές, γι’ αυτό αλλάζουν οι εποχές.'},
+  {q:'Η τροχιά της Γης γύρω από τον Ήλιο είναι…',o:['τέλειος κύκλος','ελλειπτική','ευθεία γραμμή'],a:1,w:'Ελλειπτική, δηλαδή ένας κύκλος «πατημένος».'}],false,20);
+ foot(root)};
+/* ===== Σταθμός 5: Εποχές ===== */
+const DL={cy:{mar:12,jun:14.1,sep:12,dec:10.1},ad:{mar:12,jun:10.1,sep:12,dec:14.1}};
+const SE={cy:{mar:'🌸 Άνοιξη',jun:'☀️ Καλοκαίρι',sep:'🍂 Φθινόπωρο',dec:'❄️ Χειμώνας'},ad:{mar:'🍂 Φθινόπωρο',jun:'❄️ Χειμώνας',sep:'🌸 Άνοιξη',dec:'☀️ Καλοκαίρι'}};
+FN.seas=root=>{
+ const a=sec(root,'🍂 Γιατί αλλάζουν οι εποχές;');
+ a.innerHTML+='<div class="info">Επειδή ο άξονας της Γης είναι <b>λοξός</b>, καθώς η Γη γυρίζει γύρω από τον Ήλιο άλλοτε γέρνει το <b>Βόρειο</b> και άλλοτε το <b>Νότιο</b> ημισφαίριο προς τον Ήλιο. Το ημισφαίριο που γέρνει προς τον Ήλιο παίρνει <b>περισσότερη ηλιακή ενέργεια</b> και έχει <b>καλοκαίρι</b>. Το άλλο έχει <b>χειμώνα</b>. Οι εποχές είναι <b>αντίθετες</b> στα δύο ημισφαίρια!</div>';
+ const s=sec(root,'⏱️ Άσκηση 1 — Πόσες ώρες φως;','Διάλεξε πόλη και ημερομηνία. Δες πόσες ώρες έχει η μέρα και ποια εποχή είναι εκεί. <b>Πάτησε και τις 4 ημερομηνίες και για τις 2 πόλεις</b>!');
+ s.insertAdjacentHTML('beforeend','<div class="dl"><div class="row" id="dc"></div><div class="row" id="dd"></div><div id="db" class="dbar"></div></div>');
+ let city='cy',seenS=new Set();
+ const draw=k=>{const hrs=DL[city][k],p=hrs/24*100;$('db').innerHTML='<div class="bar"><div class="day" style="width:'+p+'%">☀️ '+String(hrs).replace('.',',')+' ώρες</div><div class="night" style="width:'+(100-p)+'%">🌙 '+String(24-hrs).replace('.',',')+'</div></div><p><b>'+SE[city][k]+'</b> στην '+(city=='cy'?'Κύπρο':'Αδελαΐδα')+'</p>';seenS.add(city+k);if(seenS.size==8)act('seas','sim',10,'⏱️ Τα βρήκες όλα! +10')};
+ [['cy','🇨🇾 Κύπρος'],['ad','🇦🇺 Αδελαΐδα']].forEach(([c,t])=>{const b=el('button','bt'+(c==city?' on':''),t);b.onclick=()=>{city=c;[...$('dc').children].forEach(x=>x.classList.toggle('on',x==b));$('db').innerHTML=''};$('dc').appendChild(b)});
+ SD.forEach(d=>{const b=el('button','bt',d.d);b.onclick=()=>{[...$('dd').children].forEach(x=>x.classList.toggle('on',x==b));draw(d.k)};$('dd').appendChild(b)});
+ const g=sec(root,'🌍 Άσκηση 2 — Καλοκαίρι ή χειμώνας;','Τι εποχή είναι εκεί αυτή την περίοδο;');
+ sortg(g,'seas','sort',[['Δεκέμβριος στην Κύπρο','w'],['Δεκέμβριος στην Αδελαΐδα','s'],['Ιούλιος στην Κύπρο','s'],['Ιούλιος στην Αδελαΐδα','w'],['Χριστούγεννα στην Αυστραλία','s'],['Δεκαπενταύγουστος στη Νότια Αφρική','w']].map(x=>({t:'<div class="sc2">'+x[0]+'</div>',b:x[1]})),[{id:'s',t:'☀️ Καλοκαίρι'},{id:'w',t:'❄️ Χειμώνας'}],15);
+ const o=sec(root,'🔁 Άσκηση 3 — Οι εποχές με τη σειρά','Βάλε τις εποχές του Βόρειου ημισφαιρίου με τη σειρά, ξεκινώντας από την άνοιξη.');
+ order(o,'seas','order',[['🌸','Άνοιξη','21 Μαρτίου'],['☀️','Καλοκαίρι','21 Ιουνίου'],['🍂','Φθινόπωρο','23 Σεπτεμβρίου'],['❄️','Χειμώνας','21 Δεκεμβρίου']].map(x=>({h:'<div class="ev"><span style="font-size:30px">'+x[0]+'</span><b>'+x[1]+'</b><small>'+x[2]+'</small></div>'})),'Μετά την άνοιξη έρχεται το καλοκαίρι.',15);
+ const q=sec(root,'✅ Άσκηση 4 — Ορθό ή Λάθος;');
+ quiz(q,'seas','tf',[
+  {q:'Έχουμε καλοκαίρι όταν η Γη βρίσκεται <b>πιο κοντά</b> στον Ήλιο.',o:['Ορθό','Λάθος'],a:1,w:'Λάθος! Οι εποχές οφείλονται στην κλίση του άξονα, όχι στην απόσταση από τον Ήλιο.'},
+  {q:'Όταν στην Κύπρο είναι χειμώνας, στην Αυστραλία είναι καλοκαίρι.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! Οι εποχές είναι αντίθετες στα δύο ημισφαίρια.'},
+  {q:'Στην ισημερία η μέρα και η νύχτα έχουν περίπου την ίδια διάρκεια.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! «Ισημερία» σημαίνει ίση μέρα και νύχτα (12 + 12 ώρες).'},
+  {q:'Το καλοκαίρι οι μέρες στο Βόρειο ημισφαίριο είναι <b>μεγαλύτερες</b> από τις νύχτες.',o:['Ορθό','Λάθος'],a:0,w:'Ορθό! Η μέρα φτάνει τη μέγιστη διάρκειά της στο θερινό ηλιοστάσιο.'}],true,15);
+ foot(root)};
+/* ===== Σταθμός 6: Ζώνες & κλίμα ===== */
+const CLI={cy:{n:'Λευκωσία (Κύπρος)',t:[10,10,13,17,22,27,29,29,26,22,16,12],r:[55,40,35,20,20,8,2,2,8,25,45,60]},ad:{n:'Αδελαΐδα (Αυστραλία)',t:[23,23,21,18,15,13,12,13,15,17,20,22],r:[20,17,25,40,60,70,66,60,48,40,28,25]}};
+const MN=['Ιαν','Φεβ','Μαρ','Απρ','Μάι','Ιουν','Ιουλ','Αυγ','Σεπ','Οκτ','Νοε','Δεκ'];
+function climo(c){const d=CLI[c];let s='<svg viewBox="0 0 380 230" width="100%" class="clm"><rect x="40" y="10" width="300" height="170" fill="none" stroke="#94a3b8"/>';
+ for(let i=0;i<12;i++){const x=45+i*25,h=d.r[i]/80*170;s+='<rect x="'+x+'" y="'+(180-h)+'" width="19" height="'+h+'" fill="#60a5fa"/><text x="'+(x+9)+'" y="196" text-anchor="middle" font-size="9" fill="currentColor">'+MN[i]+'</text>'}
+ let p='';d.t.forEach((t,i)=>{p+=(i?'L':'M')+(54+i*25)+' '+(180-t/40*170)+' '});
+ s+='<path d="'+p+'" fill="none" stroke="#ef4444" stroke-width="3"/>';d.t.forEach((t,i)=>s+='<circle cx="'+(54+i*25)+'" cy="'+(180-t/40*170)+'" r="3.5" fill="#ef4444"/>');
+ for(let t=0;t<=40;t+=10)s+='<text x="36" y="'+(184-t/40*170)+'" text-anchor="end" font-size="9" fill="#ef4444">'+t+'°</text>';
+ for(let r=0;r<=80;r+=20)s+='<text x="344" y="'+(184-r/80*170)+'" font-size="9" fill="#2563eb">'+r+'</text>';
+ return s+'<text x="190" y="224" text-anchor="middle" font-size="11" fill="currentColor">🔴 θερμοκρασία (°C) · 🔵 βροχή (mm)</text></svg>'}
+FN.zones=root=>{
+ const a=sec(root,'🌡️ Οι θερμικές ζώνες της Γης');
+ a.innerHTML+='<div class="info">Η Γη χωρίζεται σε <b>τρεις θερμικές ζώνες</b>, ανάλογα με το πόσο κάθετα πέφτουν οι ακτίνες του Ήλιου:<br>🔴 <b>Θερμή ζώνη</b>: ανάμεσα στους Τροπικούς (23,4° Β και Ν) — πολύ ζέστη<br>🟡 <b>Εύκρατες ζώνες</b>: από τους Τροπικούς ως τους Πολικούς κύκλους (66,6°) — ήπιο κλίμα, 4 εποχές<br>🔵 <b>Ψυχρές ζώνες</b>: γύρω από τους πόλους — πολύ κρύο</div>';
+ const r=sec(root,'🔦 Άσκηση 1 — Ο φακός και η Γη','Μετακίνησε τον «φακό» (τον Ήλιο) σε διάφορα γεωγραφικά πλάτη. Δες πού οι ακτίνες χτυπούν πιο κάθετα και συγκεντρωμένα!');
+ r.insertAdjacentHTML('beforeend','<div class="rays"><svg viewBox="0 0 320 200" width="100%" style="max-width:420px"><rect width="320" height="200" fill="#0b1b2e" rx="12"/><g id="rl"></g><text x="150" y="30" font-size="26">☀️</text></svg><div><input type="range" id="rr" min="0" max="90" value="0" style="width:100%;max-width:none"><div class="big" id="rz"></div><p class="sub" id="rt"></p></div></div>');
+ const zs=new Set();const rup=()=>{const la=+$('rr').value,rad=la*Math.PI/180,w=44,sp=Math.min(230,w/Math.max(Math.cos(rad),.19));
+  let L='';for(let i=0;i<=4;i++){const x=138+i*w/4;L+='<line x1="'+x+'" y1="40" x2="'+x+'" y2="120" stroke="#fde047" stroke-width="3"/><path d="M'+(x-4)+' 112l4 8 4-8" fill="#fde047"/>'}
+  $('rl').innerHTML=L+'<g transform="rotate('+(-la*.6)+' 160 130)"><rect x="30" y="130" width="260" height="14" rx="4" fill="#16a34a"/><rect x="'+(160-sp/2)+'" y="127" width="'+sp+'" height="8" rx="3" fill="#fde047"/></g><text x="160" y="186" text-anchor="middle" font-size="13" fill="#fff">Το ίδιο φως απλώνεται σε '+Math.round(sp/w*100)+'% επιφάνεια</text>';
+  const z=la<=23.4?'th':la<=66.6?'ef':'ps';zs.add(z);$('rz').textContent=la+'° — '+(z=='th'?'🔴 Θερμή ζώνη':z=='ef'?'🟡 Εύκρατη ζώνη':'🔵 Ψυχρή ζώνη');$('rt').textContent=z=='th'?'Οι ακτίνες πέφτουν σχεδόν κάθετα: το φως συγκεντρώνεται, ζέστη!':z=='ef'?'Οι ακτίνες πέφτουν λοξά: ήπια θέρμανση.':'Οι ακτίνες πέφτουν πολύ λοξά και απλώνονται: κρύο.';if(zs.size==3)act('zones','rays',10,'🔦 Τις βρήκες και τις 3! +10')};
+ $('rr').oninput=rup;rup();
+ const g=sec(root,'🗺️ Άσκηση 2 — Σε ποια ζώνη;','Ταξινόμησε τους τόπους στη σωστή θερμική ζώνη.');
+ sortg(g,'zones','sort',[['Ισημερινός','h'],['Αμαζόνιος (Βραζιλία)','h'],['Κύπρος','e'],['Αδελαΐδα','e'],['Αθήνα','e'],['Γροιλανδία','p'],['Ανταρκτική','p'],['Βόρειος Πόλος','p']].map(x=>({t:'<div class="sc2">'+x[0]+'</div>',b:x[1]})),[{id:'h',t:'🔴 Θερμή'},{id:'e',t:'🟡 Εύκρατη'},{id:'p',t:'🔵 Ψυχρή'}],15);
+ const c=sec(root,'📈 Άσκηση 3 — Διάβασε το κλιμογράφημα','Το κλιμογράφημα δείχνει τη θερμοκρασία (γραμμή) και τη βροχή (ράβδοι) κάθε μήνα. <i>(Οι τιμές είναι ενδεικτικές.)</i>');
+ c.insertAdjacentHTML('beforeend','<div class="row" id="cb"></div><div id="cg"></div>');
+ const shw=k=>{$('cg').innerHTML='<h4>'+CLI[k].n+'</h4>'+climo(k);[...$('cb').children].forEach((x,i)=>x.classList.toggle('on',['cy','ad'][i]==k))};
+ [['cy','🇨🇾 Λευκωσία'],['ad','🇦🇺 Αδελαΐδα']].forEach(([k,t])=>{const b=el('button','bt',t);b.onclick=()=>shw(k);$('cb').appendChild(b)});shw('cy');
+ quiz(c,'zones','clim',[
+  {q:'Στη <b>Λευκωσία</b>, ποιος είναι ο πιο ζεστός μήνας;',o:['Ιανουάριος','Ιούλιος','Απρίλιος'],a:1,w:'Τον Ιούλιο/Αύγουστο φτάνει περίπου 29 °C.'},
+  {q:'Στην <b>Αδελαΐδα</b>, ποιος μήνας είναι ζεστός;',o:['Ιούλιος','Δεκέμβριος','Ιούνιος'],a:1,w:'Τον Δεκέμβριο και τον Ιανουάριο, γύρω στους 22–23 °C — είναι καλοκαίρι εκεί!'},
+  {q:'Πότε βρέχει <b>περισσότερο</b> στην Αδελαΐδα;',o:['Το καλοκαίρι','Τον χειμώνα (Ιούνιο–Αύγουστο)','Δεν βρέχει ποτέ'],a:1,w:'Ο χειμώνας (Ιούνιος–Αύγουστος) είναι η βροχερή εποχή της.'},
+  {q:'Πότε σχεδόν δεν βρέχει στην Κύπρο;',o:['Τον Ιούλιο','Τον Ιανουάριο','Τον Δεκέμβριο'],a:0,w:'Το καλοκαίρι στην Κύπρο είναι ξηρό (2 mm τον Ιούλιο).'}],false,15);
+ foot(root)};
+/* ===== Σταθμός 7: Βαλίτσα ===== */
+const BG={dec:{t:'Δεκέμβριος στην Αδελαΐδα ☀️',ok:['🩳 Σορτς','🩱 Μαγιό','🧴 Αντηλιακό','🧢 Καπέλο','🕶️ Γυαλιά ηλίου','🩴 Σαγιονάρες','👕 Κοντομάνικο'],no:['🧥 Χοντρό μπουφάν','🧤 Γάντια','🧣 Κασκόλ','🥾 Χιονοπέδιλα','🧦 Μάλλινες κάλτσες']},
+ jul:{t:'Ιούλιος στην Αδελαΐδα ❄️',ok:['🧥 Χοντρό μπουφάν','🧣 Κασκόλ','🧤 Γάντια','☂️ Ομπρέλα','🧦 Μάλλινες κάλτσες','👖 Μακρύ παντελόνι'],no:['🩱 Μαγιό','🩴 Σαγιονάρες','🩳 Σορτς','🕶️ Γυαλιά ηλίου']}};
+FN.bag=root=>{
+ const s=sec(root,'🧳 Φτιάξε τη βαλίτσα!','Πάτησε μόνο τα πράγματα που χρειάζονται για τον προορισμό. Τα λάθος πράγματα δεν χωράνε στη βαλίτσα!');
+ s.insertAdjacentHTML('beforeend','<div class="row" id="bt"></div><div class="bagbox"><div id="bp" class="bpool"></div><div class="suit"><div class="sl">🧳 Η βαλίτσα μου</div><div id="bs" class="bin2"></div></div></div><div class="fb" id="bf"></div>');
+ const done={};
+ const run=k=>{const d=BG[k];[...$('bt').children].forEach(x=>x.classList.toggle('on',x.dataset.k==k));let n=0;$('bp').innerHTML='';$('bs').innerHTML='';$('bf').textContent='Βάλε μέσα όσα χρειάζονται για: '+d.t;
+  shuf(d.ok.map(x=>[x,1]).concat(d.no.map(x=>[x,0]))).forEach(([x,g])=>{const b=el('button','tok',x);b.dataset.ok=g;b.onclick=()=>{if(g){$('bs').appendChild(b);b.disabled=true;n++;if(n==d.ok.length){$('bf').textContent='🎉 Η βαλίτσα είναι έτοιμη!';done[k]=1;if(done.dec&&done.jul)act('bag','pack',20,'🧳 Ετοιμάστηκες για κάθε εποχή! +20')}}else{b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400);$('bf').textContent='🤔 Αυτό δεν χρειάζεται για '+d.t}};$('bp').appendChild(b)})};
+ Object.keys(BG).forEach(k=>{const b=el('button','bt',BG[k].t);b.dataset.k=k;b.onclick=()=>run(k);$('bt').appendChild(b)});run('dec');
+ s.insertAdjacentHTML('beforeend','<p class="sub">Συμβουλή: φτιάξε και τις <b>δύο</b> βαλίτσες (Δεκέμβριο και Ιούλιο) για να πάρεις τα μέγιστα ⭐!</p>');
+ foot(root)};
+/* ===== Σταθμός 8: Διαβατήριο ===== */
+FN.end=root=>{
+ const tot=ST.filter(s=>s.n>0).length,ok=ST.filter(stDone).length;
+ const s=sec(root,'🛂 Το ταξιδιωτικό σου διαβατήριο');
+ s.insertAdjacentHTML('beforeend','<div class="row"><label>Όνομα:</label><input type="text" id="nm" maxlength="30" placeholder="Γράψε το όνομά σου" value="'+esc(P.name||'')+'"></div><div class="pass">'+ST.filter(x=>x.n>0).map(x=>'<div class="stamp'+(stDone(x)?' on':'')+'"><span>'+x.ic+'</span><small>'+x.t+'</small><b>'+(stDone(x)?'ΕΓΚΡΙΘΗΚΕ':'—')+'</b></div>').join('')+'</div><p class="big">⭐ '+P.pts+' αστέρια · '+ok+'/'+tot+' σφραγίδες</p>');
+ $('nm').oninput=()=>{P.name=$('nm').value;save()};
+ const rv=sec(root,'🔮 Ήταν σωστές οι προβλέψεις σου;');
+ rv.insertAdjacentHTML('beforeend',PRED.map((q,i)=>'<div class="pq"><div class="qq">'+(i+1)+'. '+q.q+'</div><p>Η πρόβλεψή σου: <b>'+(P.pred[i]!=null?q.o[P.pred[i]]:'—')+'</b> '+(P.pred[i]==q.a?'✅':'🔎')+'<br>Σωστή απάντηση: <b>'+q.o[q.a]+'</b></p></div>').join(''));
+ const b=sec(root,'🎓 Βραβείο');
+ b.insertAdjacentHTML('beforeend','<p class="sub">Συμπλήρωσε όλες τις σφραγίδες για να τυπώσεις το δίπλωμα «Μικρός Εξερευνητής του Διαστήματος».</p><div class="row"><button class="btn" id="pd" '+(ok<tot?'disabled':'')+'>🖨️ Εκτύπωση διπλώματος</button><button class="btn g" id="pw">📝 Φύλλο εργασίας</button><button class="btn g" id="rs">🔁 Ξεκίνα από την αρχή</button></div>');
+ $('pd').onclick=()=>prnOut('Γεωγραφία Ε΄ — Οι κινήσεις της Γης',prDip('για την επιτυχή ολοκλήρωση της αποστολής «Οι κινήσεις της Γης και οι εποχές»',P.name),{noName:1,land:1});
+ $('pw').onclick=()=>prnOut('Φύλλο εργασίας — Οι κινήσεις της Γης','<ol class="wk"><li>Γράψε τους πλανήτες με τη σειρά από τον Ήλιο: ________________________________</li><li>Η Γη περιστρέφεται γύρω από τον ________ και κάνει μια στροφή σε ______ ώρες. Αποτέλεσμα: η ________ και η ________.</li><li>Η Γη περιφέρεται γύρω από τον ________ σε ________ ημέρες. Ο άξονάς της έχει κλίση ________°.</li><li>Όταν στην Κύπρο είναι χειμώνας, στην Αυστραλία είναι ________.</li><li>Όταν στην Κύπρο είναι 8:00 μ.μ., στην Αδελαΐδα είναι ________ (+8:30).</li><li>Ονόμασε τις 3 θερμικές ζώνες: ________________________________</li><li>Τι θα έβαζες στη βαλίτσα σου για την Αδελαΐδα τον Δεκέμβριο; ________________________________</li></ol>');
+ $('rs').onclick=()=>{if(confirm('Να σβηστούν όλα τα αστέρια και οι σφραγίδες;')){P={done:{},pts:0,pred:{},name:''};save();go(0)}};
+ foot(root)};
+/* ===== Οδηγός εκπαιδευτικού + εκκίνηση ===== */
+function guide(){const d=$('gd');d.style.display=d.style.display=='block'?'none':'block'}
+$('gb').onclick=guide;$('gx').onclick=guide;
+drawNav();go(0);
+
+</script><script id="prjs">
+const escP=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function prBtn(fn,t,cls){const b=document.createElement('button');b.className=cls||'btn g';b.type='button';b.textContent=t||'🖨️ Εκτύπωση';b.onclick=fn;return b}
+function prMsg(t){let m=document.getElementById('prn-toast');if(m)m.remove();m=document.createElement('div');m.id='prn-toast';m.textContent=t;document.body.appendChild(m);setTimeout(()=>m.remove(),6000)}
+function prPop(title,inner){const w=window.open('','_blank');if(!w){prMsg('Η εκτύπωση δεν άνοιξε. Δοκίμασε Ctrl+P ή άνοιξε το παιχνίδι σε νέα καρτέλα.');return}
+ const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+ w.document.write('<!doctype html><html lang="el"><head><meta charset="utf-8"><title>'+escP(title)+'</title><style>'+css+'#prn{display:block!important;max-width:800px;margin:0 auto;padding:12px}</style></head><body class="printing"><div id="prn">'+inner+'</div></body></html>');w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},700)}
+function prnOut(title,html,o){o=o||{};
+ const old=document.getElementById('prn');if(old)old.remove();
+ const p=document.createElement('div');p.id='prn';
+ html=String(html).replace(/\sid="([^"]*)"/g,' id="p_$1"').replace(/url\(#([^)]+)\)/g,'url(#p_$1)');
+ p.innerHTML='<h1 class="ph">'+escP(title)+'</h1>'+(o.noName?'':'<div class="pn">Όνομα: <i></i> Τάξη: <i></i></div>')+html+'<p class="pf">DigiKidsEdu</p>';
+ document.body.appendChild(p);
+ let st=document.getElementById('prs');if(!st){st=document.createElement('style');st.id='prs';document.head.appendChild(st)}
+ st.textContent='@page{size:A4 '+(o.land?'landscape':'portrait')+';margin:10mm}';
+ document.body.classList.add('printing');
+ let started=false,ended=false;
+ const end=()=>{if(ended)return;ended=true;document.body.classList.remove('printing');const q=document.getElementById('prn');if(q)q.remove();removeEventListener('afterprint',end)};
+ addEventListener('beforeprint',()=>{started=true},{once:true});addEventListener('afterprint',end);
+ setTimeout(()=>{try{window.print()}catch(e){}
+  setTimeout(()=>{if(!started){const inner=p.innerHTML;end();prPop(title,inner)}else if(!ended){addEventListener('pointerdown',end,{once:true,capture:true});setTimeout(end,120000)}},500)},60)}
+
+function prDip(what,name){return '<div class="dip"><div style="font-size:60pt">🎓</div><div class="dt">Δίπλωμα</div><div class="dx">Απονέμεται στον/στην</div><div class="dn">'+(name?escP(name):'&nbsp;'.repeat(24))+'</div><div class="dx">'+escP(what)+'</div></div>'}
+</script></body></html>
