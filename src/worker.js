@@ -82,7 +82,7 @@ async function api(req, env, url) {
   }
   // ── Κοινή συλλογή ερωτηματολογίου (ανώνυμα, με κωδικό τάξης) ──
   if (path.startsWith('/api/class/')) {
-    const CODE = /^[A-Z2-9]{4}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄'];
+    const CODE = /^[A-Z2-9]{4}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄', '-'];
     const code = String(b.code || url.searchParams.get('code') || '').toUpperCase().trim();
     const key = String(b.key || url.searchParams.get('key') || '');
     if (path === '/api/class/create') {
