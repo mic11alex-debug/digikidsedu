@@ -82,7 +82,7 @@ async function api(req, env, url) {
   }
   // ── Κοινή συλλογή ερωτηματολογίου (ανώνυμα, με κωδικό τάξης) ──
   if (path.startsWith('/api/class/')) {
-    const CODE = /^[A-Z2-9]{6}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄'];
+    const CODE = /^[A-Z2-9]{4}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄'];
     const code = String(b.code || url.searchParams.get('code') || '').toUpperCase().trim();
     const key = String(b.key || url.searchParams.get('key') || '');
     if (path === '/api/class/create') {
@@ -90,13 +90,13 @@ async function api(req, env, url) {
       await env.DB.prepare('INSERT INTO attempts(user_id,ip,ts) VALUES(0,?,?)').bind(ip, now()).run();
       const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rnd = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((x) => A[x % A.length]).join('');
       const k = rnd(10);
-      for (let i = 0; i < 5; i++) {
-        const c = rnd(6);
+      for (let i = 0; i < 20; i++) {
+        const c = rnd(4);
         try { await env.DB.prepare('INSERT INTO classes(code,key_hash,subs,created_at) VALUES(?,?,0,?)').bind(c, await sha(k), now()).run(); return J({ ok: true, code: c, key: k }); } catch (e) {}
       }
       return J({ error: 'Δοκίμασε ξανά.' }, 500);
     }
-    if (!CODE.test(code)) return J({ error: 'Ο κωδικός τάξης έχει 6 χαρακτήρες (γράμματα και αριθμούς).' }, 400);
+    if (!CODE.test(code)) return J({ error: 'Ο κωδικός τάξης έχει 4 χαρακτήρες (γράμματα και αριθμούς).' }, 400);
     const c = await env.DB.prepare('SELECT key_hash,subs FROM classes WHERE code=?').bind(code).first();
     if (!c) return J({ error: 'Δεν βρέθηκε αυτός ο κωδικός τάξης.' }, 404);
     if (path === '/api/class/submit') {
