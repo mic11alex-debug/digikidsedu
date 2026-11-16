@@ -1,4 +1,4 @@
-/* DigiKidsEdu — ανιχνευτής καρτών (Plickers-like). Βασίζεται στη βιβλιοθήκη js-aruco2 (Copyright (c) 2020 Damiano Falcioni, (c) 2011 Juan Mellado, άδεια BSD/MIT) και σε λεξικό ArUco 4x4 του OpenCV (άδεια BSD 3-clause). Μόνο cv.js + aruco.js + 25 κωδικοί. */
+/* DigiKidsEdu — ανιχνευτής καρτών. Βασίζεται στη βιβλιοθήκη js-aruco2 (Copyright (c) 2020 Damiano Falcioni, (c) 2011 Juan Mellado, άδεια BSD/MIT) και σε λεξικό ArUco 4x4 του OpenCV (άδεια BSD 3-clause). Μόνο cv.js + aruco.js + 25 κωδικοί. */
 /*
 Copyright (c) 2011 Juan Mellado
 

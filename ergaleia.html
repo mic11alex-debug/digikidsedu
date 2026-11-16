@@ -320,8 +320,8 @@ tool({id:'kartes',g:1,icon:'🎫',bg:'#fbcfe8',title:'Κάρτες εξόδου'
   catch(e){if(!auto)say('⚠️ '+e.message,1)}}
  const draw=()=>{drawTop();drawEdit();resBox.innerHTML='';clearInterval(timer);if(S.code){resBox.append(h('p',{class:'mu'},'Φορτώνω αποτελέσματα…'));load();timer=setInterval(()=>load(1),10000)}else resBox.append(h('h3',null,'📊 Αποτελέσματα'),h('p',{class:'mu'},'Θα εμφανιστούν εδώ μόλις δημιουργήσεις την κάρτα και απαντήσουν τα παιδιά.'))};
  b.append(status,top,edit,resBox);draw();return()=>clearInterval(timer)}});
-/* 9γ. Κάρτες απαντήσεων (σαν Plickers) */
-tool({id:'plickers',g:1,icon:'📇',bg:'#a5f3fc',title:'Κάρτες απαντήσεων (σαν Plickers)',desc:'Τύπωσε κάρτες· τα παιδιά απαντούν Α/Β/Γ/Δ γυρίζοντας την κάρτα και εσύ τις διαβάζεις με την κάμερα του κινητού.',run(b){
+/* 9γ. Γύρνα και Απάντα */
+tool({id:'plickers',g:1,icon:'📇',bg:'#a5f3fc',title:'Γύρνα και Απάντα',desc:'Κάρτες απαντήσεων με σάρωση: τα παιδιά γυρίζουν την κάρτα στο Α, Β, Γ ή Δ και εσύ τις διαβάζεις με την κάμερα του κινητού.',run(b){
  const LET=['Α','Β','Γ','Δ'],CL=['#2563eb','#f59e0b','#16a34a','#dc2626'];
  let AR_=null;const needAR=()=>AR_||(AR_=new Promise((res,rej)=>{if(window.AR&&AR.DICTIONARIES&&AR.DICTIONARIES.PLK)return res();const s=document.createElement('script');s.src='/plk/aruco.js';s.onload=()=>res();s.onerror=()=>{AR_=null;rej(new Error('Δεν φορτώθηκε ο αναγνώστης καρτών. Έλεγξε τη σύνδεση στο διαδίκτυο.'))};document.head.appendChild(s)}));
  const S=Object.assign({n:25,names:'',hist:[]},store.get('plk',{}));const save=()=>store.set('plk',S);
@@ -385,7 +385,7 @@ tool({id:'plickers',g:1,icon:'📇',bg:'#a5f3fc',title:'Κάρτες απαντ�
    pane.append(h('div',{class:'card'},h('div',{class:'row'},h('b',{style:'flex:1'},(i+1)+'. '+q.t),h('span',{class:'mu'},new Date(q.at).toLocaleString('el-GR')),h('button',{class:'btn r',style:'padding:2px 10px;font-size:14px',onclick:()=>{if(confirm('Να διαγραφεί αυτή η ερώτηση;')){S.hist.splice(i,1);save();show(2)}}},'🗑️')),
     h('p',{style:'margin:6px 0'},LET.map((l,k)=>(q.a===k?'✅ ':'')+l+': '+c[k]+(tot?' ('+Math.round(c[k]/tot*100)+'%)':'')).join('   ·   ')+(q.a>=0&&tot?'   → σωστές '+Math.round(c[q.a]/tot*100)+'%':''))))});
   pane.append(h('div',{class:'row'},h('button',{class:'btn',onclick:()=>{const hd=['Κάρτα','Όνομα',...H.map((q,i)=>'Ε'+(i+1)+(q.a>=0?' (σωστή '+LET[q.a]+')':''))];const rows=[hd];for(let id=0;id<S.n;id++)rows.push([id+1,lines(S.names)[id]||'',...H.map(q=>q.ans[id]!=null?LET[q.ans[id]]:'')]);download('apantiseis_kartes.csv','﻿'+rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(';')).join('\r\n'),'text/csv;charset=utf-8')}},'⬇️ Λήψη πίνακα (Excel)'),h('button',{class:'btn r',onclick:()=>{if(confirm('Να διαγραφεί όλο το ιστορικό;')){S.hist=[];save();show(2)}}},'🗑️ Διαγραφή ιστορικού')))}
- b.append(tabs,pane);show(0);return()=>{if(stopCam)stopCam()}}});
+ b.append(h('p',{class:'lead',style:'font-size:20px;font-weight:800;margin:0 0 12px'},'Κάρτες απαντήσεων με σάρωση'),tabs,pane);show(0);return()=>{if(stopCam)stopCam()}}});
 /* 10. Καθαρισμός εργαστηρίου */
 const BATHEAD='@echo off\r\nchcp 65001 >nul\r\n';const crlf=a=>a.join('\r\n')+'\r\n';
 tool({id:'katharismos',g:2,icon:'🧹',bg:'#fbcfe8',title:'Καθαρισμός εργαστηρίου',desc:'Φτιάχνει σενάριο που καθαρίζει τους υπολογιστές των μαθητών στο τέλος του μαθήματος.',badge:'Windows',run(b){
