@@ -39,6 +39,25 @@ async function snapshot(env, u) {
   return { user: { name: u.name, email: u.email }, favs: f.results.map((r) => r.game_id), progress: prog, tasks: t.results };
 }
 
+// Κάρτες εξόδου: έλεγχος και καθαρισμός του συνόλου ερωτήσεων (έως 20, χωρίς ελεύθερο κείμενο από παιδιά)
+function cleanCards(d) {
+  const o = typeof d === 'string' ? JSON.parse(d) : d;
+  if (!o || !Array.isArray(o.q) || o.q.length > 20) throw new Error('bad');
+  const str = (x, n) => String(x == null ? '' : x).trim().slice(0, n);
+  const q = o.q.map((x) => {
+    const id = String(x.id || ''), k = x.k === 'sc' ? 'sc' : 'mc', t = str(x.t, 200);
+    if (!/^q[0-9]{1,3}$/.test(id) || !t) throw new Error('bad');
+    if (k === 'sc') return { id, k, t };
+    const op = (Array.isArray(x.o) ? x.o : []).map((y) => str(y, 80)).filter(Boolean).slice(0, 5);
+    if (op.length < 2) throw new Error('bad');
+    const a = Number.isInteger(x.a) && x.a >= 0 && x.a < op.length ? x.a : -1;
+    return { id, k, t, o: op, a };
+  });
+  const out = JSON.stringify({ t: str(o.t, 80), q });
+  if (out.length > 8000) throw new Error('bad');
+  return out;
+}
+
 async function api(req, env, url) {
   const path = url.pathname;
   if (req.method !== 'GET') {
@@ -90,15 +109,18 @@ async function api(req, env, url) {
       await env.DB.prepare('INSERT INTO attempts(user_id,ip,ts) VALUES(0,?,?)').bind(ip, now()).run();
       const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rnd = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((x) => A[x % A.length]).join('');
       const k = rnd(10);
+      let data = null;
+      if (b.data != null) { try { data = cleanCards(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); } }
       for (let i = 0; i < 20; i++) {
         const c = rnd(4);
-        try { await env.DB.prepare('INSERT INTO classes(code,key_hash,subs,created_at) VALUES(?,?,0,?)').bind(c, await sha(k), now()).run(); return J({ ok: true, code: c, key: k }); } catch (e) {}
+        try { await env.DB.prepare('INSERT INTO classes(code,key_hash,subs,created_at,data) VALUES(?,?,0,?,?)').bind(c, await sha(k), now(), data).run(); return J({ ok: true, code: c, key: k }); } catch (e) {}
       }
       return J({ error: 'Δοκίμασε ξανά.' }, 500);
     }
     if (!CODE.test(code)) return J({ error: 'Ο κωδικός τάξης έχει 4 χαρακτήρες (γράμματα και αριθμούς).' }, 400);
-    const c = await env.DB.prepare('SELECT key_hash,subs FROM classes WHERE code=?').bind(code).first();
+    const c = await env.DB.prepare('SELECT key_hash,subs,data FROM classes WHERE code=?').bind(code).first();
     if (!c) return J({ error: 'Δεν βρέθηκε αυτός ο κωδικός τάξης.' }, 404);
+    if (path === '/api/class/get') return J({ ok: true, data: c.data ? JSON.parse(c.data) : null });
     if (path === '/api/class/submit') {
       const cl = String(b.cl || ''), a = Array.isArray(b.a) ? b.a : [];
       if (!CL.includes(cl) || !a.length || a.length > 30) return J({ error: 'Μη έγκυρα δεδομένα.' }, 400);
@@ -117,6 +139,11 @@ async function api(req, env, url) {
     if (path === '/api/class/results') {
       const r = await env.DB.prepare('SELECT cl,qid,opt,n FROM class_ans WHERE code=?').bind(code).all();
       return J({ ok: true, subs: c.subs, rows: r.results.map((x) => [x.cl, x.qid, x.opt, x.n]) });
+    }
+    if (path === '/api/class/save') {
+      let data; try { data = cleanCards(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); }
+      await env.DB.prepare('UPDATE classes SET data=? WHERE code=?').bind(data, code).run();
+      return J({ ok: true });
     }
     if (path === '/api/class/reset') {
       await env.DB.batch([env.DB.prepare('DELETE FROM class_ans WHERE code=?').bind(code), env.DB.prepare('UPDATE classes SET subs=0 WHERE code=?').bind(code)]);

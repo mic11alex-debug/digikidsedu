@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<title>Κάρτα εξόδου — DigiKidsEdu</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f3f0ff;--card:#fff;--grape:#7b4dff;--sun:#ffd23f;--mu:#5a5390;--dot:#d4cdf7;--tx:#1a1446;--line:#1a1446;--ok:#16a34a;--bad:#dc2626}
+@media(prefers-color-scheme:dark){:root{--paper:#130e35;--card:#241b5e;--tx:#f1eeff;--mu:#b3abe6;--dot:#2b2270;--line:#0a0622}}
+*{box-sizing:border-box}body{margin:0;font-family:"Anek Greek",system-ui,sans-serif;font-weight:500;color:var(--tx);background:var(--paper);background-image:radial-gradient(var(--dot) 2px,transparent 2.5px);background-size:28px 28px;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:22px 16px 60px}
+h1{font-weight:800;font-size:clamp(26px,6vw,38px);margin:0 0 4px}
+.lead{color:var(--mu);margin:0 0 16px}
+.card{background:var(--card);border:4px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 6px 0 var(--line);margin:14px 0}
+.q{font-weight:800;font-size:clamp(19px,4.5vw,24px);margin:0 0 10px}
+.opt{display:block;width:100%;text-align:left;font:700 clamp(17px,4vw,21px) "Anek Greek",system-ui;color:var(--tx);background:var(--paper);border:3px solid var(--line);border-radius:14px;padding:12px 14px;margin:8px 0;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.opt.sel{background:var(--sun);color:#1a1446}
+.opt.good{background:#bbf7d0;color:#14532d}.opt.bad{background:#fecaca;color:#7f1d1d}
+.opt:disabled{cursor:default}
+.btn{font:800 20px "Anek Greek",system-ui;background:var(--grape);color:#fff;border:3px solid var(--line);border-radius:14px;padding:11px 22px;box-shadow:0 4px 0 var(--line);cursor:pointer}
+.btn:disabled{opacity:.5}
+input{font:800 34px "Anek Greek",system-ui;text-transform:uppercase;letter-spacing:8px;text-align:center;width:9ch;color:var(--tx);background:var(--card);border:4px solid var(--line);border-radius:16px;padding:8px}
+.msg{font-weight:700;margin:10px 0}.err{color:var(--bad)}
+.big{font-size:64px;text-align:center}
+a.back{display:inline-block;margin-bottom:14px;font-weight:800;color:#1a1446;background:var(--sun);border:3px solid var(--line);border-radius:14px;padding:6px 14px;text-decoration:none;box-shadow:0 3px 0 var(--line)}
+</style></head><body><div class="wrap">
+<a class="back" href="/">← DigiKidsEdu</a>
+<h1>🎫 Κάρτα εξόδου</h1>
+<p class="lead">Απάντησε στις ερωτήσεις του δασκάλου σου. Η απάντησή σου στέλνεται <b>ανώνυμα</b>, χωρίς όνομα.</p>
+<div id="app"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),app=$('#app');
+const SC=['😀 Το κατάλαβα καλά','🙂 Λίγο','😟 Δεν το κατάλαβα'];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function api(path,params){let r;try{r=await fetch('/api/class/'+path+(params.get?'?'+new URLSearchParams(params.get):''),params.get?{}:{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(params.post)})}catch(e){throw new Error('Δεν υπάρχει σύνδεση στο διαδίκτυο. Δοκίμασε ξανά.')}
+ let j=null;try{j=await r.json()}catch(e){}if(!r.ok||!j||j.error)throw new Error((j&&j.error)||'Κάτι πήγε στραβά. Δοκίμασε ξανά.');return j}
+const doneKey=c=>'dke_kartes_done_'+c;
+function askCode(msg){app.innerHTML='<div class="card"><p class="q">Γράψε τον κωδικό που έδωσε ο δάσκαλος:</p><div style="text-align:center"><input id="cd" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="K7M2"></div><p class="msg err" id="er">'+(msg?esc(msg):'')+'</p><div style="text-align:center"><button class="btn" id="go">Συνέχεια ▶</button></div></div>';
+ const go=()=>load($('#cd').value.trim().toUpperCase());$('#go').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};$('#cd').focus()}
+async function load(code){if(!/^[A-Z2-9]{4}$/.test(code)){askCode('Ο κωδικός έχει 4 χαρακτήρες.');return}
+ try{const r=await api('get',{get:{code}});if(!r.data||!r.data.q.length){askCode('Αυτός ο κωδικός δεν έχει ερωτήσεις ακόμα.');return}show(code,r.data)}catch(e){askCode(e.message)}}
+function show(code,d){let done=false;try{done=!!localStorage.getItem(doneKey(code))}catch(e){}
+ const ans={};let h='<div class="card" style="background:var(--sun);color:#1a1446"><b>'+esc(d.t||'Κάρτα εξόδου')+'</b> · κωδικός '+code+'</div>';
+ d.q.forEach((q,qi)=>{const opts=q.k==='sc'?SC:q.o;h+='<div class="card" data-q="'+q.id+'"><p class="q">'+(qi+1)+'. '+esc(q.t)+'</p>'+opts.map((o,i)=>'<button class="opt" data-i="'+i+'">'+esc(o)+'</button>').join('')+'</div>'});
+ h+='<p class="msg err" id="er"></p><div style="text-align:center"><button class="btn" id="send" disabled>📨 Στείλε τις απαντήσεις</button></div>';
+ app.innerHTML=h;const send=$('#send');
+ if(done){send.insertAdjacentHTML('beforebegin','<p class="msg">ℹ️ Έχεις ήδη στείλει απαντήσεις από αυτή τη συσκευή. Αν είναι άλλο παιδί, μπορεί να απαντήσει κανονικά.</p>')}
+ app.querySelectorAll('.card[data-q]').forEach(card=>{card.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{card.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');ans[card.dataset.q]=+b.dataset.i;send.disabled=false})});
+ send.onclick=async()=>{const a=Object.entries(ans);if(!a.length)return;send.disabled=true;$('#er').textContent='';
+  try{await api('submit',{post:{code,cl:'-',a}});try{localStorage.setItem(doneKey(code),'1')}catch(e){}
+   app.querySelectorAll('.card[data-q]').forEach(card=>{const q=d.q.find(x=>x.id===card.dataset.q);card.querySelectorAll('.opt').forEach(b=>{b.disabled=true;const i=+b.dataset.i;if(q.k==='mc'&&q.a>=0&&card.dataset.q in ans){if(i===q.a)b.classList.add('good');else if(b.classList.contains('sel'))b.classList.add('bad')}})});
+   send.outerHTML='<div class="card" style="text-align:center"><div class="big">🎉</div><p class="q">Ευχαριστούμε! Οι απαντήσεις σου στάλθηκαν.</p><button class="btn" onclick="location.reload()">Νέο παιδί ▶</button></div>'}
+  catch(e){$('#er').textContent='⚠️ '+e.message;send.disabled=false}}}
+const p=new URLSearchParams(location.search).get('c');p?load(p.trim().toUpperCase()):askCode('')
+</script></body></html>
