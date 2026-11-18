@@ -165,6 +165,12 @@ canvas{display:block;touch-action:none}
 .mpad{position:absolute;right:60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;background:#1e293b;border:4px solid var(--ink);border-radius:18px;padding:12px}.mbtn{font:inherit;font-weight:900;font-size:34px;width:78px;height:60px;border-radius:50%/60%;border:4px solid #fff;background:#475569;color:#fff;cursor:pointer}.mbtn.on{background:#22c55e;box-shadow:0 0 16px #22c55e}
 .myn{position:absolute;font-size:52px;line-height:1;font-style:normal;cursor:pointer;transform:translate(-50%,-50%)}.mcatw{position:absolute;left:12px;bottom:10px;z-index:2}
 .myn.mgot{animation:mgp .4s forwards}.mbone{background:none!important;box-shadow:none!important;width:auto!important;height:auto!important;font-size:30px;line-height:1}.mfs{height:48px;width:auto;display:block;pointer-events:none}
+.mtE{position:absolute;inset:0;background:radial-gradient(#6b4423 2px,transparent 3px) 0 0/22px 22px,linear-gradient(#a3703f,#7a4e2a 60%,#5e3a1f)}.mtg2{position:absolute;left:0;right:0;top:0;height:16px;background:linear-gradient(#86d34b,#4ea02a);border-bottom:4px solid #3d6e1f}.mtx{position:absolute;opacity:.55;font-style:normal;line-height:1}
+.mtT{position:absolute;inset:0}.mtT i{position:absolute;background:linear-gradient(#2e2016,#1b110a);border-radius:18px}.mtT i.rm{background:#c99a66;border-radius:26px}
+.mtm{position:absolute;font-style:normal;font-size:30px;transform:translate(-50%,-50%);filter:drop-shadow(0 0 8px #7dd3fc);animation:mtbob 1.6s ease-in-out infinite;transition:transform .3s,opacity .3s}.mtm.got{transform:translate(-50%,-50%) scale(2);opacity:0}@keyframes mtbob{50%{margin-top:-6px}}
+.mtgo{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:2px;pointer-events:none;z-index:3}.mtgo img{height:62px;width:auto;filter:drop-shadow(0 3px 3px #0008)}.mtgo span{font-size:30px;animation:mtbob 1.2s ease-in-out infinite}
+.mtD{position:absolute;inset:0;pointer-events:none;z-index:4;background:radial-gradient(circle at var(--x) var(--y),transparent 110px,rgba(8,4,0,.8) 300px);transition:opacity .6s}
+.mfc.hit{filter:drop-shadow(0 0 10px #ef4444) saturate(.4);animation:mtsh .35s}@keyframes mtsh{25%{transform:translate(-56%,-50%)}75%{transform:translate(-44%,-50%)}}
 </style>
 </head>
 <body>
@@ -431,17 +437,22 @@ G.mtp=(ar,T)=>{const NM=['κύμα','φίδι','σαλιγκάρι'];let L=0,ali
    if(p>=P.length-3){done=true;p=P.length-1;draw();ok();burst(e.clientX,e.clientY,['🦴','✨','⭐']);L++;tm=setTimeout(()=>{if(!alive)return;if(L<3)build();else{alive=false;win('mtp',STARS(miss),()=>play('mtp'))}},1000)}}};
  build();return MCL(ar,()=>{alive=false;clearTimeout(tm)})};
 
-G.mtn=(ar,T)=>{const P=[[[.08,.2],[.45,.2],[.45,.75],[.9,.75]],[[.08,.15],[.3,.15],[.3,.8],[.55,.8],[.55,.2],[.9,.2]],[[.06,.5],[.2,.5],[.2,.15],[.4,.15],[.4,.85],[.6,.85],[.6,.15],[.8,.15],[.8,.6],[.93,.6]]],WD=[74,56,44];let L=0,st=false,miss=0;
- const build=()=>{const W=ar.clientWidth,H=ar.clientHeight,w=WD[L],pts=P[L].map(([a,b])=>[a*W,b*H]),e0=pts[0],e1=pts[pts.length-1];st=false;T(`Σήραγγα ${L+1} από 3: ξεκίνα από τον Μίλη και οδήγησε το ποντίκι μέχρι τη Νάσα, χωρίς να ακουμπήσεις τα τοιχώματα! Το 🟡 είσαι εσύ!`);
-  const rects=[];for(let i=0;i<pts.length-1;i++){const [a,b]=pts[i],[c,d]=pts[i+1];rects.push({x:Math.min(a,c)-w/2,y:Math.min(b,d)-w/2,w:Math.abs(c-a)+w,h:Math.abs(d-b)+w})}
-  ar.innerHTML=`<div class=tnl>${rects.map(r=>`<i style='left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px'></i>`).join('')}<span class=tp style='left:${e0[0]}px;top:${e0[1]}px'><img class=mfs src="${FACE.dog}"></span><span class=tp style='left:${e1[0]}px;top:${e1[1]}px'><img class=mfs src="${FACE.cat}"></span><b class=cur id=cu></b></div>`;
-  ar.onpointermove=e=>{const b=ar.getBoundingClientRect(),x=e.clientX-b.left-ar.clientLeft,y=e.clientY-b.top-ar.clientTop,cu=$('#cu');if(cu){cu.style.display='block';cu.style.left=x+'px';cu.style.top=y+'px'}
-   if(!st){if(Math.hypot(x-e0[0],y-e0[1])<w/2){st=true;if(cu)cu.className='cur on';T('Πάμε! Μην ακουμπήσεις τα τοιχώματα.')}return}
-   if(Math.hypot(x-e1[0],y-e1[1])<w/2){ar.onpointermove=null;ok();burst(e.clientX,e.clientY);L++;setTimeout(()=>{if(L<3)build();else{L=0;win('mtn',miss<=2?3:miss<=6?2:1,()=>{miss=0;play('mtn')})}},700);return}
-   if(!([[0,0],[9,0],[-9,0],[0,9],[0,-9]].every(([da,db])=>rects.some(r=>x+da>=r.x&&x+da<=r.x+r.w&&y+db>=r.y&&y+db<=r.y+r.h)))){st=false;if(cu){cu.className='cur hit';setTimeout(()=>{cu.className='cur'},350)}miss++;no();T('Ωχ! Ακούμπησες το τοίχωμα. Γύρνα στον Μίλη και ξανά!')}}};
- build()};
-
-
+G.mtn=(ar,T)=>{const P=[[[.08,.2],[.45,.2],[.45,.75],[.9,.75]],[[.08,.15],[.3,.15],[.3,.8],[.55,.8],[.55,.2],[.9,.2]],[[.06,.5],[.2,.5],[.2,.15],[.4,.15],[.4,.85],[.6,.85],[.6,.15],[.8,.15],[.8,.6],[.93,.6]]],WD=[86,68,56];let L=0,miss=0,alive=true,tm;
+ const build=()=>{const W=ar.clientWidth,H=ar.clientHeight,w=WD[L],pts=P[L].map(([a,b])=>[a*W,b*H]),e0=pts[0],e1=pts[pts.length-1];let st=false,gems=0,done=false;ar.style.cursor='none';
+  const rects=[];for(let i=0;i<pts.length-1;i++){const[a,b]=pts[i],[c,d]=pts[i+1];rects.push({x:Math.min(a,c)-w/2,y:Math.min(b,d)-w/2,w:Math.abs(c-a)+w,h:Math.abs(d-b)+w})}
+  const gp=[];let tot=0;const seg=[];for(let i=0;i<pts.length-1;i++){const l=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);seg.push(l);tot+=l}
+  const NG=L+4;for(let g=1;g<=NG;g++){let d=tot*g/(NG+1),i=0;while(d>seg[i]){d-=seg[i];i++}const t=d/seg[i];gp.push({x:pts[i][0]+(pts[i+1][0]-pts[i][0])*t,y:pts[i][1]+(pts[i+1][1]-pts[i][1])*t,d:0})}
+  const deco=[...Array(16)].map(()=>`<i class="mtx" style="left:${Math.random()*100}%;top:${12+Math.random()*84}%;font-size:${18+Math.random()*16}px;transform:rotate(${Math.random()*80-40}deg)">${['🪨','🦴','🐚','🪱','🌱'][Math.random()*5|0]}</i>`).join('');
+  ar.innerHTML=`<div class="mtE"><div class="mtg2"></div>${deco}</div><div class="mtT">${rects.map(r=>`<i class="rm" style="left:${r.x-9}px;top:${r.y-9}px;width:${r.w+18}px;height:${r.h+18}px"></i>`).join('')}${rects.map(r=>`<i style="left:${r.x}px;top:${r.y}px;width:${r.w}px;height:${r.h}px"></i>`).join('')}</div>${gp.map((g,i)=>`<i class="mtm" id="mg${i}" style="left:${g.x}px;top:${g.y}px">💎</i>`).join('')}<div class="mtgo" style="left:${e0[0]}px;top:${e0[1]}px"><img src="${FACE.dog}" alt=""><span>▶</span></div><div class="mtgo end" style="left:${e1[0]}px;top:${e1[1]}px"><img src="${FACE.cat}" alt=""><span>🏆</span></div><div class="mtD" id="mtD"></div><img class="mfc" id="mtc" src="${FACE.dog}" alt="" style="width:62px;display:none"><span class="mcnt" id="mct">💎 0/${NG}</span>`;
+  const dk=$('#mtD'),cu=$('#mtc');dk.style.setProperty('--x',e0[0]+'px');dk.style.setProperty('--y',e0[1]+'px');
+  T(`Σήραγγα ${L+1} από 3: μπες στην είσοδο ▶ με τον Μίλη και οδήγησέ τον στη Νάσα 🏆 χωρίς να ακουμπήσεις τα χώματα! Μάζεψε και διαμάντια 💎.`);
+  ar.onpointermove=e=>{if(done)return;const[x,y]=MPT(ar,e);cu.style.display='block';cu.style.left=x+'px';cu.style.top=y+'px';dk.style.setProperty('--x',x+'px');dk.style.setProperty('--y',y+'px');
+   if(!st){if(Math.hypot(x-e0[0],y-e0[1])<w/2){st=true;cu.classList.remove('hit');T('Πάμε! Ο φακός του Μίλη φωτίζει τον δρόμο. Μην ακουμπήσεις τα τοιχώματα.')}return}
+   gp.forEach((g,i)=>{if(!g.d&&Math.hypot(g.x-x,g.y-y)<34){g.d=1;gems++;$('#mg'+i).classList.add('got');beep(700+gems*60,.08);$('#mct').textContent=`💎 ${gems}/${NG}`}});
+   if(Math.hypot(x-e1[0],y-e1[1])<w/2){done=true;ok();burst(e.clientX,e.clientY,['💜','💎','✨','⭐']);dk.style.opacity='0';L++;tm=setTimeout(()=>{if(!alive)return;if(L<3)build();else{alive=false;win('mtn',miss<=2?3:miss<=6?2:1,()=>play('mtn'))}},1100);return}
+   if(!([[0,0],[9,0],[-9,0],[0,9],[0,-9]].every(([da,db])=>rects.some(r=>x+da>=r.x&&x+da<=r.x+r.w&&y+db>=r.y&&y+db<=r.y+r.h)))){st=false;cu.classList.add('hit');miss++;no();T('Ωχ! Ακούμπησες το χώμα. Γύρνα στην είσοδο ▶ και ξανά!')}};
+ };
+ build();return()=>{ar.onpointermove=null;ar.style.cursor='';alive=false;clearTimeout(tm)}};
 G.drag=(ar,T)=>{
  const R=[{t:'Βάλε κάθε μπαλίτσα στο κουτί με το ίδιο χρώμα!',b:[['r','#ff9b9b','Κόκκινο'],['b','#9ccbff','Μπλε'],['y','#ffe680','Κίτρινο']],c:{r:'#ff6b6b',b:'#5aa9ff',y:'#ffd84d'},i:[['r','😊'],['r','😄'],['b','😊'],['b','😄'],['y','😊'],['y','😄']]},
  {t:'Ποιος μένει στη θάλασσα και ποιος στη στεριά;',b:[['s','#bfe8ff','🌊 Θάλασσα'],['l','#c8f0b0','🌳 Στεριά']],i:[['s','🐙'],['s','🐠'],['s','🦈'],['s','🐬'],['l','🐄'],['l','🐕'],['l','🐓'],['l','🐘']]}];
