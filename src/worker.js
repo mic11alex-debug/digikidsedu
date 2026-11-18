@@ -58,6 +58,35 @@ function cleanCards(d) {
   return out;
 }
 
+function cleanEsc(o) {
+  const str = (x, n) => String(x == null ? '' : x).trim().slice(0, n);
+  const e = o.esc;
+  if (!e || !Array.isArray(e.rooms) || e.rooms.length < 1 || e.rooms.length > 6) throw new Error('bad');
+  const rooms = e.rooms.map((r, ri) => {
+    const qs = (Array.isArray(r.qs) ? r.qs : []).map((x) => {
+      const t = str(x.t, 300), h = str(x.h, 200);
+      if (!t) throw new Error('bad');
+      if (x.k === 'tx') {
+        const an = (Array.isArray(x.an) ? x.an : []).map((y) => str(y, 60)).filter(Boolean).slice(0, 8);
+        if (!an.length) throw new Error('bad');
+        return { k: 'tx', t, an, h };
+      }
+      const op = (Array.isArray(x.o) ? x.o : []).map((y) => str(y, 100)).filter(Boolean).slice(0, 5);
+      if (op.length < 2 || !Number.isInteger(x.a) || x.a < 0 || x.a >= op.length) throw new Error('bad');
+      return { k: 'mc', t, o: op, a: x.a, h };
+    });
+    if (qs.length < 1 || qs.length > 5) throw new Error('bad');
+    return { n: str(r.n, 60) || 'Δωμάτιο ' + (ri + 1), ic: str(r.ic, 8) || '🚪', qs };
+  });
+  const out = JSON.stringify({ t: str(o.t, 80), esc: { story: str(e.story, 500), rooms } });
+  if (out.length > 20000) throw new Error('bad');
+  return out;
+}
+function cleanData(d) {
+  const o = typeof d === 'string' ? JSON.parse(d) : d;
+  return o && o.esc ? cleanEsc(o) : cleanCards(o);
+}
+
 async function api(req, env, url) {
   const path = url.pathname;
   if (req.method !== 'GET') {
@@ -110,7 +139,7 @@ async function api(req, env, url) {
       const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rnd = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((x) => A[x % A.length]).join('');
       const k = rnd(10);
       let data = null;
-      if (b.data != null) { try { data = cleanCards(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); } }
+      if (b.data != null) { try { data = cleanData(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); } }
       for (let i = 0; i < 20; i++) {
         const c = rnd(4);
         try { await env.DB.prepare('INSERT INTO classes(code,key_hash,subs,created_at,data) VALUES(?,?,0,?,?)').bind(c, await sha(k), now(), data).run(); return J({ ok: true, code: c, key: k }); } catch (e) {}
@@ -141,7 +170,7 @@ async function api(req, env, url) {
       return J({ ok: true, subs: c.subs, rows: r.results.map((x) => [x.cl, x.qid, x.opt, x.n]) });
     }
     if (path === '/api/class/save') {
-      let data; try { data = cleanCards(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); }
+      let data; try { data = cleanData(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); }
       await env.DB.prepare('UPDATE classes SET data=? WHERE code=?').bind(data, code).run();
       return J({ ok: true });
     }
