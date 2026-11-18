@@ -171,6 +171,25 @@ canvas{display:block;touch-action:none}
 .mtgo{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;gap:2px;pointer-events:none;z-index:3}.mtgo img{height:62px;width:auto;filter:drop-shadow(0 3px 3px #0008)}.mtgo span{font-size:30px;animation:mtbob 1.2s ease-in-out infinite}
 .mtD{position:absolute;inset:0;pointer-events:none;z-index:4;background:radial-gradient(circle at var(--x) var(--y),transparent 110px,rgba(8,4,0,.8) 300px);transition:opacity .6s}
 .mfc.hit{filter:drop-shadow(0 0 10px #ef4444) saturate(.4);animation:mtsh .35s}@keyframes mtsh{25%{transform:translate(-56%,-50%)}75%{transform:translate(-44%,-50%)}}
+.bzbg{position:absolute;inset:0;overflow:hidden}.bzsv{position:absolute;left:0;top:0;pointer-events:none}
+.bzb{position:absolute;left:0;right:0;bottom:0;height:64px;z-index:2;display:flex;align-items:center;justify-content:center;border-top:4px solid #0003}
+.bzl{font-family:inherit;font-weight:900;font-size:40px;letter-spacing:4px;color:#fff;text-shadow:0 3px 0 #0004;pointer-events:none}
+.bzpost{position:absolute;width:26px;height:18px;margin-left:-13px;background:linear-gradient(#475569,#0f172a);border-radius:5px;z-index:3;box-shadow:0 2px 0 #0006}
+.bzst,.bzen{position:absolute;transform:translate(-50%,-100%);z-index:3;font-size:50px;line-height:1;pointer-events:none;filter:drop-shadow(0 4px 3px #0005);margin-top:-6px}.bzst{margin-left:-62px}.bzen{margin-left:62px}
+.bzpulse{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;border:4px solid #4ade80;z-index:4;pointer-events:none;animation:bzpu 1.1s infinite}
+@keyframes bzpu{0%{transform:scale(.6);opacity:1}100%{transform:scale(1.7);opacity:0}}
+.bzr{position:absolute;pointer-events:none;z-index:6;border-radius:50%;transform:translate(-50%,-50%);box-sizing:border-box}
+.bzr.met{border:6px solid #cbd5e1;box-shadow:0 0 0 2px #475569,inset 0 0 0 2px #475569,0 5px 6px #0005}
+.bzr.met::after{content:'';position:absolute;left:calc(100% - 8px);top:calc(100% - 14px);width:15px;height:64px;border-radius:8px;background:linear-gradient(90deg,#334155,#020617);transform-origin:top;transform:rotate(-30deg);box-shadow:0 4px 5px #0005}
+.bzr.sea{border:9px solid #ef4444;background:radial-gradient(circle,transparent 62%,#ffffff22 63%);box-shadow:inset 0 0 0 3px #fff,0 0 0 3px #fff,0 6px 8px #0005}
+.bzr.sea::before{content:'';position:absolute;inset:-9px;border-radius:50%;background:conic-gradient(#fff 0 12%,transparent 0 25%,#fff 0 37%,transparent 0 50%,#fff 0 62%,transparent 0 75%,#fff 0 87%,transparent 0);-webkit-mask:radial-gradient(circle,transparent 62%,#000 64%);mask:radial-gradient(circle,transparent 62%,#000 64%)}
+.bzc{position:absolute;left:12px;top:10px;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:2px 12px;font-weight:900;z-index:7}
+.bzz{position:absolute;font-size:70px;transform:translate(-50%,-50%);pointer-events:none;z-index:8;font-style:normal;animation:bzup .7s forwards}
+@keyframes bzup{0%{transform:translate(-50%,-50%) scale(.4);opacity:1}100%{transform:translate(-50%,-120%) scale(1.5);opacity:0}}
+.bzf{animation:bzfl .5s}@keyframes bzfl{0%,100%{box-shadow:inset 0 0 0 0 #0000}25%{box-shadow:inset 0 0 130px 40px #ef4444cc}}
+.bzbub{position:absolute;bottom:-20px;font-style:normal;animation:bzbu linear infinite;opacity:.7}@keyframes bzbu{to{transform:translateY(-560px)}}
+.bzfs{position:absolute;font-style:normal;font-size:30px;animation:bzsw linear infinite;opacity:.8}@keyframes bzsw{from{transform:translateX(-80px)}to{transform:translateX(1100px)}}
+.bzcl{position:absolute;font-style:normal;font-size:60px;opacity:.9;animation:bzcd linear infinite}@keyframes bzcd{from{transform:translateX(-100px)}to{transform:translateX(1100px)}}
 </style>
 </head>
 <body>
@@ -206,13 +225,13 @@ GAMES.push(['lr','🔵','Αριστερό ή δεξί;','Δύο κουμπιά, 
  ['ball','🏓','Η μπάλα και η ρακέτα','10 επίπεδα, όλο και πιο δύσκολα'],['tunnel','🌀','Η σήραγγα','Οδηγώ το ποντίκι χωρίς να ακουμπήσω'],
  ['ballk','🏓','Η μπάλα και η ρακέτα (πλήκτρα)','Κινώ τη ρακέτα με ← και →'],['arw','↔️','Βελάκια: αντίδραση','Βελάκια, Enter και κενό'],['num','🔟','Αριθμοί στο πληκτρολόγιο','Ψηφία και προσθέσεις'],['pic','🖼️','Γράψε τη λέξη','Από την εικόνα στα γράμματα'],['ton2','🏝️','Λέξεις με τόνο','Θάλασσα και Κύπρος']);
 GAMES.push(['hoop','🏀','Το καλάθι','Κράτα το κενό και ρίξε τη μπάλα'],['tet','🧱','Τετράδια (Tetris)','Βελάκια και κενό'],['bbl','🎈','Μπαλόνια που σκάνε','Βελάκια και κενό: στόχευσε και ρίξε'],['pin','🕹️','Φλίπερ','Βελάκια για τα πτερύγια, κενό για την εκτόξευση'],['pac','🐟','Το ψαράκι και τα μαργαριτάρια','Βελάκια, σαν παλιό arcade'],['snk','🐍','Το φιδάκι','9 επίπεδα, εμπόδια και πόντοι'],['ship','🚀','Το διαστημόπλοιο','Βελάκια και κενό: πυροβολώ'],['hunt','🫧','Κυνήγι γραμμάτων','3 επίπεδα, 60 δευτερόλεπτα'],['rob','🤖','Το ρομπότ και τα αστεία δώρα','Φτιάξε αλγόριθμο και βρες τα αστεία δώρα'] );
-GAMES.push(['clk','🕒','Τι ώρα είναι;','Διάβασε το ρολόι'],['mfd','🍖','Ποιος τρώει τι;','Σύρε το φαγητό στον Μίλη ή στη Νάσα'],['mse','🧥','Ντύσε για την εποχή','Χειμώνας ή καλοκαίρι;'],['mrm','🏠','Το σπίτι του Μίλη','Σύρε κάθε πράγμα στο δωμάτιό του'],['mcl','🌈','Τα χρώματα της Νάσας','Σύρε κάθε πράγμα στο χρώμα του'],['mlt','🔤','Τα γράμματα του Μίλη','Σύρε τα γράμματα στη σειρά'],['mhd','🌳','Κρυφτό στον κήπο','Διπλό κλικ και βρες ποιος κρύβεται'],['mgf','🎁','Δώρα για τη Νάσα','Άνοιξε το δώρο με διπλό κλικ'],['mel','🛗','Το ασανσέρ του Μίλη','Διπλό κλικ στον σωστό όροφο'],['mnc','🧶','Κουβάρια για τη Νάσα','Πιάσε τα με διπλό κλικ'],['mwp','🧽','Ποιος κρύβεται στο τζάμι;','Καθάρισε το τζάμι με το ποντίκι'],['mfi','🔦','Στο σκοτάδι με τον φακό','Βρες κόκκαλα, φρίσμπι και λαγούς'],['msw','🧹','Καθαριότητα στον κήπο','Σκούπισε τα φύλλα στο καλάθι'],['mtp','🐾','Ο Μίλης πάει στη Νάσα','Ακολούθησε το μονοπάτι'],['mtn','🚇','Η σήραγγα του Μίλη','Οδήγησε τον Μίλη χωρίς να ακουμπήσεις'],['mnm','🐶','Ο Μίλης βρίσκει τη Νάσα','Οδήγησε τον Μίλη με το ποντίκι'],['cash','💶','Το ταμείο του Μίλη','Μάζεψε το σωστό ποσό']);
+GAMES.push(['clk','🕒','Τι ώρα είναι;','Διάβασε το ρολόι'],['mfd','🍖','Ποιος τρώει τι;','Σύρε το φαγητό στον Μίλη ή στη Νάσα'],['mse','🧥','Ντύσε για την εποχή','Χειμώνας ή καλοκαίρι;'],['mrm','🏠','Το σπίτι του Μίλη','Σύρε κάθε πράγμα στο δωμάτιό του'],['mcl','🌈','Τα χρώματα της Νάσας','Σύρε κάθε πράγμα στο χρώμα του'],['mlt','🔤','Τα γράμματα του Μίλη','Σύρε τα γράμματα στη σειρά'],['mhd','🌳','Κρυφτό στον κήπο','Διπλό κλικ και βρες ποιος κρύβεται'],['mgf','🎁','Δώρα για τη Νάσα','Άνοιξε το δώρο με διπλό κλικ'],['mel','🛗','Το ασανσέρ του Μίλη','Διπλό κλικ στον σωστό όροφο'],['mnc','🧶','Κουβάρια για τη Νάσα','Πιάσε τα με διπλό κλικ'],['mwp','🧽','Ποιος κρύβεται στο τζάμι;','Καθάρισε το τζάμι με το ποντίκι'],['mfi','🔦','Στο σκοτάδι με τον φακό','Βρες κόκκαλα, φρίσμπι και λαγούς'],['msw','🧹','Καθαριότητα στον κήπο','Σκούπισε τα φύλλα στο καλάθι'],['mtp','🐾','Ο Μίλης πάει στη Νάσα','Ακολούθησε το μονοπάτι'],['mbz','⚡','Το μπάζερ του Μίλη','Οδήγησε το δαχτυλίδι χωρίς να ακουμπήσεις'],['mtn','🚇','Η σήραγγα του Μίλη','Οδήγησε τον Μίλη χωρίς να ακουμπήσεις'],['mnm','🐶','Ο Μίλης βρίσκει τη Νάσα','Οδήγησε τον Μίλη με το ποντίκι'],['cash','💶','Το ταμείο του Μίλη','Μάζεψε το σωστό ποσό']);
 let cat='p',sub='',psub='',view='h';const UC={c:['#bfdbfe','#93c5fd'],d:['#fde68a','#fdba74'],g:['#bbf7d0','#86efac'],m:['#fbcfe8','#f9a8d4'],t:['#ddd6fe','#c4b5fd'],all:['#fff4c9','#ffd84a']},UNM={c:'Αριστερό και δεξί κλικ',d:'Διπλό κλικ',g:'Σύρω και αφήνω',m:'Κίνηση ποντικιού',t:'Πληκτρολόγηση',all:'Όλα τα παιχνίδια'};
 const CATS=[['c','🖱️','Αριστερό και δεξί κλικ'],['d','👆','Διπλό κλικ'],['g','✋','Σύρω και αφήνω'],['m','🎯','Κίνηση ποντικιού'],['t','⌨️','Πληκτρολόγηση'],['p','🐶','Ο Μίλης και η Νάσα']];
 const SUBS=[['','Όλα'],['k','Κινήσεις'],['n','Αριθμοί'],['g','Γράμματα'],['t','Τονισμός']];
-const CAT={bub:'c',rgt:'c',lr:'c',fish:'c',shoot:'c',mem:'c',dif:'c',dbl:'d',fld:'d',crab:'d',chest:'d',drag:'g',dnd:'g',shd:'pc',clk:'pc',mfd:'pg',mse:'pg',mrm:'pg',mcl:'pg',mlt:'pg',mhd:'pd',mgf:'pd',mel:'pd',mnc:'pd',mwp:'pm',mfi:'pm',msw:'pm',mtp:'pm',mtn:'pm',mnm:'pm',cash:'pc',hng:'pt',drs:'pc',wrk:'pc',wrk2:'pc',dot:'cp',bone:'cp',ltr:'tp',hid:'cp',maze:'pc',seq:'pc',col:'cp',mem2:'cp',who:'pc',stg:'pc',mol:'dp',pia:'dp',dig:'dp',wak:'dp',pcd:'dp',chs:'tp',mbx:'tp',sqn:'tp',rom:'pg',net:'g',wrd:'g',puz:'g',ball:'m',tunnel:'m',whl:'m',ballk:'t',pac:'t',pin:'tp',bbl:'t',tet:'t',hoop:'t',snk:'t',ship:'t',hunt:'t',rob:'t',arr:'t',jmp:'t',arw:'t',cnt:'t',num:'t',typ:'t',cap:'t',fil:'t',pic:'t',exp:'t',ton:'t',ton2:'t'};
+const CAT={bub:'c',rgt:'c',lr:'c',fish:'c',shoot:'c',mem:'c',dif:'c',dbl:'d',fld:'d',crab:'d',chest:'d',drag:'g',dnd:'g',shd:'pc',clk:'pc',mfd:'pg',mse:'pg',mrm:'pg',mcl:'pg',mlt:'pg',mhd:'pd',mgf:'pd',mel:'pd',mnc:'pd',mwp:'pm',mfi:'pm',msw:'pm',mtp:'pm',mtn:'pm',mbz:'pm',mnm:'pm',cash:'pc',hng:'pt',drs:'pc',wrk:'pc',wrk2:'pc',dot:'cp',bone:'cp',ltr:'tp',hid:'cp',maze:'pc',seq:'pc',col:'cp',mem2:'cp',who:'pc',stg:'pc',mol:'dp',pia:'dp',dig:'dp',wak:'dp',pcd:'dp',chs:'tp',mbx:'tp',sqn:'tp',rom:'pg',net:'g',wrd:'g',puz:'g',ball:'m',tunnel:'m',whl:'m',ballk:'t',pac:'t',pin:'tp',bbl:'t',tet:'t',hoop:'t',snk:'t',ship:'t',hunt:'t',rob:'t',arr:'t',jmp:'t',arw:'t',cnt:'t',num:'t',typ:'t',cap:'t',fil:'t',pic:'t',exp:'t',ton:'t',ton2:'t'};
 const SUB={chs:'k',sqn:'k',mbx:'g',ltr:'g',ballk:'k',rob:'k',hunt:'g',pac:'k',hng:'g',pin:'k',bbl:'k',tet:'k',hoop:'k',snk:'k',ship:'k',arr:'k',jmp:'k',arw:'k',cnt:'n',num:'n',typ:'ng',cap:'g',fil:'g',pic:'g',exp:'g',ton:'t',ton2:'t'};
-const SCN={drs:['#fbcfe8','#c4b5fd','dc','👗👒🕶️'],rom:['#fde68a','#fdba74','dc','🛋️🖼️🪴'],shd:['#cbd5e1','#94a3b8','d','🌗❓🐾'],mnm:['#bbf7d0','#fde047','dc','🦴🐝🌼'],mfd:['#fed7aa','#e9d5ff','dc','🦴🐟🥛'],mse:['#bfdbfe','#fef08a','dc','🧣🩳☀️'],mrm:['#fef9c3','#bae6fd','dc','🛏️🍳🛁'],mcl:['#fdf2f8','#bbf7d0','dc','🍎🍌🥒'],mlt:['#fef9c3','#fed7aa','dc','🔤🅰️✏️'],mhd:['#bae6fd','#86efac','dc','🌳🐛🌳'],mgf:['#fdf2f8','#e9d5ff','dc','🎁🧶🐟'],mel:['#e0f2fe','#fef9c3','dc','🛗🔢⬆️'],mnc:['#fdf2f8','#d6a56b','dc','🧶🧶🧶'],mwp:['#7dd3fc','#2563eb','dc','🧽🫧🐶'],mfi:['#0b1033','#14532d','dc','🔦🥏🐰'],msw:['#bbf7d0','#4ade80','dc','🧹🍂🧺'],mtp:['#fff3c4','#ffd9a0','dc','🐾🦴〰️'],mtn:['#cbd5e1','#94a3b8','dc','🚇🐶🐱'],clk:['#bae6fd','#a5b4fc','c','🕒⏰🕕'],cash:['#bbf7d0','#fde047','d','💶🪙🧾'],hng:['#fed7aa','#fda4af','c','🔤🪢❓'],wrk:['#bfdbfe','#fcd34d','d','🔧🚗⚙️'],wrk2:['#fecaca','#fde68a','dc','🏎️🔧🛞'],dot:['#ddd6fe','#fbcfe8','c','✏️1️⃣⭐'],bone:['#fde68a','#fdba74','d','🦴🦴🦴'],ltr:['#e9d5ff','#fbcfe8','c','✉️🅰️📮'],hid:['#a7f3d0','#67e8f9','dc','🔍❓🌳'],seq:['#e0e7ff','#bae6fd','d','1️⃣2️⃣3️⃣'],col:['#fef08a','#fda4af','dc','🎨🖌️🖍️'],mem2:['#c7d2fe','#f5d0fe','dc','🃏❓⭐'],who:['#fde2e4','#d8b4fe','dc','🙈❓👀'],mbx:['#fbcfe8','#bae6fd','c','📮✉️🔤'],sqn:['#d9f99d','#fdba74','c','🌰🐿️🌳'],dig:['#fcd9a8','#a3e635','d','🦴⛏️🕳️'],wak:['#c7d2fe','#fbcfe8','dc','😴💤⏰'],pcd:['#bae6fd','#c4b5fd','c','🖥️🖱️⌨️'],mol:['#d9f99d','#fdba74','d','🐹🔨🕳️'],pia:['#e9d5ff','#bfdbfe','d','🎹🎵🎶'],stg:['#bfdbfe','#a5b4fc','dc','🛡️🌐✅'],pin:['#fda4af','#c4b5fd','dc','🕹️⚪⭐']};
+const SCN={drs:['#fbcfe8','#c4b5fd','dc','👗👒🕶️'],rom:['#fde68a','#fdba74','dc','🛋️🖼️🪴'],shd:['#cbd5e1','#94a3b8','d','🌗❓🐾'],mnm:['#bbf7d0','#fde047','dc','🦴🐝🌼'],mfd:['#fed7aa','#e9d5ff','dc','🦴🐟🥛'],mse:['#bfdbfe','#fef08a','dc','🧣🩳☀️'],mrm:['#fef9c3','#bae6fd','dc','🛏️🍳🛁'],mcl:['#fdf2f8','#bbf7d0','dc','🍎🍌🥒'],mlt:['#fef9c3','#fed7aa','dc','🔤🅰️✏️'],mhd:['#bae6fd','#86efac','dc','🌳🐛🌳'],mgf:['#fdf2f8','#e9d5ff','dc','🎁🧶🐟'],mel:['#e0f2fe','#fef9c3','dc','🛗🔢⬆️'],mnc:['#fdf2f8','#d6a56b','dc','🧶🧶🧶'],mwp:['#7dd3fc','#2563eb','dc','🧽🫧🐶'],mfi:['#0b1033','#14532d','dc','🔦🥏🐰'],msw:['#bbf7d0','#4ade80','dc','🧹🍂🧺'],mtp:['#fff3c4','#ffd9a0','dc','🐾🦴〰️'],mtn:['#cbd5e1','#94a3b8','dc','🚇🐶🐱'],mbz:['#bae6fd','#bbf7d0','dc','⚡🐶🐱'],clk:['#bae6fd','#a5b4fc','c','🕒⏰🕕'],cash:['#bbf7d0','#fde047','d','💶🪙🧾'],hng:['#fed7aa','#fda4af','c','🔤🪢❓'],wrk:['#bfdbfe','#fcd34d','d','🔧🚗⚙️'],wrk2:['#fecaca','#fde68a','dc','🏎️🔧🛞'],dot:['#ddd6fe','#fbcfe8','c','✏️1️⃣⭐'],bone:['#fde68a','#fdba74','d','🦴🦴🦴'],ltr:['#e9d5ff','#fbcfe8','c','✉️🅰️📮'],hid:['#a7f3d0','#67e8f9','dc','🔍❓🌳'],seq:['#e0e7ff','#bae6fd','d','1️⃣2️⃣3️⃣'],col:['#fef08a','#fda4af','dc','🎨🖌️🖍️'],mem2:['#c7d2fe','#f5d0fe','dc','🃏❓⭐'],who:['#fde2e4','#d8b4fe','dc','🙈❓👀'],mbx:['#fbcfe8','#bae6fd','c','📮✉️🔤'],sqn:['#d9f99d','#fdba74','c','🌰🐿️🌳'],dig:['#fcd9a8','#a3e635','d','🦴⛏️🕳️'],wak:['#c7d2fe','#fbcfe8','dc','😴💤⏰'],pcd:['#bae6fd','#c4b5fd','c','🖥️🖱️⌨️'],mol:['#d9f99d','#fdba74','d','🐹🔨🕳️'],pia:['#e9d5ff','#bfdbfe','d','🎹🎵🎶'],stg:['#bfdbfe','#a5b4fc','dc','🛡️🌐✅'],pin:['#fda4af','#c4b5fd','dc','🕹️⚪⭐']};
 const ico2=k=>{const [a,b,w,t]=SCN[k],em=[...new Intl.Segmenter('el',{granularity:'grapheme'}).segment(t)].map(x=>x.segment);const both=w==='dc';
 const P=both?[[16,6,28],[72,2,32],[128,8,28]]:[[96,10,32],[136,40,28],[98,60,28]];
 const fc=(f,css)=>`<img src="${f}" alt="" style="position:absolute;width:auto;${css}">`;
@@ -436,6 +455,59 @@ G.mfi=(ar,T)=>{
  build();
  return MCL(ar,stop,()=>{alive=false;clearTimeout(tm)})};
 
+const BUZ=(ar,T,cfg)=>{
+ const W=ar.clientWidth,H=ar.clientHeight,bt=H-64,sx=W*.14,ex=W*.86,LV=cfg.levels,NL=LV.length;
+ let alive=true,L=0,fails=0,st='wait',idx=0,S=[],tm=0,lastFail=0;ar.style.cursor='none';ar.style.touchAction='none';
+ const cr=(p0,p1,p2,p3,t)=>{const t2=t*t,t3=t2*t;return[0,1].map(k=>.5*((2*p1[k])+(-p0[k]+p2[k])*t+(2*p0[k]-5*p1[k]+4*p2[k]-p3[k])*t2+(-p0[k]+3*p1[k]-3*p2[k]+p3[k])*t3))};
+ const mkPath=C=>{const q=[[sx,bt],[sx,bt-60]];C.pts.forEach(([x,y])=>q.push([sx+30+(x-.12)/.76*(ex-sx-60),y*H]));q.push([ex,bt-60],[ex,bt]);
+  const raw=[];for(let i=0;i<q.length-1;i++)for(let s=0;s<20;s++)raw.push(cr(q[i-1]||q[i],q[i],q[i+1],q[i+2]||q[i+1],s/20));raw.push(q[q.length-1]);
+  const out=[raw[0]];let acc=0;for(let i=1;i<raw.length;i++){const d=Math.hypot(raw[i][0]-raw[i-1][0],raw[i][1]-raw[i-1][1]);acc+=d;if(acc>=3){out.push(raw[i]);acc=0}}out.push(raw[raw.length-1]);return out};
+ const build=()=>{const C=LV[L];S=mkPath(C);idx=0;st='wait';
+  const d='M'+S.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L');
+  ar.innerHTML=`<div class="bzbg" style="background:${cfg.bg}">${cfg.deco||''}</div>
+   <svg class="bzsv" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><defs><linearGradient id="bzg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fcd9b0"/><stop offset=".45" stop-color="#d9824a"/><stop offset="1" stop-color="#8a4a22"/></linearGradient></defs>
+   <path d="${d}" fill="none" stroke="#00000030" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" transform="translate(3,5)"/>
+   <path id="bzp" d="${d}" fill="none" stroke="#6b3412" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="${d}" fill="none" stroke="url(#bzg)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="${d}" fill="none" stroke="#fff3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(-1.5,-2)"/>
+   <polyline id="bzpr" fill="none" stroke="#4ade80" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".95" style="filter:drop-shadow(0 0 5px #22c55e)"/></svg>
+   <div class="bzb" style="${cfg.baseCss}"><span class="bzl">${cfg.label}</span></div>
+   <i class="bzpost" style="left:${sx}px;top:${bt-9}px"></i><i class="bzpost" style="left:${ex}px;top:${bt-9}px"></i>
+   <div class="bzst" style="left:${sx}px;top:${bt-6}px">${cfg.a}</div><div class="bzen" style="left:${ex}px;top:${bt-6}px">${cfg.b}</div>
+   <i class="bzpulse" id="bzpu" style="left:${sx}px;top:${bt-30}px"></i>
+   <span class="bzc" id="bzc">Επίπεδο ${L+1}/${NL}</span>
+   <div class="bzr ${cfg.ring}" id="bzr" style="width:${C.r*2}px;height:${C.r*2}px;left:-99px;top:-99px"></div>`;
+  T(L?`Επίπεδο ${L+1}: ${C.t||'Λίγο πιο δύσκολο!'}`:cfg.t)};
+ const R=()=>LV[L].r,clear=()=>R()-6.5;
+ const move=e=>{if(!alive||st==='done')return;const[mx,my]=MPT(ar,e);const rg=$('#bzr');if(!rg)return;rg.style.left=mx+'px';rg.style.top=my+'px';
+  if(st==='wait'){if(Math.hypot(mx-S[0][0],my-S[0][1])<R()){st='run';idx=0;$('#bzpu').style.display='none';T('Πάμε! Μην ακουμπήσεις το σύρμα… 🤫');beep(520,.08)}return}
+  if(st!=='run')return;
+  let bi=-1,bd=1e9;const a=Math.max(0,idx-130),b=Math.min(S.length-1,idx+130);
+  for(let i=a;i<=b;i++){const d=Math.hypot(mx-S[i][0],my-S[i][1]);if(d<bd){bd=d;bi=i}}
+  if(bd>clear()){fail(mx,my);return}
+  if(bi>idx){idx=bi;$('#bzpr').setAttribute('points',S.slice(0,idx+1).filter((p,i)=>i%2==0||i===idx).map(p=>p[0].toFixed(0)+','+p[1].toFixed(0)).join(' '))}
+  if(idx>=S.length-8){st='done';win1()}};
+ const fail=(x,y)=>{const n=performance.now();if(n-lastFail<500)return;lastFail=n;fails++;st='wait';idx=0;
+  beep(110,.35,'sawtooth');setTimeout(()=>beep(95,.25,'square'),120);
+  ar.classList.remove('bzf');void ar.offsetWidth;ar.classList.add('bzf');
+  const z=document.createElement('i');z.className='bzz';z.textContent='⚡';z.style.left=x+'px';z.style.top=y+'px';ar.appendChild(z);setTimeout(()=>z.remove(),700);
+  $('#bzpr').setAttribute('points','');$('#bzpu').style.display='';
+  T('Μπζζζτ! ⚡ Γύρνα στην αρχή και ξαναδοκίμασε!')};
+ const win1=()=>{ok();burst(innerWidth/2,innerHeight/2,['✨','⭐','🌟']);
+  if(L>=NL-1){alive=false;const s=fails<=3?3:fails<=8?2:1;tm=setTimeout(()=>win(cfg.id,s,()=>play(cfg.id)),800)}
+  else{T(`Μπράβο! Έφτασες! ${cfg.b.replace(/<[^>]*>/g,'')} Επίπεδο ${L+1} τελείωσε!`);tm=setTimeout(()=>{if(!alive)return;L++;build()},1300)}};
+ const tx=$('#tip');if(tx){tx.style.minHeight='3.3em';tx.style.display='flex';tx.style.alignItems='center';tx.style.justifyContent='center'}
+ ar.onpointermove=move;build();
+ return MCL(ar,()=>{alive=false;clearTimeout(tm);if(tx){tx.style.minHeight='';tx.style.display='';tx.style.alignItems='';tx.style.justifyContent=''}})};
+G.mbz=(ar,T)=>{const cl=[['☁️',20,60],['☁️',70,90],['☁️',40,75]].map(([e,t,d],i)=>`<i class="bzcl" style="top:${t+i*15}px;animation-duration:${d}s;animation-delay:-${i*25}s">${e}</i>`).join('');
+ const gr=[['🌳',3],['🌷',22],['🌼',41],['🌷',60],['🌼',78],['🌳',92]].map(([e,l])=>`<i style="position:absolute;bottom:62px;left:${l}%;font-size:${e==='🌳'?64:30}px;font-style:normal;opacity:.9">${e}</i>`).join('');
+ return BUZ(ar,T,{id:'mbz',bg:'linear-gradient(#bae6fd,#e0f2fe 62%,#bbf7d0)',deco:cl+gr,baseCss:'background:linear-gradient(#3b82f6,#1d4ed8);',label:'ΜΠΖΖΖ!',ring:'met',a:DOGI(62),b:CATI(62),
+ t:'Φέρε το δαχτυλίδι από τον Μίλη στη Νάσα χωρίς να ακουμπήσεις το σύρμα! Ξεκίνα από τον πράσινο κύκλο.',
+ levels:[{r:26,pts:[[.18,.45],[.3,.45],[.35,.2],[.5,.2],[.55,.5],[.7,.5],[.8,.3]],t:'Μια ευκολούλα βόλτα.'},
+ {r:23,pts:[[.14,.55],[.2,.3],[.3,.3],[.36,.15],[.42,.3],[.5,.62],[.58,.62],[.62,.3],[.76,.3],[.8,.55],[.88,.55]],t:'Όπως το αληθινό μπάζερ!'},
+ {r:21,pts:[[.12,.2],[.3,.2],[.3,.6],[.5,.6],[.5,.2],[.7,.2],[.7,.6],[.88,.6]],t:'Ζιγκ-ζαγκ στον κήπο.'},
+ {r:19,pts:[[.2,.55],[.35,.15],[.5,.5],[.35,.62],[.28,.4],[.55,.2],[.75,.45],[.65,.62],[.8,.2],[.88,.45]],t:'Με θηλιές και στροφές!'},
+ {r:17,pts:[[.1,.15],[.2,.6],[.3,.15],[.4,.6],[.5,.15],[.6,.6],[.7,.15],[.8,.6],[.88,.3]],t:'Το μεγάλο τελικό! Αργά και σταθερά…'}]})};
 G.msw=(ar,T)=>{const N=14,LV=['🍂','🍁','🍃'];let alive=true,got=0,mx=-999,my=-999,pmx=-999,pmy=-999,lv=[];const W=ar.clientWidth,H=ar.clientHeight;ar.style.cursor='none';
  ar.innerHTML=`<div class="mgr"></div><div class="mbin"><span>🧺</span></div><span class="mcnt" id="mct">🍂 0/${N}</span><i class="mtk" id="mbm" style="font-size:54px">🧹</i>`;
  for(let i=0;i<N;i++){const el=document.createElement('i');el.className='mit';el.textContent=LV[i%3];const o={el,x:40+Math.random()*(W-260),y:50+Math.random()*(H-100),vx:0,vy:0,d:0};ar.appendChild(el);lv.push(o)}
