@@ -136,7 +136,7 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 .am .ft button{font:inherit;font-weight:700;cursor:pointer;background:var(--paper);color:var(--tx);border:3px solid var(--line);border-radius:12px;padding:6px 12px}
 .am .ck{display:flex;gap:8px;align-items:flex-start;font-weight:500;margin-top:12px}
 .am .ck input{margin-top:5px;width:20px;height:20px;flex:none}
-.hook{display:flex;gap:18px;align-items:center;background:#fff;border:4px solid #1a1446;border-radius:22px;box-shadow:6px 6px 0 #1a1446;padding:14px;margin-bottom:8px;flex-wrap:wrap}.hook img{width:min(480px,100%);height:auto;border-radius:14px;border:3px solid #1a1446;background:#eee}.hkt{flex:1;min-width:220px}.hkt b{display:block;font-size:1.25em;margin-bottom:6px}.hkt small{font-size:1em;color:#5a4f8a;line-height:1.4}
+.hook{flex:0 0 100%;display:flex;justify-content:center;margin-bottom:4px}.hook img{width:min(480px,100%);height:auto;border-radius:20px;border:4px solid #1a1446;box-shadow:6px 6px 0 #1a1446;background:#eee}.hkt{flex:1;min-width:220px}.hkt b{display:block;font-size:1.25em;margin-bottom:6px}.hkt small{font-size:1em;color:#5a4f8a;line-height:1.4}
 </style></head><body>
 <header><div class="wrap"><a class="logo" href="#top" onclick="show('home')" aria-label="DigiKidsEdu">
 <svg viewBox="0 0 40 40" aria-hidden="true"><rect x="3" y="3" width="34" height="34" rx="9" fill="#3d5afe" stroke="#1a1446" stroke-width="3"/><path d="M13 10 L13 29 L18 24.5 L21.5 31 L25 29.5 L21.8 23.2 L28 23 Z" fill="#ffd23f" stroke="#1a1446" stroke-width="2.4" stroke-linejoin="round"/></svg>
@@ -204,7 +204,7 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 <div style="display:flex;gap:14px;flex-wrap:wrap"><a class="cta" href="https://olagiatondaskalo.weebly.com/" target="_blank" rel="noopener">Όλα για τον δάσκαλο ↗</a></div></div></div></div></div>
 
 <footer><svg viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V11H69V7H165V16H245V8H300V6H351V16H436V33H504V29H602V5H666V20H750V15H817V28H878V30H934V12H997V34H1106V4H1200V24V60z" fill="#241b5e"/><path d="M0 60V38H94V36H175V39H272V41H343V40H452V46H543V35H634V45H729V32H859V39H919V39H1052V39H1177V36H1200V43V60z" fill="#3d5afe" opacity=".7"/></svg>
-<div class="wrap"><b>DigiKidsEdu</b><button class="accbtn" id="instBtn" onclick="instOpen()" style="font-size:14px;padding:4px 10px">📲 Εφαρμογή</button><span style="opacity:.7;font-size:14px">Έκδοση 19/11/2026 22:52</span><span>Δημιουργός: <a href="about.html" id="aboutLink" target="_blank" rel="noopener" style="font-weight:800;text-decoration:underline">Μιχάλης Αλεξόπουλος</a></span></div></footer>
+<div class="wrap"><b>DigiKidsEdu</b><button class="accbtn" id="instBtn" onclick="instOpen()" style="font-size:14px;padding:4px 10px">📲 Εφαρμογή</button><span style="opacity:.7;font-size:14px">Έκδοση 19/11/2026 22:59</span><span>Δημιουργός: <a href="about.html" id="aboutLink" target="_blank" rel="noopener" style="font-weight:800;text-decoration:underline">Μιχάλης Αλεξόπουλος</a></span></div></footer>
 
 <div class="am" id="amodal" role="dialog" aria-modal="true" aria-labelledby="amt"><div class="bx">
 <button class="x" onclick="accClose()">✕</button><h3 id="amt">Σύνδεση</h3>
@@ -280,7 +280,7 @@ function drawHome(){document.getElementById('thg').innerHTML=THEMES.map(([n,ic,c
 function fitGrid(){const e=document.getElementById('g');if(!e)return;const w=e.clientWidth;if(w)e.style.setProperty('--n',Math.max(1,Math.floor((w+26)/296)))}
 window.addEventListener('resize',fitGrid);
 const HK={'Γεωγραφία':'geo','Ιστορία':'his','Μυθολογία':'myt','Ελληνικά':'ell','Περιβαλλοντική Εκπαίδευση':'per','Φυσικές Επιστήμες':'fys'};
-function HOOK(){if(th!='Διαθεματικές ενότητες'||!sb||!HK[sb])return '';return `<div class="hook" style="grid-column:1/-1"><img src="gif/afor_${HK[sb]}.gif" alt="Αφορμή: ${sb}" width="480" height="270" loading="lazy"><div class="hkt"><b>🎬 Αφορμή για το μάθημα</b><small>Δείξε το στην τάξη και ρώτησε: τι βλέπετε; τι σας έρχεται στο μυαλό; Μετά διάλεξε μια εφαρμογή.</small></div></div>`}
+function HOOK(){if(th!='Διαθεματικές ενότητες'||!sb||!HK[sb])return '';return `<div class="hook" style="grid-column:1/-1"><img src="gif/afor_${HK[sb]}.gif" alt="Αφορμή: ${sb}" width="480" height="270" loading="lazy"></div>`}
 function draw(){
  document.getElementById('home').style.display=view=='home'?'':'none';document.getElementById('games').style.display=view=='home'?'none':'';const T=view=='th';document.getElementById('mintro').innerHTML=(T&&th=='Μίλης και Νάσα')?MINTRO():'';keys.style.display=document.getElementById('cats').style.display=T?'none':'';bk.style.display=T?'':'none';gh.textContent=T?(sb?th+' · '+(sb=='*'?'Όλες οι εφαρμογές':sb):th):'Ποια τάξη είσαι;';gs.textContent=T?'Διάλεξε εφαρμογή και παίξε.':'Πάτα το πλήκτρο της τάξης σου και δες τα παιχνίδια σου.';if(view=='home')drawHome();
  keys.innerHTML=KEYS.map(([v,l,s,c])=>`<button class="key ${v==kl?'on':''}" style="--c:${c}" aria-pressed="${v==kl}" onclick="kl='${v}';cat='Όλα';show('all')"><b>${l}</b><small>${s}</small></button>`).join('');
