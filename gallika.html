@@ -69,6 +69,10 @@ ul{padding-left:22px}li{margin:3px 0}
 .sbb{background:#2742c9;color:#fff}.sbr{background:#e63946;color:#fff}.sbw{background:#fff;color:#1a1446}
 .sbb h2,.sbr h2{color:#fff;text-shadow:0 2px 0 #1a144666}.sbw h2{color:#10306b}
 @media(max-width:560px){.sb{min-height:110px}.sb svg{width:58%;height:100%}.sb .tx{max-width:46%;padding:12px 14px}.sb h2{font-size:22px}.sb p{font-size:13px}}
+.sec{padding:0!important}.sec>.sb{margin:0!important;border-bottom:0!important;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:filter .15s}.sec>.sb:hover{filter:brightness(1.06)}.sec>.sb:focus-visible{outline:4px solid var(--sun);outline-offset:-4px}
+.sec.open>.sb{border-bottom:4px solid var(--line)!important}.bd{padding:0 18px 18px}.sec:not(.open)>.bd{display:none}
+.sb::after{content:"";position:absolute;left:18px;bottom:12px;z-index:2;display:none}
+.chev{position:absolute;right:12px;bottom:10px;z-index:2;width:34px;height:34px;border-radius:50%;background:#fff;border:3px solid #1a1446;display:grid;place-items:center;transition:transform .2s}.chev::before{content:"";width:10px;height:10px;border:solid #1a1446;border-width:0 3px 3px 0;transform:translateY(-2px) rotate(45deg)}.sec.open .chev{transform:rotate(180deg)}
 </style>
 <style>
 .hero{position:relative;overflow:hidden;background:var(--card);border:5px solid var(--line);border-radius:28px;box-shadow:9px 9px 0 var(--line);padding:26px 24px 26px 34px;margin:6px 0 10px}
@@ -160,4 +164,10 @@ N.forEach(([n,f,p])=>{const b=ce(`<span class="e">${n}</span><b>${f}</b><span cl
 const G=document.getElementById('games');
 GAMES.forEach(g=>{const a=document.createElement('a');a.className='gm';a.href=g.href;a.innerHTML=`<div class="ico" style="background:${g.bg}">${g.ico}</div><b>${g.t}</b><span class="mu">${g.d}</span>`;G.appendChild(a)});
 if(!GAMES.length)G.innerHTML='<div class="soon" style="grid-column:1/-1"><div class="e">🎲</div><b>Σύντομα το πρώτο παιχνίδι!</b></div>';
+</script><script>
+document.querySelectorAll('.sec').forEach(function(sec){var sb=sec.querySelector('.sb');if(!sb)return;var bd=document.createElement('div');bd.className='bd';while(sb.nextSibling)bd.appendChild(sb.nextSibling);sec.appendChild(bd);
+var c=document.createElement('span');c.className='chev';c.setAttribute('aria-hidden','true');sb.appendChild(c);
+sb.setAttribute('role','button');sb.tabIndex=0;sb.setAttribute('aria-expanded','false');
+function t(){var o=sec.classList.toggle('open');sb.setAttribute('aria-expanded',o)}
+sb.addEventListener('click',t);sb.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
 </script></body></html>
