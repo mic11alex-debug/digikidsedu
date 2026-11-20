@@ -79,21 +79,53 @@ ul{padding-left:22px}li{margin:3px 0}
 .gm{display:flex;flex-direction:column;background:var(--card);border:4px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 6px 0 var(--line);text-decoration:none;color:var(--tx)}
 .gm .ico{width:64px;height:64px;border-radius:18px;border:3px solid var(--line);display:grid;place-items:center;font-size:38px;margin-bottom:8px}
 .stripe{height:14px;border:3px solid var(--line);border-radius:99px;margin:18px 0 0;background:linear-gradient(90deg,#2742c9 0 33.3%,#fff 33.3% 66.6%,#e63946 66.6%)}
+
+:root{--paper:#8fcbe6;--dot:#a9d9ee;--tx:#1a1446;--card:#fff;--mu:#44407a;--line:#1a1446}
+@media(prefers-color-scheme:dark){:root{--paper:#8fcbe6;--dot:#a9d9ee;--tx:#1a1446;--card:#fff;--mu:#44407a;--line:#1a1446;--code:#efeaff}.fc b{color:#2742c9}}
+body{background-image:radial-gradient(#b7e0f2 2px,transparent 2.5px)}
+h2{color:#10306b}.lead{color:#26407a}
+.ban{position:relative;border:5px solid var(--line);border-radius:28px;box-shadow:9px 9px 0 var(--line);overflow:hidden;margin:6px 0 10px;background:#9fd6ee}
+.ban svg{display:block;width:100%;height:auto}
+.ban .cap{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,rgba(16,48,107,.0));padding:0}
+.tt{background:#fff;border:4px solid var(--line);border-radius:22px;box-shadow:0 6px 0 var(--line);padding:14px 20px;margin:14px 0 0;text-align:center}
+.tt h1{margin:0;font-size:clamp(28px,5.5vw,48px);color:#1a1446}.tt p{margin:4px 0 0;color:var(--mu);font-size:clamp(16px,2.6vw,19px)}
+.sec{background:rgba(255,255,255,.92);border:4px solid var(--line);border-radius:24px;box-shadow:0 6px 0 var(--line);padding:6px 18px 18px;margin:20px 0}
+.sec h2{margin-top:14px}
 </style></head><body>
 <div class="wrap"><a class="back" href="/" id="backLink">← Πίσω στα παιχνίδια</a>
-<div class="hero"><span class="fl" aria-hidden="true">🇫🇷</span><div class="bub">Bonjour !</div><h1>Εδώ μαθαίνουμε Γαλλικά</h1><p>Πρώτες λέξεις με προφορά, αριθμοί και παιχνίδια. Πάτα πάνω στις κάρτες και άκουσε πώς λέγονται!</p></div>
-
+<div class="ban"><svg viewBox="0 0 1000 380" role="img" aria-label="Παρίσι: Πύργος του Άιφελ, μπαγκέτα, κρουασάν, μπερές, μουστάκι και γαλλική σημαία">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fc4e8"/><stop offset="1" stop-color="#bfe6f5"/></linearGradient></defs>
+<rect width="1000" height="380" fill="url(#sk)"/>
+<g fill="#fff" opacity=".85"><ellipse cx="170" cy="70" rx="70" ry="24"/><ellipse cx="215" cy="58" rx="48" ry="22"/><ellipse cx="820" cy="300" rx="90" ry="26"/><ellipse cx="880" cy="285" rx="50" ry="22"/><ellipse cx="640" cy="60" rx="60" ry="20"/></g>
+<!-- Eiffel -->
+<g stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M500 18V72"/><path d="M492 72L486 140M508 72L514 140"/><path d="M476 140H524M478 150H522"/><path d="M486 150L466 250M514 150L534 250"/><path d="M452 250H548M454 260H546"/><path d="M466 260Q440 320 418 366M534 260Q560 320 582 366"/><path d="M446 366Q500 270 554 366"/><path d="M488 150L514 150M476 200H524M470 232L530 232" stroke-width="3"/><path d="M486 150L524 200M514 150L476 200M476 200L530 232M524 200L470 232" stroke-width="2.5"/></g>
+<!-- bubble -->
+<g><path d="M70 40Q70 18 100 18H300Q335 18 335 55V105Q335 140 300 140H210L175 170L180 140H105Q70 140 70 105Z" fill="#fff" stroke="#1a1446" stroke-width="4"/><text x="202" y="72" text-anchor="middle" font-family="'Segoe Script','Brush Script MT','Comic Sans MS',cursive" font-size="34" font-weight="700" fill="#e0345a">Parlez-vous</text><text x="202" y="112" text-anchor="middle" font-family="'Segoe Script','Brush Script MT','Comic Sans MS',cursive" font-size="34" font-weight="700" fill="#e0345a">français ?</text></g>
+<!-- beret -->
+<g transform="translate(810 52) rotate(8)"><ellipse cx="0" cy="0" rx="100" ry="46" fill="#1d4fa3" stroke="#1a1446" stroke-width="4"/><path d="M-4 -46Q0 -64 6 -46" fill="none" stroke="#1a1446" stroke-width="5" stroke-linecap="round"/></g>
+<!-- flag -->
+<g transform="translate(655 150) rotate(-3)" stroke="#1a1446" stroke-width="4"><rect width="52" height="64" fill="#2742c9"/><rect x="52" width="52" height="64" fill="#fff"/><rect x="104" width="52" height="64" fill="#e63946"/></g>
+<!-- moustache -->
+<g transform="translate(790 255)" fill="#1a1446"><path d="M0 8Q-20 -18 -60 -6Q-90 2 -100 -14Q-96 22 -50 20Q-20 18 0 8ZM0 8Q20 -18 60 -6Q90 2 100 -14Q96 22 50 20Q20 18 0 8Z"/></g>
+<!-- baguettes -->
+<g transform="translate(40 330) rotate(-48)"><rect x="0" y="0" width="230" height="46" rx="23" fill="#e9a84c" stroke="#1a1446" stroke-width="4"/><g stroke="#b9772a" stroke-width="5" stroke-linecap="round"><path d="M40 12L58 34M90 12L108 34M140 12L158 34M190 12L208 34"/></g></g>
+<g transform="translate(96 352) rotate(-52)"><rect x="0" y="0" width="210" height="42" rx="21" fill="#f0b95e" stroke="#1a1446" stroke-width="4"/><g stroke="#b9772a" stroke-width="5" stroke-linecap="round"><path d="M36 10L52 30M84 10L100 30M132 10L148 30M170 10L184 30"/></g></g>
+<!-- croissant -->
+<g transform="translate(300 285)" fill="#e9893a" stroke="#1a1446" stroke-width="4"><ellipse transform="translate(-78 14) rotate(-55)" rx="26" ry="17"/><ellipse transform="translate(78 14) rotate(55)" rx="26" ry="17"/><ellipse transform="translate(-44 -6) rotate(-28)" rx="32" ry="22"/><ellipse transform="translate(44 -6) rotate(28)" rx="32" ry="22"/><ellipse transform="translate(0 -14)" rx="36" ry="26"/><g fill="none" stroke="#b85f1c" stroke-width="4" stroke-linecap="round"><path d="M-62 -14Q-56 -2 -62 8M-24 -32Q-18 -18 -24 -6M24 -32Q18 -18 24 -6M62 -14Q56 -2 62 8"/></g></g>
+</svg></div>
+<div class="tt"><h1>Εδώ μαθαίνουμε Γαλλικά</h1><p>Πρώτες λέξεις με προφορά, αριθμοί και παιχνίδια. Πάτα πάνω στις κάρτες και άκουσε πώς λέγονται!</p></div>
+<div class="sec">
 <h2>🎮 Παιχνίδια</h2><p class="lead" style="margin:0">Παίξε και μάθε</p>
 <div class="gr" id="games"></div>
 
-<h2>👋 Πρώτες λέξεις</h2><p class="lead" style="margin:0">Πάτα την κάρτα για να ακούσεις τη λέξη <span class="mu">(αν η συσκευή σου έχει γαλλική φωνή)</span></p>
+</div><div class="sec"><h2>👋 Πρώτες λέξεις</h2><p class="lead" style="margin:0">Πάτα την κάρτα για να ακούσεις τη λέξη <span class="mu">(αν η συσκευή σου έχει γαλλική φωνή)</span></p>
 <div class="gr" id="words"></div>
 
-<h2>🔢 Αριθμοί 1–10</h2><p class="lead" style="margin:0">Μετράμε στα γαλλικά</p>
+</div><div class="sec"><h2>🔢 Αριθμοί 1–10</h2><p class="lead" style="margin:0">Μετράμε στα γαλλικά</p>
 <div class="num" id="nums"></div>
 
-<div class="stripe"></div>
-<p class="mu" style="margin-top:20px">Θα προστίθεται συνεχώς νέο υλικό. À bientôt ! (Τα λέμε σύντομα!)</p></div>
+</div><div class="stripe"></div>
+<p style="margin-top:20px;color:#10306b;font-weight:700">Θα προστίθεται συνεχώς νέο υλικό. À bientôt ! (Τα λέμε σύντομα!)</p></div>
 <script>
 const GAMES=[{href:'gallika/les-couleurs.html',ico:'🎨',bg:'#fde68a',t:'Les couleurs',d:'Τα χρώματα στα γαλλικά: 8 δραστηριότητες, κουίζ, μνήμη και σκορ.'}];
 const W=[['👋','Bonjour','Μπονζούρ','Καλημέρα / Γεια σας'],['🙋','Salut','Σαλί','Γεια!'],['🙏','Merci','Μερσί','Ευχαριστώ'],['👋','Au revoir','Ορεβουάρ','Αντίο'],['✅','Oui','Ουί','Ναι'],['❌','Non','Νον','Όχι'],['🤝',"S'il vous plaît",'Σιλ βου πλε','Παρακαλώ (όταν ζητάω κάτι)'],['🌙','Bonne nuit','Μπον νουί','Καληνύχτα'],['😊','Comment ça va ?','Κομάν σα βα','Τι κάνεις;'],['🏷️',"Je m'appelle…",'Ζε μαπέλ','Με λένε…']];
