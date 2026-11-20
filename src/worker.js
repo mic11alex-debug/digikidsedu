@@ -154,20 +154,36 @@ async function api(req, env, url) {
       const cl = String(b.cl || ''), a = Array.isArray(b.a) ? b.a : [];
       if (!CL.includes(cl) || !a.length || a.length > 30) return J({ error: 'Μη έγκυρα δεδομένα.' }, 400);
       if (c.subs >= 3000) return J({ error: 'Ο κωδικός γέμισε. Φτιάξε νέο.' }, 429);
-      const st = [];
+      const nm = String(b.name || '').replace(/\s+/g, ' ').trim().slice(0, 40), nk = nm.toLowerCase();
+      if (b.name != null && b.name !== '' && nm.length < 2) return J({ error: 'Γράψε το όνομά σου (τουλάχιστον 2 γράμματα).' }, 400);
+      const items = [];
       for (const x of a) {
         const q = String(x[0] || ''), o = Number(x[1]);
         if (!/^[a-z0-9]{1,8}$/.test(q) || !Number.isInteger(o) || o < 0 || o > 20) return J({ error: 'Μη έγκυρα δεδομένα.' }, 400);
-        st.push(env.DB.prepare('INSERT INTO class_ans(code,cl,qid,opt,n) VALUES(?,?,?,?,1) ON CONFLICT(code,cl,qid,opt) DO UPDATE SET n=n+1').bind(code, cl, q, o));
+        items.push([q, o]);
       }
-      st.push(env.DB.prepare('UPDATE classes SET subs=subs+1 WHERE code=?').bind(code));
-      await env.DB.batch(st);
-      return J({ ok: true });
+      const st = [];
+      let isNew = true;
+      for (const [q, o] of items) {
+        let prev = null;
+        if (nm) prev = await env.DB.prepare('SELECT cl,opt FROM class_who WHERE code=? AND nk=? AND qid=?').bind(code, nk, q).first();
+        if (prev) {
+          isNew = false;
+          if (prev.opt === o && prev.cl === cl) continue;
+          st.push(env.DB.prepare('UPDATE class_ans SET n=MAX(n-1,0) WHERE code=? AND cl=? AND qid=? AND opt=?').bind(code, prev.cl, q, prev.opt));
+        }
+        st.push(env.DB.prepare('INSERT INTO class_ans(code,cl,qid,opt,n) VALUES(?,?,?,?,1) ON CONFLICT(code,cl,qid,opt) DO UPDATE SET n=n+1').bind(code, cl, q, o));
+        if (nm) st.push(env.DB.prepare('INSERT INTO class_who(code,nk,name,cl,qid,opt,ts) VALUES(?,?,?,?,?,?,?) ON CONFLICT(code,nk,qid) DO UPDATE SET name=excluded.name,cl=excluded.cl,opt=excluded.opt,ts=excluded.ts').bind(code, nk, nm, cl, q, o, now()));
+      }
+      if (isNew) st.push(env.DB.prepare('UPDATE classes SET subs=subs+1 WHERE code=?').bind(code));
+      if (st.length) await env.DB.batch(st);
+      return J({ ok: true, updated: !isNew });
     }
     if ((await sha(key)) !== c.key_hash) return J({ error: 'Λάθος κλειδί δασκάλου.' }, 403);
     if (path === '/api/class/results') {
       const r = await env.DB.prepare('SELECT cl,qid,opt,n FROM class_ans WHERE code=?').bind(code).all();
-      return J({ ok: true, subs: c.subs, rows: r.results.map((x) => [x.cl, x.qid, x.opt, x.n]) });
+      const w = await env.DB.prepare('SELECT name,cl,qid,opt,ts FROM class_who WHERE code=? ORDER BY name LIMIT 3000').bind(code).all();
+      return J({ ok: true, subs: c.subs, rows: r.results.map((x) => [x.cl, x.qid, x.opt, x.n]), who: w.results.map((x) => [x.name, x.cl, x.qid, x.opt, x.ts]) });
     }
     if (path === '/api/class/save') {
       let data; try { data = cleanData(b.data); } catch (e) { return J({ error: 'Μη έγκυρες ερωτήσεις.' }, 400); }
@@ -175,7 +191,7 @@ async function api(req, env, url) {
       return J({ ok: true });
     }
     if (path === '/api/class/reset') {
-      await env.DB.batch([env.DB.prepare('DELETE FROM class_ans WHERE code=?').bind(code), env.DB.prepare('UPDATE classes SET subs=0 WHERE code=?').bind(code)]);
+      await env.DB.batch([env.DB.prepare('DELETE FROM class_ans WHERE code=?').bind(code), env.DB.prepare('DELETE FROM class_who WHERE code=?').bind(code), env.DB.prepare('UPDATE classes SET subs=0 WHERE code=?').bind(code)]);
       return J({ ok: true });
     }
     return J({ error: 'Δεν βρέθηκε.' }, 404);
