@@ -168,6 +168,6 @@ if(!GAMES.length)G.innerHTML='<div class="soon" style="grid-column:1/-1"><div cl
 document.querySelectorAll('.sec').forEach(function(sec){var sb=sec.querySelector('.sb');if(!sb)return;var bd=document.createElement('div');bd.className='bd';while(sb.nextSibling)bd.appendChild(sb.nextSibling);sec.appendChild(bd);
 var c=document.createElement('span');c.className='chev';c.setAttribute('aria-hidden','true');sb.appendChild(c);
 sb.setAttribute('role','button');sb.tabIndex=0;sb.setAttribute('aria-expanded','false');
-function t(){var o=sec.classList.toggle('open');sb.setAttribute('aria-expanded',o)}
+function t(){if(sec.querySelector('#games')&&typeof GAMES!=='undefined'&&GAMES.length===1){location.href=GAMES[0].href;return}var o=sec.classList.toggle('open');sb.setAttribute('aria-expanded',o)}
 sb.addEventListener('click',t);sb.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
 </script></body></html>
