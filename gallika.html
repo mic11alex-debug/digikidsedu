@@ -78,6 +78,7 @@ ul{padding-left:22px}li{margin:3px 0}
 .soon{border:4px dashed var(--line);border-radius:22px;padding:22px;text-align:center;background:transparent;color:var(--mu)}.soon .e{font-size:46px}
 .gm{display:flex;flex-direction:column;background:var(--card);border:4px solid var(--line);border-radius:22px;padding:16px;box-shadow:0 6px 0 var(--line);text-decoration:none;color:var(--tx)}
 .gm .ico{width:64px;height:64px;border-radius:18px;border:3px solid var(--line);display:grid;place-items:center;font-size:38px;margin-bottom:8px}
+.vn{display:none;background:#fff3c4;border:3px solid #d99a00;border-radius:16px;padding:10px 14px;margin:10px 0;font-size:15px;line-height:1.4;color:#1a1446}
 .stripe{height:14px;border:3px solid var(--line);border-radius:99px;margin:18px 0 0;background:linear-gradient(90deg,#2742c9 0 33.3%,#fff 33.3% 66.6%,#e63946 66.6%)}
 
 :root{--paper:#8fcbe6;--dot:#a9d9ee;--tx:#1a1446;--card:#fff;--mu:#44407a;--line:#1a1446}
@@ -118,7 +119,7 @@ h2{color:#10306b}.lead{color:#26407a}
 <h2>🎮 Παιχνίδια</h2><p class="lead" style="margin:0">Παίξε και μάθε</p>
 <div class="gr" id="games"></div>
 
-</div><div class="sec"><h2>👋 Πρώτες λέξεις</h2><p class="lead" style="margin:0">Πάτα την κάρτα για να ακούσεις τη λέξη <span class="mu">(αν η συσκευή σου έχει γαλλική φωνή)</span></p>
+</div><div class="sec"><h2>👋 Πρώτες λέξεις</h2><p class="lead" style="margin:0">Πάτα την κάρτα για να ακούσεις τη λέξη <span class="mu"></span></p>
 <div class="gr" id="words"></div>
 
 </div><div class="sec"><h2>🔢 Αριθμοί 1–10</h2><p class="lead" style="margin:0">Μετράμε στα γαλλικά</p>
@@ -131,9 +132,15 @@ const GAMES=[{href:'gallika/les-couleurs.html',ico:'🎨',bg:'#fde68a',t:'Les co
 const W=[['👋','Bonjour','Μπονζούρ','Καλημέρα / Γεια σας'],['🙋','Salut','Σαλί','Γεια!'],['🙏','Merci','Μερσί','Ευχαριστώ'],['👋','Au revoir','Ορεβουάρ','Αντίο'],['✅','Oui','Ουί','Ναι'],['❌','Non','Νον','Όχι'],['🤝',"S'il vous plaît",'Σιλ βου πλε','Παρακαλώ (όταν ζητάω κάτι)'],['🌙','Bonne nuit','Μπον νουί','Καληνύχτα'],['😊','Comment ça va ?','Κομάν σα βα','Τι κάνεις;'],['🏷️',"Je m'appelle…",'Ζε μαπέλ','Με λένε…']];
 const N=[['1','un','αν'],['2','deux','ντε'],['3','trois','τρουά'],['4','quatre','κατρ'],['5','cinq','σανκ'],['6','six','σις'],['7','sept','σετ'],['8','huit','ουίτ'],['9','neuf','νεφ'],['10','dix','ντις']];
 const can='speechSynthesis' in window;
-function say(t){if(!can)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='fr-FR';u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+const slug=t=>t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+let VO=[];const lv=()=>{try{VO=speechSynthesis.getVoices().filter(v=>/^fr([-_]|$)/i.test(v.lang))}catch(e){}};
+if(can){lv();try{speechSynthesis.addEventListener('voiceschanged',lv)}catch(e){}}
+function note(show){let n=document.getElementById('vn');if(!n){n=document.createElement('div');n.id='vn';n.className='vn';n.innerHTML='🔇 Δεν βρέθηκε γαλλική φωνή σε αυτή τη συσκευή. Στα Windows: Ρυθμίσεις → Ώρα και γλώσσα → Γλώσσα → Προσθήκη γλώσσας → Français (να είναι τσεκαρισμένη η «Μετατροπή κειμένου σε ομιλία»). Μετά κλείσε και άνοιξε ξανά τον browser.';document.getElementById('words').before(n)}n.style.display=show?'block':'none'}
+function tts(t){if(!can){note(true);return}lv();if(!VO.length){note(true);return}note(false);try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.voice=VO[0];u.lang=VO[0].lang;u.rate=.85;speechSynthesis.speak(u)}catch(e){note(true)}}
+let AU=null;
+function say(t){const f=t.replace('…','');try{if(AU){AU.pause()}AU=new Audio('gallika/audio/'+slug(f)+'.mp3');AU.onerror=()=>tts(f);const p=AU.play();if(p&&p.catch)p.catch(()=>tts(f))}catch(e){tts(f)}}
 const ce=(h,c)=>{const b=document.createElement('button');b.className=c;b.type='button';b.innerHTML=h;return b};
-W.forEach(([e,f,p,g])=>{const b=ce(`<span class="e">${e}</span><b>${f}</b><span class="p">${p}</span><span class="g">${g}</span>${can?'<span class="sp">🔊</span>':''}`,'fc');b.onclick=()=>say(f.replace('…',''));document.getElementById('words').appendChild(b)});
+W.forEach(([e,f,p,g])=>{const b=ce(`<span class="e">${e}</span><b>${f}</b><span class="p">${p}</span><span class="g">${g}</span><span class="sp">🔊</span>`,'fc');b.onclick=()=>say(f.replace('…',''));document.getElementById('words').appendChild(b)});
 N.forEach(([n,f,p])=>{const b=ce(`<span class="e">${n}</span><b>${f}</b><span class="p">${p}</span>`,'fc');b.onclick=()=>say(f);document.getElementById('nums').appendChild(b)});
 const G=document.getElementById('games');
 GAMES.forEach(g=>{const a=document.createElement('a');a.className='gm';a.href=g.href;a.innerHTML=`<div class="ico" style="background:${g.bg}">${g.ico}</div><b>${g.t}</b><span class="mu">${g.d}</span>`;G.appendChild(a)});

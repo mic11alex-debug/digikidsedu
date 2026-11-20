@@ -120,7 +120,11 @@ function button(parent,label,action,html){
  parent.append(item);
  return item;
 }
+let au=null;
 function speak(word,onError){
+ try{if(au)au.pause();au=new Audio('/gallika/audio/'+word+'.mp3');au.onerror=()=>speakVoice(word,onError);const pr=au.play();if(pr&&pr.catch)pr.catch(()=>speakVoice(word,onError))}catch(e){speakVoice(word,onError)}
+}
+function speakVoice(word,onError){
  const voice=synth?.getVoices().find(v=>/^fr([-_]|$)/i.test(v.lang)&&v.localService);
  if(!voice){onError();return}
  const utterance=new SpeechSynthesisUtterance(word);
@@ -141,7 +145,7 @@ function words(){
    award('words',seen.size,seen.size===12);
    const meaning=color[0]+' σημαίνει '+color[1]+'.';
    feedback(meaning);
-   if(synth?.getVoices().some(v=>/^fr([-_]|$)/i.test(v.lang)&&v.localService))speak(color[0],()=>feedback(meaning));
+   speak(color[0],()=>feedback(meaning));
   },swatch(color)+'<span lang="fr">'+color[0]+'</span>');
  }
 }
