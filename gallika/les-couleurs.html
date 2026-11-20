@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="el">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les couleurs • Παιχνίδια στα γαλλικά</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fff8ec;color:#222044;font:18px system-ui,sans-serif}main{max-width:960px;margin:auto;padding:24px}header{background:#30216a;color:white;border-radius:26px;padding:30px;box-shadow:0 7px 0 #e7d8ff}h1{font-size:clamp(2.4rem,8vw,4.8rem);margin:0;letter-spacing:-.055em}header p{margin:8px 0}.rainbow{display:flex;gap:7px;margin-top:22px}.rainbow span{height:9px;flex:1;border-radius:20px}nav,.choices{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}button{font:inherit;font-weight:700;color:inherit;cursor:pointer;background:white;border:2px solid #d9cef0;border-radius:13px;padding:10px 15px}button:hover:enabled{border-color:#633bb3}button:focus-visible{outline:3px solid #185fc1;outline-offset:3px}button[aria-pressed=true],.primary{background:#5433a2;color:white;border-color:#5433a2}section{background:#fff;border:2px solid #e6daf5;border-radius:24px;padding:clamp(16px,4vw,30px)}h2{margin:0 0 8px;font-size:clamp(1.5rem,4vw,2rem)}p{line-height:1.5}.swatch{display:block;width:100%;height:38px;border:1px solid #2228;border-radius:10px}.sample{width:130px;height:94px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.grid button{padding:8px 3px;min-height:70px}.grid button:disabled{cursor:default;opacity:.8}.grid .swatch{width:75%;margin:auto}.choices button{min-width:85px}.chip{display:inline-block;background:#f0e8ff;padding:5px 12px;border-radius:20px;font-weight:700}.prompt{font-size:1.7rem;font-weight:800}.feedback{min-height:1.6em;font-weight:700}.pixel{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));width:min(100%,405px);gap:2px}.pixel button{aspect-ratio:1;padding:0;border-radius:4px;border:1px solid #c9bfdb;font-size:.85rem}.palette{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.dot{display:inline-block;width:17px;height:17px;border-radius:50%;border:1px solid #2228;vertical-align:middle;margin-right:6px}footer{margin:22px 0}.good{color:#126441}.try{color:#8d3c12}[hidden]{display:none!important}@media(max-width:430px){main{padding:12px}.grid button{font-size:.88rem}}
+.score-panel{margin-top:24px;background:#eae0ff;border-radius:20px;padding:17px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}.score-panel strong{font-size:1.5rem}.score-panel details{width:100%}.score-panel summary{cursor:pointer}.score-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;list-style:none;padding:0}.score-list li{background:#fff;border-radius:8px;padding:8px}.leaderboard{margin:20px 0}.leaderboard ol{padding-left:26px}.leaderboard li{padding:4px}.entry{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}input{font:inherit;color:inherit;border:2px solid #d9cef0;border-radius:8px;padding:8px;max-width:100%}.sequence{display:flex;gap:8px;max-width:420px}.sequence span{flex:1;height:55px}.letters button{min-width:44px}.entry label{font-weight:700}
+</style>
+<main>
+<a href="/gallika.html" style="display:inline-block;margin-bottom:14px;font-weight:700;color:#30216a;background:#ffd23f;border:3px solid #30216a;border-radius:12px;padding:6px 14px;text-decoration:none">← Πίσω στα Γαλλικά</a>
+<header><h1 lang="fr">Les couleurs</h1><p>Χρώματα στα γαλλικά · Παιχνίδια για παιδιά 10–11 ετών</p><div class="rainbow" aria-hidden="true"></div></header>
+<div class="score-panel">
+<strong>Σύνολο <span id="total-score" aria-live="polite">0 / 90</span></strong>
+<span id="progress">0 / 8 δραστηριότητες</span>
+<details><summary>Βαθμοί ανά δραστηριότητα</summary><ul id="score-list" class="score-list"></ul></details>
+</div>
+<nav aria-label="Επιλογή δραστηριότητας">
+<button data-mode="words">Λεξιλόγιο</button><button data-mode="quiz">Κουίζ χρωμάτων</button><button data-mode="memory">Μνήμη</button><button data-mode="listen">Άκου και διάλεξε</button><button data-mode="pixel" lang="fr">La tour Eiffel</button>
+<button data-mode="spell">Φτιάξε τη λέξη</button><button data-mode="sequence">Μυστική ακολουθία</button>
+<button data-mode="objects">Βρες το αντικείμενο</button>
+</nav>
+<section id="game" aria-labelledby="heading"></section>
+<footer>
+<form class="entry" id="entry" hidden><label for="nickname">Ψευδώνυμο</label><input id="nickname" maxlength="24" required><button class="primary">Καταχώριση σκορ</button></form>
+<p id="entry-status" role="status"></p>
+<details class="leaderboard"><summary>Κατάταξη σε αυτόν τον υπολογιστή</summary><ol id="ranking"></ol><p id="no-ranking">Δεν έχουν καταχωριστεί σκορ ακόμη.</p></details>
+<button id="restart">Νέος διαγωνιζόμενος</button>
+</footer>
+</main>
+<script>
+const colors=[
+ ['rouge','κόκκινο','#e52f50'],['bleu','μπλε','#2273da'],['jaune','κίτρινο','#ffd530'],
+ ['vert','πράσινο','#31a365'],['orange','πορτοκαλί','#ff872d'],['rose','ροζ','#ee7aa8'],
+ ['violet','μοβ','#8d4bd4'],['marron','καφέ','#855337'],['noir','μαύρο','#24232b'],
+ ['blanc','άσπρο','#ffffff'],['gris','γκρι','#969ba8'],['beige','μπεζ','#e6c79b']
+];
+const game=document.querySelector('#game');
+const restart=document.querySelector('#restart');
+const tabs=[...document.querySelectorAll('[data-mode]')];
+const synth=window.speechSynthesis;
+document.querySelector('.rainbow').innerHTML=colors.slice(0,7).map(swatch).join('');
+let mode, submitted=false;
+const views=new Map();
+const scores={};
+const maxScore=12;
+const activityMax=activity=>activity==='objects'?6:maxScore;
+const contestMax=tabs.reduce((sum,tab)=>sum+activityMax(tab.dataset.mode),0);
+const entry=document.querySelector('#entry');
+const storageKey='les-couleurs-ranking-v3';
+let ranking=[];
+try {ranking=JSON.parse(localStorage.getItem(storageKey)||'[]')} catch {}
+function totalScore(){
+ return Object.values(scores).reduce((sum,result)=>sum+result.points,0);
+}
+function complete(){return tabs.every(tab=>scores[tab.dataset.mode]?.done)}
+function award(activity,points,done=false){
+ if(scores[activity]?.done)return;
+ scores[activity]={points:Math.max(0,Math.min(activityMax(activity),points)),done};
+ updateScore();
+}
+function updateScore(){
+ document.querySelector('#total-score').textContent=totalScore()+' / '+contestMax;
+ document.querySelector('#progress').textContent=Object.values(scores).filter(result=>result.done).length+' / '+tabs.length+' δραστηριότητες';
+ const list=document.querySelector('#score-list');
+ list.replaceChildren(...tabs.map(tab=>{
+  const activity=scores[tab.dataset.mode];
+  const row=document.createElement('li');
+  if(tab.lang)row.lang=tab.lang;
+  row.textContent=tab.textContent+' · '+(activity?.points||0)+' / '+activityMax(tab.dataset.mode)+(activity?.done?' ✓':'');
+  return row;
+ }));
+ entry.hidden=!complete()||submitted;
+}
+function renderRanking(){
+ const list=document.querySelector('#ranking');
+ list.replaceChildren(...ranking.map(player=>{
+  const row=document.createElement('li');
+  row.textContent=player.nickname+' — '+player.points+' / '+contestMax;
+  return row;
+ }));
+ document.querySelector('#no-ranking').hidden=ranking.length>0;
+}
+entry.addEventListener('submit',event=>{
+ event.preventDefault();
+ if(submitted||!complete())return;
+ const nickname=document.querySelector('#nickname').value.trim();
+ if(!nickname){document.querySelector('#nickname').focus();return}
+ submitted=true;
+ ranking.push({nickname,points:totalScore()});
+ ranking.sort((a,b)=>b.points-a.points);
+ let message='Το σκορ καταχωρίστηκε στην κατάταξη.';
+ try {localStorage.setItem(storageKey,JSON.stringify(ranking))}
+ catch {message='Το σκορ εμφανίζεται στην κατάταξη όσο το παιχνίδι μένει ανοιχτό.'}
+ document.querySelector('#entry-status').textContent=message;
+ document.querySelector('.leaderboard').open=true;
+ renderRanking();
+ updateScore();
+ restart.focus();
+});
+function swatch(color){return '<span class="swatch" style="background:'+color[2]+'" aria-hidden="true"></span>'}
+function shuffle(items){
+ const copy=[...items];
+ for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}
+ return copy;
+}
+function show(title,instructions){
+ game.innerHTML='<h2 id="heading" tabindex="-1">'+title+'</h2><p>'+instructions+'</p><div id="board"></div><p id="feedback" class="feedback" role="status" aria-live="polite"></p>';
+ return document.querySelector('#board');
+}
+function feedback(message,correct=true){
+ const line=document.querySelector('#feedback');
+ line.textContent=message;
+ line.className='feedback '+(correct?'good':'try');
+}
+function button(parent,label,action,html){
+ const item=document.createElement('button');
+ if(html){item.innerHTML=html;item.setAttribute('aria-label',label)}else{item.textContent=label}
+ item.addEventListener('click',action);
+ parent.append(item);
+ return item;
+}
+function speak(word,onError){
+ const voice=synth?.getVoices().find(v=>/^fr([-_]|$)/i.test(v.lang)&&v.localService);
+ if(!voice){onError();return}
+ const utterance=new SpeechSynthesisUtterance(word);
+ utterance.voice=voice;
+ utterance.lang='fr-FR';
+ utterance.rate=.82;
+ utterance.onerror=event=>{if(!['interrupted','canceled'].includes(event.error))onError()};
+ synth.cancel();
+ synth.speak(utterance);
+}
+function words(){
+ const seen=new Set();
+ const board=show('Οι 12 λέξεις','Πάτησε ένα χρώμα για να δεις τη σημασία του και, αν υπάρχει γαλλική φωνή, να το ακούσεις. Κερδίζεις 1 βαθμό για κάθε διαφορετική λέξη που ανοίγεις.');
+ board.className='grid';
+ for(const color of colors){
+  button(board,color[0],()=>{
+   seen.add(color);
+   award('words',seen.size,seen.size===12);
+   const meaning=color[0]+' σημαίνει '+color[1]+'.';
+   feedback(meaning);
+   if(synth?.getVoices().some(v=>/^fr([-_]|$)/i.test(v.lang)&&v.localService))speak(color[0],()=>feedback(meaning));
+  },swatch(color)+'<span lang="fr">'+color[0]+'</span>');
+ }
+}
+function quiz(listening){
+ const board=show(listening?'Άκου και διάλεξε':'Κουίζ χρωμάτων',listening?'Πάτησε «Άκου» και διάλεξε το χρώμα που ακούς. Κερδίζεις 1 βαθμό για κάθε σωστή απάντηση με την πρώτη.':'Διάλεξε τη σωστή λέξη ή το σωστό χρώμα. Έχεις 12 ερωτήσεις και κερδίζεις 1 βαθμό για κάθε σωστή απάντηση με την πρώτη.');
+ const deck=shuffle(colors);
+ let step=0,score=0;
+ const activity=listening?'listen':'quiz';
+ function round(){
+  board.replaceChildren();
+  feedback('');
+  if(step===deck.length){
+   award(activity,score,true);
+   feedback('Τέλος γύρου! Πέτυχες '+score+' από τις '+deck.length+' ερωτήσεις με την πρώτη προσπάθεια.');
+   document.querySelector('#heading').focus();
+   return;
+  }
+  const target=deck[step], roundIndex=step;
+  const visual=!listening&&step%2===0;
+  let first=true;
+  const count=document.createElement('span');
+  count.className='chip';count.textContent='Ερώτηση '+(step+1)+' / '+deck.length;board.append(count);
+  const prompt=document.createElement('p');
+  prompt.className='prompt';
+  if(visual){prompt.innerHTML=swatch(target);prompt.firstChild.classList.add('sample')}
+  else if(!listening){prompt.textContent=target[0];prompt.lang='fr'}
+  board.append(prompt);
+  if(listening)button(prompt,'Άκου',()=>speak(target[0],()=>{
+   if(mode!==activity||!board.isConnected||step!==roundIndex)return;
+   const transcript=document.createElement('strong');
+   transcript.lang='fr';transcript.textContent=target[0];
+   prompt.replaceChildren(transcript);
+   feedback('Η γαλλική φωνή δεν είναι διαθέσιμη. Διάβασε τη λέξη και διάλεξε χρώμα.',false);
+  }));
+  const choices=document.createElement('div');
+  choices.className='choices';board.append(choices);
+  const options=shuffle([target,...shuffle(colors.filter(c=>c!==target)).slice(0,3)]);
+  for(const color of options){
+   const item=button(choices,visual?color[0]:color[1],()=>{
+    if(color!==target){first=false;item.disabled=true;feedback('Δοκίμασε άλλη επιλογή.',false);choices.querySelector('button:enabled').focus();return}
+    score+=Number(first);
+    award(activity,score);
+    feedback('Σωστά! '+target[0]+' σημαίνει '+target[1]+'.');
+    choices.querySelectorAll('button').forEach(b=>b.disabled=true);
+    const next=button(board,step===deck.length-1?'Αποτέλεσμα':'Επόμενη ερώτηση',()=>{step++;round();board.querySelector('button:enabled')?.focus()});
+    next.className='primary';next.focus();
+   },visual?'<span lang="fr">'+color[0]+'</span>':swatch(color));
+  }
+ }
+ round();
+}
+function memory(){
+ const board=show('Μνήμη','Βρες τα έξι ζευγάρια. Κάθε ζευγάρι έχει μία γαλλική λέξη και ένα δείγμα χρώματος. Κερδίζεις 2 βαθμούς ανά ζευγάρι και χάνεις 1 για κάθε λάθος αντιστοίχιση, έως ελάχιστο σκορ 0.');
+ const selected=shuffle(colors).slice(0,6);
+ const cards=shuffle(selected.flatMap(color=>[{color,word:true},{color,word:false}]));
+ const grid=document.createElement('div');
+ grid.className='grid';board.append(grid);
+ let first=null,locked=false,pairs=0,moves=0;
+ function hide(item,index){item.textContent='?';item.setAttribute('aria-label','Κλειστή κάρτα '+(index+1))}
+ cards.forEach((card,index)=>{
+  const item=button(grid,'?',()=>{
+   if(locked||first?.item===item)return;
+   const label=card.word?card.color[0]:card.color[1];
+   item.innerHTML=card.word?'<span lang="fr">'+label+'</span>':swatch(card.color);
+   item.setAttribute('aria-label',label);
+   if(!first){first={card,item,index};return}
+   moves++;
+   if(first.card.color===card.color){
+    first.item.disabled=true;item.disabled=true;first=null;pairs++;
+    award('memory',2*pairs-(moves-pairs),pairs===6);
+    feedback(pairs===6?'Βρήκες όλα τα ζευγάρια σε '+moves+' προσπάθειες!':pairs+' / 6 ζευγάρια · '+card.color[0]+' σημαίνει '+card.color[1]+'.');
+    (grid.querySelector('button:enabled')||document.querySelector('#heading')).focus();
+    return;
+   }
+   award('memory',2*pairs-(moves-pairs));
+   locked=true;
+   feedback('Δοκίμασε άλλο ζευγάρι. Έχεις βρει '+pairs+' / 6.',false);
+   setTimeout(()=>{
+    hide(first.item,first.index);hide(item,index);first=null;locked=false;
+   },1000);
+  });
+  hide(item,index);
+ });
+}
+function pixel(){
+ const board=show('Colorie la tour Eiffel','Choisis une couleur dans la palette et clique sur les cases qui portent le même numéro. Tu peux gagner jusqu’à 12 points selon le nombre de cases bien coloriées du premier coup.');
+ const palette=[colors[1],colors[7],colors[10],colors[2],colors[3]];
+ const rows=['111411111','111121111','111121111','111232111','111232111','112222211','112333211','123111321','223111322','555555555'];
+ const controls=document.createElement('div');
+ controls.className='palette';board.append(controls);
+ const picture=document.createElement('div');
+ picture.className='pixel';board.append(picture);
+ let selected=0,painted=0,firstCorrect=0;
+ const total=rows.join('').length;
+ const tools=palette.map((color,index)=>button(controls,color[0],()=>{
+  selected=index;
+  tools.forEach((tool,i)=>tool.setAttribute('aria-pressed',String(i===index)));
+  feedback('Couleur choisie : '+color[0]+'.');
+ },'<span class="dot" style="background:'+color[2]+'"></span>'+(index+1)+' <span lang="fr">'+color[0]+'</span>'));
+ tools.forEach((tool,index)=>{tool.setAttribute('aria-pressed','false');tool.setAttribute('aria-label',(index+1)+' '+palette[index][0])});
+ rows.forEach((row,y)=>[...row].forEach((digit,x)=>{
+  const index=Number(digit)-1;
+  let first=true;
+  const cell=button(picture,digit,()=>{
+   if(selected!==index){first=false;feedback('Choisis la couleur numéro '+digit+' dans la palette.',false);return}
+   cell.style.background=palette[index][2];
+   cell.textContent='';cell.disabled=true;
+   cell.setAttribute('aria-label','Case coloriée en '+palette[index][0]);
+   painted++;
+   firstCorrect+=Number(first);
+   award('pixel',Math.floor(12*firstCorrect/total),painted===total);
+   feedback(painted===total?'Bravo ! Tu as colorié la tour Eiffel !':painted+' / '+total+' cases coloriées');
+   const next=[...picture.querySelectorAll('button:enabled')].find(b=>b.textContent===digit);
+   (next|| (painted===total?document.querySelector('#heading'):tools[selected])).focus();
+  });
+  cell.setAttribute('aria-label','Ligne '+(y+1)+', colonne '+(x+1)+', couleur numéro '+digit);
+ }));
+ tools[0].setAttribute('aria-pressed','true');
+}
+function challenge(activity){
+ const titles={spell:'Φτιάξε τη λέξη',sequence:'Μυστική ακολουθία'};
+ const instructions={
+  spell:'Κοίτα το δείγμα και βάλε τα γράμματα στη σειρά για να γράψεις το χρώμα στα γαλλικά.',
+  sequence:'Απομνημόνευσε τη σειρά των χρωμάτων. Μετά διάλεξε τις γαλλικές λέξεις με την ίδια σειρά.'
+ };
+ const board=show(titles[activity],instructions[activity]+' Κερδίζεις 2 βαθμούς για κάθε σωστή απάντηση με την πρώτη προσπάθεια.');
+ const puzzles=shuffle(colors).slice(0,6);
+ let step=0,points=0;
+ function round(){
+  board.replaceChildren();
+  feedback('');
+  if(step===6){award(activity,points,true);feedback('Ολοκλήρωσες τη δοκιμασία με '+points+' / 12 βαθμούς.');return}
+  const count=document.createElement('p');
+  count.textContent='Δοκιμή '+(step+1)+' / 6';board.append(count);
+  let first=true;
+  function correct(){
+   points+=first?2:0;
+   award(activity,points);
+   feedback(first?'Μπράβο! Κέρδισες 2 βαθμούς.':'Σωστά! Βρήκες την απάντηση.');
+   board.querySelectorAll('button').forEach(item=>item.disabled=true);
+   const next=button(board,step===5?'Ολοκλήρωση δοκιμασίας':'Επόμενη δοκιμή',()=>{step++;round();board.querySelector('button:enabled')?.focus()});
+   next.className='primary';next.focus();
+  }
+  if(activity==='spell'){
+   const color=puzzles[step];
+   board.insertAdjacentHTML('beforeend',swatch(color));
+   board.lastElementChild.classList.add('sample');
+   const answer=document.createElement('p');
+   answer.className='prompt';answer.lang='fr';answer.textContent='＿'.repeat(color[0].length);board.append(answer);
+   const letters=document.createElement('div');letters.className='choices letters';board.append(letters);
+   const selected=[];
+   function display(){answer.textContent=selected.map(item=>item.textContent).join('')+'＿'.repeat(color[0].length-selected.length)}
+   function undo(){const item=selected.pop();if(item){item.disabled=false;display()}return item}
+   for(const letter of shuffle([...color[0]])){
+    const item=button(letters,letter,()=>{
+     selected.push(item);item.disabled=true;display();
+     if(selected.length===color[0].length){verify.focus();return}
+     letters.querySelector('button:enabled').focus();
+    });
+    item.lang='fr';
+   }
+   button(board,'Σβήσε το τελευταίο γράμμα',()=>undo()?.focus());
+   const verify=button(board,'Έλεγχος',()=>{
+    if(selected.length<color[0].length){feedback('Χρησιμοποίησε όλα τα γράμματα.',false);return}
+    if(selected.map(item=>item.textContent).join('')===color[0]){correct();return}
+    first=false;
+    while(selected.length)undo();
+    feedback('Η σειρά των γραμμάτων θέλει άλλη μία προσπάθεια.',false);
+    letters.querySelector('button').focus();
+   });
+   return;
+  }
+  const length=3+Math.floor(step/2);
+  const strip=document.createElement('div');strip.className='sequence';board.append(strip);
+  const answer=shuffle([puzzles[step],...shuffle(colors.filter(color=>color!==puzzles[step])).slice(0,length-1)]);
+  const options=shuffle([...answer,...shuffle(colors.filter(color=>!answer.includes(color))).slice(0,2)]);
+  let index=0;
+  function reveal(){
+   strip.hidden=false;
+   strip.innerHTML=answer.map(swatch).join('');
+  }
+  reveal();
+  const counter=document.createElement('p');board.append(counter);
+  const choices=document.createElement('div');choices.className='choices';choices.hidden=true;board.append(choices);
+  for(const color of options){
+   const item=button(choices,color[0],()=>{
+    if(color!==answer[index]){first=false;index=0;choices.querySelectorAll('button').forEach(b=>b.disabled=false);counter.textContent='0 / '+length;feedback('Δοκίμασε ξανά από την αρχή της σειράς.',false);choices.querySelector('button').focus();return}
+    index++;item.disabled=true;counter.textContent=index+' / '+length;
+    if(index===length){correct();return}
+    choices.querySelector('button:enabled').focus();
+   });
+   item.lang='fr';
+  }
+  const ready=button(board,'Θυμάμαι τη σειρά',()=>{
+   strip.hidden=true;ready.hidden=true;choices.hidden=false;
+   counter.textContent='0 / '+length;
+   choices.querySelector('button').focus();
+  });
+  const replay=button(board,'Δείξε τη σειρά ξανά',()=>{
+   first=false;index=0;choices.hidden=true;ready.hidden=false;
+   choices.querySelectorAll('button').forEach(item=>item.disabled=false);
+   counter.textContent='';reveal();ready.focus();
+  });
+  replay.hidden=true;
+  ready.addEventListener('click',()=>{replay.hidden=false;board.append(choices,replay)});
+ }
+ round();
+}
+function objects(){
+ const board=show('Βρες το αντικείμενο','Διάβασε τη φράση στα γαλλικά. Διάλεξε την κάρτα που ταιριάζει και στο αντικείμενο και στο χρώμα. Κερδίζεις 1 βαθμό για κάθε σωστή επιλογή με την πρώτη προσπάθεια.');
+ const nouns=['crayon','livre','stylo','cahier','sac','ballon'];
+ const targets=shuffle(nouns);
+ const shades=shuffle(colors);
+ let step=0,points=0;
+ function round(){
+  board.replaceChildren();
+  feedback('');
+  if(step===targets.length){
+   award('objects',points,true);
+   feedback('Ολοκλήρωσες τη δοκιμασία με '+points+' / 6 βαθμούς.');
+   document.querySelector('#heading').focus();
+   return;
+  }
+  const noun=targets[step], color=shades[step];
+  const otherNoun=shuffle(nouns.filter(item=>item!==noun))[0];
+  const otherColor=shuffle(colors.filter(item=>item!==color))[0];
+  let first=true;
+  const count=document.createElement('span');
+  count.className='chip';count.textContent='Ερώτηση '+(step+1)+' / '+targets.length;board.append(count);
+  const prompt=document.createElement('p');
+  prompt.className='prompt';prompt.lang='fr';prompt.textContent='Trouve le '+noun+' '+color[0]+'.';board.append(prompt);
+  const choices=document.createElement('div');
+  choices.className='grid';board.append(choices);
+  const options=shuffle([[noun,color],[noun,otherColor],[otherNoun,color],[otherNoun,otherColor]]);
+  for(const [name,shade] of options){
+   const option=button(choices,name+' '+shade[1],()=>{
+    if(name!==noun||shade!==color){
+     first=false;
+     option.disabled=true;
+     feedback('Έλεγξε και το αντικείμενο και το χρώμα.',false);
+     choices.querySelector('button:enabled').focus();
+     return;
+    }
+    points+=Number(first);
+    award('objects',points);
+    feedback(first?'Σωστά! Κέρδισες 1 βαθμό.':'Σωστά! Βρήκες το αντικείμενο.');
+    choices.querySelectorAll('button').forEach(item=>item.disabled=true);
+    const next=button(board,step===targets.length-1?'Ολοκλήρωση δοκιμασίας':'Επόμενη ερώτηση',()=>{
+     step++;
+     round();
+     board.querySelector('button:enabled')?.focus();
+    });
+    next.className='primary';next.focus();
+   },swatch(shade)+'<span lang="fr">'+name+'</span>');
+  }
+ }
+ round();
+}
+function open(next,focus=true){
+ if(mode)views.set(mode,[...game.childNodes]);
+ mode=next;synth?.cancel();
+ game.setAttribute('lang',mode==='pixel'?'fr':'el');
+ tabs.forEach(tab=>tab.setAttribute('aria-pressed',String(tab.dataset.mode===mode)));
+ if(views.has(mode))game.replaceChildren(...views.get(mode));
+ else if(mode==='words')words();
+ else if(mode==='quiz'||mode==='listen')quiz(mode==='listen');
+ else if(mode==='memory')memory();
+ else if(mode==='pixel')pixel();
+ else if(mode==='objects')objects();
+ else challenge(mode);
+ if(focus)document.querySelector('#heading').focus();
+}
+tabs.forEach(tab=>tab.addEventListener('click',()=>open(tab.dataset.mode)));
+restart.addEventListener('click',()=>{
+ if(!submitted&&(views.size>0||mode!=='words'||Object.keys(scores).length>0)&&!confirm('Να αρχίσει νέος διαγωνιζόμενος; Ο τρέχων γύρος θα μηδενιστεί.'))return;
+ mode=undefined;views.clear();
+ for(const activity of Object.keys(scores))delete scores[activity];
+ submitted=false;entry.reset();document.querySelector('#entry-status').textContent='';
+ open('words');updateScore();
+});
+synth?.getVoices();
+open('words',false);
+updateScore();
+renderRanking();
+</script>
+</html>
