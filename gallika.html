@@ -61,6 +61,14 @@ ul{padding-left:22px}li{margin:3px 0}
 .it2 b{font-size:19px;line-height:1.25}.it2 span.s{color:var(--mu);font-size:15px;margin:2px 0 10px}
 .it2 .row{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap}
 .bt{font:800 15px "Anek Greek",system-ui;background:var(--sun);color:#1a1446;border:3px solid var(--line);border-radius:12px;padding:5px 12px;box-shadow:0 3px 0 var(--line);text-decoration:none;cursor:pointer}.bt.s2{background:var(--card);color:var(--tx)}
+.sec{padding:0 18px 18px;overflow:hidden}.sec>.sb{margin:0 -18px 16px;border-bottom:4px solid var(--line)}
+.sb{position:relative;display:flex;align-items:center;min-height:clamp(120px,20vw,170px);overflow:hidden}
+.sb svg{position:absolute;right:0;top:0;height:100%;width:auto}
+.sb .tx{position:relative;z-index:1;padding:14px 22px;max-width:58%}
+.sb h2{margin:0;font-size:clamp(24px,5vw,40px);line-height:1.1}.sb p{margin:4px 0 0;font-weight:700;font-size:clamp(14px,2.4vw,19px)}
+.sbb{background:#2742c9;color:#fff}.sbr{background:#e63946;color:#fff}.sbw{background:#fff;color:#1a1446}
+.sbb h2,.sbr h2{color:#fff;text-shadow:0 2px 0 #1a144666}.sbw h2{color:#10306b}
+@media(max-width:560px){.sb{min-height:110px}.sb svg{width:58%;height:100%}.sb .tx{max-width:46%;padding:12px 14px}.sb h2{font-size:22px}.sb p{font-size:13px}}
 </style>
 <style>
 .hero{position:relative;overflow:hidden;background:var(--card);border:5px solid var(--line);border-radius:28px;box-shadow:9px 9px 0 var(--line);padding:26px 24px 26px 34px;margin:6px 0 10px}
@@ -116,13 +124,20 @@ h2{color:#10306b}.lead{color:#26407a}
 </svg></div>
 <div class="tt"><h1>Εδώ μαθαίνουμε Γαλλικά</h1><p>Πρώτες λέξεις με προφορά, αριθμοί και παιχνίδια. Πάτα πάνω στις κάρτες και άκουσε πώς λέγονται!</p></div>
 <div class="sec">
-<h2>🎮 Παιχνίδια</h2><p class="lead" style="margin:0">Παίξε και μάθε</p>
+<div class="sb sbb"><div class="tx"><h2>Παιχνίδια</h2><p>Παίξε και μάθε!</p></div><svg viewBox="0 0 480 170" aria-hidden="true"><polygon transform="translate(40 40) scale(1.6)" points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3" fill="#ffd23f" stroke="#1a1446" stroke-width="1.6"/><polygon transform="translate(120 140) scale(1.2)" points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3" fill="#fff" stroke="#1a1446" stroke-width="1.6"/><polygon transform="translate(300 22) scale(1)" points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3" fill="#ffd23f" stroke="#1a1446" stroke-width="1.6"/>
+<g transform="translate(205 92)"><path d="M-95 -22Q-96 -52 -60 -54H60Q96 -52 95 -22L100 38Q102 62 78 56Q58 50 46 30H-46Q-58 50 -78 56Q-102 62 -100 38Z" fill="#fff" stroke="#1a1446" stroke-width="5" stroke-linejoin="round"/><rect x="-70" y="-14" width="14" height="44" rx="4" fill="#2742c9" stroke="#1a1446" stroke-width="3"/><rect x="-85" y="1" width="44" height="14" rx="4" fill="#2742c9" stroke="#1a1446" stroke-width="3"/><circle cx="56" cy="-12" r="11" fill="#e63946" stroke="#1a1446" stroke-width="3"/><circle cx="80" cy="6" r="11" fill="#ffd23f" stroke="#1a1446" stroke-width="3"/><circle cx="56" cy="22" r="11" fill="#22c55e" stroke="#1a1446" stroke-width="3"/><circle cx="32" cy="6" r="11" fill="#2b8cff" stroke="#1a1446" stroke-width="3"/></g>
+<g transform="translate(385 70) rotate(12)"><rect x="-28" y="-28" width="56" height="56" rx="10" fill="#fff" stroke="#1a1446" stroke-width="4"/><g fill="#1a1446"><circle cx="-12" cy="-12" r="5"/><circle cx="12" cy="-12" r="5"/><circle cx="0" cy="0" r="5"/><circle cx="-12" cy="12" r="5"/><circle cx="12" cy="12" r="5"/></g></g><g transform="translate(440 112) scale(0.7)" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M0 -70V-40M-5 -40L-8 -5M5 -40L8 -5M-14 -5H14M-10 3H10M-9 3L-18 40M9 3L18 40M-24 40Q0 10 24 40M-14 40L-30 70M14 40L30 70"/></g></svg></div>
 <div class="gr" id="games"></div>
 
-</div><div class="sec"><h2>👋 Πρώτες λέξεις</h2><p class="lead" style="margin:0">Πάτα την κάρτα για να ακούσεις τη λέξη <span class="mu"></span></p>
+</div><div class="sec"><div class="sb sbw"><div class="tx"><h2>Πρώτες λέξεις</h2><p>Πάτα την κάρτα και άκουσε τη λέξη!</p></div><svg viewBox="0 0 480 170" aria-hidden="true"><g font-family="'Anek Greek',system-ui,sans-serif" font-weight="800" text-anchor="middle">
+<path d="M30 14Q30 4 44 4H200Q214 4 214 18V58Q214 72 200 72H110L84 94L90 72H44Q30 72 30 58Z" fill="#2742c9" stroke="#1a1446" stroke-width="4" stroke-linejoin="round"/><text x="122" y="50" font-size="32" fill="#fff">Bonjour</text>
+<path d="M250 62Q250 50 264 50H400Q414 50 414 64V104Q414 118 400 118H350L326 140L330 118H264Q250 118 250 104Z" fill="#e63946" stroke="#1a1446" stroke-width="4" stroke-linejoin="round"/><text x="332" y="95" font-size="32" fill="#fff">Merci</text>
+<path d="M300 6H400Q412 6 412 18V32Q412 42 400 42H380L366 54L368 42H300Q288 42 288 32V18Q288 6 300 6Z" fill="#ffd23f" stroke="#1a1446" stroke-width="4" stroke-linejoin="round"/><text x="350" y="32" font-size="22" fill="#1a1446">Salut</text></g>
+<g transform="translate(440 140)" fill="#e9893a" stroke="#1a1446" stroke-width="3"><ellipse transform="translate(-26 8) rotate(-55)" rx="9" ry="6"/><ellipse transform="translate(26 8) rotate(55)" rx="9" ry="6"/><ellipse transform="translate(-14 -2) rotate(-28)" rx="11" ry="8"/><ellipse transform="translate(14 -2) rotate(28)" rx="11" ry="8"/><ellipse transform="translate(0 -6)" rx="13" ry="10"/></g>
+<g transform="translate(60 132) rotate(-12)"><rect width="130" height="26" rx="13" fill="#f0b95e" stroke="#1a1446" stroke-width="3.5"/><g stroke="#b9772a" stroke-width="3.5" stroke-linecap="round"><path d="M26 6L38 20M54 6L66 20M82 6L94 20"/></g></g></svg></div>
 <div class="gr" id="words"></div>
 
-</div><div class="sec"><h2>🔢 Αριθμοί 1–10</h2><p class="lead" style="margin:0">Μετράμε στα γαλλικά</p>
+</div><div class="sec"><div class="sb sbr"><div class="tx"><h2>Αριθμοί 1–10</h2><p>Μετράμε στα γαλλικά!</p></div><svg viewBox="0 0 480 170" aria-hidden="true"><g font-family="'Anek Greek',system-ui,sans-serif" font-weight="800" text-anchor="middle" font-size="64"><g transform="translate(60 90) rotate(-8)"><rect x="-36" y="-40" width="72" height="80" rx="14" fill="#fff" stroke="#1a1446" stroke-width="4.5"/><text y="22" fill="#2742c9">1</text></g><g transform="translate(150 76) rotate(4)"><rect x="-36" y="-40" width="72" height="80" rx="14" fill="#fff" stroke="#1a1446" stroke-width="4.5"/><text y="22" fill="#e63946">2</text></g><g transform="translate(242 92) rotate(-4)"><rect x="-36" y="-40" width="72" height="80" rx="14" fill="#fff" stroke="#1a1446" stroke-width="4.5"/><text y="22" fill="#1a1446">3</text></g><g transform="translate(332 78) rotate(7)"><rect x="-36" y="-40" width="72" height="80" rx="14" fill="#fff" stroke="#1a1446" stroke-width="4.5"/><text y="22" fill="#2742c9">4</text></g></g><g transform="translate(430 100) scale(0.8)" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M0 -70V-40M-5 -40L-8 -5M5 -40L8 -5M-14 -5H14M-10 3H10M-9 3L-18 40M9 3L18 40M-24 40Q0 10 24 40M-14 40L-30 70M14 40L30 70"/></g><polygon transform="translate(300 20) scale(1.3)" points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3" fill="#ffd23f" stroke="#1a1446" stroke-width="1.6"/><polygon transform="translate(30 28) scale(1)" points="0,-10 3,-3 10,-3 4,2 6,10 0,5 -6,10 -4,2 -10,-3 -3,-3" fill="#ffd23f" stroke="#1a1446" stroke-width="1.6"/></svg></div>
 <div class="num" id="nums"></div>
 
 </div><div class="stripe"></div>
