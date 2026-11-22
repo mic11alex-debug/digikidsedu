@@ -290,6 +290,7 @@ function vid(v,id,title){const w=el('div','vidh','<h3>🎬 '+title+'</h3>');cons
  const fb=()=>{box.innerHTML='<a href="https://www.youtube.com/watch?v='+id+'" target="_blank" rel="noopener" style="position:absolute;inset:0;display:grid;place-items:center;text-decoration:none;color:#fff;background:#000 url(https://i.ytimg.com/vi/'+id+'/hqdefault.jpg) center/cover"><span style="background:#000a;padding:14px 22px;border-radius:16px;font:700 22px Fredoka;text-align:center">▶ Πάτα για να δεις το βίντεο στο YouTube<br><small style="font-size:15px;font-weight:600">(δεν παίζει μέσα στη σελίδα)</small></span></a>'};
  try{ytApi().then(()=>{try{new YT.Player(box.firstChild,{events:{onError:fb}})}catch(e){}})}catch(e){}
  const p=el('p','','<a class="btn g" style="text-decoration:none;display:inline-block" target="_blank" rel="noopener" href="https://youtu.be/'+id+'">↗ Άνοιγμα στο YouTube</a>');p.style.textAlign='center';w.appendChild(p);v.appendChild(w)}
+document.head.appendChild(Object.assign(document.createElement('style'),{textContent:'.cd2 img{height:190px!important;object-fit:contain!important;background:#f1f5f9}'}));
 const IMG=(k,cap)=>'<figure style="margin:10px auto;max-width:420px;text-align:center"><img src="'+isrc(k)+'" alt="" style="max-width:100%;max-height:300px;border-radius:14px;border:3px solid var(--bd)"><figcaption style="font-size:14px;opacity:.8">'+cap+'</figcaption></figure>';
 const P=s=>'<p style="margin:8px 0;line-height:1.55">'+s+'</p>';
 function f0(v,ix){
@@ -316,8 +317,8 @@ function f3(v,ix){
  v.appendChild(el('div','',IMG('ieron','Τα ερείπια του Ιερού της Αφροδίτης στο Κούκλια σήμερα')+IMG('agalma','Άγαλμα της Αφροδίτης σε μουσείο της Κύπρου')));
  cards(v,{intro:'Το ιερό στο Κούκλια. Πάτησε κάθε κάρτα.',items:[
  {img:'ieron',t:'Πολύ παλιό ιερό',txt:'Το ιερό λειτουργούσε για περίπου 1500 χρόνια, από την εποχή του Χαλκού ως τους ρωμαϊκούς χρόνους. Πολλοί προσκυνητές το επισκέπτονταν από όλο τον αρχαίο κόσμο.'},
- {e:'⚫',t:'Η ιερή πέτρα',txt:'Δεν λάτρευαν άγαλμα, αλλά μια μεγάλη μαύρη πέτρα σε σχήμα κώνου. Σήμερα βρίσκεται στο μουσείο.'},
- {e:'🎉',t:'Οι γιορτές',txt:'Κάθε χρόνο γίνονταν γιορτές, τα Αφροδίσια, με πομπές από την Πάφο ως το ιερό.'},
+ {img:'konos',t:'Η ιερή πέτρα',txt:'Δεν λάτρευαν άγαλμα, αλλά μια μεγάλη μαύρη πέτρα σε σχήμα κώνου. Σήμερα βρίσκεται στο μουσείο.'},
+ {img:'shell',t:'Οι γιορτές',txt:'Κάθε χρόνο γίνονταν γιορτές, τα Αφροδίσια, με πομπές από την Πάφο ως το ιερό.'},
  {img:'aerial',t:'Το μουσείο',txt:'Το μουσείο στο Κούκλια βρίσκεται σε ένα μεσαιωνικό κτίριο και φυλάσσει ευρήματα του ιερού.'},
  {img:'mosaic',t:'Μνημείο της UNESCO',txt:'Η Παλαιπάφος είναι τμήμα των μνημείων της Πάφου που ανήκουν στην Παγκόσμια Κληρονομιά της UNESCO.'}],
  quiz:[['Σε ποιο χωριό βρίσκεται το Ιερό της Αφροδίτης;',['Κούκλια','Λάρνακα','Καρπασία'],0],['Τι λάτρευαν στο ιερό;',['Μια μαύρη πέτρα σε σχήμα κώνου','Ένα χρυσό άγαλμα','Ένα δέντρο'],0],['Πώς λέγονται οι γιορτές της Αφροδίτης;',['Αφροδίσια','Ολύμπια','Πανελλήνια'],0]]},ix)}
