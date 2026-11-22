@@ -88,7 +88,7 @@ h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:
 .ttl{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.ttl button{font:600 18px Fredoka;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;padding:8px 12px;cursor:pointer}.ttl button.done{border-color:var(--green);background:#bbf7d0;color:#14532d;pointer-events:none}
 .cpk{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.cp{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:600 18px Fredoka;border-radius:14px;padding:6px 12px;cursor:pointer}.cp.on{background:var(--hl);border-color:var(--amber)}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.sw{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--bd);cursor:pointer;padding:0}
 </style></head><body>
-<header><h1>⏳ Ο άξονας του χρόνου</h1><p>Ιστορία – από τη Χοιροκοιτία ως σήμερα</p></header>
+<header><h1>⏳ Ο άξονας του χρόνου</h1><p>Ιστορία – από την Προϊστορία ως το 1974</p></header>
 <div id="tabs"></div><main><div class="card" id="v"></div></main>
 <script>
 const $=id=>document.getElementById(id);
@@ -290,6 +290,7 @@ function vid(v,id,title){const w=el('div','vidh','<h3>🎬 '+title+'</h3>');cons
  const fb=()=>{box.innerHTML='<a href="https://www.youtube.com/watch?v='+id+'" target="_blank" rel="noopener" style="position:absolute;inset:0;display:grid;place-items:center;text-decoration:none;color:#fff;background:#000 url(https://i.ytimg.com/vi/'+id+'/hqdefault.jpg) center/cover"><span style="background:#000a;padding:14px 22px;border-radius:16px;font:700 22px Fredoka;text-align:center">▶ Πάτα για να δεις το βίντεο στο YouTube<br><small style="font-size:15px;font-weight:600">(δεν παίζει μέσα στη σελίδα)</small></span></a>'};
  try{ytApi().then(()=>{try{new YT.Player(box.firstChild,{events:{onError:fb}})}catch(e){}})}catch(e){}
  const p=el('p','','<a class="btn g" style="text-decoration:none;display:inline-block" target="_blank" rel="noopener" href="https://youtu.be/'+id+'">↗ Άνοιγμα στο YouTube</a>');p.style.textAlign='center';w.appendChild(p);v.appendChild(w)}
+const FIG=(k,cap,h)=>'<figure style="margin:10px auto;max-width:420px;text-align:center"><img src="'+isrc(k)+'" alt="" style="max-width:100%;max-height:'+(h||260)+'px;border-radius:12px;border:3px solid var(--bd)"></figure>';
 const P=s=>'<p style="margin:8px 0;line-height:1.55">'+s+'</p>';
 const PER=[
 ['🪨','Νεολιθική εποχή (Χοιροκοιτία)','περ. 7000 π.Χ.','Οι πρώτοι κάτοικοι έχτισαν στρογγυλά σπίτια στη Χοιροκοιτία. Είναι μνημείο της UNESCO.','#c9a66b'],
@@ -303,6 +304,27 @@ const PER=[
 ['🇬🇧','Άγγλοι','1878 – 1960','Βρετανική διοίκηση. Στα τέλη της περιόδου έγινε ο αγώνας της ΕΟΚΑ.','#7f7f7f'],
 ['🕊️','Ανεξαρτησία','1960','Στις 16 Αυγούστου 1960 η Κύπρος έγινε ανεξάρτητη Δημοκρατία.','#2e8b57'],
 ['💔','1974','1974','Τον Ιούλιο του 1974 έγινε το πραξικόπημα και η τουρκική εισβολή. Η Κύπρος χωρίστηκε.','#222']];
+const PRE=[
+['🦣','Προ-νεολιθική εποχή','περ. 10500 – 9000 π.Χ.','Τα πρώτα ίχνη ανθρώπινης παρουσίας στο νησί βρέθηκαν στη σπηλιά «Αετόκρεμνος». Οι άνθρωποι ήταν κυνηγοί. Θέσεις: Άγιος Τύχωνας–Κλήμονας (περ. 10500 π.Χ.) και Αγία Βαρβάρα–Ασπρόκρεμνος (περ. 9000 π.Χ.).',['aetokremnos']],
+['🏘️','Ακεραμική Νεολιθική','8200 – 3900 π.Χ.','Οι άνθρωποι έχτισαν μόνιμα χωριά με στρογγυλά σπίτια. Σημαντικές θέσεις: Καλαβασός–Τέντα (8200–5500 π.Χ.) και Χοιροκοιτία (7000–3900 π.Χ.).',['choirokoitia','kalavasos']],
+['🏺','Κεραμική Νεολιθική','4500 – 3900 π.Χ.','Εμφανίζονται αγγεία από πηλό. Γνωστή θέση: Σωτήρα (4500–3900 π.Χ.).',[]],
+['🏚️','Χαλκολιθική εποχή','3900 – 2500 π.Χ.','Οι άνθρωποι αρχίζουν να χρησιμοποιούν και το χαλκό. Θέσεις: Λέμπα και Ερήμη (3900–2500 π.Χ.).',['lempa']],
+['⚒️','Εποχή του Χαλκού («Αλάσια»)','2500 – 1050 π.Χ.','Εκμετάλλευση και εμπόριο χαλκού. Εγκαθίστανται οι Μυκηναίοι. Θέσεις: Έγκωμη (1650–1050 π.Χ.) και Κίτιον (περ. 1300 π.Χ.).',['egkomi']],
+['✍️','Κυπρογεωμετρική περίοδος','1050 – 750 π.Χ.','Γράφουν στο Κυπριακό Συλλαβάριο (ελληνική γλώσσα). Οι Φοίνικες εγκαθίστανται στο Κίτιον. Ιδρύονται η Σαλαμίνα και η Αμαθούντα.',[]],
+['👑','Κυπροαρχαϊκή περίοδος','750 – 475 π.Χ.','Διαμορφώνονται οι πόλεις-βασίλεια. Η Κύπρος βρίσκεται κάτω από μεγάλες αυτοκρατορίες: Ασσύριοι, Αιγύπτιοι, Πέρσες. Στη Σαλαμίνα γίνεται η επανάσταση του Ονήσιλου.',['figurine']],
+['⚔️','Κυπροκλασική περίοδος','475 – 312 π.Χ.','Η Κύπρος είναι ανάμεσα στην Ανατολή και τη Δύση. Γίνονται αγώνες εναντίον των Περσών. Στη Σαλαμίνα βασιλεύει ο Ευαγόρας Α΄.',[]],
+['🏛️','Ελληνιστική περίοδος','312 – 58 π.Χ.','Καταλύονται τα κυπριακά βασίλεια και η Κύπρος ανήκει στους Πτολεμαίους. Το Κυπριακό Συλλαβάριο εξαφανίζεται και επικρατεί το ελληνικό αλφάβητο.',[]],
+['🎭','Ρωμαϊκή περίοδος','58 π.Χ. – 330 μ.Χ.','Η Κύπρος γίνεται μέρος της Ρωμαϊκής αυτοκρατορίας. Χτίζονται θέατρα, στάδια, ναοί και ψηφιδωτά. Διαδίδεται ο Χριστιανισμός.',[]]];
+function x0(v,ix){
+ v.appendChild(el('p','lead','Η Κύπρος έχει <b>πολύ</b> μεγάλη ιστορία. Πριν από τους Μυκηναίους υπήρχαν χιλιάδες χρόνια ζωής! Πάτησε κάθε περίοδο για να δεις τι συνέβη.'));
+ const bar=el('div','','');bar.style.cssText='display:flex;overflow-x:auto;gap:4px;padding:6px 2px 10px;border-bottom:6px solid var(--bd)';
+ const info=el('div','tip','<b>Πάτησε μια περίοδο.</b><br>Το μήκος δεν είναι ανάλογο με τα χρόνια.');const seen=new Set();
+ const cols=['#9ca3af','#a3a3a3','#d8b4c8','#9a9a9a','#fb923c','#22c55e','#c084fc','#fde047','#67e8f9','#fdba74'];
+ PRE.forEach((p,i)=>{const b=el('button','',`<div style="font-size:26px">${p[0]}</div><b style="font-size:12px;display:block">${p[1]}</b><span style="font-size:11px">${p[2]}</span>`);b.style.cssText='flex:0 0 auto;min-width:120px;border:3px solid var(--bd);border-radius:14px;background:'+cols[i]+'55;border-top:8px solid '+cols[i]+';padding:6px;cursor:pointer;font-family:Fredoka;color:var(--tx)';
+  b.onclick=()=>{info.innerHTML='<b>'+p[0]+' '+p[1]+'</b> ('+p[2]+')<br>'+p[3]+p[4].map(k=>FIG(k,'',170)).join('');seen.add(i);if(seen.size==PRE.length)mark(ix)};bar.appendChild(b)});
+ v.append(bar,info);
+ order(v,{intro:'Βάλε τις περιόδους στη σωστή σειρά, από την πιο παλιά.',steps:PRE.slice(0,9).map(p=>p[0]+' '+p[1]),done:'Ξέρεις πολύ παλιά ιστορία!'},-1);
+ match(v,{intro:'Ταίριαξε τη θέση με την περίοδο.',pairs:[['Αετόκρεμνος','Προ-νεολιθική'],['Χοιροκοιτία','Ακεραμική Νεολιθική'],['Λέμπα','Χαλκολιθική'],['Έγκωμη','Εποχή του Χαλκού'],['Κυπριακό Συλλαβάριο','Κυπρογεωμετρική'],['Πτολεμαίοι','Ελληνιστική']]},-1)}
 function x1(v,ix){
  v.appendChild(el('p','lead','Ο <b>άξονας του χρόνου</b> είναι μια γραμμή που βάζει τα γεγονότα στη σειρά, από τα πιο παλιά στα πιο πρόσφατα. Ετοίμασε τα δάχτυλά σου: πάτησε κάθε περίοδο!'));
  const bar=el('div','','');bar.style.cssText='display:flex;overflow-x:auto;gap:4px;padding:6px 2px 10px;border-bottom:6px solid var(--bd)';
@@ -346,10 +368,12 @@ function x6(v,ix){qz(v,[
 ['Ο άξονας του χρόνου μας βοηθά να καταλάβουμε…',['Τι έγινε πριν και τι μετά','Πόσο ψηλός είναι ο Όλυμπος','Τι καιρό θα κάνει','Τίποτα'],0]],ix)}
 const T=[
 ['1. ⏳ Ο άξονας','Ο άξονας του χρόνου της Κύπρου',v=>x1(v,0)],
+['🦣 Προϊστορία και αρχαιότητα','Από την Προϊστορία ως τη Ρωμαϊκή περίοδο',v=>x0(v,6)],
 ['2. 🔢 Στη σειρά','Βάζω τις περιόδους στη σειρά',v=>x2(v,1)],
 ['3. ↔️ Πριν ή μετά;','Πριν και μετά',v=>x3(v,2)],
 ['4. 🧩 Βάζω στον άξονα','Βάζω γεγονότα και χώρους στην περίοδό τους',v=>x4(v,3)],
 ['5. 🧒 Ο δικός μου','Ο δικός μου άξονας',v=>x5(v,4)],
 ['6. ❓ Κουίζ','Τι έμαθα;',v=>x6(v,5)]];
+const cr=el('p','','📚 Υλικό: «Ιστορική γραμμή – Από την Προϊστορία μέχρι τη Ρωμαϊκή περίοδο», Υπουργείο Παιδείας, Αθλητισμού και Νεολαίας, Παιδαγωγικό Ινστιτούτο Κύπρου (συγγραφή–δημιουργία: Δρ Παναγιώτης Τοφής). Ερωτήσεις και παιχνίδια: DigiKidsEdu.');cr.style.cssText='font-size:13px;opacity:.75;text-align:center;margin:12px 8px;line-height:1.5';document.querySelector('main').appendChild(cr);
 tabs();go(0);
 </script></body></html>
