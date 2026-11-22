@@ -165,9 +165,14 @@ const G=document.getElementById('games');
 GAMES.forEach(g=>{const a=document.createElement('a');a.className='gm';a.href=g.href;a.innerHTML=`<div class="ico" style="background:${g.bg}">${g.ico}</div><b>${g.t}</b><span class="mu">${g.d}</span>`;G.appendChild(a)});
 if(!GAMES.length)G.innerHTML='<div class="soon" style="grid-column:1/-1"><div class="e">🎲</div><b>Σύντομα το πρώτο παιχνίδι!</b></div>';
 </script><script>
+function setOpen(x){document.querySelectorAll('.sec').forEach(function(s){var b=s.querySelector('.sb');var o=(s===x);s.classList.toggle('open',o);if(b)b.setAttribute('aria-expanded',o)})}
+window.addEventListener('popstate',function(){setOpen(null)});
+window.addEventListener('pageshow',function(e){if(e.persisted&&!(history.state&&history.state.gsec))setOpen(null)});
 document.querySelectorAll('.sec').forEach(function(sec){var sb=sec.querySelector('.sb');if(!sb)return;var bd=document.createElement('div');bd.className='bd';while(sb.nextSibling)bd.appendChild(sb.nextSibling);sec.appendChild(bd);
 var c=document.createElement('span');c.className='chev';c.setAttribute('aria-hidden','true');sb.appendChild(c);
 sb.setAttribute('role','button');sb.tabIndex=0;sb.setAttribute('aria-expanded','false');
-function t(){if(sec.querySelector('#games')&&typeof GAMES!=='undefined'&&GAMES.length===1){location.href=GAMES[0].href;return}var o=sec.classList.toggle('open');sb.setAttribute('aria-expanded',o)}
+function t(){if(sec.querySelector('#games')&&typeof GAMES!=='undefined'&&GAMES.length===1){location.href=GAMES[0].href;return}
+if(sec.classList.contains('open')){if(history.state&&history.state.gsec){history.back()}else{setOpen(null)}return}
+var had=!!document.querySelector('.sec.open');setOpen(sec);if(!had){try{history.pushState({gsec:1},'')}catch(e){}}try{sb.scrollIntoView({block:'start',behavior:'smooth'})}catch(e){}}
 sb.addEventListener('click',t);sb.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
 </script></body></html>
