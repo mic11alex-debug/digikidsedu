@@ -24,7 +24,8 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 .sw{width:46px;height:46px;border-radius:10px;border:4px solid var(--bd);cursor:pointer;padding:0;position:relative;overflow:hidden}.sw.on{border-color:#f59e0b;transform:scale(1.12)}.sw i{position:absolute;left:0;right:0;top:0;height:30%}
 .pad{width:64px;height:56px;border-radius:16px;border:0;background:#0ea5e9;color:#fff;font:700 26px Fredoka,system-ui;box-shadow:0 4px 0 #0369a1;touch-action:none;user-select:none}.pad:active{transform:translateY(3px);box-shadow:none}</style></head><body>
 <header><h1>⛏️ Χτίστης Κόσμων</h1><p>Σπάσε και χτίσε τον δικό σου κόσμο από τετράγωνα</p></header>
-<main><div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟩 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
+<main><div class="row"><div class="lab">Τύπος κόσμου</div><button class="ch" data-w="0">🌳 Λιβάδι</button><button class="ch" data-w="1">🏜️ Έρημος</button><button class="ch" data-w="2">❄️ Χιόνι</button><button class="ch" data-w="3">⛰️ Βουνά</button></div>
+<div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟩 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
 <div class="row"><button class="ch on" data-t="break">⛏️ Σπάω</button><button class="ch" data-t="build">🧱 Χτίζω</button><button class="ch" data-c="dog">🐶 Μίλης</button><button class="ch" data-c="cat">🐱 Νάσα</button></div>
 <canvas id="cv"></canvas>
 <div id="pal" class="row"></div>
@@ -90,9 +91,13 @@ let mode=ld('mc_mode','2d'),tool='break',sel_=8,keys={},dirty=false,cast=ld('mc_
 const enc=a=>{let s='';for(let i=0;i<a.length;i++)s+=String.fromCharCode(48+a[i]);return s},dec=(s,n)=>{if(!s||s.length!==n)return null;const a=new Uint8Array(n);for(let i=0;i<n;i++)a[i]=s.charCodeAt(i)-48;return a};
 /* ---------- 2D ---------- */
 const W2=96,H2=40;let g2,p2={x:48.5,y:10,vx:0,vy:0,face:1};
-const ht2=x=>20+Math.round(2.5*Math.sin(x*.17)+1.8*Math.sin(x*.41+1));
-function gen2(){g2=new Uint8Array(W2*H2);for(let x=0;x<W2;x++){const h=ht2(x);for(let y=h;y<H2;y++)g2[y*W2+x]=y===h?1:y<h+4?2:3}
- for(let x=4;x<W2-4;x+=5+(Math.random()*5|0)){if(Math.abs(x-48)<4)continue;const y0=ht2(x);for(let k=1;k<=4;k++)g2[(y0-k)*W2+x]=4;for(let dx=-2;dx<=2;dx++)for(let dy=-6;dy<=-4;dy++){if(Math.abs(dx)===2&&dy===-6)continue;const i=(y0+dy)*W2+x+dx;if(!g2[i])g2[i]=5}}
+let wt=+ld('mc_wt',0);
+const ht2=x=>wt===1?21+Math.round(2.6*Math.sin(x*.12)+1.4*Math.sin(x*.31+2)):wt===2?20+Math.round(3*Math.sin(x*.1)+1.8*Math.sin(x*.27+1)):wt===3?Math.max(7,Math.min(30,19+Math.round(5*Math.sin(x*.08)+2.5*Math.sin(x*.21+1)+Math.sin(x*.5)))):20+Math.round(2.5*Math.sin(x*.17)+1.8*Math.sin(x*.41+1));
+function gen2(){g2=new Uint8Array(W2*H2);for(let x=0;x<W2;x++){const h=ht2(x);for(let y=h;y<H2;y++){let id;if(wt===1)id=y<h+5?6:3;else if(wt===2)id=y===h?12:y<h+4?2:3;else if(wt===3)id=y===h?(h<14?12:h<19?3:1):(h>=19&&y<h+3?2:3);else id=y===h?1:y<h+4?2:3;g2[y*W2+x]=id}}
+ for(let x=4;x<W2-4;x+=5+(Math.random()*5|0)){if(Math.abs(x-48)<4)continue;const y0=ht2(x);
+  if(wt===1){const hh=2+(Math.random()*2|0);for(let k=1;k<=hh;k++)g2[(y0-k)*W2+x]=5;continue}
+  if(wt===3&&y0<19)continue;
+  for(let k=1;k<=4;k++)g2[(y0-k)*W2+x]=4;for(let dx=-2;dx<=2;dx++)for(let dy=-6;dy<=-4;dy++){if(Math.abs(dx)===2&&dy===-6)continue;const i=(y0+dy)*W2+x+dx;if(!g2[i])g2[i]=(wt===2&&dy===-6)?12:5}}
  p2={x:48.5,y:ht2(48),vx:0,vy:0,face:1};dirty=true}
 const s2=(x,y)=>x<0||x>=W2||y>=H2?true:y<0?false:g2[y*W2+x]>0;
 function hit2(x,y){for(let a=Math.floor(x-.35);a<=Math.floor(x+.35);a++)for(let b=Math.floor(y-1.8);b<=Math.floor(y-.001);b++)if(s2(a,b))return true;return false}
@@ -145,9 +150,12 @@ function act2(tx,ty,place){if(tx<0||tx>=W2||ty<0||ty>=H2)return;if(Math.hypot(tx
  if(place){if(g2[i])return;if(tx+1>p2.x-.35&&tx<p2.x+.35&&ty+1>p2.y-1.8&&ty<p2.y)return;g2[i]=sel_;beep(330,.06,'square')}else{if(!g2[i]||ty>=H2-1)return;g2[i]=0;beep(180,.08,'square')}dirty=true}
 /* ---------- 3D ---------- */
 const N=24,HH=14;let g3,p3={x:12.5,y:6,z:12.5,vy:0,yaw:0,pitch:-.2};
-const I3=(x,y,z)=>(y*N+z)*N+x,ht3=(x,z)=>3+Math.round(1.4*Math.sin(x*.45)+1.4*Math.cos(z*.38));
-function gen3(){g3=new Uint8Array(N*HH*N);for(let z=0;z<N;z++)for(let x=0;x<N;x++){const h=ht3(x,z);for(let y=0;y<=h;y++)g3[I3(x,y,z)]=y===h?1:y>=h-2?2:3}
- for(let k=0;k<9;k++){const x=2+(Math.random()*(N-4)|0),z=2+(Math.random()*(N-4)|0);if(Math.hypot(x-12,z-12)<3)continue;const y0=ht3(x,z)+1;for(let i=0;i<4;i++)g3[I3(x,y0+i,z)]=4;for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++)for(let dy=3;dy<=4;dy++){if(Math.abs(dx)===2&&Math.abs(dz)===2)continue;const i=I3(x+dx,y0+dy,z+dz);if(!g3[i])g3[i]=5}for(let dx=-1;dx<=1;dx++)for(let dz=-1;dz<=1;dz++){const i=I3(x+dx,y0+5,z+dz);if(!g3[i])g3[i]=5}}
+const I3=(x,y,z)=>(y*N+z)*N+x,ht3=(x,z)=>wt===1?3+Math.round(1.6*Math.sin(x*.35+z*.2)+1.2*Math.cos(z*.3)):wt===2?4+Math.round(1.5*Math.sin(x*.4)+1.5*Math.cos(z*.33)):wt===3?Math.max(2,Math.min(10,5+Math.round(2.2*Math.sin(x*.3)+2.2*Math.cos(z*.27)+.6*Math.sin((x+z)*.6)))):3+Math.round(1.4*Math.sin(x*.45)+1.4*Math.cos(z*.38));
+function gen3(){g3=new Uint8Array(N*HH*N);for(let z=0;z<N;z++)for(let x=0;x<N;x++){const h=ht3(x,z);for(let y=0;y<=h;y++){let id;if(wt===1)id=y>=h-3?6:3;else if(wt===2)id=y===h?12:y>=h-2?2:3;else if(wt===3)id=y===h?(h>=9?12:h>=6?3:1):(h<6&&y>=h-2?2:3);else id=y===h?1:y>=h-2?2:3;g3[I3(x,y,z)]=id}}
+ for(let k=0;k<9;k++){const x=2+(Math.random()*(N-4)|0),z=2+(Math.random()*(N-4)|0);if(Math.hypot(x-12,z-12)<3)continue;const y0=ht3(x,z)+1;
+  if(wt===1){const hh=2+(Math.random()*2|0);for(let i=0;i<hh;i++)g3[I3(x,y0+i,z)]=5;continue}
+  if(wt===3&&y0>6)continue;
+  for(let i=0;i<4;i++)g3[I3(x,y0+i,z)]=4;for(let dx=-2;dx<=2;dx++)for(let dz=-2;dz<=2;dz++)for(let dy=3;dy<=4;dy++){if(Math.abs(dx)===2&&Math.abs(dz)===2)continue;const i=I3(x+dx,y0+dy,z+dz);if(!g3[i])g3[i]=5}for(let dx=-1;dx<=1;dx++)for(let dz=-1;dz<=1;dz++){const i=I3(x+dx,y0+5,z+dz);if(!g3[i])g3[i]=wt===2?12:5}}
  p3={x:12.5,y:ht3(12,12)+1.01,z:12.5,vy:0,yaw:0,pitch:-.2};dirty=true}
 const s3=(x,y,z)=>x<0||x>=N||z<0||z>=N||y<0?true:y>=HH?false:g3[I3(x,y,z)]>0;
 function hit3(x,y,z){for(let a=Math.floor(x-.3);a<=Math.floor(x+.3);a++)for(let c=Math.floor(z-.3);c<=Math.floor(z+.3);c++)for(let b=Math.floor(y);b<=Math.floor(y+1.7);b++)if(s3(a,b,c))return true;return false}
@@ -183,6 +191,7 @@ function setCast(c){cast=c;sv('mc_cast',c);sel('data-c',c)}
 const pal=$('pal');for(let i=1;i<BL.length;i++){const b=document.createElement('button');b.className='sw';b.dataset.i=i;b.title=BL[i].n;b.style.background=BL[i].s;b.innerHTML='<i style="background:'+BL[i].t+'"></i>';b.onclick=()=>{sel_=i;setTool('build');pal.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',+x.dataset.i===i))};pal.appendChild(b)}
 pal.querySelectorAll('.sw')[sel_-1].classList.add('on');
 document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMode(b.dataset.m));document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>setTool(b.dataset.t));document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>setCast(b.dataset.c));
+function setWT(i){wt=i;sv('mc_wt',i);document.querySelectorAll('[data-w]').forEach(b=>b.classList.toggle('on',+b.dataset.w===i))}setWT(wt);document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{setWT(+b.dataset.w);if(!nwT)$('nw').onclick()});
 let nwT=0;$('nw').onclick=()=>{if(!nwT){$('nw').textContent='❓ Σίγουρα; Πάτα ξανά';nwT=setTimeout(()=>{nwT=0;$('nw').textContent='🆕 Νέος κόσμος'},3000);return}clearTimeout(nwT);nwT=0;$('nw').textContent='🆕 Νέος κόσμος';mode==='2d'?gen2():gen3();save()};
 keyMap(code=>{if(mode==='2d')return{ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j'}[code];return{ArrowUp:'fw',KeyW:'fw',ArrowDown:'bk',KeyS:'bk',KeyA:'sl',KeyD:'sr',ArrowLeft:'tl',ArrowRight:'tr',Space:'j'}[code]});
 let dn=null;

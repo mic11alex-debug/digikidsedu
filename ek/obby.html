@@ -24,7 +24,7 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 .pad{width:64px;height:56px;border-radius:16px;border:0;background:#8b5cf6;color:#fff;font:700 26px Fredoka,system-ui;box-shadow:0 4px 0 #6d28d9;touch-action:none;user-select:none}.pad:active{transform:translateY(3px);box-shadow:none}</style></head><body>
 <header><h1>🌈 Παρκούρ Ουρανού</h1><p>Πήδα από πλατφόρμα σε πλατφόρμα και φτάσε στο τέλος!</p></header>
 <main><div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟦 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
-<div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button></div>
+<div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button><button class="ch" data-l="3">4 · Πολύ δύσκολο</button><button class="ch" data-l="4">5 · Μάστερ</button></div>
 <div class="row"><button class="ch" data-c="dog">🐶 Μίλης</button><button class="ch" data-c="cat">🐱 Νάσα</button><div class="pill"><small>Χρόνος</small><b id="tm">0.0</b></div><div class="pill"><small>Πτώσεις</small><b id="dc">0</b></div></div>
 <div style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
 <div class="row" id="pad2"><button class="pad" data-k="l">◀</button><button class="pad" data-k="j">⤒</button><button class="pad" data-k="r">▶</button></div>
@@ -84,7 +84,7 @@ function keyMap(map,down){
 const CW=640,CH=420,cv=$('cv'),cx=cv.getContext('2d');cv.width=CW;cv.height=CH;
 const ld=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let mode=ld('ob_mode','2d'),lvl=+ld('ob_lvl','0')||0,cast=ld('ob_cast','dog'),keys={},t=0,deaths=0,won=false,started=false,pl,cp,P=[],H=[];
-const LV=[{n:16,g:[1.4,2.2],w:[4,5],dy:1,mv:0,sp:0},{n:24,g:[1.8,2.8],w:[3,4],dy:1.2,mv:.3,sp:.25},{n:32,g:[2.2,3.0],w:[2.4,3.2],dy:1.4,mv:.4,sp:.35}];
+const LV=[{n:16,g:[1.4,2.2],w:[4,5],dy:1,mv:0,sp:0},{n:24,g:[1.8,2.8],w:[3,4],dy:1.2,mv:.3,sp:.25},{n:32,g:[2.2,3.0],w:[2.4,3.2],dy:1.4,mv:.4,sp:.35},{n:40,g:[2.3,3.0],w:[2.2,3.0],dy:1.5,mv:.5,sp:.4},{n:50,g:[2.4,3.1],w:[2.0,2.8],dy:1.6,mv:.55,sp:.45}];
 function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 const rr=(R,a,b)=>a+R()*(b-a);
 /* Κοινή γεννήτρια: 2D χρησιμοποιεί x/y, 3D x/y/z */
@@ -108,7 +108,7 @@ function build(){const L=LV[lvl],R=rng(1000+lvl*77+(mode==='3d'?5:0));P=[];H=[];
 function spawn(){const p=P[cp];if(mode==='2d'){pl={x:p.x+p.w/2,y:p.y,vx:0,vy:0,face:1}}else{pl={x:p.x+p.w/2,y:p.y+p.h+.01,z:p.z+p.d/2,vy:0,yaw:0,pitch:-.35,onp:null}}}
 function platPos(p){if(p.mv){const o=Math.sin(t*1.3+p.ph)*1;const nx=(p.ox+o);p.dx=nx-p.x;p.x=nx}else p.dx=0}
 function die(){deaths++;$('dc').textContent=deaths;beep(150,.3,'sawtooth');spawn()}
-function win(){if(won)return;won=true;fanfare();const best=+ld('ob_best'+lvl+mode,'9999');const tt=t;if(tt<best)sv('ob_best'+lvl+mode,tt.toFixed(1));$('wt').innerHTML='Τα κατάφερες!<br><small>Χρόνος: '+tt.toFixed(1)+' δλ · Πτώσεις: '+deaths+'</small>';$('nx').style.display=lvl<2?'':'none';$('win').style.display='flex'}
+function win(){if(won)return;won=true;fanfare();const best=+ld('ob_best'+lvl+mode,'9999');const tt=t;if(tt<best)sv('ob_best'+lvl+mode,tt.toFixed(1));$('wt').innerHTML='Τα κατάφερες!<br><small>Χρόνος: '+tt.toFixed(1)+' δλ · Πτώσεις: '+deaths+'</small>';$('nx').style.display=lvl<LV.length-1?'':'none';$('win').style.display='flex'}
 
 /* ---------- χαρακτήρας (ζωγραφισμένος) ---------- */
 function drawPet(c,x,y,h,kind,face,view,ph,air){
