@@ -387,6 +387,46 @@ function h6(v,ix){qz(v,[
 ['Τι κράτησε ο Άτλαντας;',['Τον ουρανό','Ένα νησί','Ένα δέντρο','Ένα καράβι'],0],
 ['Πώς λέγονται οι βράχοι στα στενά του Γιβραλτάρ;',['Στήλες του Ηρακλή','Πύλες του Άδη','Τρίαινες','Μετέωρα'],0],
 ['Ποια θεά βοήθησε στις Στυμφαλίδες Όρνιθες;',['Αθηνά','Δήμητρα','Άρτεμη','Ήρα'],0]],ix)}
+function hP(v,ix){
+ const S={a:[0,3],t:[{d:'',h:'',f:''},{d:'',h:'',f:''}],name:''};
+ v.appendChild(el('p','lead','Διάλεξε <b>2 άθλους</b> του Ηρακλή και φτιάξε μια μικρή παρουσίαση για την τάξη. Θα έχει 4 διαφάνειες: τίτλο, τους δύο άθλους και ένα ευχαριστώ.'));
+ v.appendChild(el('div','tip','<b>✍️ Γράφω με δικά μου λόγια.</b> Άνοιξε το «📖 Διαβάζω» για να θυμηθείς την ιστορία και μετά γράψε μόνος σου. Μην αντιγράψεις το κείμενο.'));
+ const nm=document.createElement('input');nm.placeholder='Το όνομά σου';nm.maxLength=30;nm.style.cssText='padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;margin:6px 0;width:240px';nm.oninput=()=>{S.name=nm.value;prev()};v.appendChild(nm);
+ const boxes=[];
+ [0,1].forEach(k=>{
+  const b=el('div','','');b.style.cssText='border:3px solid var(--bd);border-radius:14px;padding:10px;margin:10px 0;background:#fff';
+  const sel=document.createElement('select');sel.style.cssText='padding:8px;border:2px solid var(--bd);border-radius:10px;font:inherit;max-width:100%';
+  AT.forEach((a,i)=>{const o=document.createElement('option');o.value=i;o.textContent=(i+1)+'. '+a.e+' '+a.n;if(i==S.a[k])o.selected=true;sel.appendChild(o)});
+  const info=el('div','','');
+  const mk=(lab,key,ph)=>{const w=el('div','','<div style="font-weight:700;margin:8px 0 2px">'+lab+'</div>');const t=document.createElement('textarea');t.rows=2;t.placeholder=ph;t.maxLength=220;t.style.cssText='width:100%;box-sizing:border-box;padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit';t.oninput=()=>{S.t[k][key]=t.value;prev();chk()};w.appendChild(t);return w};
+  const fill=()=>{const a=AT[S.a[k]];info.innerHTML='<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start"><img src="'+isrc(a.img)+'" alt="" style="width:130px;height:130px;object-fit:cover;border-radius:12px;border:3px solid var(--bd)"><div style="flex:1;min-width:200px"><b>'+a.e+' '+escP(a.n)+'</b><br><small>📍 '+escP(a.pl)+'</small><details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700">📖 Διαβάζω</summary><p style="margin:6px 0;line-height:1.5">'+escP(a.tx)+'</p></details></div></div>'};
+  sel.onchange=()=>{S.a[k]=+sel.value;fill();prev();chk()};
+  b.append(el('h3','','Άθλος '+(k+1)),sel,info,mk('Τι έπρεπε να κάνει ο Ηρακλής;','d','π.χ. Έπρεπε να φέρει…'),mk('Πώς τα κατάφερε;','h','π.χ. Χρησιμοποίησε…'),mk('Ένα ενδιαφέρον στοιχείο','f','Κάτι που σου έκανε εντύπωση'));
+  fill();boxes.push(b);v.appendChild(b)});
+ const mm=msgEl();
+ const slide=i=>{const A=S.a.map(x=>AT[x]);const W='container-type:inline-size;aspect-ratio:16/9;width:100%;border-radius:12px;overflow:hidden;position:relative;font-family:Georgia,serif;';
+  if(i==0)return '<div style="'+W+'background:linear-gradient(135deg,#7c2d12,#f59e0b);color:#fff;text-align:center"><div style="padding-top:12cqw"><div style="font-size:9cqw;font-weight:800">Οι άθλοι του Ηρακλή</div><div style="font-size:7cqw;margin:2cqw 0">'+A[0].e+' 💪 '+A[1].e+'</div><div style="font-size:3.6cqw">'+escP(A[0].n)+' και '+escP(A[1].n)+'</div><div style="font-size:3.2cqw;margin-top:3cqw;opacity:.9">'+(S.name?'Παρουσίαση: '+escP(S.name):'')+'</div></div></div>';
+  if(i==3)return '<div style="'+W+'background:linear-gradient(135deg,#f59e0b,#7c2d12);color:#fff;text-align:center"><div style="padding-top:14cqw;font-size:11cqw;font-weight:800">Ευχαριστώ!</div><div style="font-size:12cqw;margin-top:2cqw">💪🦁🏆</div></div>';
+  const a=A[i-1],t=S.t[i-1];const li=(h,x)=>x.trim()?'<div style="margin:1.2cqw 0;font-size:2.7cqw;line-height:1.25"><b style="color:#9a3412">'+h+'</b> '+escP(x)+'</div>':'';
+  return '<div style="'+W+'background:#fffbeb;display:flex"><img src="'+isrc(a.img)+'" alt="" style="width:40%;height:100%;object-fit:cover"><div style="flex:1;padding:3cqw 3.5cqw;color:#1f2937"><div style="font-size:4.6cqw;font-weight:800;color:#7c2d12;line-height:1.1">'+a.e+' '+escP(a.n)+'</div><div style="font-size:2.4cqw;margin:1cqw 0 1.5cqw;color:#6b7280">📍 '+escP(a.pl)+'</div>'+li('Τι έπρεπε να κάνει:',t.d)+li('Πώς τα κατάφερε:',t.h)+li('Ενδιαφέρον:',t.f)+'</div></div>'};
+ const pv=el('div','','');pv.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:10px 0';
+ function prev(){pv.innerHTML=[0,1,2,3].map(i=>'<div style="border:3px solid var(--bd);border-radius:14px;padding:4px;background:#fff">'+slide(i)+'</div>').join('')}
+ function chk(){const ok=S.a[0]!=S.a[1]&&S.t.every(t=>t.d.trim().length>=10&&t.h.trim().length>=10);if(S.a[0]==S.a[1])mm.innerHTML='<div class="tip">Διάλεξε δύο <b>διαφορετικούς</b> άθλους.</div>';else if(ok){mm.innerHTML='<div class="win"><div class="big">🎉</div><b>Η παρουσίαση είναι έτοιμη! Πάτησε «Παρουσιάζω» και πες την στην τάξη.</b></div>';mark(ix)}else mm.innerHTML=''}
+ v.append(el('h3','','Η παρουσίασή μου'),pv,mm);
+ const pb=el('button','btn','▶️ Παρουσιάζω');pb.type='button';
+ pb.onclick=()=>{let i=0;const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:#111;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px';
+  const box=document.createElement('div');box.style.cssText='width:min(96vw,170vh)';
+  const bar=document.createElement('div');bar.style.cssText='display:flex;gap:10px;align-items:center;color:#fff';
+  const bp=el('button','btn g','◀ Πίσω'),bn=el('button','btn','Επόμενη ▶'),bx=el('button','btn g','✖ Κλείσιμο'),pn=el('span','','');[bp,bn,bx].forEach(b=>b.type='button');
+  const show=()=>{box.innerHTML=slide(i);pn.textContent=(i+1)+' / 4';bp.disabled=i==0;bn.disabled=i==3};
+  const close=()=>{document.removeEventListener('keydown',kd);o.remove()};
+  const kd=e=>{if(e.key=='ArrowRight'&&i<3){i++;show()}else if(e.key=='ArrowLeft'&&i>0){i--;show()}else if(e.key=='Escape')close()};
+  bp.onclick=()=>{if(i>0){i--;show()}};bn.onclick=()=>{if(i<3){i++;show()}};bx.onclick=close;document.addEventListener('keydown',kd);
+  bar.append(bp,pn,bn,bx);o.append(box,bar);document.body.appendChild(o);show()};
+ v.appendChild(pb);
+ v.appendChild(prBtn(()=>prnOut('Η παρουσίασή μου για τον Ηρακλή',[0,1,2,3].map(i=>'<div style="margin-bottom:14px;page-break-inside:avoid">'+slide(i)+'</div>').join(''),{})));
+ prev()}
+
 const T=[
 ['🎬 Βίντεο','Βίντεο για τον Ηρακλή',v=>h0(v,0)],
 ['1. 💪 Ο ήρωας','Ποιος είναι ο Ηρακλής;',v=>h1(v,1)],
@@ -396,7 +436,8 @@ const T=[
 ['5. 🗺️ Χάρτης','Ο χάρτης των άθλων',v=>h4(v,5)],
 ['6. 🔢 Η σειρά','Οι άθλοι στη σειρά',v=>h5(v,6)],
 ['7. 🏆 Το τέλος και η δόξα','Το τέλος και η δόξα του Ηρακλή',v=>hE(v,7)],
-['8. ❓ Κουίζ','Τι έμαθα;',v=>h6(v,8)]];
+['8. 🎤 Παρουσιάζω','Παρουσιάζω δύο άθλους',v=>hP(v,9)],
+['9. ❓ Κουίζ','Τι έμαθα;',v=>h6(v,8)]];
 const cr=el('p','','📚 Υλικό: «Ο Ηρακλής – Η ζωή και οι άθλοι του», επιμέλεια Ευγενία Παπαδημητρακοπούλου (blogs.sch.gr/epapadi), και αφίσα «Οι 12 άθλοι του Ηρακλή». Ερωτήσεις και παιχνίδια: DigiKidsEdu.');cr.style.cssText='font-size:13px;opacity:.75;text-align:center;margin:12px 8px;line-height:1.5';document.querySelector('main').appendChild(cr);
 tabs();go(0);
 </script></body></html>

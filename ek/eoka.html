@@ -469,6 +469,61 @@ function e11(v,ix){qz(v,[
 ['Ποια ομάδα ίδρυσε το 1958 την ΤΜΤ;',['Οι Τουρκοκύπριοι','Οι Ελληνοκύπριοι','Οι Βρετανοί','Οι Μαρωνίτες'],0],
 ['Ποιος σκοτώθηκε στο κρησφύγετό του στο Δίκωμο;',['Κυριάκος Μάτσης','Γρηγόρης Αυξεντίου','Μάρκος Δράκος','Μόδεστος'],0],
 ['Γιατί διαβάζουμε πολλές πηγές στην Ιστορία;',['Γιατί κάθε ομάδα μπορεί να βλέπει το ίδιο γεγονός διαφορετικά','Για να έχουμε περισσότερο διάβασμα','Γιατί οι πηγές είναι πάντα λάθος','Δεν χρειάζεται'],0]],ix)}
+function eP(v,ix){
+ const PAL=[['Ουρανός','#eaf4ff','#0b3d91','#2b6cb0'],['Παλιά αφίσα','#f3e6c8','#4a2c12','#a63d2a'],['Ελιά','#eef3e2','#2f4a1f','#6b8e23'],['Νύχτα','#1b2540','#f5e6a8','#f0b429']];
+ const IM=['cover','kids','graffiti','memorial','mnimata','mouseio','agalma_avx','liopetri','priest'];
+ const SY=['🕊️','🌿','⭐','🕯️','🤝'];
+ const S={t:'',s:'',img:'cover',pal:0,sy:0,n:''};
+ v.appendChild(el('p','lead','Φτιάξε μια <b>αφίσα για τον αγώνα της ΕΟΚΑ 1955–1959</b>. Η αφίσα πρέπει να λέει με λίγες λέξεις και μια εικόνα τι θέλεις να θυμούνται οι άνθρωποι.'));
+ v.appendChild(el('div','tip','<b>✅ Μια καλή αφίσα έχει:</b> μεγάλο τίτλο, μια εικόνα, μια σύντομη φράση και χρώματα που ταιριάζουν. Σκέψου: τι ήταν σημαντικό σε αυτόν τον αγώνα; Ποιους θέλεις να τιμήσεις;'));
+ const inp=(ph,key,max,w)=>{const i=document.createElement('input');i.placeholder=ph;i.maxLength=max;i.style.cssText='padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;width:'+w+';max-width:100%;box-sizing:border-box';i.oninput=()=>{S[key]=i.value;draw()};return i};
+ const f=el('div','','');f.style.cssText='display:flex;flex-direction:column;gap:8px;margin:8px 0';
+ f.append(inp('Τίτλος της αφίσας (π.χ. Ελευθερία)','t',28,'100%'),inp('Μια φράση ή ένα σύνθημα','s',80,'100%'),inp('Το όνομά σου','n',30,'240px'));
+ const g=el('div','','');g.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0';
+ IM.forEach(k=>{const b=document.createElement('button');b.type='button';b.style.cssText='border:3px solid var(--bd);border-radius:10px;padding:0;width:70px;height:56px;overflow:hidden;background:#fff;cursor:pointer';b.innerHTML='<img src="'+isrc(k)+'" alt="" style="width:100%;height:100%;object-fit:cover">';b.onclick=()=>{S.img=k;draw()};g.appendChild(b)});
+ const nb=el('button','btn g','Χωρίς εικόνα');nb.type='button';nb.onclick=()=>{S.img='';draw()};g.appendChild(nb);
+ const r2=el('div','','');r2.style.cssText='display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:6px 0';
+ r2.appendChild(el('span','','Χρώματα:'));PAL.forEach((p,i)=>{const b=el('button','btn g',p[0]);b.type='button';b.style.cssText='border-color:'+p[3];b.onclick=()=>{S.pal=i;draw()};r2.appendChild(b)});
+ r2.appendChild(el('span','','Σύμβολο:'));SY.forEach((y,i)=>{const b=el('button','btn g',y);b.type='button';b.style.fontSize='22px';b.onclick=()=>{S.sy=i;draw()};r2.appendChild(b)});
+ const pw=el('div','','');pw.style.cssText='width:min(100%,420px);margin:12px auto';
+ const mm=msgEl();
+ const html=()=>{const p=PAL[S.pal],y=SY[S.sy];
+  return '<div style="container-type:inline-size;aspect-ratio:3/4;width:100%;background:'+p[1]+';border:1.6cqw double '+p[3]+';box-sizing:border-box;border-radius:6px;position:relative;text-align:center;font-family:Georgia,serif;color:'+p[2]+';overflow:hidden">'
+  +'<div style="padding:5cqw 5cqw 0"><div style="font-size:3.4cqw;letter-spacing:.5cqw;color:'+p[3]+';font-weight:700">'+y+' ΚΥΠΡΟΣ 1955–1959 '+y+'</div>'
+  +'<div style="font-size:'+(S.t.length>16?8:11)+'cqw;font-weight:900;line-height:1.05;margin:2.5cqw 0;text-transform:uppercase;word-break:break-word">'+(S.t.trim()?escP(S.t):'Ο ΤΙΤΛΟΣ ΜΟΥ')+'</div>'
+  +(S.img?'<div style="border:1cqw solid '+p[3]+';background:#fff;margin:0 4cqw"><img src="'+isrc(S.img)+'" alt="" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block"></div>':'<div style="font-size:30cqw;line-height:1.2">'+y+'</div>')
+  +'<div style="font-size:5.2cqw;font-style:italic;margin:3cqw 2cqw;line-height:1.2">'+(S.s.trim()?'«'+escP(S.s)+'»':'')+'</div></div>'
+  +'<div style="position:absolute;left:0;right:0;bottom:2.2cqw;font-size:2.8cqw;opacity:.85">'+(S.n.trim()?'Αφίσα: '+escP(S.n):'')+'</div></div>'};
+ function draw(){pw.innerHTML=html();if(S.t.trim().length>=3&&S.s.trim().length>=5){mm.innerHTML='<div class="win"><div class="big">🎉</div><b>Μπράβο! Η αφίσα είναι έτοιμη. Μπορείς να την εκτυπώσεις.</b></div>';mark(ix)}else mm.innerHTML=''}
+ v.append(f,el('div','','<b>Διάλεξε εικόνα:</b>'),g,r2,pw,mm,prBtn(()=>prnOut('Η αφίσα μου για τον αγώνα',html(),{noName:1})));
+ draw()}
+function eWall(v,ix){
+ const KEYW='eoka_wall_v1';let W=[];try{W=JSON.parse(localStorage.getItem(KEYW)||'[]')}catch(e){}
+ const COL=['#dc2626','#2563eb','#16a34a','#f59e0b','#9333ea','#ffffff'];let c=0;
+ v.appendChild(el('p','lead','Γράψε ένα <b>φιλειρηνικό σύνθημα</b> στον τοίχο μας. Ο αγώνας τελείωσε το 1959. Σήμερα θέλουμε μια Κύπρο με ειρήνη, φιλία και σεβασμό για όλους.'));
+ v.appendChild(el('div','tip','<b>🕊️ Κανόνας:</b> Γράφουμε λόγια που ενώνουν. Δεν γράφουμε προσβολές ούτε λόγια μίσους. Σκέψου πώς θα ένιωθε το διπλανό σου παιδί διαβάζοντάς το.'));
+ const IDEAS=['Ειρήνη και ελευθερία για όλους','Μαζί χτίζουμε γέφυρες','Ποτέ ξανά πόλεμος','Η Κύπρος χωράει όλους μας','Η ειρήνη ξεκινά από εμάς'];
+ const ir=el('div','','<small>Ιδέες για να ξεκινήσεις (καλύτερα γράψε δικό σου): </small>');ir.style.cssText='margin:6px 0';
+ const ti=document.createElement('input');ti.maxLength=70;ti.placeholder='Το σύνθημά μου';ti.style.cssText='padding:10px;border:2px solid var(--bd);border-radius:10px;font:inherit;width:100%;box-sizing:border-box;margin:6px 0';
+ IDEAS.forEach(t=>{const b=el('button','btn g',t);b.type='button';b.style.cssText='font-size:12px;padding:3px 8px;margin:2px';b.onclick=()=>{ti.value=t;ti.focus()};ir.appendChild(b)});
+ const nm=document.createElement('input');nm.maxLength=20;nm.placeholder='Όνομα (προαιρετικά)';nm.style.cssText='padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;width:200px;max-width:100%';
+ const cr=el('div','','');cr.style.cssText='display:flex;gap:6px;align-items:center;margin:8px 0;flex-wrap:wrap';cr.appendChild(el('span','','Χρώμα σπρέι:'));
+ COL.forEach((k,i)=>{const b=document.createElement('button');b.type='button';b.style.cssText='width:30px;height:30px;border-radius:50%;border:3px solid '+(i==0?'#111':'#94a3b8')+';background:'+k+';cursor:pointer';b.onclick=()=>{c=i;[...cr.querySelectorAll('button')].forEach((x,j)=>x.style.borderColor=j==i?'#111':'#94a3b8')};cr.appendChild(b)});
+ const add=el('button','btn','🖌️ Γράφω στον τοίχο');add.type='button';
+ const mm=msgEl();
+ const wall=el('div','','');wall.style.cssText='min-height:260px;margin:12px 0;padding:18px 12px;border:4px solid #57534e;border-radius:10px;display:flex;flex-wrap:wrap;gap:6px 18px;align-content:flex-start;justify-content:center;background-color:#c7b8a3;background-image:linear-gradient(#8f7f6c 3px,transparent 3px),linear-gradient(90deg,#8f7f6c 3px,transparent 3px),linear-gradient(rgba(0,0,0,.05),rgba(255,255,255,.08));background-size:100% 44px,88px 100%,100% 100%;box-shadow:inset 0 0 40px rgba(0,0,0,.25)';
+ const BAD=/σκοτ|φόν|μίσ|μισ[ωώ]|θάνατ|βρωμ|ηλίθι|γαμ|μαλάκ|πουτ|χαζ|κτην/i;
+ const hh=()=>W.length?W.map(w=>'<div style="transform:rotate('+w.r+'deg);font:800 '+w.z+'px/1.1 \'Segoe Print\',\'Comic Sans MS\',cursive;color:'+w.c+';text-shadow:1px 1px 0 rgba(0,0,0,.45);max-width:46%;text-align:center;padding:2px 4px">'+escP(w.t)+(w.n?'<div style="font-size:11px;font-weight:600;opacity:.9">— '+escP(w.n)+'</div>':'')+'</div>').join(''):'<div style="align-self:center;color:#57534e;font-size:18px">Ο τοίχος είναι άδειος. Γράψε το πρώτο σύνθημα! 🕊️</div>';
+ const draw=()=>{wall.innerHTML=hh()};
+ add.onclick=()=>{const t=ti.value.trim();if(t.length<4){mm.innerHTML='<div class="tip">Γράψε ένα σύνθημα με τουλάχιστον λίγες λέξεις.</div>';return}
+  if(BAD.test(t)){mm.innerHTML='<div class="tip">🕊️ Ας γράψουμε κάτι ειρηνικό και φιλικό για όλους. Δοκίμασε πάλι!</div>';return}
+  W.push({t,n:nm.value.trim(),c:COL[c],r:Math.round((Math.random()*8-4)*10)/10,z:t.length>40?18:t.length>24?22:26});try{localStorage.setItem(KEYW,JSON.stringify(W))}catch(e){}
+  ti.value='';draw();mm.innerHTML='<div class="win"><div class="big">🎉</div><b>Το σύνθημά σου γράφτηκε στον τοίχο!</b></div>';mark(ix)};
+ const cl=el('button','btn g','🗑️ Καθαρισμός τοίχου');cl.type='button';let armed=false;cl.onclick=()=>{if(!armed){armed=true;cl.textContent='Σίγουρα; Πάτησε ξανά';setTimeout(()=>{armed=false;cl.textContent='🗑️ Καθαρισμός τοίχου'},4000);return}W=[];try{localStorage.removeItem(KEYW)}catch(e){}armed=false;cl.textContent='🗑️ Καθαρισμός τοίχου';draw()};
+ v.append(ir,ti,nm,cr,add,mm,wall,el('p','','<small>Ο τοίχος αποθηκεύεται σε αυτή τη συσκευή. Για να τον δείξεις στην τάξη, άνοιξέ τον στον προβολέα ή εκτύπωσέ τον.</small>'));
+ const rw=el('div','','');rw.style.cssText='display:flex;gap:8px;flex-wrap:wrap';rw.append(prBtn(()=>prnOut('Ο τοίχος της ειρήνης','<div style="display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:center;padding:18px;background:#c7b8a3;border:3px solid #57534e;border-radius:8px">'+hh()+'</div>',{noName:1,land:1})),cl);v.appendChild(rw);
+ draw()}
+
 const T=[
 ['1. 🎵 Ακούω','Μουσική και τραγούδια',v=>e0(v,0)],
 ['2. 🕯️ Πριν τον αγώνα','Πριν από το 1955',v=>e1(v,1)],
@@ -482,7 +537,9 @@ const T=[
 ['9. 🔤 Λέξεις','Παιχνίδια με λέξεις',v=>e8(v,8)],
 ['10. 🕊️ Το τέλος','Η ανεξαρτησία του 1960',v=>e9(v,9)],
 ['11. 🗣️ Ρωτώ και ψάχνω','Μνήμη και πηγές',v=>e10(v,10)],
-['12. ❓ Κουίζ','Τι έμαθα;',v=>e11(v,11)]];
+['12. 🎨 Αφίσα','Φτιάχνω αφίσα για τον αγώνα',v=>eP(v,13)],
+['13. 🧱 Τοίχος ειρήνης','Φιλειρηνικά συνθήματα',v=>eWall(v,14)],
+['14. ❓ Κουίζ','Τι έμαθα;',v=>e11(v,11)]];
 const cr=el('p','','📚 Υλικό: Γραφείο Τύπου και Πληροφοριών της Κυπριακής Δημοκρατίας (έντυπο «Ο απελευθερωτικός αγώνας 1955–59», Αφίσες, Χρονικό 1955–1959), παρουσιάσεις της Σταυρούλας Βαλιαντή, ηχογραφήσεις και φωτογραφίες από το υλικό που παρείχε ο εκπαιδευτικός. Για τις γυναίκες του αγώνα: κείμενο του Πρακτορείου Ορθοδοξίας (orthodoxianewsagency.gr). Ερωτήσεις και παιχνίδια: DigiKidsEdu.');cr.style.cssText='font-size:13px;opacity:.75;text-align:center;margin:12px 8px;line-height:1.5';document.querySelector('main').appendChild(cr);
 tabs();go(0);
 </script></body></html>

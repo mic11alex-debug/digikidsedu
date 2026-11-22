@@ -88,7 +88,7 @@ h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:
 .ttl{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.ttl button{font:600 18px Fredoka;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;padding:8px 12px;cursor:pointer}.ttl button.done{border-color:var(--green);background:#bbf7d0;color:#14532d;pointer-events:none}
 .cpk{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.cp{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:600 18px Fredoka;border-radius:14px;padding:6px 12px;cursor:pointer}.cp.on{background:var(--hl);border-color:var(--amber)}.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.sw{width:34px;height:34px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--bd);cursor:pointer;padding:0}
 </style></head><body>
-<header><h1>Αφροδίτη και Κύπρος</h1><p>Ο μύθος, ο τόπος και το ιερό της θεάς</p></header>
+<header><h1>💘 Αφροδίτη και Κύπρος</h1><p>Μυθολογία – Πάφος, Κούκλια, Πυγμαλίων</p></header>
 <div id="tabs"></div><main><div class="card" id="v"></div></main>
 <script>
 const $=id=>document.getElementById(id);
@@ -374,15 +374,57 @@ function f7(v,ix){qz(v,[
 ['Ποιο όνομα έδωσαν αργότερα στο άγαλμα;',['Γαλάτεια','Αθηνά','Ήρα','Δήμητρα'],0],
 ['Ποιο σύμβολο της Αφροδίτης είναι πουλί;',['Το περιστέρι','Ο αετός','Η κουκουβάγια','Ο γλάρος'],0],
 ['Τι λάτρευαν στο ιερό στο Κούκλια;',['Μια μαύρη κωνική πέτρα','Ένα χρυσό άγαλμα','Έναν ταύρο','Έναν ελέφαντα'],0]],ix)}
+function f8(v,ix){
+ const IMGS=[['milos','Αφροδίτη της Μήλου'],['botticelli','Η γέννηση της Αφροδίτης'],['petra2','Πέτρα του Ρωμιού'],['petra','Βράχος της Αφροδίτης'],['shell','Ειδώλιο σε κοχύλι'],['agalma','Άγαλμα'],['konos','Ιερή πέτρα'],['ieron','Το ιερό'],['mosaic','Δάπεδο του ιερού'],['aerial','Μουσείο Κούκλιας'],['pyli','Πύλη του μουσείου'],['pygmalion','Πυγμαλίων']];
+ const EMO=['💘','🌹','🐚','🕊️','🌊','🌸','✨','🍎','🌺','🏛️','🐬','💖','🌅','🪞'];
+ const BG=[['#fde7ef','Ροζ'],['#e0f2fe','Θάλασσα'],['#fff7d6','Άμμος'],['#ede9fe','Λιλά'],['#ffffff','Λευκό'],['#1e293b','Νύχτα']];
+ const S={items:[],sel:-1,bg:BG[1][0],title:''};let uid=0;
+ v.appendChild(el('p','lead','Φτιάξε ένα κολάζ για την <b>Αφροδίτη</b>. Διάλεξε εικόνες και σύμβολα, βάλε τα όπου θέλεις και δώσε έναν τίτλο.'));
+ v.appendChild(el('div','tip','<b>👆 Πώς δουλεύω:</b> Πάτησε μια εικόνα για να μπει στον πίνακα. Σύρε την με το δάχτυλο ή το ποντίκι. Πάτησε την για να τη μεγαλώσεις, να τη μικρύνεις, να την γυρίσεις ή να τη σβήσεις. Διάλεξε τουλάχιστον <b>5</b> στοιχεία.'));
+ const gal=el('div','','');gal.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0';
+ IMGS.forEach(p=>{const b=document.createElement('button');b.type='button';b.title=p[1];b.style.cssText='border:3px solid var(--bd);border-radius:10px;padding:0;background:#fff;cursor:pointer;width:64px;height:64px;overflow:hidden';b.innerHTML='<img src="'+isrc(p[0])+'" alt="'+escP(p[1])+'" style="width:100%;height:100%;object-fit:cover">';b.onclick=()=>add({t:'img',s:p[0],w:30});gal.appendChild(b)});
+ const emr=el('div','','');emr.style.cssText='display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:6px 0';
+ EMO.forEach(e=>{const b=document.createElement('button');b.type='button';b.className='btn g';b.style.cssText='font-size:24px;padding:2px 8px';b.textContent=e;b.onclick=()=>add({t:'emo',s:e,w:12});emr.appendChild(b)});
+ const row=el('div','','');row.style.cssText='display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px 0';
+ const ti=document.createElement('input');ti.placeholder='Τίτλος του κολάζ';ti.maxLength=40;ti.style.cssText='padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;min-width:200px';ti.oninput=()=>{S.title=ti.value;draw()};
+ const wi=document.createElement('input');wi.placeholder='Γράψε μια λέξη';wi.maxLength=20;wi.style.cssText='padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit;width:150px';
+ const wb=el('button','btn g','➕ Λέξη');wb.type='button';wb.onclick=()=>{if(wi.value.trim()){add({t:'txt',s:wi.value.trim(),w:30});wi.value=''}};
+ row.append(ti,wi,wb);
+ const bgr=el('div','','');bgr.style.cssText='display:flex;gap:6px;justify-content:center;align-items:center;margin:6px 0';bgr.appendChild(el('span','','Φόντο:'));
+ BG.forEach(c=>{const b=document.createElement('button');b.type='button';b.title=c[1];b.style.cssText='width:30px;height:30px;border-radius:50%;border:3px solid var(--bd);cursor:pointer;background:'+c[0];b.onclick=()=>{S.bg=c[0];draw()};bgr.appendChild(b)});
+ const board=el('div','','');board.style.cssText='position:relative;width:100%;max-width:640px;aspect-ratio:4/3;margin:10px auto;border:4px solid var(--bd);border-radius:16px;overflow:hidden;touch-action:none;user-select:none';
+ const ctl=el('div','','');ctl.style.cssText='display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:6px 0;min-height:40px';
+ const note=document.createElement('textarea');note.placeholder='Γράψε 1–2 προτάσεις: γιατί διάλεξες αυτές τις εικόνες;';note.rows=3;note.style.cssText='width:100%;box-sizing:border-box;padding:8px 10px;border:2px solid var(--bd);border-radius:10px;font:inherit';
+ const mm=msgEl();
+ function add(o){o.id=++uid;o.x=20+Math.random()*40;o.y=20+Math.random()*40;o.r=0;S.items.push(o);S.sel=S.items.length-1;draw()}
+ function itemHTML(o,i,live){const base='position:absolute;left:'+o.x+'%;top:'+o.y+'%;width:'+o.w+'%;transform:rotate('+o.r+'deg);';
+  if(o.t=='img')return '<img src="'+isrc(o.s)+'" alt="" '+(live?'data-i="'+i+'" draggable="false" ':'')+'style="'+base+'height:auto;border:4px solid #fff;border-radius:6px;box-shadow:0 3px 10px rgba(0,0,0,.3);'+(live&&i==S.sel?'outline:3px dashed #db2777;':'')+'cursor:move">';
+  if(o.t=='emo')return '<div '+(live?'data-i="'+i+'" ':'')+'style="'+base+'font-size:'+(o.w*5.2)+'px;line-height:1;text-align:center;cursor:move;'+(live&&i==S.sel?'outline:3px dashed #db2777;':'')+'">'+o.s+'</div>';
+  return '<div '+(live?'data-i="'+i+'" ':'')+'style="'+base+'font:700 '+(o.w*0.9)+'px/1.1 Georgia,serif;color:'+(S.bg=='#1e293b'?'#fde68a':'#9d174d')+';text-align:center;cursor:move;'+(live&&i==S.sel?'outline:3px dashed #db2777;':'')+'">'+escP(o.s)+'</div>'}
+ function inner(live){return (S.title?'<div style="position:absolute;left:0;right:0;top:2%;text-align:center;font:800 clamp(18px,4.5vw,34px) Georgia,serif;color:'+(S.bg=='#1e293b'?'#fde68a':'#9d174d')+';text-shadow:0 1px 0 rgba(255,255,255,.5);pointer-events:none">'+escP(S.title)+'</div>':'')+S.items.map((o,i)=>itemHTML(o,i,live)).join('')}
+ function draw(){board.style.background=S.bg;board.innerHTML=inner(true);
+  ctl.innerHTML='';const s=S.items[S.sel];
+  if(s){[['➕ Μεγαλύτερο',()=>{s.w=Math.min(90,s.w*1.2)}],['➖ Μικρότερο',()=>{s.w=Math.max(6,s.w/1.2)}],['↻ Γύρισμα',()=>{s.r=(s.r+15)%360}],['⬆️ Μπροστά',()=>{S.items.push(S.items.splice(S.sel,1)[0]);S.sel=S.items.length-1}],['🗑️ Σβήσιμο',()=>{S.items.splice(S.sel,1);S.sel=-1}]].forEach(c=>{const b=el('button','btn g',c[0]);b.type='button';b.onclick=()=>{c[1]();draw()};ctl.appendChild(b)})}
+  else ctl.appendChild(el('span','','<small>Πάτησε ένα στοιχείο στον πίνακα για να το αλλάξεις.</small>'));
+  if(S.items.length>=5&&S.title.trim()){mm.innerHTML='<div class="win"><div class="big">🎉</div><b>Μπράβο! Το κολάζ σου είναι έτοιμο. Μπορείς να το εκτυπώσεις.</b></div>';mark(ix)}else mm.innerHTML=''}
+ let drag=null;
+ board.addEventListener('pointerdown',e=>{const t=e.target.closest('[data-i]');if(!t){S.sel=-1;draw();return}const i=+t.dataset.i;S.sel=i;const o=S.items[i];const r=board.getBoundingClientRect();drag={i,sx:e.clientX,sy:e.clientY,ox:o.x,oy:o.y,w:r.width,h:r.height,moved:false};board.setPointerCapture(e.pointerId);draw()});
+ board.addEventListener('pointermove',e=>{if(!drag)return;const o=S.items[drag.i];const dx=(e.clientX-drag.sx)/drag.w*100,dy=(e.clientY-drag.sy)/drag.h*100;if(Math.abs(dx)+Math.abs(dy)>0.3)drag.moved=true;o.x=Math.max(-10,Math.min(95,drag.ox+dx));o.y=Math.max(-10,Math.min(95,drag.oy+dy));const n=board.querySelector('[data-i="'+drag.i+'"]');if(n){n.style.left=o.x+'%';n.style.top=o.y+'%'}});
+ const end=()=>{if(drag){drag=null;draw()}};board.addEventListener('pointerup',end);board.addEventListener('pointercancel',end);
+ v.append(gal,emr,row,bgr,board,ctl,note,mm);
+ v.appendChild(prBtn(()=>prnOut('Το κολάζ μου για την Αφροδίτη','<div style="position:relative;width:100%;aspect-ratio:4/3;border:4px solid #888;border-radius:12px;overflow:hidden;background:'+S.bg+'">'+inner(false)+'</div>'+(note.value.trim()?'<p><b>Γιατί διάλεξα αυτές τις εικόνες:</b> '+escP(note.value)+'</p>':''),{land:1})));
+ draw()}
+
 const T=[
 ['🎬 Βίντεο','Η Αφροδίτη σε βίντεο',v=>f0(v,7)],
 ['1. 💘 Η θεά','Ποια είναι η Αφροδίτη;',v=>f1(v,0)],
 ['2. 🌊 Η γέννηση','Η γέννηση στην Πάφο',v=>f2(v,1)],
 ['3. 🏛️ Το ιερό','Το Ιερό στο Κούκλια',v=>f3(v,2)],
-['📸 Φωτογραφίες','Το ιερό και το μουσείο σήμερα',v=>f3b(v,-1)],
+['📸 Φωτογραφίες','Το ιερό και το μουσείο σήμερα',v=>f3b(v,9)],
 ['4. 🗿 Πυγμαλίων','Πυγμαλίων και Γαλάτεια',v=>f4(v,3)],
 ['5. 🗺️ Χάρτης','Οι τόποι του μύθου',v=>f5(v,4)],
 ['6. ✍️ Δημιουργώ','Το δικό μου άγαλμα',v=>f6(v,5)],
-['7. ❓ Κουίζ','Τι έμαθα;',v=>f7(v,6)]];
+['7. 🖼️ Κολάζ','Το κολάζ της Αφροδίτης',v=>f8(v,8)],
+['8. ❓ Κουίζ','Τι έμαθα;',v=>f7(v,6)]];
 tabs();go(0);
 </script></body></html>
