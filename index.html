@@ -139,7 +139,7 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 .hook{flex:0 0 100%;display:flex;justify-content:center;margin-bottom:4px}.hook img{width:min(480px,100%);height:auto;border-radius:20px;border:4px solid #1a1446;box-shadow:6px 6px 0 #1a1446;background:#eee}.hkt{flex:1;min-width:220px}.hkt b{display:block;font-size:1.25em;margin-bottom:6px}.hkt small{font-size:1em;color:#5a4f8a;line-height:1.4}
 #hkv{position:absolute;left:0;right:0;top:56px;bottom:0;z-index:5;background:linear-gradient(180deg,#2a1f6b,#130e35);display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:16px}#hkv.on{display:flex}#hkv img{width:auto;height:auto;min-width:min(760px,100%);max-width:100%;max-height:62%;border-radius:22px;border:5px solid #fff;box-shadow:0 8px 0 #000a;background:#222}#hkv button{font:inherit;font-weight:900;font-size:1.4em;padding:14px 34px;border-radius:999px;border:4px solid #1a1446;background:#ffd23f;color:#1a1446;box-shadow:0 6px 0 #1a1446;cursor:pointer}#hkv button:active{transform:translateY(4px);box-shadow:0 2px 0 #1a1446}
 
-.srbtn{background:#fff;margin-right:6px}.srbtn .srt{display:inline}@media(max-width:700px){.srbtn .srt{display:none}}
+.srbtn{background:#fff;padding:6px 12px}.srbtn .srt{display:inline}@media(max-width:700px){.srbtn .srt{display:none}}
 #srov{display:none;position:fixed;inset:0;z-index:9000;background:rgba(10,6,34,.7);padding:14px;overflow-y:auto}#srov.on{display:block}
 #srov .sbx{max-width:720px;margin:4vh auto;background:var(--card);color:var(--tx);border:4px solid var(--line);border-radius:20px;box-shadow:0 8px 0 var(--line);padding:14px}
 #srov .srow{display:flex;gap:8px}#srov input{flex:1;font:inherit;font-weight:700;padding:10px 14px;border:3px solid var(--line);border-radius:12px;background:#fff;color:#1a1446;min-width:0}
@@ -159,12 +159,12 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 <a class="mi" href="#games" onclick="kl='Δ΄';cat='Όλα';show('all')"><span>4️⃣</span>Δ΄ Δημοτικού · Δημιουργώ</a>
 <a class="mi" href="#games" onclick="kl='Ε΄';cat='Όλα';show('all')"><span>5️⃣</span>Ε΄ Δημοτικού · Εμβαθύνω</a>
 <a class="mi" href="#games" onclick="kl='ΣΤ΄';cat='Όλα';show('all')"><span>6️⃣</span>ΣΤ΄ Δημοτικού · Προετοιμάζομαι</a>
-</div></div><div class="dd" id="dd3"><button class="ddb w" id="ddb3" type="button" aria-haspopup="true" aria-expanded="false">Κατηγορίες ▾</button><div class="ddm" id="ddm3"></div></div><div class="dd" id="dd"><button class="ddb" id="ddb" type="button" aria-haspopup="true" aria-expanded="false">Χρήσιμο Υλικό ▾</button><div class="ddm" id="ddm">
+</div></div><div class="dd" id="dd3"><button class="ddb w" id="ddb3" type="button" aria-haspopup="true" aria-expanded="false">Κατηγορίες ▾</button><div class="ddm" id="ddm3"></div></div><button class="accbtn srbtn" id="srbtn" type="button" aria-label="Αναζήτηση στη σελίδα" title="Αναζήτηση" onclick="srOpen()">🔍</button><div class="dd" id="dd"><button class="ddb" id="ddb" type="button" aria-haspopup="true" aria-expanded="false">Χρήσιμο Υλικό ▾</button><div class="ddm" id="ddm">
 <a class="mi" href="#games" onclick="show('all')"><span>🎮</span>Παιχνίδια</a>
 <a class="mi" href="#more"><span>✨</span>Κι άλλα</a>
 <a class="mi" href="epoptiko.html" id="epLink"><span>📚</span>Εποπτικό υλικό</a>
 <a class="mi" href="ergaleia.html" id="logiLink"><span>🧰</span>Χρήσιμα Εργαλεία</a>
-</div></div><button class="accbtn srbtn" id="srbtn" type="button" aria-label="Αναζήτηση στη σελίδα" title="Αναζήτηση" onclick="srOpen()">🔍</button><button class="accbtn" id="accbtn" onclick="accClick()">Σύνδεση</button></nav></div></header>
+</div></div><button class="accbtn" id="accbtn" onclick="accClick()">Σύνδεση</button></nav></div></header>
 
 <div class="hero" id="top"><div class="wrap">
 <div><h1><span>Παίξε.</span><span>Μάθε.</span><span>Δημιούργησε.</span></h1>
@@ -214,7 +214,7 @@ footer b{font:400 14px "Press Start 2P",monospace;color:#fff}
 <div style="display:flex;gap:14px;flex-wrap:wrap"><a class="cta" href="https://olagiatondaskalo.weebly.com/" target="_blank" rel="noopener">Όλα για τον δάσκαλο ↗</a><a class="cta frb" href="gallika.html">Εδώ μαθαίνουμε Γαλλικά →</a></div></div></div></div></div>
 
 <footer><svg viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 60V11H69V7H165V16H245V8H300V6H351V16H436V33H504V29H602V5H666V20H750V15H817V28H878V30H934V12H997V34H1106V4H1200V24V60z" fill="#241b5e"/><path d="M0 60V38H94V36H175V39H272V41H343V40H452V46H543V35H634V45H729V32H859V39H919V39H1052V39H1177V36H1200V43V60z" fill="#3d5afe" opacity=".7"/></svg>
-<div class="wrap"><b>DigiKidsEdu</b><button class="accbtn" id="instBtn" onclick="instOpen()" style="font-size:14px;padding:4px 10px">📲 Εφαρμογή</button><span style="opacity:.7;font-size:14px">Έκδοση 22/11/2026 12:26</span><span>Δημιουργός: <a href="about.html" id="aboutLink" target="_blank" rel="noopener" style="font-weight:800;text-decoration:underline">Μιχάλης Αλεξόπουλος</a></span></div></footer>
+<div class="wrap"><b>DigiKidsEdu</b><button class="accbtn" id="instBtn" onclick="instOpen()" style="font-size:14px;padding:4px 10px">📲 Εφαρμογή</button><span style="opacity:.7;font-size:14px">Έκδοση 22/11/2026 12:29</span><span>Δημιουργός: <a href="about.html" id="aboutLink" target="_blank" rel="noopener" style="font-weight:800;text-decoration:underline">Μιχάλης Αλεξόπουλος</a></span></div></footer>
 
 <div class="am" id="amodal" role="dialog" aria-modal="true" aria-labelledby="amt"><div class="bx">
 <button class="x" onclick="accClose()">✕</button><h3 id="amt">Σύνδεση</h3>
