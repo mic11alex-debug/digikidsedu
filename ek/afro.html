@@ -290,9 +290,15 @@ function vid(v,id,title){const w=el('div','vidh','<h3>🎬 '+title+'</h3>');cons
  const fb=()=>{box.innerHTML='<a href="https://www.youtube.com/watch?v='+id+'" target="_blank" rel="noopener" style="position:absolute;inset:0;display:grid;place-items:center;text-decoration:none;color:#fff;background:#000 url(https://i.ytimg.com/vi/'+id+'/hqdefault.jpg) center/cover"><span style="background:#000a;padding:14px 22px;border-radius:16px;font:700 22px Fredoka;text-align:center">▶ Πάτα για να δεις το βίντεο στο YouTube<br><small style="font-size:15px;font-weight:600">(δεν παίζει μέσα στη σελίδα)</small></span></a>'};
  try{ytApi().then(()=>{try{new YT.Player(box.firstChild,{events:{onError:fb}})}catch(e){}})}catch(e){}
  const p=el('p','','<a class="btn g" style="text-decoration:none;display:inline-block" target="_blank" rel="noopener" href="https://youtu.be/'+id+'">↗ Άνοιγμα στο YouTube</a>');p.style.textAlign='center';w.appendChild(p);v.appendChild(w)}
+const IMG=(k,cap)=>'<figure style="margin:10px auto;max-width:420px;text-align:center"><img src="'+isrc(k)+'" alt="" style="max-width:100%;max-height:300px;border-radius:14px;border:3px solid var(--bd)"><figcaption style="font-size:14px;opacity:.8">'+cap+'</figcaption></figure>';
 const P=s=>'<p style="margin:8px 0;line-height:1.55">'+s+'</p>';
+function f0(v,ix){
+ v.appendChild(el('p','lead','Δες το βίντεο για την Αφροδίτη και τον μύθο της. Μετά θα τη γνωρίσουμε καλύτερα!'));
+ vid(v,'tqOPWPXgTJ4','Η Αφροδίτη');
+ const b=el('button','btn','✅ Είδα το βίντεο');b.onclick=()=>{mark(ix);b.textContent='✅ Μπράβο!'};v.appendChild(b)}
 function f1(v,ix){
  v.appendChild(el('p','lead','Η <b>Αφροδίτη</b> ήταν η θεά της αγάπης και της ομορφιάς. Οι αρχαίοι Έλληνες πίστευαν ότι γεννήθηκε στην Κύπρο, γι’ αυτό τη λέγανε και <b>Κύπρια</b>.'));
+ v.appendChild(el('div','',IMG('milos','Κεφάλι αρχαίου αγάλματος της Αφροδίτης (Αφροδίτη της Μήλου)')+IMG('botticelli','«Η γέννηση της Αφροδίτης», πίνακας του Μποτιτσέλι (λεπτομέρεια)')));
  cards(v,{intro:'Γνωρίζω την Αφροδίτη. Πάτησε κάθε κάρτα.',items:[
  {e:'💘',t:'Θεά της αγάπης',txt:'Ήταν μία από τους 12 θεούς του Ολύμπου. Η δουλειά της ήταν να φέρνει την αγάπη και την ομορφιά.'},
  {e:'🕊️',t:'Το περιστέρι',txt:'Το περιστέρι ήταν ιερό πουλί της Αφροδίτης και σύμβολο αγάπης και ειρήνης.'},
@@ -303,9 +309,11 @@ function f1(v,ix){
 function f2(v,ix){
  v.appendChild(el('p','lead','Η γέννηση της Αφροδίτης έγινε, σύμφωνα με τον μύθο, στην <b>Πάφο</b>, κοντά σε ένα βράχο μέσα στη θάλασσα. Σήμερα τον λέμε <b>Πέτρα του Ρωμιού</b> ή «Βράχο της Αφροδίτης».'));
  v.appendChild(el('div','tip','<b>🌊 Πού είναι;</b> Στη νότια ακτή της Κύπρου, ανάμεσα στην Πάφο και τη Λεμεσό, κοντά στο χωριό Κούκλια. Οι ντόπιοι πιστεύουν ότι όποιος κολυμπήσει γύρω από τον βράχο θα έχει αγάπη και ομορφιά. Το όνομα «του Ρωμιού» το πήρε από τον Διγενή Ακρίτα, ο οποίος σύμφωνα με την παράδοση πέταξε από εκεί βράχους κατά των εχθρών.'));
+ v.appendChild(el('div','',IMG('petra','Η Πέτρα του Ρωμιού, ο Βράχος της Αφροδίτης')));
  order(v,{intro:'Η ιστορία της γέννησης. Βάλε τα γεγονότα στη σειρά.',steps:['Ο αφρός της θάλασσας γεμίζει γύρω από τον βράχο','Από τον αφρό βγαίνει η Αφροδίτη','Ο άνεμος τη φέρνει σε ένα κοχύλι στην ακτή της Κύπρου','Οι Ώρες, θεές των εποχών, τη ντύνουν','Η Αφροδίτη ανεβαίνει στον Όλυμπο'],done:'Ο μύθος της γέννησης είναι έτοιμος!'},ix)}
 function f3(v,ix){
  v.appendChild(el('p','lead','Στο χωριό <b>Κούκλια</b>, κοντά στην αρχαία Παλαιπάφο, βρισκόταν το πιο διάσημο <b>Ιερό της Αφροδίτης</b> στον αρχαίο κόσμο.'));
+ v.appendChild(el('div','',IMG('agalma','Άγαλμα της Αφροδίτης σε μουσείο της Κύπρου')));
  cards(v,{intro:'Το ιερό στο Κούκλια. Πάτησε κάθε κάρτα.',items:[
  {e:'🏛️',t:'Πολύ παλιό ιερό',txt:'Το ιερό λειτουργούσε για περίπου 1500 χρόνια, από την εποχή του Χαλκού ως τους ρωμαϊκούς χρόνους. Πολλοί προσκυνητές το επισκέπτονταν από όλο τον αρχαίο κόσμο.'},
  {e:'⚫',t:'Η ιερή πέτρα',txt:'Δεν λάτρευαν άγαλμα, αλλά μια μεγάλη μαύρη πέτρα σε σχήμα κώνου. Σήμερα βρίσκεται στο μουσείο.'},
@@ -345,6 +353,7 @@ function f7(v,ix){qz(v,[
 ['Ποιο σύμβολο της Αφροδίτης είναι πουλί;',['Το περιστέρι','Ο αετός','Η κουκουβάγια','Ο γλάρος'],0],
 ['Τι λάτρευαν στο ιερό στο Κούκλια;',['Μια μαύρη κωνική πέτρα','Ένα χρυσό άγαλμα','Έναν ταύρο','Έναν ελέφαντα'],0]],ix)}
 const T=[
+['🎬 Βίντεο','Η Αφροδίτη σε βίντεο',v=>f0(v,7)],
 ['1. 💘 Η θεά','Ποια είναι η Αφροδίτη;',v=>f1(v,0)],
 ['2. 🌊 Η γέννηση','Η γέννηση στην Πάφο',v=>f2(v,1)],
 ['3. 🏛️ Το ιερό','Το Ιερό στο Κούκλια',v=>f3(v,2)],
