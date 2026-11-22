@@ -291,6 +291,7 @@ function vid(v,id,title){const w=el('div','vidh','<h3>🎬 '+title+'</h3>');cons
  try{ytApi().then(()=>{try{new YT.Player(box.firstChild,{events:{onError:fb}})}catch(e){}})}catch(e){}
  const p=el('p','','<a class="btn g" style="text-decoration:none;display:inline-block" target="_blank" rel="noopener" href="https://youtu.be/'+id+'">↗ Άνοιγμα στο YouTube</a>');p.style.textAlign='center';w.appendChild(p);v.appendChild(w)}
 (()=>{const st=document.createElement('style');st.textContent='.cd2 img{height:190px!important;max-height:190px;object-fit:contain!important;background:#fff}';document.head.appendChild(st)})();
+const GRSVG='<svg viewBox="0 0 27 18" style="width:64px;height:auto;border:1px solid #888;vertical-align:middle;display:inline-block"><rect width="27" height="18" fill="#0d5eaf"/><g fill="#fff"><rect y="2" width="27" height="2"/><rect y="6" width="27" height="2"/><rect y="10" width="27" height="2"/><rect y="14" width="27" height="2"/></g><rect width="10" height="10" fill="#0d5eaf"/><rect x="4" width="2" height="10" fill="#fff"/><rect y="4" width="10" height="2" fill="#fff"/></svg>';
 const P=s=>'<p style="margin:8px 0;line-height:1.55">'+s+'</p>';
 const FIG=(k,cap,h)=>'<figure style="margin:10px auto;max-width:460px;text-align:center"><img src="'+isrc(k)+'" alt="" style="max-width:100%;max-height:'+(h||300)+'px;border-radius:14px;border:3px solid var(--bd)"><figcaption style="font-size:14px;opacity:.8">'+cap+'</figcaption></figure>';
 const PORT=(k,h)=>'<img src="'+isrc(k)+'" alt="" style="max-height:'+(h||170)+'px;border-radius:12px;border:3px solid var(--bd);display:block;margin:6px auto">';
@@ -309,7 +310,7 @@ function e1(v,ix){
  v.appendChild(el('div','',FIG('kids','Μαθητές με σημαίες την 1η Απριλίου 1955',260)));
  cards(v,{intro:'Πριν από τον αγώνα… Πάτησε κάθε κάρτα.',items:[
  {e:'🏝️',t:'Η Κύπρος αποικία',txt:'Από το 1878 η Κύπρος ήταν υπό βρετανική διοίκηση. Το 1925 έγινε επίσημα βρετανική αποικία.'},
- {e:'🇬🇷',t:'Η Ένωση',txt:'Οι περισσότεροι Ελληνοκύπριοι ήθελαν να ενωθεί η Κύπρος με την Ελλάδα. Το αίτημα αυτό λεγόταν «Ένωση».'},
+ {e:GRSVG,t:'Η Ένωση',txt:'Οι περισσότεροι Ελληνοκύπριοι ήθελαν να ενωθεί η Κύπρος με την Ελλάδα. Το αίτημα αυτό λεγόταν «Ένωση».'},
  {e:'🗳️',t:'Το δημοψήφισμα του 1950',txt:'Στις 15 Ιανουαρίου 1950 η Εκκλησία οργάνωσε δημοψήφισμα στους Ελληνοκύπριους. Περίπου το 97% ζήτησε Ένωση. Οι Τουρκοκύπριοι δεν συμμετείχαν.'},
  {e:'🔥',t:'Τα Οκτωβριανά του 1931',txt:'Το 1931 έγινε μεγάλη εξέγερση κατά των Βρετανών. Μετά, οι Βρετανοί επέβαλαν αυστηρούς περιορισμούς, ακόμη και στην ανάρτηση της ελληνικής σημαίας.'},
  {e:'🕯️',t:'1 Απριλίου 1955',txt:'Η οργάνωση ΕΟΚΑ (Εθνική Οργάνωση Κυπρίων Αγωνιστών) ξεκινά ένοπλο αγώνα κατά της βρετανικής διοίκησης, με αρχηγό τον Γεώργιο Γρίβα «Διγενή».'}],
@@ -391,7 +392,7 @@ function e7(v,ix){
  {e:'🏰',t:'Η Βρετανία',txt:'Ήθελε να κρατήσει στρατιωτικές βάσεις στην Κύπρο. Κήρυξε κατάσταση έκτακτης ανάγκης, έκανε συλλήψεις και εκτελέσεις.'},
  {e:'🌍',t:'Η Ελλάδα και η Τουρκία',txt:'Η Ελλάδα στήριζε το αίτημα της Ένωσης. Η Τουρκία το αντιμετώπιζε αρνητικά και ζητούσε να έχει λόγο για το μέλλον της Κύπρου.'}],
  quiz:[['Γιατί διαβάζουμε πολλές πηγές στην Ιστορία;',['Για να ακούσουμε όλες τις πλευρές','Για να κουραστούμε','Δεν χρειάζεται'],0],['Ποιοι φοβούνταν ότι με την Ένωση θα γίνουν μειονότητα;',['Οι Τουρκοκύπριοι','Οι Βρετανοί','Κανείς'],0]]},-1);
- sortg(v,{intro:'Ποια ομάδα ταιριάζει σε κάθε πρόταση;',bins:[{k:'g',e:'🏘️',n:'Ελληνοκύπριοι'},{k:'t',e:'🏘️',n:'Τουρκοκύπριοι'},{k:'b',e:'🏰',n:'Βρετανοί'}],items:[{e:'🇬🇷',t:'Ζητούσαν Ένωση με την Ελλάδα',b:'g'},{e:'🕯️',t:'Οργάνωσαν την ΕΟΚΑ',b:'g'},{e:'😟',t:'Φοβούνταν ότι θα γίνουν μειονότητα',b:'t'},{e:'🛡️',t:'Ίδρυσαν την ΤΜΤ το 1958',b:'t'},{e:'⚓',t:'Ήθελαν να κρατήσουν στρατιωτικές βάσεις',b:'b'},{e:'🚨',t:'Κήρυξαν κατάσταση έκτακτης ανάγκης',b:'b'}]},ix);
+ sortg(v,{intro:'Ποια ομάδα ταιριάζει σε κάθε πρόταση;',bins:[{k:'g',e:'🏘️',n:'Ελληνοκύπριοι'},{k:'t',e:'🏘️',n:'Τουρκοκύπριοι'},{k:'b',e:'🏰',n:'Βρετανοί'}],items:[{e:GRSVG.replace('64px','28px'),t:'Ζητούσαν Ένωση με την Ελλάδα',b:'g'},{e:'🕯️',t:'Οργάνωσαν την ΕΟΚΑ',b:'g'},{e:'😟',t:'Φοβούνταν ότι θα γίνουν μειονότητα',b:'t'},{e:'🛡️',t:'Ίδρυσαν την ΤΜΤ το 1958',b:'t'},{e:'⚓',t:'Ήθελαν να κρατήσουν στρατιωτικές βάσεις',b:'b'},{e:'🚨',t:'Κήρυξαν κατάσταση έκτακτης ανάγκης',b:'b'}]},ix);
  v.appendChild(el('div','tip','<b>🕊️ Θυμόμαστε όλα τα θύματα.</b> Στην περίοδο εκείνη χάθηκαν άνθρωποι και από τις τρεις πλευρές, άνδρες, γυναίκες και παιδιά. Μαθαίνουμε Ιστορία για να αγαπάμε την ειρήνη.'))}
 /* 8 */
 function e8(v,ix){

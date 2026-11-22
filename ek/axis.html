@@ -291,6 +291,7 @@ function vid(v,id,title){const w=el('div','vidh','<h3>🎬 '+title+'</h3>');cons
  try{ytApi().then(()=>{try{new YT.Player(box.firstChild,{events:{onError:fb}})}catch(e){}})}catch(e){}
  const p=el('p','','<a class="btn g" style="text-decoration:none;display:inline-block" target="_blank" rel="noopener" href="https://youtu.be/'+id+'">↗ Άνοιγμα στο YouTube</a>');p.style.textAlign='center';w.appendChild(p);v.appendChild(w)}
 const FIG=(k,cap,h)=>'<figure style="margin:10px auto;max-width:420px;text-align:center"><img src="'+isrc(k)+'" alt="" style="max-width:100%;max-height:'+(h||260)+'px;border-radius:12px;border:3px solid var(--bd)"></figure>';
+const UKSVG='<svg viewBox="0 0 60 40" style="width:64px;height:auto;border:1px solid #888;vertical-align:middle;display:inline-block"><rect width="60" height="40" fill="#012169"/><path d="M0 0L60 40M60 0L0 40" stroke="#fff" stroke-width="7"/><path d="M0 0L60 40M60 0L0 40" stroke="#c8102e" stroke-width="3"/><path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="12"/><path d="M30 0V40M0 20H60" stroke="#c8102e" stroke-width="7"/></svg>';
 const P=s=>'<p style="margin:8px 0;line-height:1.55">'+s+'</p>';
 const PER=[
 ['🪨','Νεολιθική εποχή (Χοιροκοιτία)','περ. 7000 π.Χ.','Οι πρώτοι κάτοικοι έχτισαν στρογγυλά σπίτια στη Χοιροκοιτία. Είναι μνημείο της UNESCO.','#c9a66b'],
@@ -301,7 +302,7 @@ const PER=[
 ['🏰','Φράγκοι (Λουζινιανοί)','1192 – 1489','Ο Ριχάρδος ο Λεοντόκαρδος κατέλαβε το νησί και το πούλησε. Βασίλευσαν οι Λουζινιανοί.','#9bbb59'],
 ['🦁','Βενετοί','1489 – 1571','Η Βενετία κυβέρνησε την Κύπρο. Έχτισε τα τείχη της Λευκωσίας και της Αμμοχώστου.','#f79646'],
 ['🌙','Οθωμανοί','1571 – 1878','Η Κύπρος έγινε οθωμανική επαρχία. Άρχισαν να ζουν στο νησί και Τούρκοι.','#4bacc6'],
-['🇬🇧','Άγγλοι','1878 – 1960','Βρετανική διοίκηση. Στα τέλη της περιόδου έγινε ο αγώνας της ΕΟΚΑ.','#7f7f7f'],
+[UKSVG.replace('64px','30px'),'Άγγλοι','1878 – 1960','Βρετανική διοίκηση. Στα τέλη της περιόδου έγινε ο αγώνας της ΕΟΚΑ.','#7f7f7f'],
 ['🕊️','Ανεξαρτησία','1960','Στις 16 Αυγούστου 1960 η Κύπρος έγινε ανεξάρτητη Δημοκρατία.','#2e8b57'],
 ['💔','1974','1974','Τον Ιούλιο του 1974 έγινε το πραξικόπημα και η τουρκική εισβολή. Η Κύπρος χωρίστηκε.','#222']];
 const PRE=[
