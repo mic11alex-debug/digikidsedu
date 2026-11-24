@@ -87,6 +87,95 @@ function cleanData(d) {
   return o && o.esc ? cleanEsc(o) : cleanCards(o);
 }
 
+
+// ── Ζωντανά «δωμάτια τάξης» για τα παιχνίδια (Durable Object, χωρίς λογαριασμούς παιδιών) ──
+const HEROES = ['🐶', '🐱', '🦊', '🐼', '🐸', '🦁', '🐵', '🐯', '🐰', '🐧', '🐙', '🦄'];
+const ROOM_TTL = 6 * 3600 * 1000;
+export class Room {
+  constructor(state) { this.s = state; }
+  async fetch(req) {
+    const b = await req.json(), op = b.op, t = Date.now();
+    let r = await this.s.storage.get('r');
+    const pub = () => ({
+      ok: true, now: t, phase: r.phase, game: r.game, seed: r.seed, startAt: r.startAt,
+      players: Object.values(r.p).map((x) => ({ n: x.n, h: x.h, s: x.s, t: x.t, d: x.d })),
+    });
+    if (op === 'create') {
+      if (r) return J({ error: 'exists' }, 409);
+      r = { kh: b.kh, phase: 'lobby', game: '', seed: 0, startAt: 0, p: {} };
+      await this.s.storage.put('r', r);
+      await this.s.storage.setAlarm(t + ROOM_TTL);
+      return J({ ok: true });
+    }
+    if (!r) return J({ error: 'Δεν βρέθηκε αυτός ο κωδικός τάξης.' }, 404);
+    if (op === 'join') {
+      const n = String(b.n || '').replace(/\s+/g, ' ').trim().slice(0, 14), h = HEROES.includes(b.h) ? b.h : '🐶';
+      if (n.length < 2) return J({ error: 'Γράψε ένα όνομα ή παρατσούκλι.' }, 400);
+      const ex = Object.entries(r.p).find(([, x]) => x.n.toLowerCase() === n.toLowerCase());
+      if (ex) { ex[1].h = h; await this.s.storage.put('r', r); return J({ ...pub(), pid: ex[0] }); }
+      if (Object.keys(r.p).length >= 60) return J({ error: 'Το δωμάτιο γέμισε.' }, 429);
+      const pid = [...crypto.getRandomValues(new Uint8Array(6))].map((x) => x.toString(16).padStart(2, '0')).join('');
+      r.p[pid] = { n, h, s: 0, t: 0, d: 0 };
+      await this.s.storage.put('r', r);
+      return J({ ...pub(), pid });
+    }
+    if (op === 'state') return J(pub());
+    if (op === 'score') {
+      const x = r.p[String(b.pid || '')];
+      if (!x || r.phase !== 'run' || t < r.startAt - 500) return J(pub());
+      if (!x.d) {
+        const st = Number(b.s);
+        if (b.d) { x.d = 1; x.t = Math.round(Math.max(0, t - r.startAt) / 100) / 10; x.s = Number.isInteger(st) && st >= 0 && st <= 3 ? st : 0; }
+        await this.s.storage.put('r', r);
+      }
+      return J(pub());
+    }
+    if (op === 'start' || op === 'reset') {
+      if (b.kh !== r.kh) return J({ error: 'Λάθος κλειδί δασκάλου.' }, 403);
+      for (const x of Object.values(r.p)) { x.s = 0; x.t = 0; x.d = 0; }
+      if (op === 'start') {
+        if (!GID.test(b.game || '')) return J({ error: 'Μη έγκυρο παιχνίδι.' }, 400);
+        r.phase = 'run'; r.game = b.game; r.seed = (crypto.getRandomValues(new Uint32Array(1))[0] >>> 0) || 1; r.startAt = t + 5000;
+      } else { r.phase = 'lobby'; r.game = ''; r.startAt = 0; }
+      await this.s.storage.put('r', r);
+      await this.s.storage.setAlarm(t + ROOM_TTL);
+      return J(pub());
+    }
+    if (op === 'kick') {
+      if (b.kh !== r.kh) return J({ error: 'Λάθος κλειδί δασκάλου.' }, 403);
+      for (const [k, x] of Object.entries(r.p)) if (x.n === b.n) delete r.p[k];
+      await this.s.storage.put('r', r);
+      return J(pub());
+    }
+    return J({ error: 'Δεν βρέθηκε.' }, 404);
+  }
+  async alarm() { await this.s.storage.deleteAll(); }
+}
+async function roomApi(env, path, url, b, ip) {
+  if (!env.ROOMS) return J({ error: 'Η υπηρεσία τάξης δεν είναι ενεργή ακόμα.' }, 503);
+  const op = path.slice('/api/room/'.length);
+  const A = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', rnd = (n) => [...crypto.getRandomValues(new Uint8Array(n))].map((x) => A[x % A.length]).join('');
+  const call = (code, body) => env.ROOMS.get(env.ROOMS.idFromName(code)).fetch('https://room/x', { method: 'POST', body: JSON.stringify(body) });
+  if (op === 'create') {
+    if (await limited(env, ip)) return J({ error: 'Πολλές προσπάθειες. Δοκίμασε ξανά σε λίγα λεπτά.' }, 429);
+    await env.DB.prepare('INSERT INTO attempts(user_id,ip,ts) VALUES(0,?,?)').bind(ip, now()).run();
+    const key = rnd(10), kh = await sha(key);
+    for (let i = 0; i < 10; i++) {
+      const code = rnd(4);
+      const r = await call(code, { op: 'create', kh });
+      if (r.status === 200) return J({ ok: true, code, key });
+    }
+    return J({ error: 'Δοκίμασε ξανά.' }, 500);
+  }
+  const code = String(b.code || url.searchParams.get('code') || '').toUpperCase().trim();
+  if (!/^[A-Z2-9]{4}$/.test(code)) return J({ error: 'Ο κωδικός τάξης έχει 4 χαρακτήρες.' }, 400);
+  if (!['join', 'state', 'score', 'start', 'reset', 'kick'].includes(op)) return J({ error: 'Δεν βρέθηκε.' }, 404);
+  const body = { op, n: b.n, h: b.h, pid: b.pid || url.searchParams.get('pid'), s: b.s, d: b.d, game: b.game };
+  if (b.key) body.kh = await sha(String(b.key));
+  const r = await call(code, body);
+  return new Response(r.body, { status: r.status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
+}
+
 async function api(req, env, url) {
   const path = url.pathname;
   if (req.method !== 'GET') {
@@ -128,6 +217,7 @@ async function api(req, env, url) {
     if (m) await env.DB.prepare('DELETE FROM sessions WHERE token_hash=?').bind(await sha(m[1])).run();
     return J({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
   }
+  if (path.startsWith('/api/room/')) return roomApi(env, path, url, b, ip);
   // ── Κοινή συλλογή ερωτηματολογίου (ανώνυμα, με κωδικό τάξης) ──
   if (path.startsWith('/api/class/')) {
     const CODE = /^[A-Z2-9]{4}$/, CL = ['Α΄', 'Β΄', 'Γ΄', 'Δ΄', 'Ε΄', 'ΣΤ΄', '-'];

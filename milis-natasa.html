@@ -27,6 +27,10 @@ main{max-width:980px;margin:0 auto;padding:0 14px 24px}
 details{margin-top:18px}summary{cursor:pointer;font-size:20px}details li{margin:6px 0;font-weight:400}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:50}
 .pt{position:fixed;font-size:28px}
+.rmc{max-width:640px;margin:0 auto;text-align:center}.rmc input{font:800 20px Commissioner,sans-serif;border:3px solid var(--ink);border-radius:12px;padding:6px 10px;width:150px;text-align:center;text-transform:uppercase}.rmc input.nm{text-transform:none;width:190px}.rmc select{font:700 16px Commissioner,sans-serif;border:3px solid var(--ink);border-radius:12px;padding:6px;max-width:100%}
+.rmcode{font:900 64px/1 Commissioner,sans-serif;letter-spacing:8px;margin:6px 0}.rmh{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 0}.rmh button{font-size:28px;border:3px solid transparent;border-radius:12px;background:#fff;cursor:pointer;padding:2px 6px}.rmh button.on{border-color:var(--ink);background:#ffe27a}
+.rmp{display:inline-block;margin:4px;padding:6px 12px;background:#fff;border-radius:999px;font-weight:800}.rmb{counter-reset:r;text-align:left;list-style:none;padding:0;margin:8px 0}.rmb li{counter-increment:r;display:flex;gap:10px;align-items:center;background:#fff;border-radius:12px;padding:8px 12px;margin:5px 0;font-weight:800;font-size:20px}.rmb li:before{content:counter(r);min-width:28px;font-weight:900;opacity:.6}.rmb li span{margin-left:auto}.rmb li.me{outline:3px solid var(--ink)}
+.rmcd{font:900 220px/1 Commissioner,sans-serif;color:#fff;text-shadow:0 6px 0 #0006}
 .ov{position:fixed;inset:0;background:#10304f99;display:grid;place-items:center;z-index:40}
 .ov .card{text-align:center;padding:24px 40px}.ov h2{font-size:44px;margin:0}.big{font-size:60px}
 /* bubbles */
@@ -213,10 +217,10 @@ const LBK='sea.lb',getLB=()=>{try{return JSON.parse(localStorage.getItem(LBK)||'
 const addLB=(k,n,t,st)=>{try{const b=getLB();(b[k]=b[k]||[]).push({n,t:Math.round(t*10)/10,s:st});b[k].sort((a,c)=>a.t-c.t);b[k]=b[k].slice(0,8);localStorage.setItem(LBK,JSON.stringify(b))}catch(e){}return getLB()[k]||[]};
 const tick=()=>{const e=$('#tmr');if(e)e.textContent='⏱️ '+fmt((Date.now()-t0)/1000)};
 function win(k,n,again){setS(k,n);ok();const tt=(Date.now()-t0)/1000;clearInterval(tmI);for(let i=0;i<5;i++)setTimeout(()=>burst(innerWidth*Math.random(),innerHeight*.4),i*200);
- let ex='';if(comp){const nm=pname||'Παίκτης',lb=addLB(k,nm,tt,n);ex=`<p>⏱️ <b>${fmt(tt)}</b> · ${esc(nm)}</p><ol class="lbl">${lb.slice(0,5).map(r=>`<li>${esc(r.n)} · ${fmt(r.t)} ${'⭐'.repeat(r.s)}</li>`).join('')}</ol>`}
+ if(RMSEED)rmReport(tt,n);let ex='';if(RMSEED)ex=`<p>⏱️ <b>${fmt(tt)}</b></p><div id="rml">${rmS?rmBoard(rmS,RM.name):''}</div>`;else if(comp){const nm=pname||'Παίκτης',lb=addLB(k,nm,tt,n);ex=`<p>⏱️ <b>${fmt(tt)}</b> · ${esc(nm)}</p><ol class="lbl">${lb.slice(0,5).map(r=>`<li>${esc(r.n)} · ${fmt(r.t)} ${'⭐'.repeat(r.s)}</li>`).join('')}</ol>`}
  const d=document.createElement('div');d.className='ov';d.innerHTML=`<div class="card"><h2>Μπράβο! 🎉</h2><div class="big">${'⭐'.repeat(n)}${'☆'.repeat(3-n)}</div>${ex}<p><button class="btn" id="ag">Ξανά</button> <button class="btn" id="mn">Μενού</button></p></div>`;
- document.body.appendChild(d);$('#ag').onclick=()=>{d.remove();again()};$('#mn').onclick=()=>{d.remove();hub()}}
-const cleanup=()=>{if(typeof cur==='function')cur();cur=null;clearInterval(tmI);document.querySelectorAll('.ov').forEach(o=>o.remove());const e=$('#tmr');if(e){e.classList.remove('on');e.textContent=''}};
+ document.body.appendChild(d);$('#ag').onclick=()=>{d.remove();again()};$('#mn').onclick=()=>{d.remove();hub()};if(RMSEED){$('#ag').remove();$('#mn').textContent='👥 Πίσω στην τάξη';$('#mn').onclick=()=>{d.remove();RMSEED=0;roomView()}}}
+const cleanup=()=>{Math.random=realRand;if(typeof cur==='function')cur();cur=null;clearInterval(tmI);document.querySelectorAll('.ov').forEach(o=>o.remove());const e=$('#tmr');if(e){e.classList.remove('on');e.textContent=''}};
 const G={};
 const GAMES=[['bub','🐠','Φούσκες','Αριστερό κλικ'],['dbl','🐚','Κοχύλια','Διπλό κλικ'],['drag','📦','Τακτοποίηση','Σέρνω και αφήνω'],['arr','🐙','Το χταπόδι','Τα βελάκια του πληκτρολογίου'],['typ','🎣','Ψάρεμα γραμμάτων','Αριθμοί, γράμματα, λέξεις'],['cnt','🔢','Μέτρα και γράψε','Κλικ στο πλαίσιο και αριθμοί'],['whl','⚓','Η ροδέλα','4 αποστολές με τη ροδέλα'],['cap','🐳','Ψάρια και φάλαινες','Μικρά και κεφαλαία (Shift)'],['ton','🎩','Οι τόνοι','Πρώτα ο τόνος, μετά το γράμμα'],['exp','⌨️','Το πληκτρολόγιο','Εξερευνώ τα πλήκτρα'],['mem','🃏','Παιχνίδι μνήμης','Βρίσκω τα ζευγάρια (κλικ)'],['fil','✍️','Συμπληρώνω','Γράμματα και σ / σσ / ς'],['dif','🔍','Βρες τις διαφορές','Κλικ στις διαφορές'],['puz','🧩','Παζλ','Σέρνω τα κομμάτια'],['fld','📁','Ο θησαυρός στους φακέλους','Διπλό κλικ και κλείσιμο'],['drs','👗','Ντύσε τον Μίλη και τη Νάσα','Πάτα ρούχα και αξεσουάρ'],['rom','🛋️','Στόλισε το δωμάτιο','Σύρε έπιπλα και στολίδια'],['shd','🌗','Βρες τη σκιά','Πάτα το ζωάκι και μετά τη σκιά του'],['hng','🪢','Κρεμάστρα λέξεων','Βρες τη λέξη με τα γράμματα'],['wrk','🔧','Το συνεργείο του Μίλη','Φτιάξε οχήματα με τα σωστά εξαρτήματα'],['wrk2','🏎️','Το τρελό συνεργείο','Φτιάξε το πιο αστείο όχημα'],['dot','✏️','Ένωσε τις τελείες','Ακολούθησε τον αριθμό και φτιάξε την εικόνα'],['bone','🦴','Ο Μίλης και τα κόκκαλα','Πάτα τα κόκκαλα πριν χαθούν'],['ltr','✉️','Το γράμμα της Νάσας','Πληκτρολόγησε τη λέξη'],['hid','🔍','Βρες το κρυμμένο','Ψάξε στη σκηνή και βρες το αντικείμενο'],['maze','@@MAZE@@','Ο Μίλης στον λαβύρινθο','Δώσε εντολές με βέλη'],['seq','📋','Σειρά ενεργειών','Βάλε τα βήματα στη σωστή σειρά'],['col','🎨','Χρωμάτισε τον Μίλη και τη Νάσα','Γέμισε τα σχέδια με χρώματα'],['mem2','🃏','Ζευγάρια με τον Μίλη και τη Νάσα','Βρες τα ίδια πρόσωπα'],['who','🙈','Ποιος λείπει;','Θυμήσου ποιος έφυγε'],['chs','@@CHASE@@','Το κυνηγητό του Μίλη και της Νάσας','Κινούμαι με τα βελάκια'],['mbx','✉️','Το ταχυδρομείο της Νάσας','Γράμματα, αριθμοί, συλλαβές, λέξεις'],['sqn','🌰','Ο σκίουρος και τα καρύδια','Κράτα βελάκι για να κινηθείς'],['dig','🦴','Ο Μίλης σκάβει','Διπλό κλικ στους σωρούς'],['wak','😴','Ξύπνα τα ζωάκια','Διπλό κλικ στο σωστό ζωάκι'],['pcd','🖥️','Ο υπολογιστής της Νάσας','Άνοιξε τα εικονίδια'],['mol','🐹','Χτύπα τον τυφλοπόντικα','Διπλό κλικ στον τυφλοπόντικα'],['pia','🎹','Το πιάνο του Μίλη','Παίξε τη μελωδία με διπλό κλικ'],['stg','🛡️','Ο Μίλης και η Νάσα ασφαλείς στο διαδίκτυο','Τι κάνουμε όταν…'],['dnd','🎨','Στόλισε το ενυδρείο','Σέρνω και αφήνω'],['rgt','🥚','Τα αυγά του βυθού','Δεξί κλικ'],['jmp','🐬','Το δελφίνι πηδάει','Enter και κενό (Space)']];
 GAMES.push(['lr','🔵','Αριστερό ή δεξί;','Δύο κουμπιά, δύο χρώματα'],['fish','🐟','Πιάσε τα ψάρια','Κλικ σε κινούμενους στόχους'],['shoot','🔫','Πυροβολώ στόχους','Έχεις λίγες σφαίρες'],
@@ -249,12 +253,12 @@ g:SV(130,100,'<rect x="6" y="30" width="46" height="46" rx="10" fill="#bfdbfe"/>
 m:SV(130,100,'<rect x="6" y="12" width="118" height="76" rx="14" fill="#dbeafe" stroke="#2f6fe0"/><path d="M26 66C30 34 56 30 70 44s30 6 30-12" stroke="#2f6fe0" stroke-dasharray="2 8"/><path d="M92 28l9 4-4 9" stroke="#2f6fe0"/><g transform="translate(68 30) scale(.62)">'+MSV(0,0,'',1)+'</g>'),
 t:SV(130,100,'<rect x="4" y="18" width="122" height="66" rx="12" fill="#fff"/>'+[0,1,2,3,4,5,6].map(i=>`<rect x="${12+i*15.5}" y="26" width="11" height="11" rx="3" fill="${i===3?'#ffd84d':'#ede9fe'}"/>`).join('')+[0,1,2,3,4,5].map(i=>`<rect x="${19+i*15.5}" y="42" width="11" height="11" rx="3" fill="${i===2?'#ff4d3a':'#ede9fe'}"/>`).join('')+'<rect x="30" y="60" width="70" height="12" rx="4" fill="#ede9fe"/>'),
 all:SV(130,100,[['#bfdbfe',0,0],['#fde68a',1,0],['#bbf7d0',2,0],['#fbcfe8',0,1],['#ddd6fe',1,1],['#fed7aa',2,1]].map(a=>`<rect x="${6+a[1]*41}" y="${8+a[2]*44}" width="36" height="38" rx="9" fill="${a[0]}"/>`).join('')+'<path d="M65 28l5.5 11.5 12.5 1.8-9 8.8 2.1 12.4L65 56.5 53.9 62.5 56 50.1l-9-8.8 12.5-1.8Z" fill="#ffd84d" transform="translate(0 6)"/>')};
-function hub(){view='h';cleanup();try{parent.postMessage({dkDepth:psub?1:0},'*')}catch(e){}ttl.textContent='Ο Μίλης και η Νάσα 🐶🐱';const s=getS();
+function hub(){view='h';cleanup();RMSEED=0;try{parent.postMessage({dkDepth:psub?1:0},'*')}catch(e){}ttl.textContent='Ο Μίλης και η Νάσα 🐶🐱';const s=getS();
  const list=!psub?[]:GAMES.filter(g=>CAT[g[0]].includes('p')&&(psub==='all'||CAT[g[0]].includes(psub)));
  const cntp=u=>GAMES.filter(g=>CAT[g[0]].includes('p')&&(u==='all'||CAT[g[0]].includes(u))).length;
  const pf=ic=>`<span class="ui pu"><img src="${FACE.dog}" alt="">${ic}<img src="${FACE.cat}" alt=""></span>`;
  const TI=psub?`<div class="ubar"><button class="btn" id="ub">⬅️ Όλες οι ενότητες</button><h2>${psub==='all'?'🌟':{c:'🖱️',d:'👆',g:'✋',m:'🎯',t:'⌨️'}[psub]} ${UNM[psub]}</h2></div>`:`<div class="utiles">${['m','c','d','g','t','all'].filter(u=>u==='all'||cntp(u)>0).map(u=>`<button class="card ut" data-c="${u}" style="background:linear-gradient(135deg,${UC[u][0]},${UC[u][1]})">${pf(UI[u])}<b>${UNM[u]}</b><small>${cntp(u)} ${cntp(u)==1?'παιχνίδι':'παιχνίδια'}</small></button>`).join('')}</div>`;
- app.innerHTML=`<div class="card ctl"><button class="btn ${comp?'g':''}" id="cm">⏱️ Ανταγωνιστικό: ${comp?'ΝΑΙ':'ΟΧΙ'}</button><label>👤 <input id="pn" maxlength="14" placeholder="Όνομα παίκτη" value="${esc(pname)}"></label><button class="btn" id="lb">🏆 Κορυφαίοι χρόνοι</button></div>
+ app.innerHTML=`<div class="card ctl"><button class="btn ${comp?'g':''}" id="cm">⏱️ Ανταγωνιστικό: ${comp?'ΝΑΙ':'ΟΧΙ'}</button><label>👤 <input id="pn" maxlength="14" placeholder="Όνομα παίκτη" value="${esc(pname)}"></label><button class="btn" id="lb">🏆 Κορυφαίοι χρόνοι</button><button class="btn" id="rm">👥 Τάξη</button></div>
  <div class="tabs"><button class="tab tabhero ${cat==='p'?'on':''}" data-c="p"><img class="hf" src="${FACE.dog}" alt=""><span class="ht"><b>Ο Μίλης και η Νάσα</b><small>Παιχνίδια με τους φίλους μας!</small></span><img class="hf" src="${FACE.cat}" alt=""></button></div>
  <div class="tabs">${CATS.filter(c=>c[0]!=='p').map(c=>`<button class="tab ${c[0]===cat?'on':''}" data-c="${c[0]}"><span>${c[1]}</span>${c[2]}</button>`).join('')}</div>
  ${cat==='t'?`<div class="subs">${SUBS.map(x=>`<button class="sub ${x[0]===sub?'on':''}" data-s="${x[0]}">${x[1]}</button>`).join('')}</div>`:''}
@@ -269,15 +273,82 @@ function hub(){view='h';cleanup();try{parent.postMessage({dkDepth:psub?1:0},'*')
  <li>Με F11 το παιχνίδι γεμίζει την οθόνη.</li></ul></details>`;
  app.querySelectorAll('.tabs').forEach(x=>x.remove());$('#cm').onclick=()=>{comp=!comp;try{localStorage.setItem('sea.comp',comp?'1':'0')}catch(e){}hub()};
  $('#pn').oninput=ev=>{pname=ev.target.value;try{localStorage.setItem('sea.name',pname)}catch(e){}};
- $('#lb').onclick=board;
+ $('#lb').onclick=board;$('#rm').onclick=()=>roomView();
  app.querySelectorAll('.ut').forEach(b=>b.onclick=()=>{psub=b.dataset.c;hub()});const ub=$('#ub');if(ub)ub.onclick=()=>{psub='';hub()};
  app.querySelectorAll('.sub').forEach(b=>b.onclick=()=>{sub=b.dataset.s;hub()});
  app.querySelectorAll('.gc').forEach(b=>b.onclick=()=>play(b.dataset.k))}
+
+// ── Τάξη: κοινός κωδικός, ταυτόχρονη εκκίνηση και πίνακας όλων των παιδιών ──
+let RM=null,RMSEED=0,RMT0=0,rmI=0,rmOff=0,rmS=null,rmDone=0,rmErr='',rmHero='🐶';
+const HEROES=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'],realRand=Math.random;
+const rng=sd=>{let a=sd>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}};
+const rapi=(op,b)=>fetch('/api/room/'+op,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()).catch(()=>({error:'Δεν υπάρχει σύνδεση στο διαδίκτυο.'}));
+const rsave=()=>{try{RM?localStorage.setItem('sea.room',JSON.stringify(RM)):localStorage.removeItem('sea.room')}catch(e){}};
+try{RM=JSON.parse(localStorage.getItem('sea.room')||'null')}catch(e){}
+const rmBoard=(st,me)=>{const P=st.players.slice().sort((a,b)=>(b.d-a.d)||(a.d?a.t-b.t:a.n.localeCompare(b.n)));
+ return `<ol class="rmb">${P.map(x=>`<li class="${x.n===me?'me':''}"><b>${x.h}</b> ${esc(x.n)}<span>${x.d?fmt(x.t)+' '+'⭐'.repeat(x.s):(st.phase==='run'?'παίζει…':'')}</span></li>`).join('')||'<li>Δεν έχει μπει κανείς ακόμα.</li>'}</ol>`};
+if(RM)rmI=setInterval(rmPoll,1000);
+function rmStop(){clearInterval(rmI);rmI=0}
+function rmLeave(){rmStop();RM=null;rmS=null;rsave();RMSEED=0}
+async function rmPoll(){
+ if(!RM)return;
+ try{const r=await fetch('/api/room/state?code='+RM.code,{cache:'no-store'});
+  if(r.status===404){rmLeave();rmErr='Η τάξη έληξε ή δεν υπάρχει πια.';if(view==='r')roomView();return}
+  const st=await r.json();if(!st.ok)return;rmOff=st.now-Date.now();rmS=st;
+  if(!RM.teacher&&st.phase==='run'&&rmDone!==st.startAt){rmDone=st.startAt;rmCount(st);return}
+  if(!RM.teacher&&st.phase==='lobby')RMSEED=0;
+  const l=$('#rml');if(l)l.innerHTML=rmBoard(st,RM.name);
+  if(view==='r'&&(!$('#rmx')||$('#rmx').dataset.ph!==st.phase+st.startAt))roomView(true);
+ }catch(e){}
+}
+function rmCount(st){
+ cleanup();view='r';const o=document.createElement('div');o.className='ov';o.innerHTML='<div class="rmcd" id="rcd"></div>';document.body.appendChild(o);
+ const iv=setInterval(()=>{const left=st.startAt-(Date.now()+rmOff),n=Math.ceil(left/1000);
+  if(left<=0){clearInterval(iv);o.remove();comp=true;RMSEED=st.seed;RMT0=st.startAt-rmOff;play(st.game);return}
+  $('#rcd').textContent=n;if($('#rcd').dataset.n!=n){$('#rcd').dataset.n=n;beep(n===1?880:520,.12)}},60)}
+function rmReport(tt,n){if(RM&&RMSEED)rapi('score',{code:RM.code,pid:RM.pid,s:n,d:1})}
+function roomView(quiet){
+ view='r';if(!quiet)cleanup();RMSEED=0;try{parent.postMessage({dkDepth:psub?2:1},'*')}catch(e){}ttl.textContent='👥 Τάξη';
+ if(RM&&!rmI){rmI=setInterval(rmPoll,1000);rmPoll()}
+ const back='<p style="text-align:center"><button class="btn" id="bk">← Πίσω στο μενού</button></p>';let h='';
+ if(!RM){
+  h=`<div class="rmc"><div class="card"><h2>Μπες στην τάξη σου</h2><p>Ο δάσκαλος ή η δασκάλα σου δίνει έναν κωδικό.</p>
+  <p><input id="rc" maxlength="4" placeholder="ΚΩΔΙΚΟΣ" autocomplete="off"></p><p><input class="nm" id="rn" maxlength="14" placeholder="Το όνομά σου" value="${esc(pname)}"></p>
+  <div class="rmh">${HEROES.map(x=>`<button data-h="${x}" class="${x===rmHero?'on':''}">${x}</button>`).join('')}</div>
+  <p><button class="btn g" id="rj">Μπαίνω! 🚀</button></p><p id="re" style="color:#b91c1c;font-weight:800">${esc(rmErr)}</p></div>
+  <div class="card"><h3>Είσαι δάσκαλος ή δασκάλα;</h3><p>Φτιάξε μια τάξη, δώσε τον κωδικό στα παιδιά και ξεκινήστε όλοι μαζί.</p><p><button class="btn" id="rt">👩‍🏫 Φτιάξε τάξη</button></p></div></div>${back}`;rmErr='';
+  app.innerHTML=h;$('#bk').onclick=hub;
+  app.querySelectorAll('.rmh button').forEach(b=>b.onclick=()=>{rmHero=b.dataset.h;app.querySelectorAll('.rmh button').forEach(x=>x.classList.toggle('on',x===b))});
+  $('#rj').onclick=async()=>{const code=$('#rc').value.trim().toUpperCase(),n=$('#rn').value.trim();pname=n;try{localStorage.setItem('sea.name',n)}catch(e){}
+   const r=await rapi('join',{code,n,h:rmHero});if(!r.ok){$('#re').textContent=r.error||'Κάτι πήγε στραβά.';return}
+   RM={code,pid:r.pid,name:n,hero:rmHero};rsave();roomView()};
+  $('#rt').onclick=async()=>{const r=await rapi('create',{});if(!r.ok){$('#re').textContent=r.error||'Κάτι πήγε στραβά.';return}
+   RM={code:r.code,key:r.key,teacher:1};rsave();roomView()};
+  return}
+ const st=rmS||{phase:'lobby',players:[]};
+ if(RM.teacher){
+  const opts=GAMES.map(g=>`<option value="${g[0]}" ${g[0]===(RM.game||st.game)?'selected':''}>${g[1]} ${g[2]}</option>`).join('');
+  h=`<div class="rmc" id="rmx" data-ph="${st.phase}${st.startAt}"><div class="card"><p>Κωδικός τάξης — γράψτε τον στον πίνακα:</p><div class="rmcode">${RM.code}</div>
+  <p>Τα παιδιά πάνε στο digikidsedu.com, ανοίγουν το παιχνίδι και πατούν «👥 Τάξη».</p>
+  ${st.phase==='lobby'?`<p><select id="rg">${opts}</select></p><p><button class="btn g" id="rs">▶️ Ξεκινάμε όλοι μαζί</button></p>`:`<p><b>${GAMES.find(g=>g[0]===st.game)?.[2]||''}</b></p><p><button class="btn" id="rr">🔄 Νέος γύρος</button></p>`}</div>
+  <div class="card"><h3>Στην τάξη (${st.players.length})</h3><div id="rml">${rmBoard(st,'')}</div></div>
+  <p><button class="btn r" id="rx">Κλείσε την τάξη</button></p></div>${back}`;
+  app.innerHTML=h;$('#bk').onclick=hub;
+  $('#rx').onclick=()=>{rmLeave();roomView()};
+  if($('#rs'))$('#rs').onclick=async()=>{RM.game=$('#rg').value;rsave();const r=await rapi('start',{code:RM.code,key:RM.key,game:RM.game});if(r.ok){rmS=r;roomView(true)}};
+  if($('#rr'))$('#rr').onclick=async()=>{const r=await rapi('reset',{code:RM.code,key:RM.key});if(r.ok){rmS=r;roomView(true)}};
+ }else{
+  h=`<div class="rmc" id="rmx" data-ph="${st.phase}${st.startAt}"><div class="card"><h2>${RM.hero} ${esc(RM.name)}</h2><p>Τάξη <b>${RM.code}</b></p>
+  <p style="font-size:22px;font-weight:800">${st.phase==='run'?'Ο γύρος τελείωσε ή τρέχει. Περίμενε τον επόμενο!':'Περιμένουμε τον δάσκαλο… ⏳'}</p></div>
+  <div class="card"><h3>Η τάξη</h3><div id="rml">${rmBoard(st,RM.name)}</div></div>
+  <p><button class="btn r" id="rx">Βγαίνω από την τάξη</button></p></div>${back}`;
+  app.innerHTML=h;$('#bk').onclick=hub;$('#rx').onclick=()=>{rmLeave();roomView()}}
+}
 function board(){view='b';cleanup();try{parent.postMessage({dkDepth:psub?2:1},'*')}catch(e){}ttl.textContent='🏆 Κορυφαίοι χρόνοι';const b=getLB();let sure=false;
  app.innerHTML=`<p class="tip">Οι καλύτεροι χρόνοι από το ανταγωνιστικό παιχνίδι. Μένουν σε αυτόν τον υπολογιστή.</p>${GAMES.filter(g=>(b[g[0]]||[]).length).map(g=>`<div class="card"><b>${g[1]} ${g[2]}</b><ol class="lbl">${b[g[0]].slice(0,5).map(r=>`<li>${esc(r.n)} · ${fmt(r.t)} ${'⭐'.repeat(r.s)}</li>`).join('')}</ol></div>`).join('')||'<div class="card">Δεν υπάρχουν ακόμα χρόνοι. Άνοιξε το «Ανταγωνιστικό» στο μενού και παίξε!</div>'}<p style="text-align:center"><button class="btn" id="bk">← Πίσω</button> <button class="btn r" id="cl">🗑 Καθάρισε τον πίνακα</button></p>`;
  $('#bk').onclick=hub;$('#cl').onclick=()=>{if(!sure){sure=true;$('#cl').textContent='Σίγουρα; Πάτα ξανά';return}try{localStorage.removeItem(LBK)}catch(e){}board()}}
 function play(k){view='g';cleanup();try{parent.postMessage({dkDepth:psub?2:1},'*')}catch(e){}const g=GAMES.find(x=>x[0]===k);ttl.textContent=g[1]+' '+g[2];app.innerHTML='<p class="tip" id="tip"></p><div class="arena" id="ar"></div>';
- t0=Date.now();const tm=$('#tmr');if(comp){tm.classList.add('on');tick();tmI=setInterval(tick,250)}
+ Math.random=RMSEED?rng(RMSEED):realRand;t0=RMSEED?RMT0:Date.now();const tm=$('#tmr');if(comp){tm.classList.add('on');tick();tmI=setInterval(tick,250)}
  cur=G[k]($('#ar'),t=>$('#tip').textContent=t)}
 const goBack=()=>{if(view==='h')psub='';hub()};$('#home').onclick=goBack;$('#snd').onclick=e=>{mute=!mute;e.target.textContent=mute?'🔇':'🔊'};
 

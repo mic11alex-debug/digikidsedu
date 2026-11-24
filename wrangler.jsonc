@@ -7,6 +7,8 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*"]
   },
+  "durable_objects": { "bindings": [{ "name": "ROOMS", "class_name": "Room" }] },
+  "migrations": [{ "tag": "v1-rooms", "new_sqlite_classes": ["Room"] }],
   "d1_databases": [
     { "binding": "DB", "database_name": "digikidsedu-users", "database_id": "8c1beb2f-fb9f-4a97-b8f6-fe0354d3e144" }
   ]
