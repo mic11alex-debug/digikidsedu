@@ -251,12 +251,12 @@ function setMode(m){mode=m;sv('ob_mode',m);sel('data-m',m);$('pad2').style.displ
  $('hint').innerHTML=m==='2d'?'Κίνηση: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> ή <b>↑</b> · Πήδα από πλατφόρμα σε πλατφόρμα, απόφυγε τη λάβα και τα αγκάθια. Οι σημαίες σώζουν τη θέση σου. Φτάσε στη χρυσή πλατφόρμα!':'Κίνηση: <b>W</b>/<b>S</b> ή <b>↑ ↓</b> · Στροφή: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> · Πήδα στις πλατφόρμες, απόφυγε τα κόκκινα κουτιά και τη λάβα. Οι σημαίες σώζουν τη θέση σου!';reset()}
 function setLvl(l){lvl=l;sv('ob_lvl',l);sel('data-l',l);reset()}
 function setCast(c){cast=c;sv('ob_cast',c);sel('data-c',c)}
-function reset(){pts=0;$('pt').textContent=0;keys={};t=0;deaths=0;won=false;$('dc').textContent=0;$('win').style.display='none';build()}
+function reset(){started=false;pts=0;$('pt').textContent=0;keys={};t=0;deaths=0;won=false;$('dc').textContent=0;$('win').style.display='none';build()}
 document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMode(b.dataset.m));document.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>setLvl(+b.dataset.l));document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>setCast(b.dataset.c));
 $('rp').onclick=reset;$('nx').onclick=()=>setLvl(lvl+1);
 keyMap(code=>{if(mode==='2d')return{ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j'}[code];return{ArrowUp:'fw',KeyW:'fw',ArrowDown:'bk',KeyS:'bk',ArrowLeft:'tl',KeyA:'tl',ArrowRight:'tr',KeyD:'tr',Space:'j'}[code]});
 let lt=performance.now();
-function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(!won){t+=dt;$('tm').textContent=t.toFixed(1);mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():draw3();requestAnimationFrame(loop)}
+function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(keys.l||keys.r||keys.j||keys.fw||keys.bk||keys.tl||keys.tr)started=true;if(!won){if(started||rmRound)t+=dt;$('tm').textContent=t.toFixed(1);mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():draw3();requestAnimationFrame(loop)}
 
 /* ---------- Αγώνας τάξης ---------- */
 const HEROES=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'];let RM=null,rmS=null,rmI=0,rmOff=0,rmDone=0,rmRound=0,rmHero=ld('ob_hero','🐶'),rmErr='';
