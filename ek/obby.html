@@ -21,7 +21,14 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 #msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
 .card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
 #cv{width:100%;max-width:640px;display:block;margin:6px auto;border-radius:14px;border:3px solid var(--bd);touch-action:none;background:#7dd3fc}
-.pad{width:64px;height:56px;border-radius:16px;border:0;background:#8b5cf6;color:#fff;font:700 26px Fredoka,system-ui;box-shadow:0 4px 0 #6d28d9;touch-action:none;user-select:none}.pad:active{transform:translateY(3px);box-shadow:none}</style></head><body>
+.pad{width:64px;height:56px;border-radius:16px;border:0;background:#8b5cf6;color:#fff;font:700 26px Fredoka,system-ui;box-shadow:0 4px 0 #6d28d9;touch-action:none;user-select:none}.pad:active{transform:translateY(3px);box-shadow:none}
+#rmo{position:fixed;inset:0;background:#10304fcc;z-index:50;display:none;align-items:center;justify-content:center;padding:12px}#rmo.on{display:flex}
+#rmo .box{background:var(--card);border:3px solid var(--bd);border-radius:20px;padding:16px;max-width:460px;width:100%;max-height:92vh;overflow:auto;text-align:center}
+#rmo input,#rmo select{font:700 20px Fredoka,system-ui;padding:8px 12px;border:3px solid var(--bd);border-radius:12px;width:90%;margin:4px 0;text-align:center}
+.rcode{font:900 60px/1 Fredoka,system-ui;letter-spacing:8px}.rh button{font-size:26px;border:3px solid transparent;border-radius:12px;background:#fff;cursor:pointer;padding:2px 6px}.rh button.on{border-color:#d97706;background:#fde68a}
+.rl{list-style:none;padding:0;text-align:left;counter-reset:r}.rl li{counter-increment:r;background:#fff;color:#0f172a;border-radius:12px;padding:6px 10px;margin:4px 0;font-weight:700;display:flex;gap:8px}.rl li:before{content:counter(r);font-weight:900;min-width:22px}.rl li.me{background:#fde68a}.rl span{margin-left:auto;font-size:15px}
+#rcd{position:fixed;inset:0;background:#10304f99;z-index:60;display:none;align-items:center;justify-content:center;font:900 200px Fredoka,system-ui;color:#fff}
+</style></head><body>
 <header><h1>🌈 Παρκούρ Ουρανού</h1><p>Πήδα από πλατφόρμα σε πλατφόρμα και φτάσε στο τέλος!</p></header>
 <main><div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟦 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
 <div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button><button class="ch" data-l="3">4 · Πολύ δύσκολο</button><button class="ch" data-l="4">5 · Μάστερ</button></div>
@@ -30,6 +37,8 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 <div style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
 <div class="row" id="pad2"><button class="pad" data-k="l">◀</button><button class="pad" data-k="j">⤒</button><button class="pad" data-k="r">▶</button></div>
 <div class="row" id="pad3" style="display:none"><button class="pad" data-k="tl">⟲</button><button class="pad" data-k="fw">▲</button><button class="pad" data-k="bk">▼</button><button class="pad" data-k="tr">⟳</button><button class="pad" data-k="j">⤒</button></div>
+<div id="rmo"><div class="box" id="rmb2"></div></div><div id="rcd"></div>
+<div class="row"><button class="ch" id="rmb">👥 Τάξη / Αγώνας</button></div>
 <div id="hint" style="text-align:center;color:var(--mu);font-size:15px"></div></main>
 <script>
 const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
@@ -111,7 +120,7 @@ function addP(n){pts+=n;$('pt').textContent=pts;$('pt').style.color=n<0?'#dc2626
 function spawn(){const p=P[cp];if(mode==='2d'){pl={x:p.x+p.w/2,y:p.y,vx:0,vy:0,face:1}}else{pl={x:p.x+p.w/2,y:p.y+p.h+.01,z:p.z+p.d/2,vy:0,yaw:0,pitch:-.35,onp:null}}}
 function platPos(p){if(p.mv){const o=Math.sin(t*1.3+p.ph)*1;const nx=(p.ox+o);p.dx=nx-p.x;p.x=nx}else p.dx=0}
 function die(){addP(-5);deaths++;$('dc').textContent=deaths;beep(150,.3,'sawtooth');spawn()}
-function win(){if(won)return;won=true;addP(50);fanfare();const best=+ld('ob_best'+lvl+mode,'9999');const tt=t;const bp=+ld('ob_bp'+lvl+mode,'-9999');if(pts>bp)sv('ob_bp'+lvl+mode,pts);if(tt<best)sv('ob_best'+lvl+mode,tt.toFixed(1));$('wt').innerHTML='Τα κατάφερες!<br><small>Χρόνος: '+tt.toFixed(1)+' δλ · Πτώσεις: '+deaths+'<br>⭐ Πόντοι: '+pts+(pts>bp?' (νέο ρεκόρ!)':' · ρεκόρ '+bp)+'</small>';$('nx').style.display=lvl<LV.length-1?'':'none';$('win').style.display='flex'}
+function win(){if(won)return;won=true;addP(50);fanfare();const best=+ld('ob_best'+lvl+mode,'9999');const tt=t;const bp=+ld('ob_bp'+lvl+mode,'-9999');if(pts>bp)sv('ob_bp'+lvl+mode,pts);if(tt<best)sv('ob_best'+lvl+mode,tt.toFixed(1));$('wt').innerHTML='Τα κατάφερες!<br><small>Χρόνος: '+tt.toFixed(1)+' δλ · Πτώσεις: '+deaths+'<br>⭐ Πόντοι: '+pts+(pts>bp?' (νέο ρεκόρ!)':' · ρεκόρ '+bp)+'</small>';$('nx').style.display=lvl<LV.length-1?'':'none';$('win').style.display='flex';rmReport()}
 
 /* ---------- χαρακτήρας (ζωγραφισμένος) ---------- */
 function drawPet(c,x,y,h,kind,face,view,ph,air){
@@ -248,6 +257,41 @@ $('rp').onclick=reset;$('nx').onclick=()=>setLvl(lvl+1);
 keyMap(code=>{if(mode==='2d')return{ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j'}[code];return{ArrowUp:'fw',KeyW:'fw',ArrowDown:'bk',KeyS:'bk',ArrowLeft:'tl',KeyA:'tl',ArrowRight:'tr',KeyD:'tr',Space:'j'}[code]});
 let lt=performance.now();
 function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(!won){t+=dt;$('tm').textContent=t.toFixed(1);mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():draw3();requestAnimationFrame(loop)}
+
+/* ---------- Αγώνας τάξης ---------- */
+const HEROES=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'];let RM=null,rmS=null,rmI=0,rmOff=0,rmDone=0,rmRound=0,rmHero=ld('ob_hero','🐶'),rmErr='';
+try{RM=JSON.parse(localStorage.getItem('sea.room')||'null')}catch(e){}
+const rsave=()=>{try{RM?localStorage.setItem('sea.room',JSON.stringify(RM)):localStorage.removeItem('sea.room')}catch(e){}};
+const rapi=(op,b)=>fetch('/api/room/'+op,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(b)}).then(r=>r.json()).catch(()=>({error:'Δεν υπάρχει σύνδεση στο διαδίκτυο.'}));
+const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const gname=g=>{const m=/^obby-(\d)-(2d|3d)$/.exec(g||'');return m?'Παρκούρ · επίπεδο '+(+m[1]+1)+' · '+m[2].toUpperCase():''};
+function rmBoardH(st,me){const P=st.players.slice().sort((a,b)=>(b.d-a.d)||(a.d?(((b.p||0)-(a.p||0))||(a.t-b.t)):a.n.localeCompare(b.n)));
+ return '<ol class="rl">'+(P.map(x=>'<li class="'+(x.n===me?'me':'')+'"><b>'+x.h+'</b> '+esc(x.n)+'<span>'+(x.d?x.p+' πόντοι · '+x.t.toFixed(1)+' δλ':(st.phase==='run'?'παίζει…':''))+'</span></li>').join('')||'<li>Δεν έχει μπει κανείς ακόμα.</li>')+'</ol>'}
+function rmOpen(on){$('rmo').classList.toggle('on',on);if(on)rmView()}
+function rmView(){const o=$('rmb2'),st=rmS||{phase:'lobby',players:[]};let h='';
+ if(!RM){h='<h2>👥 Αγώνας τάξης</h2><p>Ο δάσκαλος δίνει έναν κωδικό.</p><input id="rc" maxlength="4" placeholder="ΚΩΔΙΚΟΣ"><input id="rn" maxlength="14" placeholder="Το όνομά σου" value="'+esc(ld('ob_name',''))+'"><div class="rh">'+HEROES.map(x=>'<button data-h="'+x+'" class="'+(x===rmHero?'on':'')+'">'+x+'</button>').join('')+'</div><p><button class="btn" id="rj">Μπαίνω! 🚀</button></p><p style="color:#b91c1c;font-weight:800">'+rmErr+'</p><hr><p>Δάσκαλος/α;</p><button class="btn g" id="rt">👩‍🏫 Φτιάξε τάξη</button><p><button class="btn g" id="rcl">Κλείσιμο</button></p>';rmErr=''}
+ else if(RM.teacher){h='<p>Κωδικός τάξης:</p><div class="rcode">'+RM.code+'</div>'+(st.phase==='lobby'?'<p><select id="rl">'+[0,1,2,3,4].map(i=>'<option value="'+i+'">Επίπεδο '+(i+1)+'</option>').join('')+'</select><select id="rm">'+'<option value="2d">2D (πλάι)</option><option value="3d">3D</option></select></p><button class="btn" id="rs">▶️ Ξεκινάμε όλοι μαζί</button>':'<p><b>'+gname(st.game)+'</b></p><button class="btn" id="rr">🔄 Νέος γύρος</button>')+'<h3>Στην τάξη ('+st.players.length+')</h3><div id="rml">'+rmBoardH(st,'')+'</div><p><button class="btn g" id="rx">Κλείσε την τάξη</button> <button class="btn g" id="rcl">Κρύψε</button></p>'}
+ else{h='<h2>'+RM.hero+' '+esc(RM.name)+'</h2><p>Τάξη <b>'+RM.code+'</b></p><p style="font-weight:700">'+(st.phase==='run'?(won?'Τελείωσες! Δες τη θέση σου 👇':'Παίζεις: '+gname(st.game)):'Περιμένουμε τον δάσκαλο… ⏳')+'</p><div id="rml">'+rmBoardH(st,RM.name)+'</div><p><button class="btn g" id="rx">Βγαίνω από την τάξη</button> <button class="btn g" id="rcl">Κλείσε τον πίνακα</button></p>'}
+ o.innerHTML=h;const g=id=>$(id);
+ if(g('rcl'))g('rcl').onclick=()=>rmOpen(false);
+ o.querySelectorAll('.rh button').forEach(b=>b.onclick=()=>{rmHero=b.dataset.h;sv('ob_hero',rmHero);o.querySelectorAll('.rh button').forEach(x=>x.classList.toggle('on',x===b))});
+ if(g('rj'))g('rj').onclick=async()=>{const code=g('rc').value.trim().toUpperCase(),n=g('rn').value.trim();sv('ob_name',n);const r=await rapi('join',{code,n,h:rmHero});if(!r.ok){rmErr=r.error||'Κάτι πήγε στραβά.';rmView();return}RM={code,pid:r.pid,name:n,hero:rmHero};rsave();rmS=r;rmStart();rmView()};
+ if(g('rt'))g('rt').onclick=async()=>{const r=await rapi('create',{});if(!r.ok){rmErr=r.error||'Κάτι πήγε στραβά.';rmView();return}RM={code:r.code,key:r.key,teacher:1};rsave();rmStart();rmView()};
+ if(g('rx'))g('rx').onclick=()=>{clearInterval(rmI);rmI=0;RM=null;rmS=null;rsave();rmView()};
+ if(g('rs'))g('rs').onclick=async()=>{const r=await rapi('start',{code:RM.code,key:RM.key,game:'obby-'+g('rl').value+'-'+g('rm').value});if(r.ok){rmS=r;rmView()}else{rmErr=r.error||'';}};
+ if(g('rr'))g('rr').onclick=async()=>{const r=await rapi('reset',{code:RM.code,key:RM.key});if(r.ok){rmS=r;rmView()}}}
+function rmStart(){if(!rmI){rmI=setInterval(rmPoll,1000);rmPoll()}}
+async function rmPoll(){if(!RM)return;try{const r=await fetch('/api/room/state?code='+RM.code,{cache:'no-store'});if(r.status===404){clearInterval(rmI);rmI=0;RM=null;rsave();rmErr='Η τάξη έληξε.';rmView();return}
+ const st=await r.json();if(!st.ok)return;const ch=!rmS||rmS.phase!==st.phase||rmS.startAt!==st.startAt;rmOff=st.now-Date.now();rmS=st;
+ if(!RM.teacher&&st.phase==='run'&&rmDone!==st.startAt&&/^obby-/.test(st.game)){rmDone=st.startAt;rmCount(st);return}
+ if(!RM.teacher&&st.phase==='lobby')rmRound=0;
+ if($('rmo').classList.contains('on')){if(ch)rmView();else if($('rml'))$('rml').innerHTML=rmBoardH(st,RM.teacher?'':RM.name)}}catch(e){}}
+function rmCount(st){rmOpen(false);const m=/^obby-(\d)-(2d|3d)$/.exec(st.game);if(!m)return;const o=$('rcd');o.style.display='flex';
+ const iv=setInterval(()=>{const left=st.startAt-(Date.now()+rmOff),n=Math.ceil(left/1000);
+  if(left<=0){clearInterval(iv);o.style.display='none';mode=m[2];sv('ob_mode',mode);sel('data-m',mode);$('pad2').style.display=mode==='2d'?'':'none';$('pad3').style.display=mode==='3d'?'':'none';lvl=+m[1];sv('ob_lvl',lvl);sel('data-l',lvl);reset();rmRound=st.startAt;return}
+  o.textContent=n;if(o.dataset.n!=n){o.dataset.n=n;beep(n===1?880:520,.12)}},60)}
+function rmReport(){if(RM&&!RM.teacher&&rmRound){const st=deaths===0?3:deaths<=2?2:1;rapi('score',{code:RM.code,pid:RM.pid,s:st,p:pts,d:1}).then(r=>{if(r&&r.ok){rmS=r}rmOpen(true)});rmRound=0}}
+$('rmb').onclick=()=>{rmOpen(true);if(RM)rmStart()};if(RM)rmStart();
 addEventListener('pointerdown',()=>window.focus());window.focus();setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
 
 </script></body></html>
