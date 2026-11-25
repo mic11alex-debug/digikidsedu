@@ -98,7 +98,7 @@ export class Room {
     let r = await this.s.storage.get('r');
     const pub = () => ({
       ok: true, now: t, phase: r.phase, game: r.game, seed: r.seed, startAt: r.startAt,
-      players: Object.values(r.p).map((x) => ({ n: x.n, h: x.h, s: x.s, t: x.t, d: x.d })),
+      players: Object.values(r.p).map((x) => ({ n: x.n, h: x.h, s: x.s, p: x.p || 0, t: x.t, d: x.d })),
     });
     if (op === 'create') {
       if (r) return J({ error: 'exists' }, 409);
@@ -115,7 +115,7 @@ export class Room {
       if (ex) { ex[1].h = h; await this.s.storage.put('r', r); return J({ ...pub(), pid: ex[0] }); }
       if (Object.keys(r.p).length >= 60) return J({ error: 'Το δωμάτιο γέμισε.' }, 429);
       const pid = [...crypto.getRandomValues(new Uint8Array(6))].map((x) => x.toString(16).padStart(2, '0')).join('');
-      r.p[pid] = { n, h, s: 0, t: 0, d: 0 };
+      r.p[pid] = { n, h, s: 0, p: 0, t: 0, d: 0 };
       await this.s.storage.put('r', r);
       return J({ ...pub(), pid });
     }
@@ -125,14 +125,14 @@ export class Room {
       if (!x || r.phase !== 'run' || t < r.startAt - 500) return J(pub());
       if (!x.d) {
         const st = Number(b.s);
-        if (b.d) { x.d = 1; x.t = Math.round(Math.max(0, t - r.startAt) / 100) / 10; x.s = Number.isInteger(st) && st >= 0 && st <= 3 ? st : 0; }
+        if (b.d) { x.d = 1; x.t = Math.round(Math.max(0, t - r.startAt) / 100) / 10; x.s = Number.isInteger(st) && st >= 0 && st <= 3 ? st : 0; x.p = Number.isInteger(b.p) && b.p >= -5000 && b.p <= 50000 ? b.p : 0; }
         await this.s.storage.put('r', r);
       }
       return J(pub());
     }
     if (op === 'start' || op === 'reset') {
       if (b.kh !== r.kh) return J({ error: 'Λάθος κλειδί δασκάλου.' }, 403);
-      for (const x of Object.values(r.p)) { x.s = 0; x.t = 0; x.d = 0; }
+      for (const x of Object.values(r.p)) { x.s = 0; x.p = 0; x.t = 0; x.d = 0; }
       if (op === 'start') {
         if (!GID.test(b.game || '')) return J({ error: 'Μη έγκυρο παιχνίδι.' }, 400);
         r.phase = 'run'; r.game = b.game; r.seed = (crypto.getRandomValues(new Uint32Array(1))[0] >>> 0) || 1; r.startAt = t + 5000;
