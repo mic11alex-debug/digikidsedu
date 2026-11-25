@@ -173,6 +173,10 @@ LV.push(
 {w:9,h:7,s:[8, 3],d:3,g:null,o:[[4,3],[8,0],[3,1],[7,3],[6,3],[6,2],[6,4],[1,6],[1,5],[4,0],[4,2]],rel:1,a:'FLR',rep:1,max:0,any:1,jk:1,it:[{"x":8,"y":4,"e":"🎁","j":8},{"x":0,"y":2,"e":"🎁","j":9},{"x":7,"y":1,"e":"🎁","j":10},{"x":7,"y":5,"e":"🎁","j":11},{"x":3,"y":6,"e":"🎁","j":12}],ob:'🧱',sol:M('RFFLFLFLFRFFFRFFFFFLFLLFFFFLFFF'),t:"Ένας λαβύρινθος με πέντε δώρα. Πρόσεχε τις στροφές!",gr:'gif'},
 {w:9,h:7,s:[6, 1],d:2,g:null,o:[[5,1],[3,3],[0,0],[1,5],[6,4],[1,4],[2,1],[4,3],[0,6],[5,3],[4,4],[6,3]],rel:1,a:'FLR',rep:1,max:0,any:1,jk:1,it:[{"x":7,"y":2,"e":"🎁","j":13},{"x":5,"y":4,"e":"🎁","j":0},{"x":3,"y":6,"e":"🎁","j":1},{"x":6,"y":5,"e":"🎁","j":2},{"x":6,"y":0,"e":"🎁","j":3},{"x":4,"y":0,"e":"🎁","j":4}],ob:'🧱',sol:M('FRFFRFFRFFFRFFFFFRFFRFLLFFRFF'),t:"Έξι κουτιά! Σχεδίασε όλο το πρόγραμμα και μετά πάτα ▶ Τρέξε.",gr:'gif'},
 {w:9,h:8,s:[3, 1],d:3,g:null,o:[[4,5],[1,5],[7,1],[8,0],[6,3],[2,3],[3,7],[8,7],[3,0],[6,4],[7,3],[0,5],[1,1],[5,7]],rel:1,a:'FLR',rep:1,max:0,any:1,jk:1,it:[{"x":6,"y":5,"e":"🎁","j":5},{"x":8,"y":4,"e":"🎁","j":6},{"x":7,"y":0,"e":"🎁","j":7},{"x":3,"y":5,"e":"🎁","j":8},{"x":0,"y":7,"e":"🎁","j":9},{"x":6,"y":0,"e":"🎁","j":10}],ob:'🧱',sol:M('LFFFFFRFFFLFLFFLFRFFFFLFRFFLFFFLFFRFFRF'),t:"Η μεγάλη αποστολή: έξι κουτιά με αστεία! Καλή επιτυχία!",gr:'gif'}
+,
+{w:6,h:6,s:[0, 5],d:0,g:[5, 0],o:[[0,0],[1,0],[2,0],[3,0],[0,1],[1,1],[2,1],[5,1],[0,2],[1,2],[4,2],[5,2],[0,3],[3,3],[4,3],[5,3],[2,4],[3,4],[4,4],[5,4],[1,5],[2,5],[3,5],[4,5],[5,5]],rel:1,a:'FLR',rep:1,max:8,sol:[RP(5,'FRFL'),{m:'F'}],t:"Η σκάλα του ουρανού! Μπροστά, δεξιά, μπροστά, αριστερά… και ξανά το ίδιο. Δοκίμασε την 🔁 Επανάληψη!",gr:'snk'},
+{w:7,h:5,s:[0,0],d:1,g:[6,4],o:[[0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[1,3],[2,3],[3,3],[4,3],[5,3],[6,3]],rel:1,a:'FLR',rep:1,max:16,sol:[RP(6,'F'),{m:'R'},RP(2,'F'),{m:'R'},RP(6,'F'),{m:'L'},RP(2,'F'),{m:'L'},RP(6,'F')],t:"Φιδάκι ζιγκ-ζαγκ! Μεγάλες ευθείες και στροφές στις άκρες. Με τις επαναλήψεις γράφεις πολύ λιγότερα κομμάτια.",gr:'snk'},
+{w:7,h:7,s:[0, 0],d:1,g:[6, 6],o:[[2,0],[3,0],[4,0],[5,0],[6,0],[0,1],[3,1],[4,1],[5,1],[6,1],[0,2],[1,2],[4,2],[5,2],[6,2],[0,3],[1,3],[2,3],[5,3],[6,3],[0,4],[1,4],[2,4],[3,4],[6,4],[0,5],[1,5],[2,5],[3,5],[4,5],[0,6],[1,6],[2,6],[3,6],[4,6],[5,6]],rel:1,a:'FLR',rep:1,max:10,sol:[{m:'F'},RP(5,'RFLF'),{m:'R'},{m:'F'}],t:"Η μεγάλη σκάλα! Βρες το κομμάτι που επαναλαμβάνεται και πες στο Ρόμπι πόσες φορές να το κάνει.",gr:'snk'}
 );
 LV.forEach((l,i)=>{if(!l.gr)l.gr=['trn','trn','trn','trn','trn','trn','rep','rep','rep','rep','rep','bee','bee','bee','col','col','col','cyp','cyp','cyp','cyp','snk','snk','gif','gif','gif'][i]});
 const JK=[
@@ -226,7 +230,7 @@ const say=t=>{const b=$('#bb');if(b)b.textContent=t};
 function play(i){tk++;I=i;L=LV[i];prog=[];act=null;running=false;
  const cy=L.th==='cy';let tl='';for(let y=0;y<L.h;y++)for(let x=0;x<L.w;x++){const o=L.o.some(a=>a[0]===x&&a[1]===y),g=L.g&&L.g[0]===x&&L.g[1]===y,k=L.it?L.it.findIndex(q=>q.x===x&&q.y===y):-1,lb=(L.ls||[]).find(q=>q.x===x&&q.y===y);
   tl+=`<div class="t ${cy?(o?'sea':'land'):((x+y)%2?'a':'')} ${g?'gl':''}">${o?(cy?'':`<i>${L.ob||'☄️'}</i>`):g?'🔋':''}${k>=0?`<b class="it" data-k="${k}">${L.it[k].e}${L.it[k].n?`<small>${L.it[k].n}</small>`:''}</b>`:''}${lb?`<b class="lb">${lb.e}<small>${lb.n}</small></b>`:''}</div>`}
- app.innerHTML=`<div class="wrap"><div class="top"><button class="btn b" id="mn">☰ Μενού</button><h2>Αποστολή ${LV.map((q,j)=>j).filter(j=>LV[j].gr===L.gr).indexOf(i)+1} από ${LV.filter(q=>q.gr===L.gr).length}</h2><span class="cn" id="cn"></span></div>
+ app.innerHTML=`<div class="wrap"><div class="top"><button class="btn b" id="mn">☰ Μενού</button><h2>Αποστολή ${AL().indexOf(i)+1} από ${AL().length}</h2><span class="cn" id="cn"></span></div>
  <div class="row"><div class="col1"><div class="bd" style="--w:${L.w};--s:min(${L.sz||64}px,calc((100vw - 56px) / ${L.w}))">${tl}<div class="rb" id="rb"><div class="bobber"><div class="sp" id="sp">${ROBO}</div></div></div></div></div>
  <div class="pn"><div class="say"><span class="face">🤖</span><div class="bub" id="bb">${L.t}</div></div>
  ${L.it&&!L.any?`<div class="ord">Σειρά: ${L.it.map((q,k)=>`<span id="o${k}">${q.e}${q.n?' '+q.n:''}</span>`).join(' → ')}</div>`:''}<div class="pal">${[...L.a].map(m=>`<button class="cmd" data-m="${m}">${icn(m)}<small>${L.rel?NMr[m]:NM[m]}</small></button>`).join('')}${L.rep?'<button class="cmd" id="rp">🔁<small>Επανάληψη</small></button>':''}</div>
@@ -311,10 +315,10 @@ function river(){let st,log,cross,over,anim,msg='';const sc=new Set();
    if(st.p){say('Η βάρκα χωράει μόνο έναν επιβάτη. Άφησέ τον πρώτα στην όχθη!');no();return}
    st.p=k;st[k]='B';anim=false;msg='';draw()}};
  init()}
-const AP=/*AP*/['bee']/*AP*/;const GN={trn:'Στροφές',rep:'Επανάληψη',bee:'Μέλισσα',col:'Μάζεψε',cyp:'Κύπρος',snk:'Φιδάκι',gif:'Δώρα'};
+const AP=/*AP*/['bee']/*AP*/;const APG=AP.filter(t=>t!=='intro'&&t!=='river');const AL=()=>LV.map((q,j)=>j).filter(j=>APG.includes(LV[j].gr));const GN={trn:'Στροφές',rep:'Επανάληψη',bee:'Μέλισσα',col:'Μάζεψε',cyp:'Κύπρος',snk:'Φιδάκι',gif:'Δώρα'};
 
 /* ---------- Αγώνας τάξης ---------- */
-const CMP=(()=>{const HE=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'],ACT={};AP.forEach(t=>{if(t==='intro'||t==='river')ACT['m-'+t]=[t,t==='intro'?'Τι είναι αλγόριθμος;':'Ο γρίφος του βαρκάρη'];else LV.forEach((l,i)=>{if(l.gr===t){const G=LV.map((q,j)=>j).filter(j=>LV[j].gr===t);ACT['m-L'+i]=['L'+i,GN[t]+' · αποστολή '+(G.indexOf(i)+1)]}})});
+const CMP=(()=>{const HE=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'],ACT={};AP.forEach(t=>{if(t==='intro'||t==='river')ACT['m-'+t]=[t,t==='intro'?'Τι είναι αλγόριθμος;':'Ο γρίφος του βαρκάρη'];else LV.forEach((l,i)=>{if(l.gr===t){const G=LV.map((q,j)=>j).filter(j=>LV[j].gr===t);ACT['m-L'+i]=['L'+i,'Αποστολή '+(AL().indexOf(i)+1)]}})});
  let RM=null,S=null,I=0,off=0,seen=0,round=0,gid='',pts=0,neg=0,last=0,hero='🐶',err='';
  try{RM=JSON.parse(localStorage.getItem('sea.room')||'null')}catch(e){}try{hero=localStorage.getItem('cm_hero')||'🐶'}catch(e){}
  const sv=()=>{try{RM?localStorage.setItem('sea.room',JSON.stringify(RM)):localStorage.removeItem('sea.room')}catch(e){}};
