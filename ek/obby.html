@@ -30,7 +30,8 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 #rcd{position:fixed;inset:0;background:#10304f99;z-index:60;display:none;align-items:center;justify-content:center;font:900 200px Fredoka,system-ui;color:#fff}
 </style></head><body>
 <header><h1>🌈 Παρκούρ Ουρανού</h1><p>Πήδα από πλατφόρμα σε πλατφόρμα και φτάσε στο τέλος!</p></header>
-<main><div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟦 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
+<main><div class="row"><button class="ch" id="rmb" style="background:#10b981;border-color:#059669;color:#fff">👥 Τάξη / Αγώνας</button></div>
+<div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟦 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
 <div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button><button class="ch" data-l="3">4 · Πολύ δύσκολο</button><button class="ch" data-l="4">5 · Μάστερ</button></div>
 <div class="row"><div class="lab">Χαρακτήρας</div><button class="ch" data-c="dog">🐶 Μίλης</button><button class="ch" data-c="cat">🐱 Νάσα</button><button class="ch" data-c="fox">🦊 Αλεπού</button><button class="ch" data-c="bunny">🐰 Λαγουδάκι</button><button class="ch" data-c="boy">🧒 Άλεξ</button><button class="ch" data-c="girl">👧 Μαρία</button><button class="ch" data-c="astro">👩‍🚀 Αστροναύτης</button><button class="ch" data-c="mage">🧙 Μάγος</button></div>
 <div class="row"><div class="pill"><small>Χρόνος</small><b id="tm">0.0</b></div><div class="pill"><small>Πτώσεις</small><b id="dc">0</b></div><div class="pill"><small>Πόντοι</small><b id="pt">0</b></div></div>
@@ -38,7 +39,6 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 <div class="row" id="pad2"><button class="pad" data-k="l">◀</button><button class="pad" data-k="j">⤒</button><button class="pad" data-k="r">▶</button></div>
 <div class="row" id="pad3" style="display:none"><button class="pad" data-k="tl">⟲</button><button class="pad" data-k="fw">▲</button><button class="pad" data-k="bk">▼</button><button class="pad" data-k="tr">⟳</button><button class="pad" data-k="j">⤒</button></div>
 <div id="rmo"><div class="box" id="rmb2"></div></div><div id="rcd"></div>
-<div class="row"><button class="ch" id="rmb">👥 Τάξη / Αγώνας</button></div>
 <div id="hint" style="text-align:center;color:var(--mu);font-size:15px"></div></main>
 <script>
 const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
