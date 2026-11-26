@@ -356,6 +356,7 @@ const CMP=(()=>{const APK=/*AK*/'col'/*AK*/,UNIT=[['alg','Τι είναι αλγ
  const add=(tab,n)=>{if(round&&gid==='m-'+tab){pts+=n;if(n<0)neg++;showHud()}};
   const done=(tab,p)=>{if(!round||gid!=='m-'+tab||!RM||RM.teacher)return;if(p!=null)pts=p;const st=neg===0?3:neg<=3?2:1;round=0;showHud();api('score',{code:RM.code,pid:RM.pid,s:st,p:pts,d:1}).then(r=>{if(r&&r.ok)S=r;open(true)})};
  const cb=document.createElement('button');cb.id='cmpb';cb.className='btn';cb.textContent='👥 Τάξη';cb.style.cssText='display:block;margin:10px auto';const cw=document.createElement('div');cw.style.cssText='text-align:center;position:relative;z-index:5';cw.appendChild(cb);app.parentNode.insertBefore(cw,app);cb.onclick=()=>{open(true);if(RM)start()};if(RM)start();
+ if(location.hash==='#taxi'){open(true);if(RM)start()}
  return{add,done}})();
 
 menu();
