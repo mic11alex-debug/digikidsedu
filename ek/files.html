@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Γνωρίζω τον Εξερευνητή αρχείων</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#fffbeb;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3;--fold:#fbbf24}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1c1a0e;--card:#2a2614;--tx:#f8fafc;--mu:#cbd5e1;--bd:#4a4220;--soft:#3a3418;--hl:#4a3f10}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px}
+header{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(22px,5vw,32px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
+#tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 10px 0}
+#tabs button{border:3px solid var(--bd);background:var(--card);color:var(--tx);font-family:Fredoka,sans-serif;font-weight:700;font-size:15px;border-radius:99px;padding:7px 14px;cursor:pointer;position:relative}
+#tabs button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#tabs button.ok::after{content:"✓";position:absolute;right:-4px;top:-8px;background:var(--green);color:#fff;border-radius:50%;width:22px;height:22px;font-size:14px;display:grid;place-items:center}
+main{max-width:980px;margin:0 auto;padding:12px 12px 40px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:16px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 12px}
+.btn{border:0;cursor:pointer;font-family:Fredoka,sans-serif;font-weight:700;font-size:18px;color:#fff;background:var(--teal);padding:10px 22px;border-radius:16px;box-shadow:0 5px 0 #0d9488;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn.o{background:var(--amber);box-shadow:0 5px 0 #d97706}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.fdbk{min-height:30px;font-weight:600;margin:8px 0;font-size:17px}
+.stl{margin:0 0 10px;padding-left:0;list-style:none;display:grid;gap:6px;counter-reset:s}
+.stl li{counter-increment:s;border:3px solid var(--bd);border-radius:14px;padding:7px 12px 7px 46px;position:relative;font-size:17px;background:var(--soft);opacity:.55}
+.stl li::before{content:counter(s);position:absolute;left:10px;top:6px;width:26px;height:26px;border-radius:50%;background:var(--bd);display:grid;place-items:center;font-weight:700;font-size:15px}
+.stl li.c{opacity:1;border-color:var(--amber);background:var(--hl)}.stl li.c::before{background:var(--amber);color:#fff}
+.stl li.d{opacity:1;border-color:var(--green);background:#dcfce7;color:#14532d}.stl li.d::before{content:"✓";background:var(--green);color:#fff}
+.win{text-align:center;padding:12px}.win .big{font-size:64px}
+/* explorer */
+.ex{border:3px solid #94a3b8;border-radius:14px;background:#fff;color:#1e293b;overflow:hidden;position:relative;outline:0;font-size:16px;user-select:none}
+.ex-tb{display:flex;flex-wrap:wrap;gap:4px;padding:6px;background:#f1f5f9;border-bottom:2px solid #cbd5e1}
+.ex-tb button{border:2px solid #cbd5e1;background:#fff;color:#1e293b;border-radius:10px;padding:5px 9px;font-family:Fredoka,sans-serif;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap}
+.ex-tb button:disabled{opacity:.4;cursor:default}.ex-tb button:not(:disabled):hover{background:#fef3c7;border-color:#f59e0b}
+.ex-pa{display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:6px 8px;background:#e2e8f0;border-bottom:2px solid #cbd5e1;font-size:15px}
+.ex-pa .cr{border:0;background:transparent;font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;color:#1e293b;padding:3px 7px;border-radius:8px;cursor:pointer}.ex-pa .cr:hover{background:#fff}
+.ex-pa .sp{color:#64748b}.ex-pa .pc{color:#64748b;padding:3px 4px}
+.ex-bd{display:grid;grid-template-columns:150px 1fr;min-height:230px}
+.ex-sd{background:#f8fafc;border-right:2px solid #e2e8f0;padding:8px 6px;display:flex;flex-direction:column;gap:3px}
+.ex-sd .h{font-size:12px;color:#64748b;font-weight:700;margin:0 4px 2px}
+.ex-sd button{text-align:left;border:0;background:transparent;font-family:Fredoka,sans-serif;font-weight:600;font-size:14px;color:#1e293b;padding:6px 8px;border-radius:8px;cursor:pointer}
+.ex-sd button.on{background:#fde68a}.ex-sd button:hover{background:#fef3c7}
+.ex-ls{padding:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:6px;align-content:start}
+.it{display:flex;flex-direction:column;align-items:center;text-align:center;padding:6px 4px;border:2px solid transparent;border-radius:10px;cursor:pointer;min-height:84px}
+.it .ic{font-size:38px;line-height:1.1}.it .nm{font-size:14px;font-weight:600;word-break:break-word;margin-top:2px}
+.it.sel{background:#dbeafe;border-color:#3b82f6}.it.cut{opacity:.45}.it.dim{opacity:.5}
+.it input.rn{width:100%;font-family:Fredoka,sans-serif;font-size:14px;border:2px solid #3b82f6;border-radius:6px;padding:2px 4px;text-align:center;color:#1e293b;background:#fff;user-select:text}
+.dz{outline:3px dashed #f59e0b;background:#fef3c7!important}
+.ex-em{grid-column:1/-1;text-align:center;color:#94a3b8;padding:24px 0;font-size:16px}
+.ctx{position:absolute;z-index:20;background:#fff;color:#1e293b;border:2px solid #94a3b8;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.25);padding:4px;min-width:180px}
+.ctx button{display:block;width:100%;text-align:left;border:0;background:transparent;font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;padding:7px 10px;border-radius:7px;cursor:pointer;color:#1e293b}.ctx button:hover{background:#fef3c7}.ctx button:disabled{opacity:.4}
+@media(max-width:560px){.ex-bd{grid-template-columns:1fr}.ex-sd{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:2px solid #e2e8f0}.ex-sd .h{display:none}.ex-tb button .l{display:none}.ex-tb button{font-size:18px}}
+/* save mission */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.chip{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;font-family:Fredoka,sans-serif;font-weight:700;font-size:15px;padding:6px 12px;cursor:pointer}.chip.on{border-color:var(--amber);background:var(--hl)}.chip.ok{border-color:var(--green);background:#dcfce7;color:#14532d}
+.task{background:var(--hl);border:3px solid var(--amber);border-radius:16px;padding:10px 14px;margin-bottom:10px;font-size:18px}
+.app{border:4px solid #334155;border-radius:14px;overflow:hidden;background:#fff;color:#1e293b;position:relative;max-width:640px;margin:0 auto 8px}
+.app .tt{padding:7px 12px;color:#fff;font-weight:700;font-size:15px;display:flex;justify-content:space-between}
+.app .mb{display:flex;gap:4px;background:#f1f5f9;border-bottom:2px solid #cbd5e1;padding:4px 6px;position:relative}
+.app .mb button{border:0;background:transparent;font-family:Fredoka,sans-serif;font-weight:700;font-size:15px;padding:5px 12px;border-radius:8px;cursor:pointer;color:#1e293b}.app .mb button.on,.app .mb button:hover{background:#fff}
+.app .dd{position:absolute;left:6px;top:36px;background:#fff;border:2px solid #94a3b8;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,.25);padding:4px;z-index:5;min-width:200px}
+.app .dd button{display:block;width:100%;text-align:left;border:0;background:transparent;font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;padding:7px 10px;border-radius:7px;cursor:pointer;color:#1e293b}.app .dd button:hover{background:#fef3c7}
+.app .bd{padding:14px;min-height:170px;font-size:16px}
+.urlb{background:#e2e8f0;border-radius:99px;padding:3px 12px;font-size:13px;font-weight:500;color:#334155;flex:1;margin-left:10px}
+.pic{width:min(240px,70%);aspect-ratio:4/3;margin:0 auto;border-radius:14px;background:linear-gradient(135deg,#bae6fd,#fde68a);display:grid;place-items:center;font-size:84px;cursor:context-menu;border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.tbl{border-collapse:collapse;margin:auto}.tbl td,.tbl th{border:1px solid #94a3b8;padding:5px 14px;font-size:15px}.tbl th{background:#e2e8f0}
+.sld{aspect-ratio:16/9;max-width:300px;margin:auto;background:#fff7ed;border:3px solid #fdba74;border-radius:8px;display:grid;place-items:center;font-weight:700;font-size:20px;text-align:center}
+.ov{position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:100;display:grid;place-items:center;padding:10px;overflow:auto}
+.dlg{background:var(--card);color:var(--tx);border:4px solid #334155;border-radius:16px;width:min(720px,100%);padding:12px;max-height:96vh;overflow:auto}
+.dlg .dh{font-weight:700;font-size:20px;margin-bottom:8px}.dlg .df{display:grid;gap:6px;margin:10px 0}.dlg input{font-family:Fredoka,sans-serif;font-size:18px;padding:6px 10px;border:3px solid var(--bd);border-radius:10px;width:100%;background:var(--card);color:var(--tx)}
+.dlg .ft{font-size:15px;color:var(--mu)}.dnote{min-height:26px;font-weight:600;font-size:16px}.da{text-align:right}
+/* quiz */
+.opt{display:block;width:100%;text-align:left;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;padding:11px 14px;font-family:Fredoka,sans-serif;font-weight:600;font-size:18px;cursor:pointer;margin:8px 0}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.prog{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:6px 0 12px}.prog i{display:block;height:100%;background:var(--green);transition:width .3s}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:14px}
+.cert input{font-family:Fredoka,sans-serif;font-weight:700;font-size:24px;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+@media print{body *{visibility:hidden}.cert,.cert *{visibility:visible}.cert{position:absolute;left:0;top:0;width:100%}.cert .btn{display:none}}
+</style></head><body>
+<header><h1>📂 Γνωρίζω τον Εξερευνητή αρχείων</h1><p>Φτιάχνω, μετονομάζω, μετακινώ, σβήνω και αποθηκεύω σε φακέλους</p></header>
+<div id="tabs"></div><main><div class="card" id="v"></div></main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const norm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').trim().toLowerCase();
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+let done={},cur=0;const KEY='files.done';
+try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const mark=i=>{if(!done[i]){done[i]=1;try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}tabs()}};
+function tabs(){const t=$('tabs');t.innerHTML='';T.forEach((x,i)=>{const b=el('button',(i==cur?'on ':'')+(done[i]?'ok':''),x[0]);b.onclick=()=>go(i);t.appendChild(b)})}
+function go(i){cur=i;tabs();const v=$('v');v.innerHTML='';v.appendChild(el('h2','',T[i][1]));T[i][2](v,i);scrollTo(0,0)}
+
+/* ---------- αρχεία ---------- */
+let UID=1;
+const ICO={txt:'📝',docx:'📘',xlsx:'📗',pptx:'📙',jpg:'🖼️',png:'🖼️'};
+const R=(id,name,ico)=>({id,name,kind:'dir',parent:'pc',ico});
+const baseFS=()=>({desk:R('desk','Επιφάνεια εργασίας','🖥️'),docs:R('docs','Έγγραφα','📄'),pics:R('pics','Εικόνες','🖼️'),bin:R('bin','Κάδος ανακύκλωσης','🗑️')});
+function A(fs,parent,name,kind,ext){const id='n'+(UID++);fs[id]={id,name,kind,ext:ext||'',parent,ico:kind=='dir'?'📁':(ICO[ext]||'📄')};return id}
+const find=(fs,name,parent)=>Object.values(fs).find(n=>norm(n.name)==norm(name)&&(parent==null||n.parent==parent));
+const findAll=(fs,name)=>Object.values(fs).filter(n=>norm(n.name)==norm(name));
+const inside=(fs,id,anc)=>{let n=fs[id];while(n){if(n.id==anc)return true;n=fs[n.parent]}return false};
+
+function ask(msg,yes){const ov=el('div','ov',`<div class="dlg" style="max-width:420px;text-align:center"><div class="dh">${msg}</div><div class="da" style="text-align:center"><button class="btn o" id="y">Ναι</button><button class="btn g" id="n">Όχι</button></div></div>`);document.body.appendChild(ov);ov.querySelector('#y').onclick=()=>{ov.remove();yes()};ov.querySelector('#n').onclick=()=>ov.remove()}
+
+function Explorer(host,S,o){
+ o=o||{};const fs=S.fs;S.hist=S.hist||[];
+ const emit=(t,d)=>{try{o.onEvt&&o.onEvt(t,d)}catch(e){console.error(e)}};
+ const note=(m,b)=>{o.note&&o.note(m,b)};
+ const full=n=>n.name+(n.kind=='file'&&n.ext?'.'+n.ext:'');
+ const kids=id=>Object.values(fs).filter(n=>n.parent==id).sort((a,b)=>(a.kind==b.kind?0:a.kind=='dir'?-1:1)||a.name.localeCompare(b.name,'el'));
+ const chain=id=>{const a=[];let n=fs[id];while(n){a.unshift(n);n=fs[n.parent]}return a};
+ const inBin=()=>inside(fs,S.cwd,'bin');
+ const exists=(p,nm,ex,skip)=>Object.values(fs).some(n=>n.parent==p&&n.id!=skip&&norm(n.name)==norm(nm)&&(n.ext||'')==(ex||''));
+ const uniq=(p,nm,ex)=>{let c=nm,i=2;while(exists(p,c,ex))c=nm+' ('+(i++)+')';return c};
+ let w,list,lastT=0,lastId=null;
+ function nav(id,noHist){lastId=null;if(!fs[id]||fs[id].kind!='dir')return;if(!noHist&&S.cwd!=id)S.hist.push(S.cwd);S.cwd=id;S.sel=null;render();emit('nav',id)}
+ function up(){const n=fs[S.cwd];if(n&&fs[n.parent])nav(n.parent)}
+ function back(){if(S.hist.length)nav(S.hist.pop(),1)}
+ function open(id){const n=fs[id];if(!n)return;if(n.kind=='dir')nav(id);else note('Αυτό είναι αρχείο. Τα αρχεία ανοίγουν με το πρόγραμμά τους (π.χ. Word, Excel).')}
+ function newF(){if(inBin()){note('Στον κάδο δεν φτιάχνουμε φακέλους.',1);return}const id=A(fs,S.cwd,uniq(S.cwd,'Νέος φάκελος'),'dir');S.sel=id;render();emit('new',id);rename(id)}
+ function rename(id){const n=fs[id];if(!n)return;if(inBin()){note('Πρώτα επαναφέρουμε από τον κάδο και μετά αλλάζουμε όνομα.',1);return}
+  const nm=list.querySelector('.it[data-id="'+id+'"] .nm');if(!nm)return;emit('renstart',id);
+  const inp=document.createElement('input');inp.className='rn';inp.value=n.name;nm.replaceChildren(inp);inp.focus();inp.select();let fin=false;
+  const commit=()=>{if(fin)return;const v=inp.value.trim();if(!v){fin=true;render();return}
+   if(/[\\\/:*?"<>|]/.test(v)){note('Αυτά τα σύμβολα δεν επιτρέπονται στο όνομα:  \\ / : * ? " < > |',1);inp.focus();return}
+   if(exists(n.parent,v,n.ext,id)){note('Υπάρχει ήδη κάτι με αυτό το όνομα εδώ. Διάλεξε άλλο όνομα.',1);inp.focus();return}
+   fin=true;n.name=v;render();emit('renamed',id)};
+  inp.onkeydown=e=>{e.stopPropagation();if(e.key=='Enter')commit();else if(e.key=='Escape'){fin=true;render()}};
+  inp.onblur=()=>setTimeout(commit,0);inp.onclick=e=>e.stopPropagation()}
+ function del(id){const n=fs[id];if(!n)return;if(inBin()){note('Αυτό βρίσκεται ήδη στον κάδο.',1);return}n.from=n.parent;n.parent='bin';if(S.sel==id)S.sel=null;if(S.clip&&S.clip.id==id)S.clip=null;render();emit('del',id);note('Πήγε στον Κάδο ανακύκλωσης. Μπορείς να το φέρεις πίσω από εκεί.')}
+ function rest(id){const n=fs[id];if(!n||n.parent!='bin')return;const to=fs[n.from]&&!inside(fs,n.from,'bin')?n.from:'docs';n.name=uniq(to,n.name,n.ext);n.parent=to;S.sel=null;render();emit('rest',id);note('Επαναφέρθηκε στη θέση του!')}
+ function empty(){ask('Να αδειάσει ο κάδος; Ό,τι έχει μέσα θα χαθεί για πάντα!',()=>{Object.values(fs).filter(n=>n.parent=='bin').forEach(n=>rm(n.id));S.sel=null;render();emit('empty');note('Ο κάδος άδειασε. Τα αρχεία έφυγαν οριστικά.')})}
+ function rm(id){Object.values(fs).filter(n=>n.parent==id).forEach(c=>rm(c.id));delete fs[id]}
+ function clone(id,to,nm){const n=fs[id];const nid=A(fs,to,nm||n.name,n.kind,n.ext);fs[nid].ico=n.ico;Object.values(fs).filter(c=>c.parent==id&&c.id!=nid).forEach(c=>clone(c.id,nid));return nid}
+ function move(id,to){const n=fs[id],d=fs[to];if(!n||!d||d.kind!='dir')return;if(to=='bin'){del(id);return}
+  if(inside(fs,to,id)){note('Δεν γίνεται! Ένας φάκελος δεν μπαίνει μέσα στον εαυτό του.',1);return}if(n.parent==to)return;
+  n.name=uniq(to,n.name,n.ext);n.parent=to;render();emit('move',{id,to});note('Μετακινήθηκε στον φάκελο «'+d.name+'».')}
+ function paste(){const c=S.clip;if(!c||!fs[c.id])return;if(inBin()){note('Στον κάδο δεν επικολλούμε.',1);return}
+  if(c.mode=='cut'){move(c.id,S.cwd);S.clip=null;emit('paste',c);return}
+  if(inside(fs,S.cwd,c.id)){note('Δεν γίνεται! Ένας φάκελος δεν αντιγράφεται μέσα στον εαυτό του.',1);return}
+  const nid=clone(c.id,S.cwd,uniq(S.cwd,fs[c.id].name,fs[c.id].ext));S.sel=nid;render();emit('paste',c);note('Επικολλήθηκε αντίγραφο.')}
+ const sel=()=>S.sel&&fs[S.sel];
+ const ACT={back,up,open:()=>sel()&&open(S.sel),new:newF,ren:()=>sel()&&rename(S.sel),cut:()=>{if(sel()){S.clip={id:S.sel,mode:'cut'};render();note('✂️ Κόψαμε «'+full(sel())+'». Τώρα άνοιξε τον φάκελο προορισμού και πάτα Επικόλληση.');emit('cut',S.sel)}},copy:()=>{if(sel()){S.clip={id:S.sel,mode:'copy'};render();note('📋 Αντιγράψαμε «'+full(sel())+'». Άνοιξε το φάκελο που θέλεις και πάτα Επικόλληση.');emit('copy',S.sel)}},paste,del:()=>sel()&&del(S.sel),rest:()=>sel()&&rest(S.sel),empty};
+ const BTN={back:['◀','Πίσω'],up:['⬆️','Πάνω'],open:['📂','Άνοιγμα'],new:['📁＋','Νέος φάκελος'],ren:['✏️','Μετονομασία'],cut:['✂️','Κόψιμο'],copy:['📋','Αντιγραφή'],paste:['📥','Επικόλληση'],del:['🗑️','Διαγραφή'],rest:['♻️','Επαναφορά'],empty:['🧹','Άδειασμα κάδου']};
+ function act(a){if(o.readonly&&a!='back'&&a!='up'&&a!='open')return;ACT[a]&&ACT[a]()}
+ function tbUpd(){const bin=inBin(),n=sel();w.querySelectorAll('[data-act]').forEach(b=>{const a=b.dataset.act;let d=false;
+  if(a=='back')d=!S.hist.length;else if(a=='up')d=!fs[(fs[S.cwd]||{}).parent];else if(a=='open')d=!n||n.kind!='dir';else if(a=='new')d=bin;else if(a=='paste')d=!S.clip||bin;else if(a=='rest')d=!n||!bin;else if(a=='empty')d=!Object.values(fs).some(x=>x.parent=='bin');else d=!n||bin;b.disabled=d})}
+ function ctx(e,id){e.preventDefault();e.stopPropagation();closeCtx();if(o.readonly)return;const n=id&&fs[id];if(id){S.sel=id;lsUpd()}
+  const m=el('div','ctx');const add=(l,a,dis)=>{const b=el('button','',l);b.disabled=!!dis;b.onclick=ev=>{ev.stopPropagation();closeCtx();act(a)};m.appendChild(b)};
+  const bin=inBin();
+  if(n){if(n.kind=='dir')add('📂 Άνοιγμα','open');if(bin)add('♻️ Επαναφορά','rest');else{add('✂️ Κόψιμο','cut');add('📋 Αντιγραφή','copy');add('✏️ Μετονομασία','ren');add('🗑️ Διαγραφή','del')}}
+  else{add('📁＋ Νέος φάκελος','new',bin);add('📥 Επικόλληση','paste',!S.clip||bin)}
+  const r=w.getBoundingClientRect();m.style.left=Math.max(4,Math.min(e.clientX-r.left,r.width-190))+'px';m.style.top=Math.max(4,e.clientY-r.top)+'px';w.appendChild(m)}
+ function closeCtx(){w&&w.querySelectorAll('.ctx').forEach(x=>x.remove())}
+ function lsUpd(){list.querySelectorAll('.it').forEach(i=>i.classList.toggle('sel',i.dataset.id==S.sel));tbUpd()}
+ function render(){
+  host.innerHTML='';w=el('div','ex');w.tabIndex=0;
+  const tools=['back','up'].concat(o.tools||['open','new','ren','cut','copy','paste','del']);
+  if(inBin()){['rest','empty'].forEach(x=>tools.push(x))}
+  const tb=el('div','ex-tb');tb.dataset.part='tools';tools.forEach(a=>{const b=el('button','',BTN[a][0]+' <span class="l">'+BTN[a][1]+'</span>');b.dataset.act=a;b.title=BTN[a][1];tb.appendChild(b)});
+  const pa=el('div','ex-pa');pa.dataset.part='path';pa.innerHTML='<span class="pc">💻 Υπολογιστής ›</span>';
+  chain(S.cwd).forEach((n,i,a)=>{const b=el('button','cr',esc(n.name));b.dataset.nav=n.id;b.dataset.drop=n.id;pa.appendChild(b);if(i<a.length-1)pa.appendChild(el('span','sp','›'))});
+  const bd=el('div','ex-bd');const sd=el('div','ex-sd');sd.dataset.part='side';sd.innerHTML='<div class="h">Γρήγορη πρόσβαση</div>';
+  ['desk','docs','pics'].concat(o.noBin?[]:['bin']).forEach(id=>{const n=fs[id];const b=el('button',inside(fs,S.cwd,id)?'on':'',n.ico+' '+esc(n.name));b.dataset.nav=id;b.dataset.drop=id;sd.appendChild(b)});
+  list=el('div','ex-ls');list.dataset.part='list';
+  const ks=kids(S.cwd);if(!ks.length)list.appendChild(el('div','ex-em',inBin()?'🗑️ Ο κάδος είναι άδειος':'📭 Ο φάκελος είναι άδειος'));
+  ks.forEach(n=>{const it=el('div','it'+(S.sel==n.id?' sel':'')+(S.clip&&S.clip.mode=='cut'&&S.clip.id==n.id?' cut':'')+(o.dialog&&n.kind!='dir'?' dim':''),'<span class="ic">'+n.ico+'</span><span class="nm">'+esc(full(n))+'</span>');it.dataset.id=n.id;if(n.kind=='dir')it.dataset.drop=n.id;if(!o.readonly&&!o.dialog)it.draggable=true;list.appendChild(it)});
+  bd.append(sd,list);w.append(tb,pa,bd);host.appendChild(w);tbUpd();
+  w.onclick=e=>{closeCtx();const p=e.target.closest('[data-part]');if(p)emit('part',p.dataset.part);
+   const bt=e.target.closest('[data-act]');if(bt&&!bt.disabled){act(bt.dataset.act);return}
+   const nv=e.target.closest('[data-nav]');if(nv){nav(nv.dataset.nav);return}
+   if(e.target.closest('input'))return;
+   const it=e.target.closest('.it');if(list.contains(e.target)){if(!it){S.sel=null;lsUpd();return}const id=it.dataset.id,now=Date.now();
+    if(lastId==id&&now-lastT<500&&fs[id].kind=='dir'){lastId=null;open(id);return}lastT=now;lastId=id;S.sel=id;lsUpd();emit('sel',id)}};
+  w.oncontextmenu=e=>{const it=e.target.closest('.it');if(list.contains(e.target))ctx(e,it&&it.dataset.id)};
+  w.ondragstart=e=>{const it=e.target.closest('.it');if(!it){e.preventDefault();return}S.drag=it.dataset.id;try{e.dataTransfer.setData('text/plain',S.drag);e.dataTransfer.effectAllowed='move'}catch(x){}};
+  w.ondragover=e=>{const t=e.target.closest('[data-drop]');if(t&&S.drag&&t.dataset.drop!=S.drag){e.preventDefault();t.classList.add('dz')}};
+  w.ondragleave=e=>{const t=e.target.closest('[data-drop]');if(t)t.classList.remove('dz')};
+  w.ondrop=e=>{const t=e.target.closest('[data-drop]');if(!t||!S.drag)return;e.preventDefault();const id=S.drag;S.drag=null;t.classList.remove('dz');if(t.dataset.drop!=id)move(id,t.dataset.drop)};
+  w.ondragend=()=>{S.drag=null;w.querySelectorAll('.dz').forEach(x=>x.classList.remove('dz'))};
+  w.onkeydown=e=>{if(e.target.tagName=='INPUT'||o.readonly)return;const k=e.key;
+   if(k=='F2'){e.preventDefault();act('ren')}else if(k=='Delete'){e.preventDefault();act('del')}else if(k=='Enter')act('open');
+   else if(e.ctrlKey&&k=='x'){e.preventDefault();act('cut')}else if(e.ctrlKey&&k=='c'){e.preventDefault();act('copy')}else if(e.ctrlKey&&k=='v'){e.preventDefault();act('paste')}}}
+ render();return {render,S}}
+
+/* ---------- αποστολές ---------- */
+function runMission(v,M,idx){
+ let S,k,steps=M.steps;
+ v.appendChild(el('p','lead',M.lead));
+ const ol=el('ol','stl'),nt=el('div','fdbk',''),exh=el('div'),ctr=el('div','',''),fin=el('div');
+ const hb=el('button','btn g','💡 Βοήθεια'),rb=el('button','btn g','↺ Από την αρχή');
+ ctr.append(hb,rb);v.append(ol,nt,exh,ctr,fin);
+ const say=(m,b)=>{nt.innerHTML=m?'<span class="'+(b?'bad-t':'ok-t')+'">'+m+'</span>':''};
+ const draw=()=>{ol.innerHTML=steps.map((s,i)=>'<li class="'+(i<k?'d':i==k?'c':'')+'">'+s.t+'</li>').join('')};
+ function adv(s){k++;draw();say('✅ '+(s&&s.say||'Μπράβο!'));if(k>=steps.length){hb.disabled=true;win();return}
+  const n=steps[k];if(!n.part&&n.ok(S,{type:'re'}))adv(n)}
+ function win(){fin.innerHTML='<div class="win"><div class="big">🎉</div><b>Τελείωσες την αποστολή!</b></div>';mark(idx);if(idx+1<T.length){const b=el('button','btn o','Επόμενη αποστολή ➜');b.onclick=()=>go(idx+1);fin.appendChild(b)}}
+ function evt(type,d){if(k>=steps.length)return;const s=steps[k];
+  if(s.part){if(type=='part'){if(d==s.part)adv(s);else say('Αυτό δεν είναι αυτό που ψάχνουμε. Δοκίμασε άλλο μέρος!',1)}return}
+  if(s.ok(S,{type,d}))adv(s)}
+ function start(){S=M.init();k=0;fin.innerHTML='';hb.disabled=false;say('');draw();Explorer(exh,S,{tools:M.tools,readonly:M.readonly,onEvt:evt,note:say})}
+ hb.onclick=()=>{if(k<steps.length)say('💡 '+(steps[k].hint||'Δοκίμασε το κουμπί που ταιριάζει στο βήμα.'))};rb.onclick=start;start()}
+
+const M1={lead:'Ο Εξερευνητής αρχείων είναι σαν το ντουλάπι του υπολογιστή: έχει συρτάρια (φακέλους 📁) και μέσα τους χαρτιά (αρχεία 📄). Πάτησε πάνω στα μέρη που σου ζητάω.',readonly:1,tools:['open','new','ren','cut','copy','paste','del'],
+ init(){const fs=baseFS();A(fs,'docs','Σχολείο','dir');A(fs,'docs','Φωτογραφίες','dir');A(fs,'docs','Μουσική','dir');A(fs,'docs','Σημειώσεις','file','txt');A(fs,'docs','Βαθμοί','file','xlsx');return{fs,cwd:'docs'}},
+ steps:[{t:'Πάτησε τη <b>γραμμή διαδρομής</b> (πάνω, δείχνει πού βρίσκεσαι).',part:'path',say:'Η διαδρομή λέει σε ποιον φάκελο είμαστε, π.χ. Υπολογιστής › Έγγραφα.',hint:'Είναι η γκρι γραμμή με τα βελάκια › πάνω από τη λίστα.'},
+ {t:'Πάτησε την <b>πλευρική στήλη</b> (αριστερά, γρήγορη πρόσβαση).',part:'side',say:'Εδώ έχουμε συντομεύσεις: Επιφάνεια εργασίας, Έγγραφα, Εικόνες και ο Κάδος.',hint:'Είναι η στήλη αριστερά με τα κουμπιά 🖥️ 📄 🖼️ 🗑️.'},
+ {t:'Πάτησε την <b>περιοχή αρχείων</b> (εκεί που φαίνονται τα φακελάκια).',part:'list',say:'Εδώ βλέπουμε ό,τι έχει ο φάκελος: φακέλους και αρχεία.',hint:'Είναι το μεγάλο άσπρο μέρος στη μέση.'},
+ {t:'Πάτησε τη <b>γραμμή εργαλείων</b> (κουμπιά: νέος φάκελος, μετονομασία…).',part:'tools',say:'Με αυτά τα κουμπιά φτιάχνουμε, μετονομάζουμε, μετακινούμε και σβήνουμε.',hint:'Είναι η γραμμή με τα κουμπιά στο πάνω μέρος του παραθύρου.'},
+ {t:'Πάτησε ένα <b>αρχείο</b> (όχι φάκελο), π.χ. το 📝 Σημειώσεις.txt.',say:'Τα αρχεία έχουν τελεία και κατάληξη: .txt (κείμενο), .xlsx (Excel), .docx (Word).',hint:'Τα αρχεία δεν είναι κίτρινα φακελάκια· έχουν κατάληξη στο όνομα.',ok:(S,e)=>e.type=='sel'&&S.fs[e.d]&&S.fs[e.d].kind=='file'}]};
+
+const M2={lead:'Φτιάχνουμε νέους φακέλους για να βάζουμε τα αρχεία μας σε τάξη, όπως τα συρτάρια στην ντουλάπα.',
+ init(){const fs=baseFS();A(fs,'docs','Σχολείο','dir');A(fs,'docs','Μουσική','dir');A(fs,'docs','Σημειώσεις','file','txt');return{fs,cwd:'docs'}},
+ steps:[{t:'Πάτησε το κουμπί <b>📁＋ Νέος φάκελος</b> (ή δεξί κλικ στο κενό → Νέος φάκελος).',hint:'Είναι το δεύτερο-τρίτο κουμπί στη γραμμή εργαλείων.',ok:(S,e)=>e.type=='new'},
+ {t:'Γράψε το όνομα <b>Ζώα</b> και πάτησε <b>Enter</b>.',say:'Τώρα ο φάκελος έχει δικό του όνομα!',hint:'Σβήσε το «Νέος φάκελος», γράψε Ζώα και πάτα το πλήκτρο Enter.',ok:(S)=>!!find(S.fs,'Ζώα','docs')},
+ {t:'<b>Άνοιξε</b> τον φάκελο Ζώα: πάτησέ τον δύο φορές γρήγορα (ή επίλεξέ τον και πάτα 📂 Άνοιγμα).',hint:'Δύο γρήγορα κλικ πάνω στο φακελάκι. Η διαδρομή θα γράψει Έγγραφα › Ζώα.',ok:(S)=>{const f=find(S.fs,'Ζώα','docs');return f&&S.cwd==f.id}},
+ {t:'Μέσα στον φάκελο Ζώα φτιάξε νέο φάκελο με όνομα <b>Σκύλοι</b>.',say:'Φάκελος μέσα σε φάκελο! Έτσι οργανώνουμε τα πάντα.',hint:'Πάτα ξανά Νέος φάκελος και γράψε Σκύλοι.',ok:(S)=>{const f=find(S.fs,'Ζώα','docs');return f&&!!find(S.fs,'Σκύλοι',f.id)}},
+ {t:'Γύρνα πίσω στα <b>Έγγραφα</b> με το κουμπί <b>⬆️ Πάνω</b>.',hint:'Το ⬆️ πάει έναν φάκελο πιο έξω. Ή πάτα «Έγγραφα» στη γραμμή διαδρομής.',ok:(S,e)=>e.type=='nav'&&S.cwd=='docs'}]};
+
+const M3={lead:'Αν ένας φάκελος έχει λάθος όνομα, δεν χρειάζεται να τον φτιάξουμε ξανά. Τον μετονομάζουμε!',
+ init(){const fs=baseFS();A(fs,'docs','Νέος φάκελος','dir');A(fs,'docs','Σχολείο','dir');A(fs,'docs','Μουσική','dir');return{fs,cwd:'docs'}},
+ steps:[{t:'Επίλεξε τον <b>Νέος φάκελος</b> και πάτα <b>✏️ Μετονομασία</b> (ή δεξί κλικ → Μετονομασία, ή πλήκτρο F2).',hint:'Πάτησε μια φορά το φακελάκι για να γίνει μπλε και μετά το κουμπί ✏️.',ok:(S,e)=>e.type=='renstart'},
+ {t:'Γράψε το νέο όνομα <b>Διακοπές</b> και πάτησε <b>Enter</b>.',say:'Ο φάκελος έχει νέο όνομα και ό,τι είχε μέσα έμεινε ίδιο.',hint:'Σβήσε το παλιό όνομα, γράψε Διακοπές και Enter.',ok:(S)=>!!find(S.fs,'Διακοπές','docs')&&!find(S.fs,'Νέος φάκελος')},
+ {t:'Τώρα μετονόμασε τον φάκελο <b>Μουσική</b> σε <b>Τραγούδια</b>.',hint:'Επίλεξε τον φάκελο Μουσική, πάτα Μετονομασία, γράψε Τραγούδια.',ok:(S)=>!!find(S.fs,'Τραγούδια','docs')&&!find(S.fs,'Μουσική')}]};
+
+const M4={lead:'Μετακίνηση = ο φάκελος αλλάζει θέση. Αντιγραφή = μένει και στο παλιό μέρος και φτιάχνεται δεύτερο αντίγραφο.',
+ init(){const fs=baseFS();A(fs,'docs','Σχολείο','dir');A(fs,'docs','Φωτογραφίες','dir');A(fs,'docs','Μουσική','dir');A(fs,'docs','Σημειώσεις','file','txt');return{fs,cwd:'docs'}},
+ steps:[{t:'<b>Μετακίνησε</b> τον φάκελο Φωτογραφίες μέσα στον φάκελο Σχολείο: <b>σύρε</b> τον πάνω στο Σχολείο, ή πάτα ✂️ Κόψιμο, άνοιξε το Σχολείο και πάτα 📥 Επικόλληση.',hint:'Κράτα πατημένο το φακελάκι Φωτογραφίες και άφησέ το πάνω στο Σχολείο. Στο κινητό χρησιμοποίησε Κόψιμο και Επικόλληση.',say:'Ο φάκελος Φωτογραφίες είναι τώρα μέσα στο Σχολείο.',ok:(S)=>{const a=find(S.fs,'Φωτογραφίες'),b=find(S.fs,'Σχολείο');return a&&b&&a.parent==b.id}},
+ {t:'<b>Αντίγραψε</b> το αρχείο 📝 Σημειώσεις.txt στον φάκελο <b>Μουσική</b>: πάτα 📋 Αντιγραφή, άνοιξε τη Μουσική και πάτα 📥 Επικόλληση.',hint:'Επίλεξε το αρχείο → Αντιγραφή → άνοιξε τη Μουσική (διπλό κλικ) → Επικόλληση.',say:'Τώρα το αρχείο υπάρχει σε δύο μέρη!',ok:(S)=>{const m=find(S.fs,'Μουσική'),f=findAll(S.fs,'Σημειώσεις');return m&&f.length>=2&&f.some(x=>x.parent==m.id)&&f.some(x=>x.parent=='docs')}},
+ {t:'Βρες πάλι τα <b>Έγγραφα</b> (⬆️ Πάνω ή από τη γραμμή διαδρομής).',hint:'Πάτα ⬆️ Πάνω.',ok:(S,e)=>e.type=='nav'&&S.cwd=='docs'}]};
+
+const M5={lead:'Όταν σβήνουμε κάτι, δεν χάνεται αμέσως: πηγαίνει στον 🗑️ Κάδο ανακύκλωσης. Από εκεί μπορούμε να το φέρουμε πίσω.',
+ init(){const fs=baseFS();const p=A(fs,'docs','Παλιά','dir');A(fs,p,'Παλιό σχέδιο','file','docx');A(fs,'docs','Μαθηματικά','dir');A(fs,'docs','Σχολείο','dir');return{fs,cwd:'docs'}},
+ steps:[{t:'Σβήσε τον φάκελο <b>Παλιά</b>: επίλεξέ τον και πάτα <b>🗑️ Διαγραφή</b> (ή πλήκτρο Delete).',hint:'Πάτησε το φακελάκι «Παλιά» και μετά το κουμπί 🗑️.',say:'Ο φάκελος πήγε στον κάδο.',ok:(S)=>{const n=find(S.fs,'Παλιά');return n&&n.parent=='bin'}},
+ {t:'Ωχ, κατά λάθος σβήσε και τον φάκελο <b>Μαθηματικά</b>! Σβήσε τον κι εσύ για να δούμε πώς γυρνάει πίσω.',hint:'Επίλεξε Μαθηματικά και πάτα Διαγραφή.',ok:(S)=>{const n=find(S.fs,'Μαθηματικά');return n&&n.parent=='bin'}},
+ {t:'Άνοιξε τον <b>🗑️ Κάδο</b> (αριστερά), επίλεξε τα Μαθηματικά και πάτα <b>♻️ Επαναφορά</b>.',say:'Τα Μαθηματικά γύρισαν στη θέση τους. Ο κάδος μάς σώζει από λάθη!',hint:'Πάτα «Κάδος ανακύκλωσης» στην αριστερή στήλη, μετά πάτα το φακελάκι και ♻️.',ok:(S)=>{const n=find(S.fs,'Μαθηματικά');return n&&n.parent=='docs'}},
+ {t:'Τώρα που είμαστε σίγουροι για τα Παλιά, πάτα <b>🧹 Άδειασμα κάδου</b> και απάντησε Ναι.',say:'Ό,τι σβήνεται από τον κάδο φεύγει για πάντα, γι’ αυτό προσέχουμε!',hint:'Μέσα στον κάδο εμφανίζεται το κουμπί 🧹 Άδειασμα κάδου.',ok:(S,e)=>e.type=='empty'&&!find(S.fs,'Παλιά')}]};
+
+/* ---------- Αποθήκευση ---------- */
+function saveMission(v,idx){
+ const fs=baseFS();const sch=A(fs,'docs','Σχολείο','dir'),erg=A(fs,sch,'Εργασίες','dir');A(fs,sch,'Μαθηματικά','dir');A(fs,'docs','Μουσική','dir');const zoa=A(fs,'pics','Ζώα','dir');A(fs,'pics','Διακοπές','dir');
+ const TK=[{k:'browser',ic:'🌐',lab:'Εικόνα από το διαδίκτυο',ext:'jpg',name:'γατάκι',dest:zoa,path:'Εικόνες › Ζώα',def:'cat-1234',type:'Εικόνα JPEG (*.jpg)',what:'τη φωτογραφία της γάτας'},
+ {k:'word',ic:'📘',lab:'Word',ext:'docx',name:'Το σπίτι μου',dest:erg,path:'Έγγραφα › Σχολείο › Εργασίες',def:'Έγγραφο1',type:'Έγγραφο Word (*.docx)',what:'το έγγραφο Word'},
+ {k:'excel',ic:'📗',lab:'Excel',ext:'xlsx',name:'Βαθμοί',dest:erg,path:'Έγγραφα › Σχολείο › Εργασίες',def:'Βιβλίο1',type:'Βιβλίο εργασίας Excel (*.xlsx)',what:'το βιβλίο Excel'},
+ {k:'ppt',ic:'📙',lab:'PowerPoint',ext:'pptx',name:'Παρουσίαση',dest:erg,path:'Έγγραφα › Σχολείο › Εργασίες',def:'Παρουσίαση1',type:'Παρουσίαση PowerPoint (*.pptx)',what:'την παρουσίαση PowerPoint'}];
+ let cur=0,msg='';const box=el('div');v.appendChild(el('p','lead','Όταν φτιάχνουμε κάτι σε ένα πρόγραμμα, πρέπει να το αποθηκεύσουμε: διαλέγουμε <b>φάκελο</b> και γράφουμε <b>όνομα</b>. Δοκίμασε και τις 4 περιπτώσεις!'));v.appendChild(box);
+ function appHTML(t){
+  if(t.k=='browser')return '<div class="app"><div class="tt" style="background:#475569"><span>🌐 Περιηγητής</span><span class="urlb">🔒 www.zoa-kyprou.cy/gatakia</span></div><div class="bd" style="text-align:center"><div class="pic" id="pic">🐱</div><p style="margin:10px 0 0;color:#64748b">Πάτησε πάνω στη φωτογραφία (στον υπολογιστή: δεξί κλικ).</p></div></div>';
+  const C={word:['#2b579a','W','Έγγραφο1 - Word'],excel:['#217346','X','Βιβλίο1 - Excel'],ppt:['#d24726','P','Παρουσίαση1 - PowerPoint']}[t.k];
+  const body={word:'<div style="border:1px solid #cbd5e1;padding:12px;max-width:380px;margin:auto"><b>Το σπίτι μου</b><br>Το σπίτι μου είναι μικρό και έχει κήπο με λουλούδια.</div>',
+   excel:'<table class="tbl"><tr><th></th><th>A</th><th>B</th></tr><tr><th>1</th><td>Μαθητής</td><td>Βαθμός</td></tr><tr><th>2</th><td>Άννα</td><td>10</td></tr><tr><th>3</th><td>Νίκος</td><td>9</td></tr></table>',
+   ppt:'<div class="sld">Τα ζώα της Κύπρου 🐑</div>'}[t.k];
+  return '<div class="app"><div class="tt" style="background:'+C[0]+'"><span>'+C[2]+'</span><span>— ▢ ✕</span></div><div class="mb"><button id="fm">Αρχείο</button><button>Κεντρική</button><button>Εισαγωγή</button></div><div class="bd">'+body+'</div></div>'}
+ function draw(){
+  box.innerHTML='';const chips=el('div','chips');TK.forEach((t,i)=>{const b=el('button','chip'+(i==cur?' on':'')+(t.done?' ok':''),(t.done?'✓ ':'')+t.ic+' '+t.lab);b.onclick=()=>{cur=i;msg='';draw()};chips.appendChild(b)});box.appendChild(chips);
+  const t=TK[cur];
+  box.appendChild(el('div','task','🎯 <b>Αποστολή:</b> '+(t.done?'<span class="ok-t">έγινε! ✓</span> Αποθηκεύτηκε στο '+t.path+'.':'Αποθήκευσε '+t.what+' στον φάκελο <b>'+t.path+'</b> με όνομα <b>'+esc(t.name)+'</b>.')));
+  const ap=el('div','',appHTML(t));box.appendChild(ap);const fb=el('div','fdbk',msg);box.appendChild(fb);
+  const say=(m,b)=>{fb.innerHTML='<span class="'+(b?'bad-t':'ok-t')+'">'+m+'</span>'};
+  if(t.done){fb.innerHTML=msg;return}
+  if(t.k=='browser'){
+   const pic=ap.querySelector('#pic');const show=e=>{e.preventDefault();ap.querySelectorAll('.ctx').forEach(x=>x.remove());const m=el('div','ctx');const app=ap.querySelector('.app');app.style.position='relative';
+    [['Άνοιγμα εικόνας σε νέα καρτέλα',0],['Αποθήκευση εικόνας ως…',1],['Αντιγραφή εικόνας',0],['Αντιγραφή διεύθυνσης εικόνας',0]].forEach(([l,g])=>{const b=el('button','',l);b.onclick=ev=>{ev.stopPropagation();m.remove();if(g)dlg(t);else say('Αυτό δεν αποθηκεύει την εικόνα στον υπολογιστή. Ψάξε τη λέξη «Αποθήκευση».',1)};m.appendChild(b)});
+    const r=app.getBoundingClientRect();m.style.left=Math.max(4,Math.min(e.clientX-r.left,r.width-200))+'px';m.style.top=Math.max(4,e.clientY-r.top)+'px';app.appendChild(m);setTimeout(()=>document.addEventListener('click',()=>m.remove(),{once:true}),0)};
+   pic.oncontextmenu=show;pic.onclick=show;
+  }else{
+   const fm=ap.querySelector('#fm');const mb=fm.parentNode;const key=e=>{if(e.ctrlKey&&(e.key=='s'||e.key=='S')){e.preventDefault();document.removeEventListener('keydown',key);dlg(t)}};document.addEventListener('keydown',key);
+   fm.onclick=e=>{e.stopPropagation();fm.classList.add('on');const dd=el('div','dd');[['Νέο',0],['Άνοιγμα',0],['Αποθήκευση',1],['Αποθήκευση ως…',1],['Εκτύπωση',0],['Κλείσιμο',0]].forEach(([l,g])=>{const b=el('button','',l);b.onclick=ev=>{ev.stopPropagation();dd.remove();fm.classList.remove('on');if(g){document.removeEventListener('keydown',key);dlg(t)}else say('Αυτή η εντολή δεν αποθηκεύει το αρχείο. Ψάξε το «Αποθήκευση ως…».',1)};dd.appendChild(b)});mb.appendChild(dd);setTimeout(()=>document.addEventListener('click',()=>{dd.remove();fm.classList.remove('on')},{once:true}),0)};
+   fb.innerHTML='<span style="color:var(--mu)">Πάτα <b>Αρχείο</b> → <b>Αποθήκευση ως…</b> (ή πάτα Ctrl+S).</span>';
+  }
+  if(t.k=='browser')fb.innerHTML='<span style="color:var(--mu)">Μενού φωτογραφίας → <b>Αποθήκευση εικόνας ως…</b></span>';
+ }
+ function dlg(t){
+  const S2={fs,cwd:'docs',sel:null,hist:[]};
+  const ov=el('div','ov');const bx=el('div','dlg','<div class="dh">💾 Αποθήκευση ως</div><div id="dx"></div><div class="df"><label>Όνομα αρχείου:<input id="fn" maxlength="40"></label><div class="ft">Τύπος: '+t.type+'</div></div><div class="dnote" id="dn"></div><div class="da"><button class="btn" id="dsv">💾 Αποθήκευση</button><button class="btn g" id="dcx">Άκυρο</button></div>');
+  ov.appendChild(bx);document.body.appendChild(ov);const dn=bx.querySelector('#dn'),fn=bx.querySelector('#fn');fn.value=t.def;
+  Explorer(bx.querySelector('#dx'),S2,{tools:['new'],dialog:true,noBin:true,note:(m,b)=>{dn.innerHTML='<span class="'+(b?'bad-t':'ok-t')+'">'+m+'</span>'}});
+  bx.querySelector('#dcx').onclick=()=>{ov.remove();msg='';draw()};
+  bx.querySelector('#dsv').onclick=()=>{const nm=fn.value.trim();const ok1=S2.cwd==t.dest,ok2=norm(nm)==norm(t.name);
+   if(!ok1){dn.innerHTML='<span class="bad-t">Ο φάκελος δεν είναι ο σωστός! Τώρα είσαι στον «'+esc(fs[S2.cwd].name)+'». Κοίτα τη διαδρομή πάνω και πήγαινε: '+t.path+'.</span>';return}
+   if(!ok2){dn.innerHTML='<span class="bad-t">Το όνομα πρέπει να είναι «'+esc(t.name)+'».</span>';return}
+   A(fs,t.dest,nm,'file',t.ext);t.done=true;ov.remove();msg='<span class="ok-t">🎉 Αποθηκεύτηκε! Το αρχείο «'+esc(nm)+'.'+t.ext+'» βρίσκεται στο '+t.path+'.</span>';
+   const all=TK.every(x=>x.done);if(all){mark(idx);msg+='<br><span class="ok-t">⭐ Τα κατάφερες και στις 4 περιπτώσεις!</span>'}draw();
+   if(all&&idx+1<T.length){const b=el('button','btn o','Επόμενη αποστολή ➜');b.onclick=()=>go(idx+1);box.appendChild(b)}}}
+ draw()}
+
+/* ---------- Κουίζ ---------- */
+function quiz(v,idx){
+ const Q=[['Πώς λέγεται το «συρτάρι» στο οποίο βάζουμε αρχεία;',['Φάκελος','Πρόγραμμα','Οθόνη'],'Στον φάκελο 📁 βάζουμε αρχεία και άλλους φακέλους.'],
+ ['Πώς φτιάχνουμε νέο φάκελο;',['Κουμπί «Νέος φάκελος» ή δεξί κλικ → Νέος φάκελος','Πατάμε το πλήκτρο Ctrl μία φορά','Κλείνουμε τον υπολογιστή'],'Μετά γράφουμε το όνομα και πατάμε Enter.'],
+ ['Τι κάνει το «Κόψιμο» και μετά «Επικόλληση»;',['Μετακινεί το αρχείο ή φάκελο','Φτιάχνει δεύτερο αντίγραφο','Σβήνει το αρχείο για πάντα'],'Το Κόψιμο + Επικόλληση το μεταφέρει. Για αντίγραφο χρησιμοποιούμε Αντιγραφή.'],
+ ['Πού πηγαίνουν τα πράγματα που σβήνουμε;',['Στον Κάδο ανακύκλωσης','Στο διαδίκτυο','Εξαφανίζονται αμέσως'],'Από τον κάδο μπορούμε να τα επαναφέρουμε, αν δεν τον έχουμε αδειάσει.'],
+ ['Τι προσέχω όταν αποθηκεύω ένα αρχείο;',['Το όνομα και τον φάκελο που το βάζω','Μόνο το χρώμα του προγράμματος','Τίποτα, βρίσκεται μόνο του'],'Αν δεν θυμάμαι πού το έβαλα, δεν θα το βρω εύκολα.'],
+ ['Ποια εντολή του μενού Αρχείο μας αφήνει να διαλέξουμε φάκελο και όνομα;',['Αποθήκευση ως…','Εκτύπωση','Κλείσιμο'],'Η «Αποθήκευση ως…» ανοίγει το παράθυρο με τους φακέλους.'],
+ ['Τι δείχνει η γραμμή διαδρομής;',['Σε ποιον φάκελο βρίσκομαι','Την ώρα','Πόσο μνήμη έχει ο υπολογιστής'],'Π.χ. Υπολογιστής › Έγγραφα › Σχολείο.']];
+ let i=0,sc=0;
+ function show(){v.innerHTML='';v.appendChild(el('h2','',T[idx][1]));if(i>=Q.length)return end();const q=Q[i];
+  v.appendChild(el('div','prog','<i style="width:'+(i/Q.length*100)+'%"></i>'));v.appendChild(el('p','lead','Ερώτηση '+(i+1)+' από '+Q.length));v.appendChild(el('h3','',q[0]));
+  const fb=el('div','fdbk','');let lock=false;
+  sh(q[1].map((t,j)=>[t,j])).forEach(([t,j])=>{const b=el('button','opt',esc(t));b.onclick=()=>{if(lock)return;lock=true;if(j==0){sc++;b.classList.add('right');fb.innerHTML='<span class="ok-t">✅ Σωστά! '+q[2]+'</span>'}else{b.classList.add('wrong');v.querySelectorAll('.opt').forEach(x=>{if(x.textContent==q[1][0])x.classList.add('right')});fb.innerHTML='<span class="bad-t">Όχι ακριβώς. '+q[2]+'</span>'}
+   const n=el('button','btn o',i<Q.length-1?'Επόμενη ➜':'Τέλος');n.onclick=()=>{i++;show()};fb.appendChild(el('div','',''));fb.lastChild.appendChild(n)};v.appendChild(b)});v.appendChild(fb)}
+ function end(){const good=sc>=5;v.appendChild(el('div','win','<div class="big">'+(good?'🏆':'💪')+'</div><h3>'+sc+' / '+Q.length+' σωστά</h3><p>'+(good?'Μπράβο! Ξέρεις να οργανώνεις τα αρχεία σου!':'Ξαναδοκίμασε για να πάρεις το δίπλωμα (χρειάζονται τουλάχιστον 5 σωστά).')+'</p>'));
+  const r=el('button','btn g','↺ Ξανά');r.onclick=()=>{i=0;sc=0;show()};v.appendChild(r);
+  if(good){mark(idx);const c=el('div','cert','<div style="font-size:54px">🏅</div><h3 style="margin:4px 0">Δίπλωμα Εξερευνητή αρχείων</h3><p>Το παιδί που ονομάζεται</p><input id="cn" maxlength="30" placeholder="γράψε το όνομά σου"><p>έμαθε να φτιάχνει, να μετονομάζει, να μετακινεί, να σβήνει και να αποθηκεύει σε φακέλους!</p>');const p=el('button','btn','🖨️ Εκτύπωση');p.onclick=()=>window.print();c.appendChild(p);v.appendChild(c)}}
+ show()}
+
+const T=[['🔎 Γνωρίζω','1. Γνωρίζω τον Εξερευνητή',(v,i)=>runMission(v,M1,i)],['📁 Νέος φάκελος','2. Φτιάχνω φάκελο',(v,i)=>runMission(v,M2,i)],['✏️ Μετονομασία','3. Μετονομάζω φάκελο',(v,i)=>runMission(v,M3,i)],['🚚 Μετακίνηση','4. Μετακινώ και αντιγράφω',(v,i)=>runMission(v,M4,i)],['🗑️ Διαγραφή','5. Σβήνω και επαναφέρω',(v,i)=>runMission(v,M5,i)],['💾 Αποθήκευση','6. Αποθηκεύω σε φάκελο',saveMission],['🏆 Κουίζ','7. Κουίζ και δίπλωμα',quiz]];
+tabs();go(0);
+</script></body></html>
