@@ -321,8 +321,37 @@ async function api(req, env, url) {
     await env.DB.prepare('DELETE FROM tasks WHERE id=? AND user_id=?').bind(Number(b.id) || 0, u.id).run();
     return J({ ok: true });
   }
+  // ── Βαθμολογία μαθητών (Dojo): ιδιωτική αποθήκευση ανά λογαριασμό ──
+  if (path === '/api/dojo' || path === '/api/dojo/save' || path === '/api/dojo/delete') {
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS dojo(user_id INTEGER PRIMARY KEY, data TEXT NOT NULL, updated_at INTEGER NOT NULL)').run();
+    if (path === '/api/dojo') {
+      const r = await env.DB.prepare('SELECT data,updated_at FROM dojo WHERE user_id=?').bind(u.id).first();
+      return J({ ok: true, data: r ? JSON.parse(r.data) : null, updated_at: r ? r.updated_at : 0 });
+    }
+    if (path === '/api/dojo/delete') {
+      await env.DB.prepare('DELETE FROM dojo WHERE user_id=?').bind(u.id).run();
+      return J({ ok: true });
+    }
+    try {
+      const o = b.data, str = (x, n) => String(x == null ? '' : x).trim().slice(0, n);
+      if (!o || !Array.isArray(o.classes) || o.classes.length < 1 || o.classes.length > 30) throw new Error('bad');
+      const classes = o.classes.map((c) => {
+        if (!Array.isArray(c.students) || c.students.length > 120) throw new Error('bad');
+        return {
+          id: str(c.id, 30) || 'c', name: str(c.name, 60) || 'Τάξη',
+          students: c.students.map((x) => ({ id: str(x.id, 30), n: str(x.n, 60), seed: Number.isFinite(+x.seed) ? Math.abs(Math.trunc(+x.seed)) % 1000000 : 1, p: Number.isFinite(+x.p) ? Math.max(-100000, Math.min(100000, Math.trunc(+x.p))) : 0 })).filter((x) => x.id && x.n),
+        };
+      });
+      const cur = classes.some((c) => c.id === o.cur) ? o.cur : classes[0].id;
+      const out = JSON.stringify({ cur, ts: Number.isFinite(+o.ts) ? Math.trunc(+o.ts) : 0, classes });
+      if (out.length > 250000) throw new Error('bad');
+      await env.DB.prepare('INSERT INTO dojo(user_id,data,updated_at) VALUES(?,?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data,updated_at=excluded.updated_at').bind(u.id, out, now()).run();
+      return J({ ok: true });
+    } catch (e) { return J({ error: 'Μη έγκυρα δεδομένα βαθμολογίας.' }, 400); }
+  }
   if (path === '/api/account/delete') {
-    for (const t of ['favs', 'scores', 'tasks', 'sessions']) await env.DB.prepare(`DELETE FROM ${t} WHERE user_id=?`).bind(u.id).run();
+    await env.DB.prepare('CREATE TABLE IF NOT EXISTS dojo(user_id INTEGER PRIMARY KEY, data TEXT NOT NULL, updated_at INTEGER NOT NULL)').run();
+    for (const t of ['favs', 'scores', 'tasks', 'dojo', 'sessions']) await env.DB.prepare(`DELETE FROM ${t} WHERE user_id=?`).bind(u.id).run();
     await env.DB.prepare('DELETE FROM users WHERE id=?').bind(u.id).run();
     return J({ ok: true }, 200, { 'set-cookie': cookie('', 0) });
   }

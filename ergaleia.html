@@ -154,12 +154,39 @@ tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθ�
  let D=store.get('dojo',null);if(!D||!D.classes||!D.classes.length){D={cur:'c1',classes:[{id:'c1',name:'Η τάξη μου',students:[]}]}}
  let mode=store.get('dojo_mode','lesson'),sort=store.get('dojo_sort','list'),snd=store.get('dojo_snd',true);
  const SS={get(){try{return JSON.parse(sessionStorage.getItem('dke_dojo_s')||'{}')}catch(e){return {}}},set(v){try{sessionStorage.setItem('dke_dojo_s',JSON.stringify(v))}catch(e){}}};
- let sp=SS.get();const save=()=>{store.set('dojo',D);SS.set(sp)};
+ let sp=SS.get(),me=null,cloud=store.get('dojo_cloud',false),pin=store.get('dojo_pin',null),locked=!!pin,syncMsg='',tmr=null;
+ const hdr={'content-type':'application/json'},sync=t=>{syncMsg=t;const m=$('#djSync');if(m)m.textContent=t};
+ const push=()=>{if(!cloud||!me)return;clearTimeout(tmr);tmr=setTimeout(async()=>{try{const r=await fetch('/api/dojo/save',{method:'POST',headers:hdr,body:JSON.stringify({data:{cur:D.cur,ts:D.ts||0,classes:D.classes}})});const j=await r.json();sync(j.ok?'☁️ Αποθηκεύτηκε στον λογαριασμό σου':'⚠️ '+(j.error||'Αποτυχία αποθήκευσης'))}catch(e){sync('⚠️ Δεν υπάρχει σύνδεση με τον server')}},1200)};
+ const save=()=>{D.ts=Date.now();store.set('dojo',D);SS.set(sp);push()};
+ async function hashPin(p,sl){try{const d=new TextEncoder().encode(sl+p),x=await crypto.subtle.digest('SHA-256',d);return [...new Uint8Array(x)].map(v=>v.toString(16).padStart(2,'0')).join('')}catch(e){let x=0;for(const c of sl+p)x=(x*31+c.charCodeAt(0))|0;return 'f'+x}}
  const cls=()=>D.classes.find(c=>c.id===D.cur)||D.classes[0];
  const pts=s=>mode==='lesson'?(sp[s.id]||0):(s.p||0);
  const add=(s,v)=>{if(mode==='lesson')sp[s.id]=(sp[s.id]||0)+v;else s.p=(s.p||0)+v};
  let ov=null;const closeOv=()=>{if(ov){ov.remove();ov=null}};
  const root=h('div');b.append(root);
+ (async()=>{try{const r=await fetch('/api/me'),j=await r.json();me=j.user||null}catch(e){me=null}
+  if(me&&cloud){try{const r=await fetch('/api/dojo'),j=await r.json(),empty=D.classes.every(c=>!c.students.length);
+   if(j.ok&&j.data&&j.data.classes){if(empty||(j.data.ts||0)>(D.ts||0)){D={cur:j.data.cur,ts:j.data.ts,classes:j.data.classes};if(!D.classes.find(c=>c.id===D.cur))D.cur=D.classes[0].id;store.set('dojo',D)}else if((D.ts||0)>(j.data.ts||0))push()}
+   else if(!empty)push();sync('☁️ Συγχρονισμένο με τον λογαριασμό σου')}catch(e){sync('⚠️ Δεν υπάρχει σύνδεση με τον server')}}
+  render()})();
+ function lockScreen(){const i=h('input',{type:'password',placeholder:'Κωδικός δασκάλου',autocomplete:'off',style:'font-size:20px'}),m=h('div',{class:'mu',style:'min-height:22px;color:var(--bad)'});
+  const go=async()=>{if(await hashPin(i.value,pin.s)===pin.h){locked=false;render()}else{m.textContent='Λάθος κωδικός.';i.value='';i.focus()}};i.onkeydown=e=>{if(e.key==='Enter')go()};
+  root.append(h('div',{class:'card',style:'text-align:center;max-width:420px;margin:30px auto'},h('div',{style:'font-size:54px'},'🔒'),h('h3',null,'Η βαθμολογία είναι κλειδωμένη'),h('p',{class:'mu'},'Γράψε τον κωδικό δασκάλου για να δεις τους μαθητές.'),h('div',{class:'row',style:'justify-content:center'},i,h('button',{class:'btn',type:'button',onclick:go},'Ξεκλείδωμα')),m));setTimeout(()=>i.focus(),50)}
+ let secOpen=false;
+ function secCard(){const d=h('details',{style:'margin-top:18px'},h('summary',null,'🔐 Ασφάλεια και αποθήκευση'));d.open=secOpen;d.ontoggle=()=>{secOpen=d.open};
+  d.append(h('div',{class:'note'},'Ονόματα και πόντοι αποθηκεύονται μόνο σε αυτή τη συσκευή, εκτός αν ενεργοποιήσεις τον λογαριασμό παρακάτω. Για λιγότερα προσωπικά δεδομένα γράφε μικρά ονόματα.'));
+  d.append(h('h3',{style:'margin-top:8px'},'🔑 Κωδικός δασκάλου'),h('p',{class:'mu',style:'margin:0 0 6px'},'Κρύβει τη βαθμολογία από όποιον ανοίξει το εργαλείο στον ίδιο υπολογιστή. Δεν αντικαθιστά την προστασία της συσκευής.'));
+  const row=h('div',{class:'row'},
+   h('button',{class:'btn y',type:'button',onclick:async()=>{const v=prompt('Νέος κωδικός δασκάλου (τουλάχιστον 4 χαρακτήρες)');if(!v)return;if(v.length<4){alert('Ο κωδικός είναι πολύ μικρός.');return}const sl=Math.random().toString(36).slice(2);pin={s:sl,h:await hashPin(v,sl)};store.set('dojo_pin',pin);alert('Ο κωδικός ορίστηκε. Θα ζητείται κάθε φορά που ανοίγεις το εργαλείο.');render()}},pin?'Αλλαγή κωδικού':'Ορισμός κωδικού'));
+  if(pin)row.append(h('button',{class:'btn s',type:'button',onclick:()=>{locked=true;render()}},'🔒 Κλείδωμα τώρα'),h('button',{class:'btn s',type:'button',onclick:()=>{if(confirm('Αφαίρεση του κωδικού;')){pin=null;try{localStorage.removeItem('dke_dojo_pin')}catch(e){}render()}}},'Αφαίρεση κωδικού'));
+  d.append(row,h('h3',{style:'margin-top:14px'},'☁️ Αποθήκευση στον λογαριασμό'));
+  if(!me)d.append(h('p',{class:'mu'},'Συνδέσου στον λογαριασμό σου στο DigiKidsEdu (κουμπί «Σύνδεση» στην αρχική σελίδα) και γύρνα εδώ. Τότε η βαθμολογία αποθηκεύεται στον server και τη βλέπεις από κάθε συσκευή σου. Δεν τη βλέπει κανείς άλλος.'),h('a',{class:'btn y',href:'/',style:'display:inline-block;text-decoration:none'},'Πήγαινε στην αρχική'));
+  else d.append(h('p',{class:'mu',style:'margin:0 0 6px'},'Συνδεδεμένος ως '+me.name+'. Αποθηκεύονται οι τάξεις, τα ονόματα και η σωρευτική βαθμολογία, και τα βλέπεις μόνο εσύ.'),
+   h('label',{style:'display:block;margin:6px 0'},h('input',{type:'checkbox',checked:cloud,onchange:e=>{if(e.target.checked){if(!confirm('Τα ονόματα των μαθητών θα αποθηκεύονται στον λογαριασμό σου στον server του DigiKidsEdu. Προτίμησε μικρά ονόματα. Να ενεργοποιηθεί;')){e.target.checked=false;return}cloud=true;store.set('dojo_cloud',true);save();sync('Αποθήκευση…')}else{cloud=false;store.set('dojo_cloud',false);sync('')}}}),' Αποθήκευση στον λογαριασμό μου'),h('div',{class:'mu',id:'djSync'},syncMsg));
+  d.append(h('h3',{style:'margin-top:14px'},'🗑 Διαγραφή δεδομένων'),h('div',{class:'row'},
+   h('button',{class:'btn r',type:'button',onclick:()=>{if(!confirm('Διαγραφή ΟΛΩΝ των τάξεων, μαθητών και πόντων από αυτή τη συσκευή;'))return;['dojo','dojo_mode','dojo_sort','dojo_pin','dojo_cloud','dojo_snd'].forEach(k=>{try{localStorage.removeItem('dke_'+k)}catch(e){}});try{sessionStorage.removeItem('dke_dojo_s')}catch(e){}D={cur:'c1',classes:[{id:'c1',name:'Η τάξη μου',students:[]}]};sp={};pin=null;cloud=false;locked=false;render()}},'Διαγραφή από αυτή τη συσκευή')),
+   me?h('div',{class:'row',style:'margin-top:6px'},h('button',{class:'btn r',type:'button',onclick:async()=>{if(!confirm('Διαγραφή της βαθμολογίας από τον λογαριασμό σου στον server; Δεν αναιρείται.'))return;try{await fetch('/api/dojo/delete',{method:'POST',headers:hdr,body:'{}'});cloud=false;store.set('dojo_cloud',false);alert('Διαγράφηκε από τον server.');render()}catch(e){alert('Δεν έγινε διαγραφή. Δοκίμασε ξανά.')}}},'Διαγραφή από τον λογαριασμό (server)')):null);
+  return d}
  function award(list,label){const M=h('div',{style:'position:fixed;inset:0;z-index:80;background:rgba(10,6,34,.6);display:grid;place-items:center;padding:14px;overflow:auto',onclick:e=>{if(e.target===M)closeOv()}});ov=M;
   const sOne=list.length===1?list[0]:null;const box=h('div',{class:'card',style:'max-width:560px;width:100%;margin:0'});
   box.append(h('div',{class:'row',style:'justify-content:space-between;flex-wrap:nowrap'},h('div',{class:'row',style:'flex-wrap:nowrap'},sOne?h('div',{style:'width:64px;height:64px',html:monster(sOne.seed)}):h('div',{style:'font-size:46px'},'👏'),h('div',null,h('h3',{style:'margin:0'},label),h('div',{class:'mu'},mode==='lesson'?'Πόντοι μαθήματος':'Σωρευτικοί πόντοι'))),h('button',{class:'btn s',type:'button',onclick:closeOv},'✕')));
@@ -172,7 +199,7 @@ tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθ�
    h('button',{class:'btn s',type:'button',onclick:()=>{const v=prompt('Νέο όνομα',sOne.n);if(v&&v.trim()){sOne.n=v.trim();save();closeOv();render()}}},'✏️ Μετονομασία'),
    h('button',{class:'btn r',type:'button',onclick:()=>{if(confirm('Διαγραφή του μαθητή «'+sOne.n+'»;')){const c=cls();c.students=c.students.filter(x=>x.id!==sOne.id);delete sp[sOne.id];save();closeOv();render()}}},'🗑 Διαγραφή')));
   M.append(box);b.append(M)}
- function render(pop,dv){const c=cls();root.innerHTML='';
+ function render(pop,dv){const c=cls();root.innerHTML='';if(locked){lockScreen();return}
   const bar=h('div',{class:'card'});
   const sel=h('select',{onchange:()=>{D.cur=sel.value;save();render()}},D.classes.map(x=>h('option',{value:x.id,selected:x.id===c.id},x.name)));
   bar.append(h('div',{class:'row'},h('b',null,'Τάξη:'),sel,
@@ -202,6 +229,7 @@ tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθ�
    h('button',{class:'btn s',type:'button',onclick:()=>download('dojo-backup.json',JSON.stringify(D),'application/json')},'💾 Αντίγραφο ασφαλείας'),
    h('button',{class:'btn s',type:'button',onclick:()=>fi.click()},'📂 Επαναφορά'));
   const fi=h('input',{type:'file',accept:'.json,application/json',style:'display:none',onchange:()=>{const f=fi.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(!j.classes||!j.classes.length)throw 0;if(confirm('Η επαναφορά αντικαθιστά τα τωρινά δεδομένα. Συνέχεια;')){D=j;save();render()}}catch(e){alert('Το αρχείο δεν είναι έγκυρο αντίγραφο.')}};rd.readAsText(f)}});
+  if(pin)r2.append(h('button',{class:'btn s',type:'button',onclick:()=>{locked=true;render()}},'🔒 Κλείδωμα'));
   r2.append(fi,h('label',{style:'margin-left:auto;font-size:15px'},h('input',{type:'checkbox',checked:snd,onchange:e=>{snd=e.target.checked;store.set('dojo_snd',snd)}}),' 🔔 ήχος'));
   ctl.append(r2);root.append(ctl);
   if(!stu.length){root.append(h('div',{class:'note'},'Δεν υπάρχουν ακόμα μαθητές. Πάτα «➕ Πρόσθεσε μαθητές», γράψε τα ονόματα (ένα ανά γραμμή) και κάθε μαθητής παίρνει το δικό του τερατάκι!'))}
@@ -212,7 +240,7 @@ tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθ�
     h('div',{style:'width:84px;height:84px;margin:0 auto',html:monster(s.seed)}),
     h('div',{style:'font-weight:800;font-size:16px;line-height:1.2;margin-top:4px;word-break:break-word'},s.n));
    if(isPop){card.style.animation='djpop .5s';if(dv){const f=h('span',{style:'position:absolute;left:0;right:0;top:20px;font-weight:800;font-size:34px;pointer-events:none;animation:djfly 1s forwards;color:'+(dv>0?'#16a34a':'#dc2626')},(dv>0?'+':'')+dv);card.append(f)}}
-   gr.append(card)});root.append(gr)}
+   gr.append(card)});root.append(gr);root.append(secCard())}
  if(!$('#djcss')){document.head.append(h('style',{id:'djcss'},'@keyframes djpop{0%{transform:scale(1)}40%{transform:scale(1.12) rotate(-3deg)}100%{transform:scale(1)}}@keyframes djfly{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-40px)}}.dj:hover,.dj:focus-visible{transform:translateY(-3px);outline:4px solid var(--sun)}'))}
  render();return closeOv}});
 
