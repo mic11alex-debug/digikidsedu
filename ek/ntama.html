@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ντάμα</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--soft:#f1f5f9;--g1:#b45309;--g2:#7c2d12}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(26px,5vw,36px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
+main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;align-items:center}
+.row .lab{width:100%;text-align:center;color:var(--mu);font-size:15px;font-weight:600;margin-bottom:-2px}
+.ch{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka,system-ui;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ch.on{background:#f59e0b;border-color:#d97706;color:#fff}
+.btn{border:0;background:#10b981;color:#fff;font:700 19px Fredoka,system-ui;border-radius:99px;padding:11px 24px;cursor:pointer;box-shadow:0 4px 0 #059669}
+.btn.g{background:#64748b;box-shadow:0 4px 0 #475569}.btn:active{transform:translateY(3px);box-shadow:none}
+.pill{background:var(--card);border:3px solid var(--bd);border-radius:18px;text-align:center;padding:6px 14px;min-width:90px}
+.pill b{display:block;font-size:26px;line-height:1.1}.pill small{color:var(--mu);font-size:14px;font-weight:600}
+#msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
+#bd{display:grid;grid-template-columns:repeat(8,1fr);width:min(100%,480px);margin:6px auto;border:5px solid #78350f;border-radius:8px;overflow:hidden;aspect-ratio:1}
+.s{display:flex;align-items:center;justify-content:center;position:relative;cursor:default}.s.l{background:#fde68a}.s.d{background:#92400e}.s.sel{background:#16a34a}.s.tg{background:#4ade80;cursor:pointer}.s.tg::after{content:"";width:34%;height:34%;border-radius:50%;background:rgba(255,255,255,.8)}
+.pc{width:80%;height:80%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:clamp(14px,4vw,24px);box-shadow:0 3px 0 rgba(0,0,0,.4);border:3px solid rgba(255,255,255,.35)}.pc.r{background:#ef4444}.pc.b{background:#1f2937}.pc.mv{outline:4px solid #fde047;cursor:pointer}</style></head><body>
+<header><h1>♟️ Ντάμα</h1><p>Φάε όλα τα πούλια του αντιπάλου ή κλείσε τον δρόμο του!</p></header>
+<main><div class="row"><div class="lab">Δυσκολία</div><button class="ch" data-l="1">😊 Εύκολος</button><button class="ch on" data-l="2">🙂 Μέτριος</button><button class="ch" data-l="3">😎 Δύσκολος</button></div>
+<div class="row"><div class="pill"><small>Τα δικά σου 🔴</small><b id="a">12</b></div><div class="pill"><small>Υπολογιστής ⚫</small><b id="b">12</b></div></div><div id="msg"></div>
+<div id="bd"></div><div class="row"><button class="btn" id="again">🔄 Νέο παιχνίδι</button></div>
+<div style="text-align:center;color:var(--mu);font-size:15px">Κινείσαι διαγώνια προς τα πάνω. Αν μπορείς να «φας» πούλι (να πηδήξεις πάνω από αυτό), πρέπει να το κάνεις! Όταν φτάσεις στην πάνω σειρά γίνεσαι 👑 βασίλισσα.</div></main>
+<script>
+const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let AC;function beep(f,d=.12,t='sine',v=.08){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+const fanfare=()=>[523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.2),k*130));
+function sel(attr,val){document.querySelectorAll('['+attr+']').forEach(b=>b.classList.toggle('on',b.getAttribute(attr)===String(val)))}
+let b,turn,over,sel_=null,lvl=2,busy=false,lastCap=0;
+const own=(p,pl)=>p&&p.toLowerCase()===pl,isK=p=>p&&p===p.toUpperCase();
+function init(){b=Array.from({length:8},()=>Array(8).fill(null));for(let r=0;r<3;r++)for(let c=0;c<8;c++)if((r+c)%2)b[r][c]='b';for(let r=5;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2)b[r][c]='r'}
+function gen(b,pl){const out=[],jumps=[];const fw=pl==='r'?-1:1;
+ for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=b[r][c];if(!own(p,pl))continue;const K=isK(p);const dirs=K?[[1,1],[1,-1],[-1,1],[-1,-1]]:[[fw,1],[fw,-1]];
+  const dfs=(r0,c0,path,caps)=>{let any=false;for(const[dr,dc]of dirs){const mr=r0+dr,mc=c0+dc,lr=r0+2*dr,lc=c0+2*dc;if(lr<0||lr>7||lc<0||lc>7)continue;const m=b[mr][mc];if(m&&!own(m,pl)&&!caps.some(x=>x[0]===mr&&x[1]===mc)&&!b[lr][lc]){any=true;const np=[...path,[lr,lc]],nc=[...caps,[mr,mc]];const crown=!K&&((pl==='r'&&lr===0)||(pl==='b'&&lr===7));if(crown)jumps.push({from:[r,c],path:np,caps:nc});else dfs(lr,lc,np,nc)}}
+   if(!any&&caps.length)jumps.push({from:[r,c],path,caps})};
+  const o=b[r][c];b[r][c]=null;dfs(r,c,[[r,c]],[]);b[r][c]=o;
+  for(const[dr,dc]of dirs){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<8&&nc>=0&&nc<8&&!b[nr][nc])out.push({from:[r,c],path:[[r,c],[nr,nc]],caps:[]})}}
+ return jumps.length?jumps:out}
+function apply(b,m){const nb=b.map(r=>r.slice());const[r0,c0]=m.from;let p=nb[r0][c0];nb[r0][c0]=null;m.caps.forEach(([r,c])=>nb[r][c]=null);const[r,c]=m.path[m.path.length-1];if(p==='r'&&r===0)p='R';if(p==='b'&&r===7)p='B';nb[r][c]=p;return nb}
+function ev(b){let s=0;for(let r=0;r<8;r++)for(let c=0;c<8;c++){const p=b[r][c];if(!p)continue;const v=isK(p)?5:3+(p==='b'?r:7-r)*.1;s+=p.toLowerCase()==='b'?v:-v}return s}
+function mm(b,d,a,be,pl){const ms=gen(b,pl);if(!ms.length)return pl==='b'?-1000-d:1000+d;if(!d)return ev(b);let best=pl==='b'?-1e9:1e9;for(const m of ms){const v=mm(apply(b,m),d-1,a,be,pl==='b'?'r':'b');if(pl==='b'){best=Math.max(best,v);a=Math.max(a,v)}else{best=Math.min(best,v);be=Math.min(be,v)}if(a>=be)break}return best}
+function cpuMove(){const ms=gen(b,'b');if(lvl===1&&Math.random()<.5)return ms[Math.random()*ms.length|0];const d=lvl===1?1:lvl===2?3:5;let best=-1e9,mv=[];for(const m of ms){const v=mm(apply(b,m),d-1,-1e9,1e9,'r')+Math.random()*.3;if(v>best){best=v;mv=[m]}}return mv[0]}
+function draw(){const el=$('bd');el.innerHTML='';const ms=turn==='r'?gen(b,'r'):[];const mover=new Set(ms.map(m=>m.from.join()));const tg=sel_?ms.filter(m=>m.from.join()===sel_.join()):[];
+ for(let r=0;r<8;r++)for(let c=0;c<8;c++){const s=document.createElement('div');const dark=(r+c)%2;s.className='s '+(dark?'d':'l');const p=b[r][c];
+  if(sel_&&sel_[0]===r&&sel_[1]===c)s.classList.add('sel');if(tg.some(m=>m.path[m.path.length-1][0]===r&&m.path[m.path.length-1][1]===c)){s.classList.add('tg');s.onclick=()=>go(tg.find(m=>m.path[m.path.length-1][0]===r&&m.path[m.path.length-1][1]===c))}
+  if(p){const d=document.createElement('div');d.className='pc '+p.toLowerCase();if(isK(p))d.textContent='👑';if(p.toLowerCase()==='r'&&mover.has(r+','+c)&&!over){d.classList.add('mv');d.onclick=e=>{e.stopPropagation();sel_=[r,c];draw()}}s.appendChild(d)}
+  el.appendChild(s)}
+ let nr=0,nb=0;b.flat().forEach(p=>{if(p&&p.toLowerCase()==='r')nr++;if(p&&p.toLowerCase()==='b')nb++});$('a').textContent=nr;$('b').textContent=nb}
+function end(){const ms=gen(b,turn);if(!ms.length){over=true;draw();$('msg').textContent=turn==='r'?'😅 Ο υπολογιστής κέρδισε. Ξαναδοκίμασε!':'🎉 Μπράβο, κέρδισες!';if(turn==='b')fanfare();return true}return false}
+function go(m){sel_=null;b=apply(b,m);beep(m.caps.length?300:500,.12);lastCap=m.caps.length?0:lastCap+1;turn='b';draw();if(end())return;$('msg').textContent='Σκέφτεται ο υπολογιστής… 🤔';setTimeout(()=>{const mv=cpuMove();b=apply(b,mv);beep(mv.caps.length?300:400,.12);turn='r';draw();if(end())return;const ms=gen(b,'r');$('msg').textContent=ms[0].caps.length?'Σειρά σου! Πρέπει να φας πούλι! ⚠️':'Σειρά σου!'},650)}
+function newG(){init();turn='r';over=false;sel_=null;draw();$('msg').textContent='Η σειρά σου! Διάλεξε ένα κόκκινο πούλι.'}
+document.querySelectorAll('[data-l]').forEach(x=>x.onclick=()=>{lvl=+x.dataset.l;sel('data-l',lvl);newG()});$('again').onclick=newG;newG();
+</script></body></html>

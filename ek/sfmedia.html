@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ψηφιακός γραμματισμός</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350;--hl:#4a3f10}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px}
+header{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:2px 0 0;opacity:.92;font-size:15px}
+#tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 10px 0}
+#tabs button{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka;border-radius:99px;padding:8px 16px;cursor:pointer;position:relative}
+#tabs button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#tabs button.ok::after{content:"✓";position:absolute;right:-4px;top:-8px;background:var(--green);color:#fff;border-radius:50%;width:22px;height:22px;font-size:14px;display:grid;place-items:center}
+main{max-width:900px;margin:0 auto;padding:12px 14px 40px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 14px}
+.btn{border:0;cursor:pointer;font:700 19px Fredoka;color:#fff;background:var(--teal);padding:12px 24px;border-radius:16px;box-shadow:0 5px 0 #0d9488;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.b{background:var(--blue);box-shadow:0 5px 0 #1d4ed8}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn:disabled{opacity:.45}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.win{text-align:center;padding:14px}.win .big{font-size:76px}
+.opt{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:18px;padding:12px;font:600 20px Fredoka;cursor:pointer}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.prog{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:6px 0 14px}.prog i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.stars{font-size:34px;letter-spacing:4px}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:14px}
+.cert input{font:700 24px Fredoka;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+.rc{text-align:center;padding:10px}.rc .em{font-size:96px;line-height:1.1}.rc p{font-size:clamp(22px,4.5vw,30px);font-weight:600;margin:10px 0}
+.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}.dots i{width:14px;height:14px;border-radius:50%;background:var(--bd)}.dots i.on{background:var(--amber)}.dots i.d{background:var(--green)}
+.big2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.big2 .opt{font-size:26px;padding:18px}
+.sit{font-size:clamp(22px,4.5vw,30px);font-weight:600;text-align:center;padding:16px;background:var(--hl);border-radius:20px;margin:12px 0}.sit .em{display:block;font-size:80px}
+.pr-stw{position:relative;border-radius:24px;overflow:hidden;border:4px solid #1e293b;box-shadow:0 8px 0 rgba(0,0,0,.14)}
+.pr-st{position:relative;aspect-ratio:16/9;overflow:hidden;container-type:inline-size;user-select:none}
+.pr-i{position:absolute;line-height:1;transform:translate(-50%,-50%);white-space:nowrap}
+.pr-i>span{display:block;filter:drop-shadow(0 .6cqw .5cqw rgba(0,0,0,.25))}
+.pr-ti{position:absolute;left:3.5cqw;top:3cqw;font-weight:800;font-size:4.4cqw;color:#fff;text-shadow:0 .4cqw 0 rgba(0,0,0,.25);animation:prslide .6s both;z-index:4;max-width:70cqw;line-height:1.15}
+.pr-ti.c{left:50%;top:34%;text-align:center;font-size:6.2cqw;max-width:86cqw;transform:translate(-50%,-50%);animation:prpopc .8s both}
+.pr-ti.c small{display:block;font-size:2.6cqw;font-weight:700;margin-top:1.4cqw;opacity:.95}
+.pr-bar{position:absolute;left:0;right:0;bottom:0;height:7px;background:rgba(255,255,255,.35);z-index:6}.pr-bar i{display:block;height:100%;width:0;background:#fff;border-radius:0 6px 6px 0}.pr-bar i.go{animation:prbar var(--d,5s) linear forwards}
+.pr-cnt{position:absolute;right:2.5cqw;top:2.5cqw;font-weight:800;font-size:2.2cqw;color:#fff;background:rgba(0,0,0,.3);border-radius:99px;padding:.3cqw 1.8cqw;z-index:6}
+.pr-cap{margin:14px 0 8px;min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--soft);border:3px solid var(--bd);border-radius:18px;padding:12px 16px;font-weight:700;font-size:clamp(17px,2.8vw,23px);line-height:1.45;animation:prfade .5s both}
+.pr-ct{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.pr-ct button{font:800 20px Fredoka,system-ui,sans-serif;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;width:58px;height:50px;cursor:pointer;box-shadow:0 4px 0 var(--bd)}.pr-ct button.big{width:auto;padding:0 22px;background:var(--teal);color:#fff;border-color:#0d9488;box-shadow:0 4px 0 #0d9488}
+.pr-ct button:active{transform:translateY(3px);box-shadow:none}
+.pr-dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:12px}.pr-dots b{width:14px;height:14px;border-radius:50%;background:var(--bd);cursor:pointer;transition:.2s}.pr-dots b.on{background:var(--teal);transform:scale(1.35)}.pr-dots b.dn{background:#99f6e4}
+.pr.paused .pr-st *,.pr.paused .pr-bar i{animation-play-state:paused!important}
+.pr-bub{position:absolute;transform:translate(-50%,-50%);background:#fff;color:#1e293b;font-weight:800;font-size:2.8cqw;border-radius:2.4cqw;padding:1cqw 2.2cqw;box-shadow:0 .5cqw 0 rgba(0,0,0,.2);border:.4cqw solid #1e293b;animation:prpopc .5s both;z-index:3;white-space:nowrap}
+.pr-lb{position:absolute;left:64cqw;font-weight:800;font-size:2.7cqw;color:#064e3b;background:#fff;border:.4cqw solid #047857;border-radius:2cqw;padding:.8cqw 1.8cqw;animation:prslide .5s both;box-shadow:0 .5cqw 0 rgba(0,0,0,.18);white-space:nowrap}
+.pr-pz{position:absolute;left:22cqw;top:12cqw;width:38cqw;background:#fff;border-radius:3cqw;padding:1.5cqw;border:.5cqw solid #064e3b;box-shadow:0 1cqw 0 rgba(0,0,0,.2)}.pr-pz svg{width:100%;height:auto;display:block}
+.pr-pz .bad,.pr-pz .good{position:absolute;inset:1.5cqw}.pr-pz .bad{animation:prout .6s 1.8s both}.pr-pz .good{opacity:0;animation:prin .6s 2s both}
+.pr-pz .tg{position:absolute;left:50%;top:-2.6cqw;transform:translateX(-50%);font-weight:800;font-size:2.6cqw;border-radius:99px;padding:.3cqw 2cqw;color:#fff;background:#dc2626;white-space:nowrap}.pr-pz .tg.g{background:#16a34a;opacity:0;animation:prin .5s 2s both}.pr-pz .tg.r{animation:prout .5s 1.8s both}
+.pr-go{font:800 clamp(16px,2.6vw,21px) Fredoka,system-ui,sans-serif;border:3px solid #0d9488;background:var(--teal);color:#fff;border-radius:16px;padding:8px 20px;cursor:pointer;box-shadow:0 4px 0 #0d9488;margin-left:12px}
+.a-bob{animation:prbob 2.2s ease-in-out infinite}.a-wob{animation:prwob 1.6s ease-in-out infinite}.a-up{animation:prup 4s ease-in infinite}.a-pop{animation:prpop .6s both}.a-stamp{animation:prstamp .5s both}.a-blink{animation:prblink 1.2s infinite}.a-shake{animation:prshake .6s infinite}.a-spin{animation:prspin 6s linear infinite}.a-pulse{animation:prpulse 1.4s ease-in-out infinite}.a-raise{animation:prraise 2.4s ease-in-out infinite}.a-sway{animation:prsway 2s ease-in-out infinite}
+.a-walk{animation:prwalk 4.6s ease-in-out both}.a-swap{animation:prswap 3.2s ease-in-out infinite}.a-toss{animation:prtoss 2.4s ease-in both infinite}.a-slidein{animation:prslidein 2s 1.5s ease-out both}.a-sweep{animation:prsweep 1s ease-in-out infinite}.a-germ{animation:prgerm 3.6s ease-in-out infinite}.a-grow{animation:prgrow 1s 2s both}.a-reach{animation:prreach 3.4s ease-in-out both}
+@keyframes prbar{to{width:100%}}@keyframes prfade{from{opacity:0;transform:translateY(8px)}}@keyframes prslide{from{opacity:0;transform:translateX(-30px)}}
+@keyframes prbob{50%{transform:translateY(-6%)}}@keyframes prwob{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes prup{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-34cqw) scale(1.1);opacity:0}}
+@keyframes prpop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes prpopc{0%{transform:translate(-50%,-50%) scale(0);opacity:0}70%{transform:translate(-50%,-50%) scale(1.15);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes prstamp{0%{transform:scale(4) rotate(-20deg);opacity:0}60%{transform:scale(.9) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes prblink{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes prshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5%)}75%{transform:translateX(5%)}}
+@keyframes prspin{to{transform:rotate(360deg)}}@keyframes prpulse{50%{transform:scale(1.18)}}
+@keyframes prraise{0%,100%{transform:translateY(8%) rotate(-4deg)}50%{transform:translateY(-10%) rotate(4deg)}}
+@keyframes prsway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes prwalk{from{left:8%}to{left:72%}}
+@keyframes prswap{0%,100%{transform:translateX(-120%)}50%{transform:translateX(120%)}}
+@keyframes prtoss{0%{transform:translate(0,0) scale(1);opacity:1}45%{transform:translate(calc(var(--dx)*.5),-14cqw) rotate(180deg)}85%{transform:translate(var(--dx),var(--dy)) scale(.5) rotate(360deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+@keyframes prslidein{from{transform:translateX(40cqw)}to{transform:translateX(0)}}
+@keyframes prsweep{0%,100%{transform:rotate(-25deg) translateX(-30%)}50%{transform:rotate(25deg) translateX(30%)}}
+@keyframes prgerm{0%{transform:translate(0,0) scale(1);opacity:1}55%{transform:translate(var(--gx),var(--gy)) scale(1.15);opacity:1}75%{transform:translate(calc(var(--gx)*1.05),var(--gy)) scale(.5) rotate(60deg);opacity:0}100%{opacity:0}}
+@keyframes prgrow{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes prreach{0%{transform:translateY(-60%)}40%{transform:translateY(40%)}100%{transform:translateY(40%)}}
+@keyframes prout{to{opacity:0}}@keyframes prin{to{opacity:1}}
+@keyframes prfall{from{transform:translateY(-12cqw) rotate(0)}to{transform:translateY(70cqw) rotate(540deg)}}
+.pr-cf{position:absolute;top:0;animation:prfall linear infinite;line-height:1}
+@media(prefers-reduced-motion:reduce){.pr-st *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+.og{display:grid;gap:10px}.opt.s{font-size:18px;text-align:left}.og .opt{text-align:left;font-size:19px}
+.pr-ph{position:absolute;left:50%;top:3cqw;transform:translateX(-50%);width:32cqw;height:50cqw;background:#0f172a;border-radius:3cqw;border:.6cqw solid #94a3b8;padding:2cqw;overflow:hidden;box-shadow:0 1cqw 0 rgba(0,0,0,.3)}
+.pr-ph h6{margin:0 0 1cqw;color:#94a3b8;font-size:1.9cqw;text-align:center}
+.pr-cb{max-width:84%;padding:1cqw 1.6cqw;border-radius:1.8cqw;font-weight:700;font-size:2cqw;margin:1.3cqw 0;opacity:0;animation:prcb .45s both;line-height:1.3}.pr-cb.s{background:#475569;color:#fff;border-bottom-left-radius:.4cqw}.pr-cb.m{background:#22c55e;color:#052e16;margin-left:auto;border-bottom-right-radius:.4cqw}
+@keyframes prcb{from{opacity:0;transform:translateY(2cqw) scale(.9)}to{opacity:1;transform:none}}
+.pr-pw{position:absolute;top:14cqw;width:41cqw;background:#fff;border-radius:2.4cqw;padding:2cqw;border:.5cqw solid #1e293b;box-shadow:0 .8cqw 0 rgba(0,0,0,.25);color:#1e293b;text-align:center;font-weight:800;font-size:2.4cqw;animation:prpop .6s both}
+.pr-pw .ty{font-family:ui-monospace,Menlo,monospace;font-size:3.6cqw;margin:1.4cqw 0;overflow:hidden;white-space:nowrap;display:inline-block;width:0;animation:prtype 1.6s steps(12) var(--td,.6s) forwards;vertical-align:bottom}
+.pr-m{height:2.2cqw;border-radius:99px;background:#e2e8f0;overflow:hidden;margin-top:1.2cqw}.pr-m i{display:block;height:100%;width:0;animation:prmeter 1.6s var(--md,1s) ease-out forwards}
+@keyframes prtype{to{width:var(--ch)}}@keyframes prmeter{to{width:var(--w)}}
+.a-vault{animation:prvault 2.6s ease-in infinite}@keyframes prvault{0%{transform:translate(0,0) scale(1);opacity:1}70%{transform:translate(var(--dx),var(--dy)) scale(.35);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}}
+.pr-mail{background:#fff;color:#1e293b;border:.5cqw solid #1e293b;border-radius:2cqw;padding:1.6cqw 2.4cqw;font-weight:800;font-size:2.4cqw;text-align:center;box-shadow:0 .7cqw 0 rgba(0,0,0,.25);white-space:normal;width:38cqw}
+.pr-mail b{display:inline-block;margin-top:1cqw;background:#ef4444;color:#fff;border-radius:99px;padding:.6cqw 2cqw;animation:prpulse 1s infinite}
+.a-hook{animation:prhook 3.4s ease-in-out both}@keyframes prhook{0%{transform:translateY(-70%)}45%{transform:translateY(25%)}100%{transform:translateY(25%)}}
+.a-foot{animation:prin .01s both;opacity:0}
+.pr-big{position:absolute;left:50%;transform:translateX(-50%);font-weight:800;color:#fff;text-shadow:0 .4cqw 0 rgba(0,0,0,.3);text-align:center;animation:prfade .6s both;white-space:nowrap}
+.fdbk{min-height:56px;text-align:center;font-weight:700;margin:10px 0}
+.post{border:3px solid var(--bd);border-radius:20px;padding:14px 16px;background:var(--card);line-height:1.8;font-size:19px;max-width:640px;margin:0 auto}
+.post .hd{font-weight:700;margin-bottom:6px}.post .cl{cursor:pointer;border-bottom:3px dotted var(--amber);border-radius:4px;transition:.2s}.post .cl:hover{background:var(--hl)}.post .cl.f{background:#bbf7d0;border-bottom:3px solid var(--green)}
+.clist{display:grid;gap:8px;margin:12px auto;max-width:640px}.clist div{border:3px solid var(--bd);border-radius:14px;padding:8px 12px;font-size:17px;background:var(--soft)}.clist div.f{background:#bbf7d0;border-color:var(--green);color:#14532d}
+.stp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}.stp .opt{font-size:18px;text-align:left}.stp .opt.used{opacity:.4}
+.ord{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.ord span{background:#bbf7d0;border:3px solid var(--green);border-radius:14px;padding:6px 12px;font-weight:700;font-size:16px;color:#14532d}
+.sl{width:100%;max-width:640px;display:block;margin:10px auto;accent-color:var(--amber);height:34px}.phv{border:4px solid var(--tx);border-radius:14px;overflow:hidden;max-width:640px;margin:0 auto;background:#fff}.phv svg{display:block;width:100%;height:auto}.cap0{text-align:center;font-weight:800;margin:6px 0}
+.flt{transition:filter .5s}.flt.on{filter:saturate(2.6) contrast(1.25) brightness(1.1) hue-rotate(-12deg)}
+</style></head><body>
+<header><h1>🔍 Ψηφιακός γραμματισμός</h1><p>Εργαλεία του ντετέκτιβ: σκέφτομαι κριτικά για ό,τι βλέπω online</p></header>
+<div id="tabs"></div><main><div class="card" id="v"></div></main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+let done={},cur=0;const KEY='psifgr.done';
+try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const mark=i=>{if(!done[i]){done[i]=1;try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}tabs()}};
+function tabs(){const t=$('tabs');t.innerHTML='';T.forEach((x,i)=>{const b=el('button',(i==cur?'on ':'')+(done[i]?'ok':''),x[0]);b.onclick=()=>go(i);t.appendChild(b)})}
+function go(i){cur=i;tabs();const v=$('v');v.innerHTML='';v.appendChild(el('h2','',T[i][1]));T[i][2](v);scrollTo(0,0)}
+function stars(n,m){return '⭐'.repeat(n)+'☆'.repeat(m-n)}
+const PI=(e,x,y,sz,cls,dl,ex)=>`<span class="pr-i" style="left:${x}%;top:${y}%;font-size:${sz}cqw;${ex||''}"><span class="${cls||''}" style="animation-delay:${dl||0}s">${e}</span></span>`;
+const PBUB=(t,x,y,dl)=>`<div class="pr-bub" style="left:${x}%;top:${y}%;animation-delay:${dl}s">${t}</div>`;
+const prep=(n,f)=>Array.from({length:n},(_,i)=>f(i)).join('');
+function SLIDES(v,ix,SC,after){
+ const N=SC.length;let idx=0,paused=false,t=0,t0=0,rem=0;
+ try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)paused=true}catch(e){}
+ v.appendChild(el('p','lead','Μια σύντομη παρουσίαση. Μπορείς να την παύσεις και να πας μπροστά ή πίσω!'));
+ const root=el('div','pr'+(paused?' paused':''),`<div class="pr-stw"><div class="pr-st" id="prSt"></div><div class="pr-cnt" id="prCnt"></div><div class="pr-bar"><i id="prBar"></i></div></div><div class="pr-cap" id="prCap"></div><div class="pr-ct"><button type="button" id="prP" aria-label="Προηγούμενο">⏮</button><button type="button" class="big" id="prPl">${paused?'▶ Παίξε':'⏸ Παύση'}</button><button type="button" id="prN" aria-label="Επόμενο">⏭</button></div><div class="pr-dots" id="prDt"></div>`);v.appendChild(root);
+ const q=s=>root.querySelector(s);
+ const dots=q('#prDt');SC.forEach((_,i)=>{const b=document.createElement('b');b.onclick=()=>show(i);dots.appendChild(b)});
+ const arm=ms=>{clearTimeout(t);if(paused||SC[idx].fin)return;t0=Date.now();rem=ms;t=setTimeout(()=>show(idx+1),ms)};
+ function show(i){if(!root.isConnected)return;idx=Math.max(0,Math.min(N-1,i));const s=SC[idx];const st=q('#prSt');st.style.background=s.bg;st.innerHTML=s.art();
+  const cap=q('#prCap');cap.innerHTML=s.cap;cap.style.animation='none';void cap.offsetWidth;cap.style.animation='';
+  if(s.fin){const b=el('button','pr-go',after[0]);b.onclick=after[1];cap.appendChild(b);mark(ix)}
+  q('#prCnt').textContent=(idx+1)+' / '+N;[...dots.children].forEach((d,k)=>d.className=k==idx?'on':k<idx?'dn':'');
+  const bar=q('#prBar');bar.classList.remove('go');void bar.offsetWidth;bar.style.setProperty('--d',(s.d/1000)+'s');bar.style.width=s.d?'':'100%';if(s.d)bar.classList.add('go');
+  arm(s.d)}
+ q('#prN').onclick=()=>show(idx+1);q('#prP').onclick=()=>show(idx-1);
+ const tog=()=>{paused=!paused;root.classList.toggle('paused',paused);q('#prPl').textContent=paused?'▶ Παίξε':'⏸ Παύση';if(paused){clearTimeout(t);rem=Math.max(300,rem-(Date.now()-t0))}else if(!SC[idx].fin){t0=Date.now();t=setTimeout(()=>show(idx+1),rem)}};
+ q('#prPl').onclick=tog;
+ const kd=e=>{if(!root.isConnected){removeEventListener('keydown',kd);clearTimeout(t);return}if(e.target.tagName==='BUTTON'&&e.key===' ')return;if(e.key==='ArrowRight'){show(idx+1)}else if(e.key==='ArrowLeft'){show(idx-1)}else if(e.key===' '){e.preventDefault();tog()}};addEventListener('keydown',kd);
+ show(0);
+}
+function quiz(v,qs,done,o){o=o||{};let i=0,ok=0;const box=el('div','','');v.appendChild(box);
+ const draw=()=>{box.innerHTML='';
+  if(i>=qs.length){box.append(el('div','win',`<div class="big">${ok==qs.length?'🏆':ok>=qs.length*.7?'🌟':'💪'}</div><b>${ok} από ${qs.length} σωστά!</b><div class="stars">${stars(ok,qs.length)}</div>`));const b=el('button','btn g','↺ Ξανά από την αρχή');b.onclick=()=>{i=0;ok=0;draw()};box.append(b);done&&done(ok);return}
+  const q=qs[i];box.append(el('div','prog',`<i style="width:${i/qs.length*100}%"></i>`));box.append(el('div','sit',(q.em?`<span class="em">${q.em}</span>`:'')+q.q));
+  const g=el('div',q.opts.length==2?'big2':'og','');let order=q.opts.map((_,k)=>k);if(o.shuf)order=sh(order);
+  const fb=el('div','','');fb.style.cssText='min-height:56px;text-align:center;font-weight:700;margin:10px 0';let answered=0;
+  order.forEach(k=>{const b=el('button','opt'+(o.small?' s':''),q.opts[k]);b.onclick=()=>{if(answered)return;answered=1;const right=k==q.a;if(right)ok++;b.classList.add(right?'right':'wrong');if(!right)[...g.children].forEach((x,j)=>{if(order[j]==q.a)x.classList.add('right')});fb.innerHTML=(right?'<span class="ok-t">✔ Σωστά! </span>':'<span class="bad-t">✖ Όχι ακριβώς. </span>')+(q.why||'');const nx=el('button','btn',i<qs.length-1?'Επόμενο ➜':'Τέλος ✓');nx.onclick=()=>{i++;draw()};box.append(nx)};g.appendChild(b)});
+  box.append(g,fb)};draw()}
+
+const OP=['📰 Είδηση','📢 Διαφήμιση','💭 Γνώμη','😄 Αστείο'];
+const A1=[
+['«Ο δήμος ανακοίνωσε ότι το νέο πάρκο ανοίγει το Σάββατο στις 10 το πρωί.»',0,'Λέει γεγονότα: ποιος, τι, πότε.'],
+['«Τα νέα παπούτσια Turbo: τα πιο γρήγορα! Αγόρασέ τα τώρα με -30%!»',1,'Θέλει να αγοράσεις κάτι.'],
+['«Νομίζω ότι η πίτσα είναι το καλύτερο φαγητό του κόσμου.»',2,'«Νομίζω» = προσωπική άποψη.'],
+['«Ένας γάτος έμαθε να οδηγεί λεωφορείο και πήρε δίπλωμα… στα όνειρά του!»',3,'Φτιαγμένο για γέλιο, δεν είναι αληθινό.'],
+['«Το σχολείο μας κέρδισε το πρωτάθλημα μπάσκετ με 54-48.»',0,'Γεγονός που μπορείς να ελέγξεις.'],
+['«Το καλύτερο παιχνίδι είναι σίγουρα το δικό μου! Κατέβασέ το δωρεάν!»',1,'Προωθεί προϊόν.'],
+['«Κατά τη γνώμη μου, οι δύσκολες ασκήσεις είναι οι πιο ωραίες.»',2,'Άποψη, όχι γεγονός.'],
+['«Έκτακτο: οι αγελάδες βγήκαν στο διάστημα!» (σε σάιτ με πλάκες)',3,'Σάιτ με πλάκες: σάτιρα.'],
+['«Η βιβλιοθήκη θα είναι κλειστή τη Δευτέρα λόγω εργασιών.»',0,'Ενημερώνει με γεγονότα.'],
+['«Οι ήρωες των ταινιών είναι πιο ωραίοι από τους πραγματικούς.»',2,'Άποψη: άλλοι μπορεί να διαφωνούν.']
+];
+const A2=[
+{em:'🧑‍⚕️',q:'Ψάχνεις πώς να προστατευτείς από την ίωση. Ποια πηγή εμπιστεύεσαι περισσότερο;',opts:['Ανώνυμο σχόλιο σε βίντεο','Η ιστοσελίδα του Υπουργείου Υγείας','Μια φίλη που «άκουσε κάτι»'],a:1,why:'Είναι επίσημη πηγή με ειδικούς.'},
+{em:'🏷️',q:'Ένας ιστότοπος πουλάει βιταμίνες και γράφει «θαυματουργές!». Γιατί να είμαστε προσεκτικοί;',opts:['Θέλει να πουλήσει','Έχει πολλά χρώματα','Γράφει στα ελληνικά'],a:0,why:'Όποιος πουλάει, θέλει να πείσει.'},
+{em:'📅',q:'Η είδηση είναι του 2009. Τι σημαίνει αυτό;',opts:['Είναι πάντα σωστή','Μπορεί να έχει αλλάξει από τότε','Δεν μετράει η ημερομηνία'],a:1,why:'Το «πότε» μετράει!'},
+{em:'✍️',q:'Δεν γράφει πουθενά ποιος έφτιαξε την ιστοσελίδα. Τι συμπεραίνεις;',opts:['Είναι ασφαλής','Χρειάζομαι κι άλλες πηγές','Είναι σίγουρα αληθινή'],a:1,why:'Χωρίς συγγραφέα, ελέγχουμε κι αλλού.'},
+{em:'🧪',q:'Ποιος ξέρει καλύτερα για τους δεινόσαυρους;',opts:['Ένας παλαιοντολόγος','Ένας τυχαίος σε παιχνίδι-chat','Ένα μήνυμα αλυσίδα'],a:0,why:'Ειδικός στο θέμα.'},
+{em:'🔗',q:'Ένα μήνυμα λέει «Στείλ’ το σε 10 φίλους ΑΜΕΣΑ!». Τι κάνεις;',opts:['Το στέλνω','Στέκομαι και ελέγχω','Το ανεβάζω παντού'],a:1,why:'Η βιασύνη είναι σημάδι παραπληροφόρησης.'}
+];
+const A3=[
+{em:'🎣',q:'Ποιος τίτλος λέει την αλήθεια χωρίς να σε ξεγελάει;',opts:['ΔΕΝ θα πιστέψεις τι έγινε στη σχολική γιορτή!!!','Η σχολική γιορτή θα γίνει την Παρασκευή στις 6'],a:1,why:'Ο δεύτερος ενημερώνει. Ο πρώτος κρύβει την πληροφορία για να πατήσεις.'},
+{em:'🎣',q:'Ποιος τίτλος είναι «κλικ-δόλωμα»;',opts:['Νέο πάρκο ανοίγει στη γειτονιά','Αυτό το κόλπο θα σε ΣΟΚΑΡΕΙ!'],a:1,why:'Υπόσχεται σοκ χωρίς να λέει τι.'},
+{em:'🎣',q:'Ποιος τίτλος είναι πιο έντιμος;',opts:['Τα παιδιά κερδίζουν από 8 ώρες ύπνο, λένε γιατροί','Οι γονείς το έκρυβαν! Μάθε το μυστικό…'],a:0,why:'Λέει καθαρά την πληροφορία και ποιος τη λέει.'},
+{em:'🎣',q:'Ποιος τίτλος χρησιμοποιεί υπερβολές για να σε πείσει να πατήσεις;',opts:['Το μουσείο έχει δωρεάν είσοδο την Κυριακή','10 ΛΕΠΤΑ ΚΑΙ ΘΑ ΕΙΣΑΙ ΠΛΟΥΣΙΟΣ!!!'],a:1,why:'Υπερβολή και κεφαλαία = δόλωμα.'},
+{em:'🎣',q:'Ποιος τίτλος σου λέει τι θα βρεις;',opts:['Πώς φυτεύουμε ντομάτες στο μπαλκόνι','Δεν θα πιστέψεις τι βρήκε στον κήπο του!'],a:0,why:'Ξέρεις από πριν τι θα διαβάσεις.'},
+{em:'🎣',q:'Τι κάνει ο έξυπνος χρήστης με έναν τίτλο-δόλωμα;',opts:['Τον πατάει πρώτος','Σκέφτεται: γιατί κρύβουν την πληροφορία;','Τον μοιράζεται'],a:1,why:'Κάποιος θέλει κλικ και διαφημίσεις.'}
+];
+const A4=[
+{em:'📸',q:'Μια φωτογραφία δείχνει μόνο ένα κομμάτι της εικόνας. Τι κινδυνεύεις να παρεξηγήσεις;',opts:['Τίποτα','Ολόκληρη την ιστορία','Μόνο τα χρώματα'],a:1,why:'Το κόψιμο κρύβει το υπόλοιπο.'},
+{em:'🪄',q:'Μια φωτογραφία έχει φίλτρα και επεξεργασία. Είναι πάντα η αλήθεια;',opts:['Ναι','Όχι, μπορεί να έχει αλλάξει','Μόνο αν έχει ήλιο'],a:1,why:'Η επεξεργασία αλλάζει την εικόνα.'},
+{em:'🔎',q:'Πώς ελέγχεις αν μια φωτογραφία είναι παλιά ή από αλλού;',opts:['Την κοιτάω πιο έντονα','Κάνω αναζήτηση εικόνας με μεγάλο','Την μοιράζομαι'],a:1,why:'Η αντίστροφη αναζήτηση εικόνας το δείχνει.'}
+];
+const AD=[
+['#ad','Λέξη που δείχνει διαφήμιση'],['χορηγία','Κάποιος πλήρωσε για αυτό το κείμενο'],['κωδικός SUPER10','Έκπτωση μόνο με κωδικό: πωλήσεις!'],['δώρο από την εταιρεία','Το πήρε δωρεάν για να το διαφημίσει'],['Πάρε το τώρα','Σε πιέζει να αγοράσεις']
+];
+const A6=[
+{em:'🧑‍🎤',q:'Ένα βίντεο λέει «Ο ήρωάς σου έκανε κάτι τρομερό!». Τι κάνεις πρώτα;',opts:['Το στέλνω σε όλους','Σταματάω και ρωτάω: ποιος το λέει;','Πιστεύω το'],a:1,why:'Πρώτα σταματάμε.'},
+{em:'📱',q:'Ήρθε σε ομαδική συνομιλία μια ανησυχητική είδηση. Πώς την ελέγχεις;',opts:['Ψάχνω σε δύο αξιόπιστες πηγές','Ρωτάω ποιος το έστειλε','Το αγνοώ πάντα'],a:0,why:'Ελέγχουμε σε περισσότερες από μία πηγές.'},
+{em:'🤥',q:'Έμαθες ότι μια φωτογραφία ήταν ψεύτικη, αλλά την είχες μοιραστεί. Τι κάνεις;',opts:['Τίποτα','Τη σβήνω και το λέω σε όσους τη δουν','Την ξαναστέλνω'],a:1,why:'Διορθώνουμε το λάθος μας.'},
+{em:'💬',q:'Πότε μοιράζομαι κάτι online;',opts:['Όταν είναι αληθινό και δεν πληγώνει','Όταν έχει πολλά like','Όταν είναι σοκαριστικό'],a:0,why:'Αληθινό, ευγενικό, χρήσιμο.'}
+];
+const STEPS=['🛑 Σταματάω','🤔 Σκέφτομαι: ποιος το λέει και γιατί;','🔎 Ελέγχω σε άλλες πηγές','📤 Μοιράζομαι μόνο αν είναι αληθινό'];
+const TA=[
+['🗂️ Είδος','Είδηση, διαφήμιση, γνώμη ή αστείο;',v=>{v.appendChild(el('p','lead','Διάβασε κάθε κείμενο και πες τι είδους είναι.'));const q=A1.map(x=>({q:x[0],a:x[1],why:x[2],opts:OP,em:'📖'}));quiz(v,sh(q).slice(0,8),ok=>{if(ok>=6)mark(0)},{shuf:1,small:1})}],
+['🔍 Ντετέκτιβ','Ντετέκτιβ πηγών',v=>{v.appendChild(el('p','lead','Ποιος το λέει; Τι θέλει; Πότε το είπε;'));quiz(v,A2,ok=>{if(ok>=5)mark(1)},{shuf:1,small:1})}],
+['🎣 Κλικ-δόλωμα','Κλικ-δόλωμα: ποιος τίτλος λέει αλήθεια;',v=>{v.appendChild(el('p','lead','Μερικοί τίτλοι κρύβουν την πληροφορία για να πατήσεις.'));quiz(v,A3,ok=>{if(ok>=5)mark(2)},{shuf:1,small:1})}],
+['📸 Εικόνες','Φωτογραφίες που εξαπατούν',v=>{
+ v.appendChild(el('p','lead','Μετακίνησε τον δείκτη για να δεις ολόκληρη την εικόνα.'));
+ const cap=el('div','cap0','«Τεράστιο πλήθος στην πλατεία!»');
+ const ph=el('div','phv','');
+ ph.innerHTML=`<svg id="svg" viewBox="260 120 280 160"><rect width="800" height="400" fill="#bae6fd"/><rect y="250" width="800" height="150" fill="#86efac"/><circle cx="90" cy="60" r="30" fill="#fde047"/><text x="400" y="240" font-size="46" text-anchor="middle">🧍🧍🧍</text><text x="90" y="300" font-size="30">🌳</text><text x="680" y="300" font-size="30">🌳</text><text x="150" y="350" font-size="26">🪑</text><text x="650" y="350" font-size="26">🪑</text><text x="400" y="330" font-size="22" text-anchor="middle" fill="#14532d">Η πλατεία είναι άδεια…</text></svg>`;
+ const sl=el('input','sl','');sl.type='range';sl.min=0;sl.max=100;sl.value=0;
+ const info=el('div','cap0','🔍 Κοντινό πλάνο');
+ sl.oninput=()=>{const t=sl.value/100,x=260-260*t,y=120-120*t,w=280+520*t,h=160+240*t;$('svg').setAttribute('viewBox',`${x} ${y} ${w} ${h}`);cap.textContent=t<.5?'«Τεράστιο πλήθος στην πλατεία!»':'Ήταν μόνο 3 άνθρωποι!';info.textContent=t<.5?'🔍 Κοντινό πλάνο':'🌍 Ολόκληρη εικόνα'};
+ const f=el('button','btn g','🪄 Φίλτρο / επεξεργασία');f.onclick=()=>{ph.classList.toggle('flt');ph.classList.toggle('on')};
+ const bx=el('div','','');bx.style.textAlign='center';bx.append(f);
+ v.append(cap,ph,sl,info,bx,el('hr','',''));
+ quiz(v,A4,ok=>{if(ok>=2)mark(3)},{shuf:1,small:1})}],
+['🕵️ Διαφημίσεις','Βρες τις κρυμμένες διαφημίσεις',v=>{
+ v.appendChild(el('p','lead','Ένας influencer κάνει ανάρτηση. Πάτα στις λέξεις που δείχνουν διαφήμιση. Βρες 5!'));
+ const post=el('div','post','');
+ post.innerHTML=`<div class="hd">🧑‍🎤 Μάριος_Gamer</div>Γεια σε όλους! Σήμερα δοκίμασα το νέο ποντίκι Zoom. <span class="cl" data-i="3">Το έστειλε δώρο η εταιρεία</span> και είμαι ενθουσιασμένος! Ό,τι κι αν λέτε, είναι το καλύτερο! <span class="cl" data-i="0">#ad</span> <span class="cl" data-i="1">Με χορηγία της Zoom</span>. Αγοράστε το με <span class="cl" data-i="2">κωδικό SUPER10</span> για έκπτωση και <span class="cl" data-i="4">πάρτε το τώρα!</span> 😄 Και τώρα πάμε για πίτσα με τους φίλους μου! 🍕 <span class="cl" data-i="x">Ευχαριστώ που με βλέπετε!</span>`;
+ const list=el('div','clist','');let n=0;const fb=el('div','fdbk','');
+ post.querySelectorAll('.cl').forEach(s=>s.onclick=()=>{if(s.classList.contains('f'))return;const i=s.dataset.i;if(i=='x'){fb.innerHTML='<span class="bad-t">Όχι! Αυτό είναι ένα απλό ευχαριστώ.</span>';return}s.classList.add('f');n++;list.append(el('div','f','✅ <b>'+s.textContent+'</b>: '+AD[+i][1]));fb.innerHTML='<span class="ok-t">Βρήκες '+n+' από 5</span>';if(n==5){fb.innerHTML='<span class="ok-t">🎉 Τα βρήκες όλα! Οι διαφημίσεις συχνά κρύβονται.</span>';mark(4)}});
+ v.append(post,fb,list)}],
+['🛑 Σκέψου','Στάσου, σκέψου, έλεγξε, μοιράσου',v=>{
+ v.appendChild(el('p','lead','Βάλε τα βήματα στη σωστή σειρά!'));
+ const box=el('div','stp','');const ord=el('div','ord','');let k=0;const fb=el('div','fdbk','');const sec=el('div','','');
+ sh(STEPS.map((s,i)=>[s,i])).forEach(([s,i])=>{const b=el('button','opt',s);b.onclick=()=>{if(b.classList.contains('used'))return;if(i==k){b.classList.add('used');ord.append(el('span','',(k+1)+'. '+s));k++;fb.innerHTML='';if(k==4){fb.innerHTML='<span class="ok-t">🎉 Τέλειο! Τώρα δοκίμασε σενάρια.</span>';quiz(sec,A6,ok=>{if(ok>=3){mark(5);if(Object.keys(done).length>=6)cert()}},{shuf:1,small:1})}}else{fb.innerHTML='<span class="bad-t">Όχι ακόμα, δοκίμασε άλλο βήμα.</span>'}};box.append(b)});
+ const cert=()=>{const c=el('div','cert','<div style="font-size:60px">🏅</div><b>Διπλωμα Ψηφιακού Γραμματισμού</b><br>Γράψε το όνομά σου:<br><input maxlength="30" placeholder="Όνομα">');sec.append(c)};
+ v.append(box,ord,fb,sec)}]
+];
+
+const T=TA;
+
+tabs();go(0);
+</script></body></html>

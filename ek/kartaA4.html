@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Φτιάχνω κάρτα Α4</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
+*{box-sizing:border-box}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:17px}
+header{background:linear-gradient(135deg,#ef4444,#f59e0b,#10b981,#3b82f6);color:#fff;padding:12px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(22px,5vw,32px)}header p{margin:2px 0 0;font-size:15px;opacity:.95}
+main{max-width:1250px;margin:0 auto;padding:12px}
+.themes{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.th{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:18px;padding:8px 16px;font:700 18px Fredoka;cursor:pointer;display:flex;gap:8px;align-items:center}
+.th b{font-size:28px}.th.on{border-color:var(--amber);background:#fef3c7;color:#92400e}
+.lay{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}
+@media(max-width:900px){.lay{grid-template-columns:1fr}}
+.box{background:var(--card);border:3px solid var(--bd);border-radius:20px;padding:12px}
+.sheets{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.sh{flex:1;min-width:150px;border:3px solid var(--bd);background:var(--soft);color:var(--tx);border-radius:14px;padding:8px;font:700 16px Fredoka;cursor:pointer}
+.sh.on{background:var(--blue);border-color:#1d4ed8;color:#fff}
+.caps{display:flex;font-weight:700;color:var(--mu);font-size:14px;text-align:center;margin-bottom:2px}.caps div{flex:1}
+#wrap{position:relative;width:100%;overflow:hidden;border-radius:8px;box-shadow:0 4px 18px rgba(0,0,0,.25);background:#fff}
+.stg{position:absolute;left:0;top:0;width:1122px;height:793px;transform-origin:0 0;overflow:hidden;background:#fff;user-select:none;-webkit-user-select:none}
+.pan{position:absolute;top:0;width:561px;height:793px;overflow:hidden}
+.pan.cur{box-shadow:inset 0 0 0 5px rgba(59,130,246,.75)}
+.ov{position:absolute;inset:0;pointer-events:none}
+.ob{position:absolute;touch-action:none;cursor:grab;transform-origin:center}
+.ob.sel{outline:3px dashed #3b82f6;outline-offset:5px}
+.ob img{display:block;pointer-events:none;-webkit-user-drag:none}
+.fold{position:absolute;left:560px;top:0;width:0;height:793px;border-left:3px dashed rgba(100,116,139,.55);pointer-events:none;z-index:5}
+.tb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.btn{border:0;cursor:pointer;font:700 17px Fredoka;color:#fff;background:var(--teal);padding:10px 18px;border-radius:14px;box-shadow:0 4px 0 #0d9488}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #0d9488}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 4px 0 var(--bd)}.btn.p{background:var(--purple);box-shadow:0 4px 0 #6d28d9}.btn.r{background:var(--red);box-shadow:0 4px 0 #b91c1c}
+.btn.s{font-size:15px;padding:6px 12px;box-shadow:0 3px 0 var(--bd)}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.tabs button{flex:1;min-width:58px;border:3px solid var(--bd);background:var(--soft);color:var(--tx);border-radius:12px;padding:6px 2px;font:700 13px Fredoka;cursor:pointer;line-height:1.1}
+.tabs button b{display:block;font-size:20px}.tabs button.on{background:var(--amber);border-color:#d97706;color:#fff}
+.pnl h4{margin:8px 0 4px;font-size:15px;color:var(--mu)}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:4px 0}
+.sw{width:34px;height:34px;border-radius:10px;border:3px solid var(--bd);cursor:pointer;padding:0}.sw.on{border-color:#111;box-shadow:0 0 0 2px #fff,0 0 0 4px #3b82f6}
+.chip{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:5px 10px;font:600 15px Fredoka;cursor:pointer}.chip.on{background:var(--blue);color:#fff;border-color:#1d4ed8}
+.stk{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.stk button{font-size:28px;border:2px solid var(--bd);background:var(--card);border-radius:10px;cursor:pointer;padding:2px 0;line-height:1.2}.stk button:hover{background:#fef3c7}
+.ph{display:block;width:100%;text-align:left;margin:4px 0;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:7px 10px;font:600 16px Fredoka;cursor:pointer}.ph:hover{background:#fef3c7}
+textarea,select{width:100%;font:600 17px Fredoka;border:3px solid var(--bd);border-radius:12px;padding:6px 10px;background:var(--card);color:var(--tx)}
+input[type=range]{flex:1;min-width:100px}input[type=color]{width:40px;height:34px;border:3px solid var(--bd);border-radius:10px;padding:0;background:none}
+.lab{font-size:14px;color:var(--mu);min-width:62px}
+#selp{margin-top:10px;border-top:3px dashed var(--bd);padding-top:8px}
+.hint{color:var(--mu);font-size:15px;margin:8px 4px 0;text-align:center}
+#msg{min-height:22px;text-align:center;font-weight:700;color:var(--green)}
+#pa{display:none}
+.pg{width:1122px;height:793px;position:relative;overflow:hidden;background:#fff}
+.pg .stg{position:absolute;transform:none}
+@page{size:A4 landscape;margin:0}
+body.inpr{margin:0;background:#fff}
+@media print{body.inpr>*:not(#pa){display:none!important}body.inpr #pa{display:block}.pg{page-break-after:always;break-after:page}.pg:last-child{page-break-after:auto;break-after:auto}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head><body>
+<header><h1>💌 Φτιάχνω κάρτα Α4</h1><p>Φύλλο Α4 διπλωμένο στη μέση: έξω (πίσω και εξώφυλλο) και μέσα (δύο σελίδες)</p></header>
+<main>
+<div class="themes" id="themes"></div>
+<div class="lay">
+ <div class="box">
+  <div class="sheets"><button class="sh on" id="sh0">📤 ΕΞΩ: πίσω και εξώφυλλο</button><button class="sh" id="sh1">📖 ΜΕΣΑ: αριστερά και δεξιά</button></div>
+  <div class="caps"><div id="c0"></div><div id="c1"></div></div>
+  <div id="wrap"><div class="stg" id="stg"></div></div>
+  <div class="tb"><button class="btn g" id="undo">↩️ Αναίρεση</button><button class="btn g" id="rst">🔄 Ξεκίνα από την αρχή</button><button class="btn" id="sav">💾 Σώσε την κάρτα</button><button class="btn g" id="opn">📂 Άνοιξε κάρτα</button><input type="file" id="opf" accept=".json,application/json" style="display:none"><button class="btn p" id="prn">🖨️ Εκτύπωση (2 σελίδες)</button></div>
+  <div id="msg"></div>
+  <p class="hint">👆 Πάτησε ένα αντικείμενο για να το επιλέξεις και σύρε το. Πάτησε σε άδειο σημείο για να διαλέξεις σελίδα (μπλε περίγραμμα). Η διακεκομμένη γραμμή είναι η δίπλα και δεν τυπώνεται.</p>
+  <p class="hint">🖨️ Εκτύπωση: διπλής όψης, <b>αναστροφή στη στενή πλευρά</b>. Αλλιώς τύπωσε τη σελίδα 1, βάλε ξανά το φύλλο και τύπωσε τη σελίδα 2 στην πίσω όψη. Άνοιξε το «Γραφικά παρασκηνίου» για να βγουν τα χρώματα.</p>
+ </div>
+ <div class="box">
+  <div class="tabs" id="tabs"></div>
+  <div class="pnl" id="pnl"></div>
+  <div id="selp"></div>
+ </div>
+</div>
+</main>
+<div id="pa"></div>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const SW=1122,SH=793,PW=561;
+const FONTS={f1:'Fredoka,"Segoe UI",sans-serif',f2:'Georgia,"Times New Roman",serif',f3:'"Comic Sans MS","Comic Neue",cursive',f4:'"Segoe Script","Bradley Hand","Brush Script MT",cursive'};
+const FN={f1:'Στρογγυλή',f2:'Κλασική',f3:'Παιδική',f4:'Χειρόγραφη'};
+const BG=['#ffffff','#fef9c3','#fce7f3','#e0f2fe','#dcfce7','#ede9fe','#ffedd5','#fffbeb','#1e293b',
+ 'linear-gradient(160deg,#166534,#14532d)','linear-gradient(160deg,#b91c1c,#7f1d1d)','linear-gradient(160deg,#1e3a8a,#0c4a6e)','linear-gradient(160deg,#fde68a,#fbcfe8)','linear-gradient(160deg,#bbf7d0,#fef08a)','linear-gradient(160deg,#fbcfe8,#f9a8d4)','linear-gradient(160deg,#bfdbfe,#a7f3d0)','linear-gradient(160deg,#fed7aa,#fecaca)','linear-gradient(160deg,#c7d2fe,#e9d5ff)','linear-gradient(160deg,#bfdbfe,#a5b4fc)'];
+const PATS={none:'',dots:'radial-gradient(rgba(255,255,255,.6) 4px,transparent 5px) 0 0/34px 34px',stripes:'repeating-linear-gradient(45deg,rgba(255,255,255,.28) 0 16px,transparent 16px 32px)',checks:'conic-gradient(rgba(255,255,255,.3) 25%,transparent 0 50%,rgba(255,255,255,.3) 0 75%,transparent 0) 0 0/70px 70px',snow:'radial-gradient(rgba(255,255,255,.9) 3px,transparent 4px) 0 0/90px 90px,radial-gradient(rgba(255,255,255,.7) 5px,transparent 6px) 45px 30px/130px 130px,radial-gradient(rgba(255,255,255,.8) 2px,transparent 3px) 20px 60px/60px 60px'};
+const PN={none:'Καθόλου',dots:'Βούλες',stripes:'Ρίγες',checks:'Καρέ',snow:'Χιόνι'};
+const FE=['⭐','❤️','🌸','❄️','🎄','🔔','🌷','🐣','🥚','🎈','🦋','🍀','☀️','🎁'];
+const FCOL=['#ef4444','#f59e0b','#16a34a','#3b82f6','#8b5cf6','#ec4899','#ffffff','#1e293b'];
+const GEN='😀 😍 🥰 😎 🤗 ❤️ 💖 ⭐ 🌟 ✨ 🌈 ☀️ 🎈 🎁 🎂 🎉 🎊 🦋 🌸 🌼 🌻 🍀 🐶 🐱 🐰 🐻 🦄 🐝 🍓 🍰 🎵 🏆 👑 💌 🕊️ 🌙 ☁️ 💐 🎨 ⚽ 🚀'.split(' ');
+const TH=[
+{n:'Χριστούγεννα',e:'🎄',
+ st:'🎄 ⛄ 🎅 🤶 🦌 🎁 🔔 ⭐ ❄️ ☃️ 🕯️ 🧦 🍪 🥛 🎀 🛷 🧸 🌟 🪅 🎶 🍬 🌲 ✨ 🏠'.split(' '),
+ ph:['Καλά Χριστούγεννα!','Χρόνια Πολλά!','Καλή Χρονιά!','Ευτυχισμένο το νέο έτος!','Να περάσεις υπέροχες γιορτές!','Με αγάπη'],
+ pn:[{bg:BG[10],pat:'snow',fr:{k:'none'}},{bg:BG[9],pat:'snow',fr:{k:'emo',e:'⭐'}},{bg:'#fffbeb',pat:'none',fr:{k:'line',c:'#b91c1c'}},{bg:'#f0fdf4',pat:'none',fr:{k:'line',c:'#166534'}}],
+ o:[[
+  ['t','Φτιάχτηκε με αγάπη από',280,600,28,'#fde68a','f1'],['t','το όνομά σου',280,660,34,'#ffffff','f4'],['e','🔔',280,340,170],['e','⭐',120,120,60],['e','❄️',440,150,60],
+  ['t','Καλά Χριστούγεννα!',841,230,62,'#fde68a','f1',470],['e','🎄',841,470,230],['e','⛄',690,650,100],['e','🎁',990,650,100],['e','⭐',700,110,50],['e','❄️',1000,360,60]
+ ],[
+  ['t','Αγαπημένε μου φίλε,',280,150,40,'#b91c1c','f4',440],['t','Σου εύχομαι ό,τι ομορφότερο\nγια τα Χριστούγεννα!',280,300,30,'#1e293b','f2',440],['e','🎅',280,560,150],
+  ['t','Η γιορτή να είναι γεμάτη\nχαρά, γέλια και δώρα!',841,230,30,'#166534','f2',440],['t','Με αγάπη,\nτο όνομά σου',841,520,38,'#b91c1c','f4',440],['e','🎁',841,660,90]
+ ]]},
+{n:'Πάσχα',e:'🐣',
+ st:'🐣 🐰 🥚 🌷 🌼 🕯️ 🐑 🐥 🐇 🌸 🌿 🦋 ☀️ 🧺 🍃 🌈 ✨ ⛪ 🪺 🐤 🍀 🌻 🎀 🔔'.split(' '),
+ ph:['Καλό Πάσχα!','Χριστός Ανέστη!','Αληθώς Ανέστη!','Καλή Ανάσταση!','Χρόνια Πολλά!','Με αγάπη'],
+ pn:[{bg:BG[13],pat:'dots',fr:{k:'none'}},{bg:BG[12],pat:'dots',fr:{k:'emo',e:'🌷'}},{bg:'#fffbeb',pat:'none',fr:{k:'line',c:'#a855f7'}},{bg:'#fdf4ff',pat:'none',fr:{k:'emo',e:'🐣'}}],
+ o:[[
+  ['t','Φτιάχτηκε με αγάπη από',280,600,28,'#7e22ce','f1'],['t','το όνομά σου',280,660,34,'#be185d','f4'],['e','🥚',280,340,170],['e','🌷',120,130,70],['e','🌼',440,150,60],
+  ['t','Καλό Πάσχα!',841,230,70,'#7e22ce','f1',470],['e','🐣',841,460,230],['e','🥚',690,650,90],['e','🐰',990,650,100],['e','🕯️',720,110,60],['e','🦋',1000,360,60]
+ ],[
+  ['t','Αγαπημένε μου φίλε,',280,150,40,'#7e22ce','f4',440],['t','Χριστός Ανέστη!\nΝα έχεις χαρούμενες γιορτές!',280,310,30,'#1e293b','f2',440],['e','🕯️',280,570,130],
+  ['t','Η Ανάσταση να φέρει\nφως, χαρά και υγεία!',841,230,30,'#be185d','f2',440],['t','Με αγάπη,\nτο όνομά σου',841,520,38,'#7e22ce','f4',440],['e','🌷',841,660,90]
+ ]]},
+{n:'Γιορτή της μητέρας',e:'💐',
+ st:'💐 🌹 ❤️ 💖 💕 🌸 🌺 🌷 🌻 🦋 🎀 👩 👩‍👧 🤱 💌 🎁 ☕ 🍰 🌈 ✨ 🕊️ 🐝 🍓 👑'.split(' '),
+ ph:['Χρόνια πολλά, μαμά!','Σ’ αγαπώ μαμά','Η καλύτερη μαμά του κόσμου!','Για τη μαμά μου','Ευχαριστώ για όλα!','Με αγάπη'],
+ pn:[{bg:BG[14],pat:'dots',fr:{k:'none'}},{bg:BG[16],pat:'dots',fr:{k:'emo',e:'❤️'}},{bg:'#fff1f2',pat:'none',fr:{k:'line',c:'#ec4899'}},{bg:'#fdf2f8',pat:'none',fr:{k:'emo',e:'🌸'}}],
+ o:[[
+  ['t','Φτιάχτηκε με αγάπη από',280,600,28,'#9d174d','f1'],['t','το όνομά σου',280,660,34,'#be185d','f4'],['e','🦋',280,340,160],['e','🌸',120,130,70],['e','🌷',440,150,60],
+  ['t','Χρόνια πολλά,\nμαμά!',841,230,64,'#be185d','f1',470],['e','💐',841,500,240],['e','❤️',690,680,80],['e','🌹',990,670,90],['e','✨',700,110,50],['e','🎀',1000,360,60]
+ ],[
+  ['t','Αγαπημένη μου μαμά,',280,150,40,'#be185d','f4',440],['t','Είσαι η καλύτερη μαμά του κόσμου!\nΣ’ αγαπώ πολύ!',280,310,30,'#1e293b','f2',440],['e','❤️',280,570,150],
+  ['t','Ευχαριστώ που με φροντίζεις\nκάθε μέρα και με αγαπάς.',841,230,30,'#9d174d','f2',440],['t','Με αγάπη,\nτο όνομά σου',841,520,38,'#be185d','f4',440],['e','🌹',841,670,90]
+ ]]},
+{n:'Γιορτή του πατέρα',e:'👔',
+ st:'👔 ⭐ 🏆 ⚽ 🔧 🚗 🎣 🎸 🧢 🥇 💙 🦸 👨 👨‍👧 🛠️ ☕ 🏠 🌳 🚲 🎯 🍖 🕶️ 👑 ✨'.split(' '),
+ ph:['Χρόνια πολλά, μπαμπά!','Σ’ αγαπώ μπαμπά','Ο καλύτερος μπαμπάς του κόσμου!','Για τον μπαμπά μου','Ευχαριστώ για όλα!','Με αγάπη'],
+ pn:[{bg:BG[18],pat:'stripes',fr:{k:'none'}},{bg:BG[11],pat:'stripes',fr:{k:'emo',e:'⭐'}},{bg:'#eff6ff',pat:'none',fr:{k:'line',c:'#3b82f6'}},{bg:'#f0f9ff',pat:'none',fr:{k:'dash',c:'#1e3a8a'}}],
+ o:[[
+  ['t','Φτιάχτηκε με αγάπη από',280,600,28,'#1e3a8a','f1'],['t','το όνομά σου',280,660,34,'#1d4ed8','f4'],['e','🏆',280,340,160],['e','⭐',120,130,70],['e','⚽',440,150,60],
+  ['t','Χρόνια πολλά,\nμπαμπά!',841,230,64,'#fde68a','f1',470],['e','👔',841,490,230],['e','🏆',690,680,90],['e','🔧',990,670,90],['e','🌟',700,110,50],['e','🚗',1000,360,70]
+ ],[
+  ['t','Αγαπημένε μου μπαμπά,',280,150,40,'#1d4ed8','f4',440],['t','Είσαι ο καλύτερος μπαμπάς του κόσμου!\nΣ’ αγαπώ πολύ!',280,310,30,'#1e293b','f2',440],['e','🥇',280,570,150],
+  ['t','Ευχαριστώ που είσαι πάντα\nδίπλα μου και με βοηθάς.',841,230,30,'#1e3a8a','f2',440],['t','Με αγάπη,\nτο όνομά σου',841,520,38,'#1d4ed8','f4',440],['e','⭐',841,670,90]
+ ]]},
+{n:'Ελεύθερο θέμα',e:'🎨',
+ st:'🎂 🎉 🎈 🎁 🥳 🍰 🎊 🎵 🌈 ⭐ 💌 🏖️ 🏫 📚 ✏️ 🎓 🐶 🐱 🌍 🚀 ⚽ 🎮 🍕 🌳'.split(' '),
+ ph:['Χρόνια Πολλά!','Ευχαριστώ!','Σε σκέφτομαι','Καλές διακοπές!','Συγχαρητήρια!','Με αγάπη','Καλή επιτυχία!','Γρήγορα περαστικά!'],
+ pn:[{bg:BG[15],pat:'dots',fr:{k:'none'}},{bg:BG[12],pat:'dots',fr:{k:'dbl',c:'#8b5cf6'}},{bg:'#ffffff',pat:'none',fr:{k:'dash',c:'#3b82f6'}},{bg:'#ffffff',pat:'none',fr:{k:'dash',c:'#3b82f6'}}],
+ o:[[
+  ['t','Φτιάχτηκε με αγάπη από',280,600,28,'#1e3a8a','f1'],['t','το όνομά σου',280,660,34,'#7e22ce','f4'],['e','🌈',280,340,170],['e','⭐',120,130,60],['e','✨',440,150,60],
+  ['t','Γράψε εδώ\nτον τίτλο σου',841,250,60,'#7e22ce','f1',470],['e','🎨',841,490,200],['e','🎈',690,660,90],['e','🎁',990,660,90]
+ ],[
+  ['t','Γράψε εδώ το μήνυμά σου…',280,200,38,'#1e293b','f4',440],['e','😀',280,560,130],
+  ['t','Συνέχισε το μήνυμα εδώ…',841,200,32,'#1e293b','f2',440],['t','Με αγάπη,\nτο όνομά σου',841,560,38,'#7e22ce','f4',440]
+ ]]}
+];
+let S,hist=[],lastT=0,K=1,tab=1;
+const clone=o=>JSON.parse(JSON.stringify(o));
+function load(i){const t=TH[i];S={th:i,sh:0,pan:1,sel:-1,pn:clone(t.pn),o:t.o.map(l=>l.map(a=>mk(a)))};hist=[];render();sync();buildTh()}
+function mk(a){if(a[0]=='t')return{t:'t',text:a[1],x:a[2],y:a[3],s:a[4],c:a[5],font:a[6],w:a[7]||480,b:1,al:'center',r:0};return{t:'e',e:a[1],x:a[2],y:a[3],s:a[4],r:0}}
+const snap=()=>JSON.stringify([S.pn,S.o]);
+function touch(){const n=Date.now();if(n-lastT>900){hist.push(snap());if(hist.length>25)hist.shift()}lastT=n}
+function undo(){const h=hist.pop();if(!h){msg('Δεν υπάρχει κάτι για αναίρεση.');return}const [p,o]=JSON.parse(h);S.pn=p;S.o=o;S.sel=-1;lastT=0;render();sync()}
+function msg(t){$('msg').textContent=t;clearTimeout(msg.t);msg.t=setTimeout(()=>$('msg').textContent='',4000)}
+const cur=()=>S.o[S.sh];
+const pidx=()=>S.sh*2+S.pan;
+
+function frameEl(f){const d=el('div','ov');if(!f||f.k=='none')return null;
+ if(f.k=='emo'){const sz=30,nh=Math.floor(PW/(sz+6)),nv=Math.floor(SH/(sz+6));d.style.cssText+='font-size:'+sz+'px;line-height:1';
+  const row=(top)=>{const r=el('div');r.style.cssText='position:absolute;left:8px;right:8px;display:flex;justify-content:space-between;'+(top?'top:8px':'bottom:8px');for(let i=0;i<nh;i++)r.appendChild(el('span','',f.e));return r};
+  const col=(left)=>{const r=el('div');r.style.cssText='position:absolute;top:44px;bottom:44px;display:flex;flex-direction:column;justify-content:space-between;'+(left?'left:8px':'right:8px');for(let i=0;i<nv-2;i++)r.appendChild(el('span','',f.e));return r};
+  d.append(row(1),row(0),col(1),col(0));return d}
+ const c=f.c||'#ef4444';const m={line:'12px solid '+c,dbl:'18px double '+c,dash:'10px dashed '+c,round:'12px solid '+c};
+ d.style.cssText+='inset:14px;border:'+m[f.k]+';'+(f.k=='round'?'border-radius:46px':'');return d}
+function panEl(p,i,inter){const d=el('div','pan');d.style.left=p*PW+'px';const q=S.pn[S.sh*2+p];d.style.background=q.bg;d.dataset.p=p;
+ if(q.pat&&q.pat!='none'){const o=el('div','ov');o.style.background=PATS[q.pat];d.appendChild(o)}
+ const f=frameEl(q.fr);if(f)d.appendChild(f);if(inter&&p==S.pan)d.classList.add('cur');return d}
+function styleOb(o,d){d.style.left=o.x+'px';d.style.top=o.y+'px';d.style.transform='translate(-50%,-50%) rotate('+(o.r||0)+'deg)';
+ if(o.t=='t'){d.textContent=o.text;d.style.cssText+=';font-family:'+FONTS[o.font]+';font-size:'+o.s+'px;color:'+o.c+';font-weight:'+(o.b?700:400)+';text-align:'+o.al+';width:'+o.w+'px;white-space:pre-wrap;line-height:1.15;word-break:break-word'}
+ else if(o.t=='e'){d.textContent=o.e;d.style.fontSize=o.s+'px';d.style.lineHeight='1'}
+ else{let im=d.firstChild;im.style.width=o.s+'px';im.style.height=o.sp=='c'?o.s+'px':'auto';im.style.objectFit='cover';im.style.borderRadius=o.sp=='c'?'50%':(o.sp=='r'?'24px':'0');im.style.border=o.sp=='f'?'12px solid #fff':'0';im.style.boxShadow=(o.sp=='f'||o.sp=='r'||o.sp=='c')?'0 4px 14px rgba(0,0,0,.35)':'none';im.style.boxSizing='content-box'}}
+function obEl(o,i,inter){const d=el('div','ob');if(o.t=='i'){const im=new Image();im.src=o.src;im.draggable=false;d.appendChild(im)}styleOb(o,d);o._d=d;
+ if(inter){if(i==S.sel)d.classList.add('sel');d.addEventListener('pointerdown',e=>down(e,o));d.addEventListener('dblclick',()=>{const t=$('stx');if(t){t.focus();t.select()}})}return d}
+function renderTo(stg,sh,inter){stg.innerHTML='';const keep=S.sh;S.sh=sh;
+ stg.append(panEl(0,0,inter),panEl(1,1,inter));S.o[sh].forEach((o,i)=>stg.appendChild(obEl(o,i,inter)));if(inter)stg.appendChild(el('div','fold'));S.sh=keep}
+function render(){renderTo($('stg'),S.sh,true);fit();$('sh0').classList.toggle('on',S.sh==0);$('sh1').classList.toggle('on',S.sh==1);
+ $('c0').textContent=S.sh?'Αριστερή σελίδα':'Πίσω';$('c1').textContent=S.sh?'Δεξιά σελίδα':'Εξώφυλλο'}
+function fit(){const w=$('wrap').clientWidth||SW;K=Math.min(1,w/SW);$('stg').style.transform='scale('+K+')';$('wrap').style.height=(SH*K)+'px'}
+addEventListener('resize',fit);
+
+let drag=null;
+function down(e,o){e.preventDefault();e.stopPropagation();const i=cur().indexOf(o);if(S.sel!=i){S.sel=i;[...$('stg').querySelectorAll('.ob')].forEach(d=>d.classList.toggle('sel',d===o._d));sync()}
+ touch();drag={o,sx:e.clientX,sy:e.clientY,ox:o.x,oy:o.y};o._d.setPointerCapture(e.pointerId);
+ o._d.onpointermove=ev=>{if(!drag)return;o.x=Math.round(drag.ox+(ev.clientX-drag.sx)/K);o.y=Math.round(drag.oy+(ev.clientY-drag.sy)/K);o._d.style.left=o.x+'px';o._d.style.top=o.y+'px'};
+ o._d.onpointerup=o._d.onpointercancel=()=>{drag=null;o._d.onpointermove=null}}
+$('stg').addEventListener('pointerdown',e=>{const p=e.target.closest('.pan');if(!p||e.target.closest('.ob'))return;S.pan=+p.dataset.p;S.sel=-1;[...$('stg').children].forEach(c=>{if(c.classList.contains('pan'))c.classList.toggle('cur',+c.dataset.p==S.pan)});[...$('stg').querySelectorAll('.ob')].forEach(d=>d.classList.remove('sel'));sync()});
+$('sh0').onclick=()=>{S.sh=0;S.sel=-1;render();sync()};$('sh1').onclick=()=>{S.sh=1;S.sel=-1;render();sync()};
+
+function add(o){touch();o.x=S.pan*PW+PW/2+(Math.random()*40-20);o.y=SH/2+(Math.random()*60-30);o.x=Math.round(o.x);o.y=Math.round(o.y);cur().push(o);S.sel=cur().length-1;render();sync()}
+function addText(t){add({t:'t',text:t||'Γράψε εδώ',s:44,c:'#1e293b',font:'f1',w:440,b:1,al:'center',r:0})}
+function addEmo(e){add({t:'e',e,s:110,r:0})}
+function addImg(file){const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const m=900,k=Math.min(1,m/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);add({t:'i',src:c.toDataURL('image/jpeg',.85),s:300,sp:'f',r:0})};im.onerror=()=>msg('Η εικόνα δεν άνοιξε. Δοκίμασε άλλη.');im.src=fr.result};fr.readAsDataURL(file)}
+
+const TABS=[['bg','🎨','Φόντο'],['tx','🔤','Κείμενο'],['st','⭐','Στολίδια'],['fr','🖼️','Πλαίσιο'],['im','📷','Εικόνα']];
+const tabNames=['Φόντο','Κείμενο','Αυτοκόλλητα','Πλαίσιο','Εικόνα'];
+function buildTabs(){const t=$('tabs');t.innerHTML='';TABS.forEach((a,i)=>{const b=el('button',i==tab?'on':'','<b>'+a[1]+'</b>'+a[2]);b.onclick=()=>{tab=i;buildTabs();buildPnl()};t.appendChild(b)})}
+function pname(){return S.sh?(S.pan?'δεξιά σελίδα':'αριστερή σελίδα'):(S.pan?'εξώφυλλο':'πίσω σελίδα')}
+function whichSel(){const w=el('div','row');w.innerHTML='<span class="lab">Σελίδα:</span>';[0,1].forEach(p=>{const b=el('button','chip'+(S.pan==p?' on':''),S.sh?(p?'Δεξιά':'Αριστερή'):(p?'Εξώφυλλο':'Πίσω'));b.onclick=()=>{S.pan=p;S.sel=-1;render();sync()};w.appendChild(b)});return w}
+function buildPnl(){const P=$('pnl');P.innerHTML='';const t=TH[S.th];const q=S.pn[pidx()];
+ if(tab==0){P.appendChild(whichSel());P.appendChild(el('h4','','Χρώμα φόντου'));const g=el('div','row');BG.forEach(c=>{const b=el('button','sw'+(q.bg==c?' on':''));b.style.background=c;b.onclick=()=>{touch();q.bg=c;render();buildPnl()};g.appendChild(b)});
+  const ci=el('input');ci.type='color';ci.value=/^#/.test(q.bg)?q.bg:'#ffffff';ci.oninput=()=>{touch();q.bg=ci.value;render()};g.appendChild(ci);P.appendChild(g);
+  P.appendChild(el('h4','','Σχέδιο'));const pr=el('div','row');Object.keys(PN).forEach(k=>{const b=el('button','chip'+((q.pat||'none')==k?' on':''),PN[k]);b.onclick=()=>{touch();q.pat=k;render();buildPnl()};pr.appendChild(b)});P.appendChild(pr)}
+ if(tab==1){const b=el('button','btn','➕ Νέο κείμενο');b.onclick=()=>addText();P.appendChild(b);P.appendChild(el('h4','','Έτοιμες ευχές (πάτησε για να μπουν)'));t.ph.forEach(s=>{const x=el('button','ph',s);x.onclick=()=>addText(s);P.appendChild(x)})}
+ if(tab==2){P.appendChild(el('h4','','Για το θέμα: '+t.n));let g=el('div','stk');t.st.forEach(e=>{const b=el('button','',e);b.onclick=()=>addEmo(e);g.appendChild(b)});P.appendChild(g);P.appendChild(el('h4','','Γενικά'));g=el('div','stk');GEN.forEach(e=>{const b=el('button','',e);b.onclick=()=>addEmo(e);g.appendChild(b)});P.appendChild(g)}
+ if(tab==3){P.appendChild(whichSel());P.appendChild(el('h4','','Πλαίσιο γύρω γύρω'));const r=el('div','row');[['none','Κανένα'],['line','Γραμμή'],['dbl','Διπλή'],['dash','Διακεκομμένη'],['round','Στρογγυλή']].forEach(a=>{const b=el('button','chip'+(q.fr.k==a[0]?' on':''),a[1]);b.onclick=()=>{touch();q.fr={k:a[0],c:q.fr.c||'#ef4444'};render();buildPnl()};r.appendChild(b)});P.appendChild(r);
+  P.appendChild(el('h4','','Χρώμα πλαισίου'));const cr=el('div','row');FCOL.forEach(c=>{const b=el('button','sw'+(q.fr.c==c?' on':''));b.style.background=c;b.onclick=()=>{touch();if(q.fr.k=='none'||q.fr.k=='emo')q.fr={k:'line',c};else q.fr.c=c;render();buildPnl()};cr.appendChild(b)});P.appendChild(cr);
+  P.appendChild(el('h4','','Πλαίσιο με σχεδιάκια'));const g=el('div','stk');FE.forEach(e=>{const b=el('button','',e);b.onclick=()=>{touch();q.fr={k:'emo',e};render();buildPnl()};g.appendChild(b)});P.appendChild(g)}
+ if(tab==4){const b=el('button','btn','📷 Διάλεξε φωτογραφία');const f=el('input');f.type='file';f.accept='image/*';f.style.display='none';f.onchange=()=>{if(f.files[0])addImg(f.files[0]);f.value=''};b.onclick=()=>f.click();P.append(b,f);P.appendChild(el('p','hint','Διάλεξε εικόνα από τον υπολογιστή. Μετά μπορείς να την μεγαλώσεις, να την περιστρέψεις και να της βάλεις πλαίσιο.'))}}
+function row(lab,inp){const r=el('div','row');r.appendChild(el('span','lab',lab));r.appendChild(inp);return r}
+function slider(min,max,val,fn){const s=el('input');s.type='range';s.min=min;s.max=max;s.value=val;s.oninput=()=>{touch();fn(+s.value)};return s}
+function sync(){buildPnl();const P=$('selp');P.innerHTML='';const o=cur()[S.sel];if(!o)return;
+ P.appendChild(el('h4','','✏️ Το επιλεγμένο'));const up=()=>styleOb(o,o._d);
+ if(o.t=='t'){const ta=el('textarea');ta.rows=3;ta.id='stx';ta.value=o.text;ta.oninput=()=>{touch();o.text=ta.value;up()};P.appendChild(ta);
+  const fs=el('select');Object.keys(FN).forEach(k=>{const op=el('option','',FN[k]);op.value=k;if(o.font==k)op.selected=true;fs.appendChild(op)});fs.onchange=()=>{touch();o.font=fs.value;up()};P.appendChild(row('Γράμματα',fs));
+  P.appendChild(row('Μέγεθος',slider(16,160,o.s,v=>{o.s=v;up()})));P.appendChild(row('Πλάτος',slider(120,560,o.w,v=>{o.w=v;up()})));
+  const c=el('input');c.type='color';c.value=o.c;c.oninput=()=>{touch();o.c=c.value;up()};const r=el('div','row');r.appendChild(el('span','lab','Χρώμα'));r.appendChild(c);
+  ['#1e293b','#ffffff','#ef4444','#f59e0b','#16a34a','#3b82f6','#8b5cf6','#ec4899'].forEach(k=>{const b=el('button','sw');b.style.background=k;b.style.width=b.style.height='26px';b.onclick=()=>{touch();o.c=k;c.value=k;up()};r.appendChild(b)});P.appendChild(r);
+  const r2=el('div','row');const bb=el('button','chip'+(o.b?' on':''),'<b>B</b> Έντονα');bb.onclick=()=>{touch();o.b=o.b?0:1;bb.classList.toggle('on',!!o.b);up()};r2.appendChild(bb);
+  [['left','⬅️'],['center','↔️'],['right','➡️']].forEach(a=>{const b=el('button','chip'+(o.al==a[0]?' on':''),a[1]);b.onclick=()=>{touch();o.al=a[0];[...r2.children].forEach(x=>x.classList.remove('on'));if(o.b)r2.firstChild.classList.add('on');b.classList.add('on');up()};r2.appendChild(b)});P.appendChild(r2)}
+ else if(o.t=='e'){P.appendChild(row('Μέγεθος',slider(30,420,o.s,v=>{o.s=v;up()})))}
+ else{P.appendChild(row('Μέγεθος',slider(80,560,o.s,v=>{o.s=v;up()})));const fs=el('select');[['n','Κανονική'],['f','Με άσπρο πλαίσιο'],['r','Στρογγυλεμένη'],['c','Κύκλος']].forEach(a=>{const op=el('option','',a[1]);op.value=a[0];if((o.sp||'n')==a[0])op.selected=true;fs.appendChild(op)});fs.onchange=()=>{touch();o.sp=fs.value;up()};P.appendChild(row('Σχήμα',fs))}
+ P.appendChild(row('Γύρισμα',slider(-180,180,o.r||0,v=>{o.r=v;up()})));
+ const r=el('div','row');[['📑 Αντίγραφο',()=>{touch();const c=clone(o);delete c._d;c.x+=30;c.y+=30;cur().push(c);S.sel=cur().length-1;render();sync()}],['⬆️ Μπροστά',()=>{touch();const a=cur();a.push(a.splice(S.sel,1)[0]);S.sel=a.length-1;render();sync()}],['⬇️ Πίσω',()=>{touch();const a=cur();a.unshift(a.splice(S.sel,1)[0]);S.sel=0;render();sync()}],['🗑️ Σβήσε',del]].forEach(a=>{const b=el('button','btn s'+(a[0][0]=='🗑'?' r':' g'),a[0]);b.onclick=a[1];r.appendChild(b)});P.appendChild(r)}
+function del(){if(S.sel<0)return;touch();cur().splice(S.sel,1);S.sel=-1;render();sync()}
+addEventListener('keydown',e=>{const t=e.target.tagName;if(t=='TEXTAREA'||t=='INPUT'||t=='SELECT')return;const o=cur()[S.sel];if(!o)return;
+ if(e.key=='Delete'||e.key=='Backspace'){e.preventDefault();del()}
+ const d={ArrowLeft:[-5,0],ArrowRight:[5,0],ArrowUp:[0,-5],ArrowDown:[0,5]}[e.key];if(d){e.preventDefault();touch();o.x+=d[0];o.y+=d[1];styleOb(o,o._d)}});
+function buildTh(){const t=$('themes');t.innerHTML='';TH.forEach((a,i)=>{const b=el('button','th'+(S.th==i?' on':''),'<b>'+a.e+'</b>'+a.n);b.onclick=()=>{if(i==S.th)return;if(hist.length&&!confirm('Αν αλλάξεις θέμα, θα χαθεί η κάρτα που έφτιαξες. Να συνεχίσω;'))return;load(i)};t.appendChild(b)})}
+$('undo').onclick=undo;
+$('rst').onclick=()=>{if(!hist.length||confirm('Να ξεκινήσω από την αρχή με το πρότυπο;'))load(S.th)};
+function printCard(){const pa=$('pa');pa.innerHTML='';[0,1].forEach(sh=>{const pg=el('div','pg'),st=el('div','stg');pg.appendChild(st);pa.appendChild(pg);renderTo(st,sh,false)});
+ const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');const w=window.open('','_blank');
+ if(w){w.document.write('<!doctype html><html lang="el"><head><meta charset="utf-8"><title>Κάρτα Α4</title><link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet"><style>'+css+'</style></head><body class="inpr"><div id="pa" style="display:block">'+pa.innerHTML+'</div></body></html>');w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},900);return}
+ document.body.classList.add('inpr');const end=()=>{document.body.classList.remove('inpr');removeEventListener('afterprint',end)};addEventListener('afterprint',end);setTimeout(()=>{try{window.print()}catch(e){msg('Δοκίμασε Ctrl+P')}},200)}
+$('prn').onclick=printCard;
+
+function cleanO(){return S.o.map(l=>l.map(o=>{const c=Object.assign({},o);delete c._d;return c}))}
+$('sav').onclick=()=>{const d=JSON.stringify({v:1,th:S.th,pn:S.pn,o:cleanO()});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d],{type:'application/json'}));a.download='Karta_'+TH[S.th].n.replace(/\s+/g,'_')+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);msg('💾 Η κάρτα σώθηκε! Θα τη βρεις στα Λήψεις (Downloads).')};
+$('opn').onclick=()=>$('opf').click();
+$('opf').onchange=()=>{const f=$('opf').files[0];$('opf').value='';if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d.pn||!d.o||d.pn.length!=4)throw 0;touch();S.th=d.th|0;S.pn=d.pn;S.o=d.o;S.sh=0;S.pan=1;S.sel=-1;render();sync();buildTh();msg('📂 Η κάρτα άνοιξε!')}catch(e){msg('Αυτό το αρχείο δεν είναι κάρτα.')}};r.readAsText(f)};
+load(0);buildTabs();
+</script></body></html>

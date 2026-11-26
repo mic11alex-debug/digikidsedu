@@ -1,0 +1,68 @@
+<!doctype html><html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Γεγονός ή γνώμη;</title><style>*{box-sizing:border-box}:root{--ink:#1a1446;--y:#ffd23f;--p:#ff6fae;--g:#35c46a;--b:#4aa8ff;--r:#e8452c}
+body{margin:0;font-family:Fredoka,"Trebuchet MS","Segoe UI",system-ui,sans-serif;color:var(--ink);min-height:100vh;background:linear-gradient(160deg,#cfe9ff,#ffe9f4 60%,#fff3c9);background-attachment:fixed}
+header{text-align:center;padding:14px 12px 4px}h1{margin:0;font-size:clamp(24px,5vw,38px);text-shadow:0 3px 0 rgba(255,255,255,.7)}header p{margin:4px auto 0;max-width:720px;font-weight:600;font-size:clamp(15px,2.6vw,19px)}
+main{max-width:860px;margin:10px auto 30px;padding:0 12px}
+.card{background:#fff;border:5px solid var(--ink);border-radius:26px;box-shadow:0 8px 0 var(--ink);padding:16px;position:relative;overflow:hidden}
+.btn{font:inherit;font-weight:800;font-size:clamp(16px,3vw,21px);padding:12px 22px;border-radius:999px;border:4px solid var(--ink);background:var(--y);color:var(--ink);box-shadow:0 5px 0 var(--ink);cursor:pointer;touch-action:manipulation}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}.btn.g{background:#7ee8c4}.btn.p{background:#ffb3d9}.btn.b{background:#a5d4ff}.btn.w{background:#fff}
+.btn[disabled]{opacity:.45;pointer-events:none}.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:10px 0}
+.hud{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-weight:800;margin-bottom:8px}.hud span{background:#f3efff;border:3px solid var(--ink);border-radius:999px;padding:4px 14px}
+.center{text-align:center}.big{font-size:clamp(46px,12vw,90px);line-height:1}.lead{font-size:clamp(16px,2.8vw,20px);font-weight:600;line-height:1.45}
+.pop{animation:pop .35s both}@keyframes pop{0%{transform:scale(.7);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+.shake{animation:shk .4s}@keyframes shk{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.ok{color:#14803a}.no{color:#c2301a}.fb{min-height:48px;text-align:center;font-weight:800;font-size:clamp(16px,3vw,20px);margin:8px 0}
+
+.belt{position:relative;height:200px;margin:6px 0 10px;border-radius:18px;background:linear-gradient(#5b5f7a,#3c3f58);border:4px solid var(--ink);overflow:hidden}
+.belt:before{content:"";position:absolute;left:0;right:0;bottom:18px;height:18px;background:repeating-linear-gradient(90deg,#222 0 18px,#444 18px 36px);animation:bm var(--sp,1s) linear infinite}
+@keyframes bm{to{background-position:36px 0}}
+.pk{position:absolute;top:22px;left:-60%;width:min(380px,78%);background:#fffbe6;border:4px solid var(--ink);border-radius:16px;padding:12px 14px;font-weight:700;font-size:clamp(15px,2.8vw,19px);line-height:1.3;box-shadow:0 5px 0 rgba(0,0,0,.35);text-align:center}
+.pk.go{animation:slide var(--t,9s) linear forwards}
+@keyframes slide{to{left:112%}}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bin{font:inherit;border:4px solid var(--ink);border-radius:20px;padding:10px 4px;font-weight:800;font-size:clamp(14px,2.6vw,19px);cursor:pointer;box-shadow:0 6px 0 var(--ink);color:var(--ink);touch-action:manipulation}
+.bin:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}.bin i{display:block;font-style:normal;font-size:clamp(30px,7vw,48px)}.bin small{display:block;font-weight:600;font-size:.72em}
+.b0{background:#a5d4ff}.b1{background:#ffd1e8}.b2{background:#ffe08a}
+.fly{position:absolute;font-size:34px;pointer-events:none;animation:fl .8s ease-out forwards}@keyframes fl{to{transform:translateY(-70px) scale(1.6);opacity:0}}
+.heart{letter-spacing:2px}
+.guide{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;font-size:clamp(13px,2.4vw,16px)}.guide div{border:3px solid var(--ink);border-radius:14px;padding:8px;font-weight:600}
+</style></head><body><header><h1>🏭 Γεγονός, γνώμη ή διαφήμιση;</h1><p>Ταξινόμησε τα μηνύματα στον ιμάντα, πριν φύγουν!</p></header><main><div class="card" id="app"><div id="intro" class="center"><div class="big">🏭</div><p class="lead">Στο εργοστάσιο ειδήσεων τα μηνύματα τρέχουν στον ιμάντα!<br>Πρέπει να τα βάλεις στο σωστό κουτί <b>πριν φύγουν</b>.</p>
+<div class="guide"><div style="background:#e3f1ff"><b>📏 Γεγονός</b><br>Μπορώ να το ελέγξω και να δείξω ότι είναι αληθινό.</div><div style="background:#ffe9f4"><b>💭 Γνώμη</b><br>Κάποιος το νομίζει. Άλλος μπορεί να διαφωνεί.</div><div style="background:#fff3c9"><b>📢 Διαφήμιση</b><br>Θέλει να μας πείσει να αγοράσουμε κάτι.</div></div>
+<div class="row"><button class="btn" onclick="start()">▶ Ξεκινάμε!</button></div></div>
+<div id="game" style="display:none"><div class="hud"><span id="sc">⭐ 0</span><span id="lv" class="heart">❤️❤️❤️</span><span id="rd">1 / 15</span></div>
+<div class="belt" id="belt"></div><div class="fb" id="fb"></div>
+<div class="bins"><button class="bin b0" onclick="pick(0)"><i>📏</i>Γεγονός<small>αληθινό & ελέγξιμο</small></button><button class="bin b1" onclick="pick(1)"><i>💭</i>Γνώμη<small>κάποιος το νομίζει</small></button><button class="bin b2" onclick="pick(2)"><i>📢</i>Διαφήμιση<small>θέλει να πουλήσει</small></button></div></div>
+<div id="end" style="display:none" class="center"></div></div></main><script>
+const $=id=>document.getElementById(id),sh=a=>[...a].sort(()=>Math.random()-.5);
+
+const Q=[
+["Η Κύπρος είναι νησί στη Μεσόγειο θάλασσα.",0,"Μπορείς να το δεις στον χάρτη."],
+["Το νερό βράζει στους 100 βαθμούς Κελσίου.",0,"Το μετράμε με θερμόμετρο."],
+["Η Λευκωσία είναι η πρωτεύουσα της Κύπρου.",0,"Το λένε οι χάρτες και τα βιβλία."],
+["Η Γη γυρίζει γύρω από τον Ήλιο.",0,"Οι επιστήμονες το έχουν αποδείξει."],
+["Ο χρόνος έχει 12 μήνες.",0,"Μπορείς να τους μετρήσεις στο ημερολόγιο."],
+["Η σοκολάτα είναι το πιο νόστιμο γλυκό.",1,"Σε κάποιους αρέσει η σοκολάτα, σε άλλους όχι."],
+["Τα μαθηματικά είναι βαρετά.",1,"Άλλοι τα βρίσκουν υπέροχα! Είναι γνώμη."],
+["Το καλοκαίρι είναι η καλύτερη εποχή.",1,"Λέξη-κλειδί: «καλύτερη». Δεν μετριέται."],
+["Οι γάτες είναι πιο όμορφες από τα σκυλιά.",1,"Λέξη-κλειδί: «πιο όμορφες». Είναι προτίμηση."],
+["Αυτό το τραγούδι είναι το πιο ωραίο του κόσμου!",1,"Το «ωραίο» το κρίνει ο καθένας."],
+["Αγόρασε τώρα τα νέα αθλητικά με έκπτωση 50%!",2,"Σε καλεί να αγοράσεις."],
+["Μόνο σήμερα! Δύο παγωτά στην τιμή του ενός!",2,"Προσφορά για να πουλήσει."],
+["Κατέβασε ΔΩΡΕΑΝ το παιχνίδι! Μην χάσεις την ευκαιρία!",2,"Θέλει να το κατεβάσεις."],
+["Η νέα οδοντόκρεμα λάμπει! Ζήτα την στο σούπερ μάρκετ!",2,"Διαφημίζει ένα προϊόν."],
+["Τα νέα πατατάκια: κρατσανιστά, γευστικά! Δοκίμασέ τα!",2,"Θέλει να τα αγοράσεις."],
+["Ο ποδοσφαιρικός αγώνας τελείωσε 2–1.",0,"Το σκορ είναι γεγονός που ελέγχεται."],
+["Το καλύτερο γλυκό είναι το παγωτό βανίλια.",1,"Γνώμη: για άλλους είναι η φράουλα."]
+];
+let deck,i,score,lives,locked,cur,tm,lim;
+function start(){$('intro').style.display='none';$('end').style.display='none';$('game').style.display='';deck=sh(Q).slice(0,15);i=0;score=0;lives=3;next()}
+function hud(){$('sc').textContent='⭐ '+score;$('lv').textContent='❤️'.repeat(lives)+'🖤'.repeat(3-lives);$('rd').textContent=Math.min(i+1,15)+' / 15'}
+function next(){hud();$('fb').textContent='';if(i>=15||lives<=0)return fin();locked=false;cur=deck[i];const b=$('belt');b.innerHTML='';const sp=Math.max(5.2,9.5-i*.3);b.style.setProperty('--sp',(sp/9).toFixed(2)+'s');const p=document.createElement('div');p.className='pk go';p.id='pk';p.style.setProperty('--t',sp+'s');p.textContent=cur[0];b.appendChild(p);clearTimeout(tm);tm=setTimeout(()=>miss(),sp*1000*.74)}
+function fx(e,col){const f=document.createElement('div');f.className='fly';f.textContent=e;f.style.left='46%';f.style.top='60px';$('belt').appendChild(f)}
+function res(ok,msg){locked=true;clearTimeout(tm);$('pk').style.animationPlayState='paused';
+ if(ok){score+=10;fx('⭐');$('fb').innerHTML='<span class="ok">✅ Μπράβο! '+msg+'</span>'}else{lives--;fx('💥');$('belt').classList.add('shake');setTimeout(()=>$('belt').classList.remove('shake'),400);$('fb').innerHTML='<span class="no">❌ '+msg+'</span>'}
+ hud();i++;setTimeout(next,ok?1000:2100)}
+function pick(k){if(locked||!cur)return;const n=['Γεγονός','Γνώμη','Διαφήμιση'][cur[1]];res(k==cur[1],k==cur[1]?cur[2]:'Ήταν '+n+'. '+cur[2])}
+function miss(){if(locked)return;const n=['Γεγονός','Γνώμη','Διαφήμιση'][cur[1]];res(false,'Πολύ αργά! Ήταν '+n+'. '+cur[2])}
+function fin(){$('game').style.display='none';const e=$('end');e.style.display='';const st=score>=130?3:score>=90?2:1;e.innerHTML='<div class="big">'+(lives>0?'🏆':'🛠️')+'</div><h2>'+(lives>0?'Τέλος βάρδιας!':'Το εργοστάσιο έσβησε…')+'</h2><p class="lead">Πόντοι: <b>'+score+'</b> · '+'⭐'.repeat(st)+'☆'.repeat(3-st)+'<br>Θυμήσου: <b>γεγονός</b> = ελέγχεται, <b>γνώμη</b> = «νομίζω», <b>διαφήμιση</b> = «αγόρασε».</p><div class="row"><button class="btn" onclick="start()">🔁 Ξανά</button></div>';}
+
+</script></body></html>

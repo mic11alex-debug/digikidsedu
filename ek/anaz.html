@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Αναζήτηση λέξεων</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--soft:#f1f5f9;--g1:#f97316;--g2:#eab308}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(26px,5vw,36px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
+main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;align-items:center}
+.row .lab{width:100%;text-align:center;color:var(--mu);font-size:15px;font-weight:600;margin-bottom:-2px}
+.ch{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka,system-ui;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ch.on{background:#f59e0b;border-color:#d97706;color:#fff}
+.btn{border:0;background:#10b981;color:#fff;font:700 19px Fredoka,system-ui;border-radius:99px;padding:11px 24px;cursor:pointer;box-shadow:0 4px 0 #059669}
+.btn.g{background:#64748b;box-shadow:0 4px 0 #475569}.btn:active{transform:translateY(3px);box-shadow:none}
+.pill{background:var(--card);border:3px solid var(--bd);border-radius:18px;text-align:center;padding:6px 14px;min-width:90px}
+.pill b{display:block;font-size:26px;line-height:1.1}.pill small{color:var(--mu);font-size:14px;font-weight:600}
+#msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
+#bd{display:grid;width:min(100%,520px);margin:6px auto;gap:2px;background:var(--bd);padding:4px;border-radius:12px;user-select:none}.c{aspect-ratio:1;border:0;border-radius:6px;background:var(--card);color:var(--tx);font:700 clamp(14px,4.6vw,24px) Fredoka,system-ui;padding:0;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.c.st{background:#fde047;color:#000}.c.f0{background:#bbf7d0}.c.f1{background:#bae6fd}.c.f2{background:#fbcfe8}.c.f3{background:#fed7aa}.c.f4{background:#ddd6fe}.c.f5{background:#fecaca}.c.f6{background:#a7f3d0}.c.f7{background:#fef08a}.c.f8{background:#e9d5ff}
+.w{background:var(--card);border:3px solid var(--bd);border-radius:99px;padding:3px 12px;font-weight:700;font-size:16px}.w.d{text-decoration:line-through;opacity:.5;background:#dcfce7}</style></head><body>
+<header><h1>🔎 Αναζήτηση λέξεων</h1><p>Βρες τις κρυμμένες λέξεις μέσα στα γράμματα!</p></header>
+<main><div class="row"><div class="lab">Θέμα</div><button class="ch on" data-t="0">🐶 Ζώα</button><button class="ch" data-t="1">🍎 Φρούτα</button><button class="ch" data-t="2">💻 Υπολογιστής</button><button class="ch" data-t="3">🇨🇾 Κύπρος</button></div>
+<div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">😊 Εύκολο (8×8)</button><button class="ch" data-l="1">🙂 Μέτριο (10×10)</button><button class="ch" data-l="2">😎 Δύσκολο (12×12)</button></div>
+<div id="msg">Πάτα το πρώτο και μετά το τελευταίο γράμμα μιας λέξης</div><div id="wl" class="row"></div><div id="bd"></div><div class="row"><button class="btn" id="again">🔄 Νέο παιχνίδι</button></div></main>
+<script>
+const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let AC;function beep(f,d=.12,t='sine',v=.08){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+const fanfare=()=>[523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.2),k*130));
+function sel(attr,val){document.querySelectorAll('['+attr+']').forEach(b=>b.classList.toggle('on',b.getAttribute(attr)===String(val)))}
+const TH=[['ΣΚΥΛΟΣ','ΓΑΤΑ','ΑΛΟΓΟ','ΚΟΤΑ','ΠΟΝΤΙΚΙ','ΖΕΒΡΑ','ΛΙΟΝΤΑΡΙ','ΕΛΕΦΑΝΤΑΣ','ΚΑΜΗΛΑ','ΠΑΠΙΑ','ΨΑΡΙ','ΛΥΚΟΣ','ΤΙΓΡΗ','ΠΙΘΗΚΟΣ'],['ΜΗΛΟ','ΜΠΑΝΑΝΑ','ΦΡΑΟΥΛΑ','ΣΤΑΦΥΛΙ','ΚΕΡΑΣΙ','ΠΟΡΤΟΚΑΛΙ','ΛΕΜΟΝΙ','ΑΧΛΑΔΙ','ΡΟΔΑΚΙΝΟ','ΑΝΑΝΑΣ','ΚΑΡΠΟΥΖΙ','ΣΥΚΟ','ΒΕΡΙΚΟΚΟ'],['ΠΟΝΤΙΚΙ','ΟΘΟΝΗ','ΠΛΗΚΤΡΟ','ΕΚΤΥΠΩΤΗΣ','ΑΡΧΕΙΟ','ΦΑΚΕΛΟΣ','ΔΙΑΔΙΚΤΥΟ','ΚΩΔΙΚΑΣ','ΡΟΜΠΟΤ','ΕΙΚΟΝΑ','ΠΡΟΓΡΑΜΜΑ','ΚΛΙΚ','ΑΚΟΥΣΤΙΚΑ'],['ΛΑΡΝΑΚΑ','ΛΕΜΕΣΟΣ','ΠΑΦΟΣ','ΛΕΥΚΩΣΙΑ','ΑΜΜΟΧΩΣΤΟΣ','ΤΡΟΟΔΟΣ','ΧΑΛΛΟΥΜΙ','ΚΥΠΡΟΣ','ΜΟΥΦΛΟΝ','ΒΟΥΝΟ','ΘΑΛΑΣΣΑ','ΣΗΜΑΙΑ']];
+const LV=[{n:8,k:5,d:[[0,1],[1,0]]},{n:10,k:7,d:[[0,1],[1,0],[1,1]]},{n:12,k:9,d:[[0,1],[1,0],[1,1],[0,-1],[-1,0],[-1,-1],[1,-1],[-1,1]]}];
+const AB='ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ';let th=0,lv=0,g,ws,found,st,n;
+function newG(){const L=LV[lv];n=L.n;g=Array.from({length:n},()=>Array(n).fill(''));ws=[];const pool=sh(TH[th].filter(w=>w.length<=n));
+ for(const w of pool){if(ws.length>=L.k)break;for(let t=0;t<200;t++){const[dr,dc]=L.d[Math.random()*L.d.length|0];const r=Math.random()*n|0,c=Math.random()*n|0;const er=r+dr*(w.length-1),ec=c+dc*(w.length-1);if(er<0||ec<0||er>=n||ec>=n)continue;let ok=true;for(let i=0;i<w.length;i++){const x=g[r+dr*i][c+dc*i];if(x&&x!==w[i]){ok=false;break}}if(!ok)continue;for(let i=0;i<w.length;i++)g[r+dr*i][c+dc*i]=w[i];ws.push({w,r,c,dr,dc,done:-1});break}}
+ for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(!g[r][c])g[r][c]=AB[Math.random()*AB.length|0];found=0;st=null;$('msg').textContent='Πάτα το πρώτο και μετά το τελευταίο γράμμα μιας λέξης';draw()}
+function draw(){const bd=$('bd');bd.style.gridTemplateColumns='repeat(%d,1fr)'.replace('%d',n);bd.innerHTML='';const col={};ws.forEach((w,k)=>{if(w.done>=0)for(let i=0;i<w.w.length;i++)col[(w.r+w.dr*i)+','+(w.c+w.dc*i)]=k%9});
+ for(let r=0;r<n;r++)for(let c=0;c<n;c++){const b=document.createElement('button');b.className='c'+(st&&st[0]===r&&st[1]===c?' st':'')+(col[r+','+c]!==undefined?' f'+col[r+','+c]:'');b.textContent=g[r][c];b.onclick=()=>pick(r,c);bd.appendChild(b)}
+ $('wl').innerHTML=ws.map(w=>'<span class="w'+(w.done>=0?' d':'')+'">'+w.w+'</span>').join('')}
+function pick(r,c){if(!st){st=[r,c];beep(500,.05);return draw()}const[r0,c0]=st;st=null;const dr=Math.sign(r-r0),dc=Math.sign(c-c0),L=Math.max(Math.abs(r-r0),Math.abs(c-c0));if(!(r===r0||c===c0||Math.abs(r-r0)===Math.abs(c-c0))){beep(160,.15,'sawtooth');return draw()}
+ let s='';for(let i=0;i<=L;i++)s+=g[r0+dr*i][c0+dc*i];const k=ws.findIndex(w=>w.done<0&&(w.w===s||w.w===[...s].reverse().join('')));if(k>=0){ws[k].done=1;found++;beep(784,.15);$('msg').textContent='✅ Βρήκες το '+ws[k].w+'!';if(found===ws.length){$('msg').textContent='🎉 Βρήκες όλες τις λέξεις!';fanfare()}}else beep(160,.15,'sawtooth');draw()}
+document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{th=+b.dataset.t;sel('data-t',th);newG()});document.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>{lv=+b.dataset.l;sel('data-l',lv);newG()});$('again').onclick=newG;newG();
+</script></body></html>

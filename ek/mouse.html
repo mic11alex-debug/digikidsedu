@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Γνωρίζω το ποντίκι</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350;--hl:#4a3f10}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px}
+header{background:linear-gradient(135deg,#f59e0b,#ef4444);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:2px 0 0;opacity:.92;font-size:15px}
+#tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 10px 0}
+#tabs button{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka;border-radius:99px;padding:8px 16px;cursor:pointer;position:relative}
+#tabs button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#tabs button.ok::after{content:"✓";position:absolute;right:-4px;top:-8px;background:var(--green);color:#fff;border-radius:50%;width:22px;height:22px;font-size:14px;display:grid;place-items:center}
+main{max-width:900px;margin:0 auto;padding:12px 14px 40px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 14px}
+.btn{border:0;cursor:pointer;font:700 19px Fredoka;color:#fff;background:var(--teal);padding:12px 24px;border-radius:16px;box-shadow:0 5px 0 #0d9488;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.b{background:var(--blue);box-shadow:0 5px 0 #1d4ed8}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn:disabled{opacity:.45}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.win{text-align:center;padding:14px}.win .big{font-size:76px}
+.opt{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:18px;padding:12px;font:600 20px Fredoka;cursor:pointer}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.prog{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:6px 0 14px}.prog i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.stars{font-size:34px;letter-spacing:4px}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:14px}
+.cert input{font:700 24px Fredoka;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+.mw{display:grid;grid-template-columns:minmax(200px,300px) 1fr;gap:16px;align-items:start}
+svg{max-width:100%;height:auto;display:block;margin:auto}svg .part{cursor:pointer;stroke:var(--tx);stroke-width:4;stroke-linejoin:round}svg .part:hover{filter:brightness(.95)}
+.pal{display:flex;gap:10px;margin:8px 0;flex-wrap:wrap}.pal button{width:52px;height:52px;border-radius:50%;border:4px solid var(--bd);cursor:pointer}.pal button.on{border-color:var(--tx);transform:scale(1.15)}
+.task li{margin:6px 0;list-style:none}.task li::before{content:"⬜ "}.task li.y::before{content:"✅ "}.task{padding:0}
+.zone{border:4px dashed var(--blue);border-radius:24px;min-height:150px;display:grid;place-items:center;text-align:center;font-size:24px;font-weight:600;padding:14px;user-select:none;-webkit-user-select:none;background:var(--soft);cursor:pointer;touch-action:manipulation}
+.zone.hit{background:#bbf7d0;border-color:var(--green)}.zone .em{font-size:60px;display:block}
+.sc{height:140px;overflow-y:scroll;border:4px solid var(--bd);border-radius:18px;padding:0 14px;background:var(--soft)}.sc p{margin:34px 0}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:12px}.in{border:3px solid var(--bd);border-radius:18px;padding:12px;background:var(--card)}.in b{display:block;font-size:22px;margin-bottom:4px}
+@media(max-width:640px){.mw{grid-template-columns:1fr}.info{grid-template-columns:1fr}}
+.sm-bar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:6px}
+.sm-cap{min-height:56px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:clamp(17px,3.2vw,22px);background:linear-gradient(135deg,#fef3c7,#fde68a);color:#78350f;border:3px solid #f59e0b;border-radius:18px;padding:8px 14px;margin-bottom:12px;transition:transform .2s}
+.sm-cap.pop{animation:smpop .35s}@keyframes smpop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.sm-stage{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;align-items:center}
+.sm-mon{display:flex;flex-direction:column;align-items:center}
+.sm-bz{width:100%;background:linear-gradient(#1e293b,#0f172a);padding:10px;border-radius:18px;box-shadow:0 10px 0 #0b1220,0 18px 24px #0004}
+.sm-scr{position:relative;width:100%;aspect-ratio:16/10;border-radius:8px;overflow:hidden;background:linear-gradient(135deg,#38bdf8,#818cf8 55%,#f0abfc);user-select:none}
+.sm-stand{width:26%;height:20px;background:linear-gradient(#64748b,#334155);border-radius:0 0 12px 12px;margin-top:-2px}
+.sm-ico{position:absolute;width:19%;text-align:center;font-size:clamp(10px,1.5vw,13px);font-weight:700;color:#fff;text-shadow:0 1px 3px #0008;padding:3px 2px;border-radius:8px;border:2px solid transparent;line-height:1.1}
+.sm-ico i{display:block;font-style:normal;font-size:clamp(26px,4.4vw,40px);line-height:1.15;filter:drop-shadow(0 2px 2px #0005)}
+.sm-ico.hov{background:#ffffff33;border-color:#ffffff66}.sm-ico.sel{background:#2563eb88;border-color:#bfdbfe}
+.sm-win{position:absolute;left:29%;top:7%;width:66%;height:80%;background:#fff;border-radius:8px;box-shadow:0 8px 20px #0005;display:flex;flex-direction:column;overflow:hidden}
+.sm-wt{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#6366f1,#8b5cf6);color:#fff;padding:3px 8px;font-size:clamp(10px,1.5vw,13px);font-weight:700}
+.sm-wb{flex:1;overflow:hidden;scroll-behavior:smooth;padding:0 8px;color:#1e293b}
+.sm-row{display:flex;align-items:center;gap:10px;height:clamp(46px,9vw,74px);border-bottom:2px dashed #e2e8f0;font-weight:700;font-size:clamp(12px,2vw,17px)}.sm-row i{font-style:normal;font-size:clamp(26px,5vw,42px)}
+.sm-row.end{background:#dcfce7;color:#166534;justify-content:center;border:0}
+.sm-pop{position:absolute;left:24%;top:22%;width:52%;background:#fff;border-radius:8px;box-shadow:0 10px 26px #0007;display:none;overflow:hidden;color:#1e293b}.sm-pop.on{display:block;animation:smpop .3s}
+.sm-pb{padding:8px 10px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;font-size:clamp(11px,1.8vw,15px);font-weight:700}.sm-pb div{text-align:center}.sm-pb i{display:block;font-style:normal;font-size:clamp(24px,4vw,36px)}
+.sm-x{background:#ef4444;border-radius:5px;padding:0 6px;cursor:default}
+.sm-menu{position:absolute;display:none;background:#fff;border-radius:8px;box-shadow:0 8px 20px #0006;border:2px solid #cbd5e1;padding:3px;color:#1e293b;font-size:clamp(10px,1.7vw,14px);font-weight:700;min-width:30%}.sm-menu.on{display:block;animation:smpop .2s}.sm-menu div{padding:4px 8px;border-radius:5px}.sm-menu div.hov{background:#c7d2fe}
+.sm-task{position:absolute;left:0;right:0;bottom:0;height:7%;background:#0f172acc;color:#fff;display:flex;align-items:center;padding:0 8px;font-size:clamp(9px,1.4vw,12px)}
+.sm-cur{position:absolute;width:clamp(18px,3vw,28px);height:clamp(18px,3vw,28px);margin:-2px 0 0 -3px;pointer-events:none;z-index:9;filter:drop-shadow(0 2px 2px #0006)}
+.sm-rip{position:absolute;width:12px;height:12px;border-radius:50%;margin:-6px 0 0 -6px;pointer-events:none;z-index:8;animation:smrip .55s forwards;border:4px solid #3b82f6}.sm-rip.r{border-color:#ef4444}
+@keyframes smrip{to{transform:scale(5);opacity:0}}
+.sm-pad{position:relative;aspect-ratio:1/1.05;width:100%;border-radius:24px;background:radial-gradient(circle at 30% 20%,#334155,#0f172a);border:4px solid #1e293b;box-shadow:inset 0 0 40px #0008,0 8px 0 #0b1220;cursor:none;touch-action:none;overflow:hidden;user-select:none}
+.sm-pad::before{content:"";position:absolute;inset:0;background-image:radial-gradient(#ffffff14 1.5px,transparent 2px);background-size:22px 22px}
+.sm-padh{position:absolute;left:0;right:0;bottom:8px;text-align:center;color:#94a3b8;font-size:14px;font-weight:700;pointer-events:none}
+.sm-m{position:absolute;width:26%;transform:translate(-50%,-50%);pointer-events:none;filter:drop-shadow(0 10px 8px #0008);transition:filter .1s}
+.sm-m .bl,.sm-m .br,.sm-m .bw{transition:fill .08s}
+.sm-m.L .bl{fill:#fde047}.sm-m.R .br{fill:#fb7185}.sm-m.W .bw{fill:#4ade80}.sm-m.L,.sm-m.R{transform:translate(-50%,-48%)}
+.sm-lab{position:absolute;pointer-events:none;background:#fff;color:#1e293b;border-radius:12px;padding:2px 10px;font-weight:800;font-size:15px;transform:translate(-50%,-190%);white-space:nowrap;box-shadow:0 4px 0 #0004;opacity:0;transition:opacity .15s}.sm-lab.on{opacity:1}
+.sm-btns{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin:12px 0 2px}.sm-btns .btn{font-size:16px;padding:8px 14px}
+.sm-ms{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px;margin-top:10px}
+.sm-mi{border:3px solid var(--bd);border-radius:16px;padding:8px 12px;font-weight:700;font-size:16px;background:var(--soft);display:flex;gap:8px;align-items:center}.sm-mi.ok{background:#bbf7d0;border-color:var(--green);color:#064e3b}.sm-mi b{font-size:22px}
+@media(max-width:720px){.sm-stage{grid-template-columns:1fr}.sm-pad{max-width:360px;margin:0 auto}}
+
+</style></head><body>
+<header><h1>🐭 Γνωρίζω το ποντίκι</h1><p>Χρωματίζω, μαθαίνω και δοκιμάζω</p></header>
+<div id="tabs"></div><main><div class="card" id="v"></div></main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+let done={};const KEY='mouse.done';
+try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const mark=i=>{if(!done[i]){done[i]=1;try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}tabs()}};
+let cur=0;
+function tabs(){const t=$('tabs');t.innerHTML='';(window.ORD||T.map((_,i)=>i)).forEach(i=>{const x=T[i];const b=el('button',(i==cur?'on ':'')+(done[i]?'ok':''),x[0]);b.onclick=()=>go(i);t.appendChild(b)})}
+function go(i){cur=i;tabs();const v=$('v');v.innerHTML='';v.appendChild(el('h2','',T[i][1]));T[i][2](v);scrollTo(0,0)}
+function stars(n,m){return '⭐'.repeat(n)+'☆'.repeat(m-n)}
+
+const MOUSE=(fills)=>`<svg viewBox="0 0 300 450" width="260" role="img" aria-label="Ποντίκι"><path d="M150 122 C150 92 118 80 138 54 C158 30 130 18 150 6" fill="none" stroke="var(--tx)" stroke-width="5" stroke-linecap="round"/>
+<path class="part" id="p-body" d="M150 120 C60 120 40 200 45 290 C50 380 100 435 150 435 C200 435 250 380 255 290 C260 200 240 120 150 120 Z" fill="${fills.body}"/>
+<path class="part" id="p-left" d="M147 122 C95 124 56 152 48 228 L147 228 Z" fill="${fills.left}"/>
+<path class="part" id="p-right" d="M153 122 C205 124 244 152 252 228 L153 228 Z" fill="${fills.right}"/>
+<rect class="part" id="p-wheel" x="136" y="148" width="28" height="58" rx="14" fill="${fills.wheel}"/></svg>`;
+const T=[['1. Χρωματίζω το ποντίκι','Χρωμάτισε το ποντίκι',v=>{const C={red:'#ef4444',blue:'#3b82f6',green:'#22c55e',yellow:'#facc15'};let col='red';const f={body:'#fff',left:'#fff',right:'#fff',wheel:'#fff'};
+ const w=el('div','mw','');const L=el('div','','');const Rr=el('div','','');
+ Rr.innerHTML='<p class="lead">Διάλεξε χρώμα και πάτα πάνω στο μέρος του ποντικιού.</p><div class="pal"></div><ul class="task"><li data-p="left">Αριστερό κλικ → <b style="color:#ef4444">κόκκινο</b></li><li data-p="right">Δεξί κλικ → <b style="color:#3b82f6">μπλε</b></li><li data-p="wheel">Ροδέλα → <b style="color:#16a34a">πράσινο</b></li><li data-p="body">Το υπόλοιπο ποντίκι → <b style="color:#ca8a04">κίτρινο</b></li></ul><p id="m"></p>';
+ const goal={left:C.red,right:C.blue,wheel:C.green,body:C.yellow};
+ const draw=()=>{L.innerHTML=MOUSE(f);Object.keys(f).forEach(k=>L.querySelector('#p-'+k).onclick=()=>{f[k]=C[col];draw();chk()})};
+ const chk=()=>{let n=0;Rr.querySelectorAll('.task li').forEach(li=>{const ok=f[li.dataset.p]==goal[li.dataset.p];li.className=ok?'y':'';if(ok)n++});if(n==4){Rr.querySelector('#m').innerHTML='<div class="win"><div class="big">🎨</div><b>Μπράβο! Έχεις χρωματίσει σωστά το ποντίκι!</b></div>';mark(0)}else Rr.querySelector('#m').textContent=''};
+ const pal=Rr.querySelector('.pal');Object.entries(C).forEach(([k,c])=>{const b=el('button',k==col?'on':'','');b.style.background=c;b.setAttribute('aria-label',k);b.onclick=()=>{col=k;pal.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on')};pal.appendChild(b)});
+ w.append(L,Rr);v.appendChild(w);draw()}],
+['2. Τι κάνει;','Τι κάνει κάθε κουμπί;',v=>{v.appendChild(el('p','lead','Το ποντίκι έχει δύο κουμπιά και μια ροδέλα.'));
+ const g=el('div','info','');[['🖱️ Αριστερό κλικ','Ένα κλικ = <b>επιλογή</b>.<br>Διπλό κλικ = <b>άνοιγμα</b>.'],['🖱️ Δεξί κλικ','Εμφανίζει ένα <b>μενού με επιλογές</b>.'],['🌀 Ροδέλα','<b>Μετακίνηση πάνω και κάτω</b> σε ένα έγγραφο.'],['🐭 Ποντίκι','Το λέμε έτσι γιατί έχει «ουρά» και μοιάζει με ποντικάκι!']].forEach(([a,b])=>g.appendChild(el('div','in',`<b>${a}</b>${b}`)));
+ const f=el('div','','<p style="margin-top:16px">Πάτα το κουμπί όταν είσαι έτοιμος να δοκιμάσεις μόνος σου.</p>');const b=el('button','btn','Πάμε να δοκιμάσουμε! →');b.onclick=()=>go(2);f.appendChild(b);v.append(g,f);mark(1)}],
+['3. Δοκιμάζω','Δοκίμασε το ποντίκι σου',v=>{v.appendChild(el('p','lead','Χρειάζεσαι ποντίκι (ή touchpad). Ολοκλήρωσε και τις 4 αποστολές!'));
+ const M=[['🖱️','Κάνε <b>ένα αριστερό κλικ</b> στο κουτί','click'],['🖱️🖱️','Κάνε <b>διπλό κλικ</b> στο κουτί (δύο γρήγορα κλικ)','dblclick'],['📋','Κάνε <b>δεξί κλικ</b> στο κουτί','contextmenu'],['🌀','<b>Γύρνα τη ροδέλα</b> μέσα στο παρακάτω πλαίσιο και φτάσε στο τέλος','scroll']];
+ let i=0;const st=el('div','','');const zone=el('div','zone','');const box=el('div','','');box.append(st,zone);v.appendChild(box);
+ const sc=el('div','sc','<p>🐭 Γύρνα τη ροδέλα...</p><p>⬇️ συνέχισε προς τα κάτω...</p><p>⬇️ ακόμα λίγο...</p><p>🧀 Έφτασες στο τυρί!</p>');
+ const show=()=>{st.innerHTML=`<div class="prog"><i style="width:${i/M.length*100}%"></i></div><p style="font-size:24px;text-align:center"><b>Αποστολή ${Math.min(i+1,M.length)} από ${M.length}</b></p>`;zone.className='zone';
+  if(i>=M.length){zone.replaceWith(el('div','win','<div class="big">🏆</div><b>Είσαι σούπερ χρήστης ποντικιού!</b><div class="stars">⭐⭐⭐</div>'));mark(2);return}
+  const m=M[i];if(m[2]=='scroll'){const z=zone;z.innerHTML='';z.style.display='block';z.style.padding='0';z.style.cursor='default';z.append(el('p','','').parentNode||'');z.innerHTML='<div style="padding:10px 14px">'+m[1]+'</div>';const s=sc.cloneNode(true);s.scrollTop=0;s.onscroll=()=>{if(s.scrollTop+s.clientHeight>=s.scrollHeight-4)next()};z.appendChild(s)}
+  else{zone.style.display='';zone.style.padding='';zone.style.cursor='pointer';zone.innerHTML=`<div><span class="em">${m[0]}</span>${m[1]}</div>`}};
+ const next=()=>{zone.classList.add('hit');setTimeout(()=>{i++;show()},600)};
+ ['click','dblclick','contextmenu'].forEach(ev=>zone.addEventListener(ev,e=>{if(ev=='contextmenu')e.preventDefault();if(M[i]&&M[i][2]==ev&&!zone.classList.contains('hit'))next()}));
+ show()}]];
+function SIMM(v,ix){
+ v.appendChild(el('p','lead','Δες πώς το ποντίκι κινεί το βελάκι στην οθόνη. Πάτα «Δείξε μου» ή δοκίμασε μόνος σου πάνω στο χαλάκι!'));
+ const root=el('div','sm');v.appendChild(root);
+ const rows=[['🐶','Σκύλος'],['🐱','Γάτα'],['🐭','Ποντίκι'],['🐰','Λαγός'],['🦊','Αλεπού'],['🐸','Βάτραχος'],['🦁','Λιοντάρι'],['🐘','Ελέφαντας']];
+ const MS=[['move','🎯','Πέρασε το βελάκι πάνω από το φάκελο 📁'],['click','👆','Αριστερό κλικ: επίλεξε το φάκελο'],['dbl','✌️','Διπλό κλικ: άνοιξε το φάκελο'],['right','📋','Δεξί κλικ: άνοιξε το μενού'],['wheel','🛞','Ροδέλα: κύλισε τη σελίδα ως το τέλος 🏁']];
+ root.innerHTML=`<div class="sm-bar"><button class="btn b" id="smDemo" type="button">▶ Δείξε μου</button><button class="btn" id="smTry" type="button">🖱️ Δοκιμάζω εγώ</button></div>
+ <div class="sm-cap" id="smCap">Πάτα «Δείξε μου» για να δεις το ποντίκι σε δράση!</div>
+ <div class="sm-stage"><div class="sm-mon"><div class="sm-bz"><div class="sm-scr" id="smScr">
+  <div class="sm-ico" data-i="folder" style="left:3%;top:7%"><i>📁</i>Φάκελος</div><div class="sm-ico" data-i="pic" style="left:3%;top:37%"><i>🖼️</i>Εικόνα</div><div class="sm-ico" data-i="bin" style="left:3%;top:66%"><i>🗑️</i>Κάδος</div>
+  <div class="sm-win"><div class="sm-wt"><b>🐾 Τα ζώα</b><span>— ▢ ✕</span></div><div class="sm-wb" id="smWb">${rows.map(r=>`<div class="sm-row"><i>${r[0]}</i>${r[1]}</div>`).join('')}<div class="sm-row end">🏁 Τέλος της σελίδας!</div></div></div>
+  <div class="sm-pop" id="smPop"><div class="sm-wt"><b id="smPt"></b><span class="sm-x" id="smX">✕</span></div><div class="sm-pb" id="smPb"></div></div>
+  <div class="sm-menu" id="smMenu"><div>📂 Άνοιγμα</div><div>📋 Αντιγραφή</div><div>✏️ Μετονομασία</div><div>🗑️ Διαγραφή</div></div>
+  <div class="sm-task"><span>🪟 Έναρξη</span><span style="margin-left:auto">🔊 📶 08:30</span></div>
+  <svg class="sm-cur" id="smCur" viewBox="0 0 24 24"><path d="M3 2 L3 19 L7.6 14.8 L11 22 L14.2 20.6 L10.9 13.7 L17.5 13.5 Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg>
+ </div></div><div class="sm-stand"></div></div>
+ <div class="sm-pad" id="smPad"><svg class="sm-m" id="smM" viewBox="0 0 120 190"><defs><linearGradient id="smg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a5b4fc"/><stop offset=".55" stop-color="#6366f1"/><stop offset="1" stop-color="#3730a3"/></linearGradient></defs>
+  <path d="M60 22 C60 8 70 4 76 -10" fill="none" stroke="#e2e8f0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M60 20 C22 20 10 60 10 110 C10 160 30 186 60 186 C90 186 110 160 110 110 C110 60 98 20 60 20Z" fill="url(#smg)" stroke="#1e1b4b" stroke-width="4"/>
+  <path class="bl" d="M58 24 C28 26 12 56 11 96 L58 96Z" fill="#818cf8" stroke="#1e1b4b" stroke-width="3"/><path class="br" d="M62 24 C92 26 108 56 109 96 L62 96Z" fill="#818cf8" stroke="#1e1b4b" stroke-width="3"/>
+  <rect class="bw" x="50" y="36" width="20" height="44" rx="10" fill="#1e1b4b"/><path d="M53 48h14M53 56h14M53 64h14" stroke="#6366f1" stroke-width="2" stroke-linecap="round"/>
+  <ellipse cx="45" cy="130" rx="16" ry="30" fill="#fff" opacity=".13"/></svg>
+  <div class="sm-lab" id="smLab"></div><div class="sm-padh">🖱️ Κινώ το ποντίκι εδώ</div></div></div>
+ <div class="sm-btns"><button class="btn b" data-a="L" type="button">👆 Αριστερό κλικ</button><button class="btn b" data-a="D" type="button">✌️ Διπλό κλικ</button><button class="btn b" data-a="R" type="button">📋 Δεξί κλικ</button><button class="btn b" data-a="U" type="button">🛞 ▲</button><button class="btn b" data-a="W" type="button">🛞 ▼</button></div>
+ <div class="sm-ms" id="smMs"></div>`;
+ const $$=s=>root.querySelector(s),scr=$$('#smScr'),cur=$$('#smCur'),pad=$$('#smPad'),mm=$$('#smM'),cap=$$('#smCap'),wb=$$('#smWb'),pop=$$('#smPop'),menu=$$('#smMenu'),lab=$$('#smLab');
+ let px=.5,py=.5,demo=0,run=0,wt=0,lastL=0,got={};
+ const setCap=t=>{cap.textContent=t;cap.classList.remove('pop');void cap.offsetWidth;cap.classList.add('pop')};
+ const draw=()=>{cur.style.left=px*100+'%';cur.style.top=py*100+'%';mm.style.left=Math.max(14,Math.min(86,px*100))+'%';mm.style.top=Math.max(18,Math.min(80,py*100))+'%';lab.style.left=mm.style.left;lab.style.top=mm.style.top};
+ const under=()=>{const r=scr.getBoundingClientRect();return document.elementsFromPoint(r.left+px*r.width,r.top+py*r.height)};
+ const ms=$$('#smMs');const msDraw=()=>{ms.innerHTML='';MS.forEach(m=>ms.append(el('div','sm-mi'+(got[m[0]]?' ok':''),`<b>${got[m[0]]?'✅':m[1]}</b>${m[2]}`)))};msDraw();
+ const tick=(k,u)=>{if(!u||got[k])return;got[k]=1;msDraw();beep(880);if(MS.every(m=>got[m[0]])){mark(ix);setCap('🎉 Μπράβο! Έμαθες όλα όσα κάνει το ποντίκι!');root.appendChild(el('div','win','<div class="big">🏆</div><h3>Είσαι ειδικός στο ποντίκι!</h3><div class="stars">⭐⭐⭐</div>'))}};
+ function beep(f){try{const A=new (window.AudioContext||window.webkitAudioContext)(),o=A.createOscillator(),g=A.createGain();o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(A.destination);o.start();setTimeout(()=>{o.stop();A.close()},90)}catch(e){}}
+ const flash=(c,t)=>{mm.classList.add(c);lab.textContent=t;lab.classList.add('on');setTimeout(()=>{mm.classList.remove(c);lab.classList.remove('on')},260)};
+ const rip=r=>{const e=el('div','sm-rip'+(r?' r':''),'');e.style.left=px*100+'%';e.style.top=py*100+'%';scr.appendChild(e);setTimeout(()=>e.remove(),600)};
+ const hover=()=>{const els=under();scr.querySelectorAll('.sm-ico').forEach(i=>i.classList.remove('hov'));menu.querySelectorAll('div').forEach(i=>i.classList.remove('hov'));const ic=els.find(e=>e.classList&&e.classList.contains('sm-ico'));if(ic)ic.classList.add('hov');const mi=els.find(e=>e.parentNode===menu);if(mi)mi.classList.add('hov');return ic};
+ const setP=(x,y,u)=>{px=Math.max(0,Math.min(1,x));py=Math.max(0,Math.min(1,y));draw();const ic=hover();if(ic&&ic.dataset.i==='folder')tick('move',u)};
+ const hide=()=>{menu.classList.remove('on')};
+ const openPop=k=>{const T={folder:['📁 Φάκελος','<div><i>📄</i>Σημειώσεις</div><div><i>🎵</i>Τραγούδι</div><div><i>🎬</i>Ταινία</div>'],pic:['🖼️ Εικόνα','<div style="font-size:clamp(60px,12vw,100px)">🌅</div>'],bin:['🗑️ Κάδος','<div><i>🧹</i>Ο κάδος είναι άδειος!</div>']}[k];$$('#smPt').textContent=T[0];$$('#smPb').innerHTML=T[1];pop.classList.add('on')};
+ const left=u=>{flash('L','Αριστερό κλικ');rip(0);const els=under();const ic=els.find(e=>e.classList&&e.classList.contains('sm-ico'));const mi=els.find(e=>e.parentNode===menu);
+  if(els.some(e=>e.id==='smX'))pop.classList.remove('on');
+  if(mi){hide();return}hide();scr.querySelectorAll('.sm-ico').forEach(i=>i.classList.remove('sel'));if(ic){ic.classList.add('sel');if(ic.dataset.i==='folder')tick('click',u)}};
+ const dbl=u=>{const ic=under().find(e=>e.classList&&e.classList.contains('sm-ico'));flash('L','Διπλό κλικ!');rip(0);if(ic){ic.classList.add('sel');openPop(ic.dataset.i);if(ic.dataset.i==='folder')tick('dbl',u)}};
+ const right=u=>{flash('R','Δεξί κλικ');rip(1);const r=scr.getBoundingClientRect();menu.style.left=Math.min(px*100,64)+'%';menu.style.top=Math.min(py*100,62)+'%';menu.classList.add('on');tick('right',u)};
+ const wheel=(dy,u)=>{flash('W',dy>0?'Ροδέλα ▼':'Ροδέλα ▲');wt=Math.max(0,Math.min(wb.scrollHeight-wb.clientHeight,wt+dy));wb.scrollTo({top:wt,behavior:'smooth'});setTimeout(()=>{if(wb.scrollTop+wb.clientHeight>=wb.scrollHeight-6)tick('wheel',u)},450)};
+ const stopDemo=()=>{demo++;run=0};
+ const act=(a,u)=>{if(a==='L')left(u);else if(a==='D'){left(u);dbl(u)}else if(a==='R')right(u);else if(a==='U')wheel(-90,u);else wheel(90,u)};
+ root.querySelectorAll('.sm-btns button').forEach(b=>b.onclick=()=>{stopDemo();act(b.dataset.a,true)});
+ pad.addEventListener('pointermove',e=>{if(run)return;const r=pad.getBoundingClientRect();setP((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,true)});
+ let t0=0,m0=null;
+ pad.addEventListener('pointerdown',e=>{stopDemo();const r=pad.getBoundingClientRect();setP((e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,true);if(e.pointerType==='touch'){t0=Date.now();m0=[e.clientX,e.clientY];return}if(e.button===0){const n=Date.now();left(true);if(n-lastL<380){dbl(true);lastL=0}else lastL=n}});
+ pad.addEventListener('pointerup',e=>{if(e.pointerType==='touch'&&m0&&Date.now()-t0<300&&Math.hypot(e.clientX-m0[0],e.clientY-m0[1])<10){const n=Date.now();left(true);if(n-lastL<380){dbl(true);lastL=0}else lastL=n}m0=null});
+ pad.addEventListener('contextmenu',e=>{e.preventDefault();stopDemo();right(true)});
+ pad.addEventListener('wheel',e=>{e.preventDefault();stopDemo();wheel(e.deltaY>0?90:-90,true)},{passive:false});
+ $$('#smX').onclick=()=>pop.classList.remove('on');
+ const wait=ms=>new Promise(r=>setTimeout(r,ms));
+ const tween=(tx,ty,ms,id)=>new Promise(res=>{const x0=px,y0=py,t=performance.now();const f=n=>{if(id!==demo||!root.isConnected){res();return}const k=Math.min(1,(n-t)/ms),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;setP(x0+(tx-x0)*e,y0+(ty-y0)*e,false);if(k<1)requestAnimationFrame(f);else res()};requestAnimationFrame(f)});
+ const target=sel=>{const r=scr.getBoundingClientRect(),e=scr.querySelector(sel).getBoundingClientRect();return[(e.left+e.width/2-r.left)/r.width,(e.top+e.height/2-r.top)/r.height]};
+ const reset=()=>{pop.classList.remove('on');hide();scr.querySelectorAll('.sm-ico').forEach(i=>i.classList.remove('sel'));wb.style.scrollBehavior='auto';wb.scrollTop=0;wt=0;wb.style.scrollBehavior=''};
+ const runDemo=async()=>{const id=++demo;run=1;reset();setP(.6,.85,false);const ok=()=>id===demo&&root.isConnected;
+  const S=async(t,f,ms)=>{if(!ok())return false;setCap(t);if(f)await f();if(!ok())return false;await wait(ms||900);return ok()};
+  const [fx,fy]=target('[data-i=folder] i');
+  if(!await S('1️⃣ Κινώ το ποντίκι πάνω στο χαλάκι…',()=>tween(fx,fy,1700,id),200))return;
+  if(!await S('…και το βελάκι κινείται στην οθόνη! 🎯',null,1300))return;
+  if(!await S('2️⃣ Αριστερό κλικ: πατάω ΜΙΑ φορά το αριστερό κουμπί → επιλέγω',()=>{left(false)},1700))return;
+  if(!await S('3️⃣ Διπλό κλικ: πατάω ΔΥΟ φορές γρήγορα → ανοίγω!',async()=>{left(false);await wait(180);left(false);dbl(false)},2000))return;
+  const [cx,cy]=target('#smX');
+  if(!await S('Κλείνω το παράθυρο με αριστερό κλικ στο ✕',()=>tween(cx,cy,1200,id),300))return;left(false);await wait(500);
+  if(!await S('4️⃣ Δεξί κλικ: πατάω το δεξί κουμπί → ανοίγει μενού',()=>tween(.45,.55,1100,id).then(()=>right(false)),2200))return;
+  if(!await S('Με αριστερό κλικ αλλού, το μενού κλείνει',()=>tween(.8,.9,900,id).then(()=>left(false)),900))return;
+  const [wx,wy]=target('.sm-wb');
+  if(!await S('5️⃣ Ροδέλα: τη γυρίζω και η σελίδα κυλάει ▼',()=>tween(wx,wy,1000,id),300))return;
+  for(let k=0;k<5&&ok();k++){wheel(90,false);await wait(650)}
+  if(!await S('Και προς τα πάνω ▲',async()=>{for(let k=0;k<5&&ok();k++){wheel(-90,false);await wait(350)}},500))return;
+  setCap('🎉 Τώρα δοκίμασε εσύ! Πάτα «Δοκιμάζω εγώ» και κάνε τις 5 αποστολές.');reset();run=0};
+ $$('#smDemo').onclick=()=>runDemo();
+ $$('#smTry').onclick=()=>{stopDemo();reset();setCap('Η σειρά σου! Κινώ το ποντίκι πάνω στο χαλάκι (ή πατάω τα κουμπιά) και κάνω τις 5 αποστολές 👇')};
+ draw();hover();
+}
+T.push(['🎬 Δες πώς λειτουργεί','Πώς λειτουργεί το ποντίκι',v=>SIMM(v,T.length-1)]);
+window.ORD=[T.length-1].concat(T.slice(0,-1).map((_,i)=>i));
+tabs();go(T.length-1);
+</script></body></html>

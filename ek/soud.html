@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Σούντοκου</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--soft:#f1f5f9;--g1:#6366f1;--g2:#06b6d4}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(26px,5vw,36px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
+main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;align-items:center}
+.row .lab{width:100%;text-align:center;color:var(--mu);font-size:15px;font-weight:600;margin-bottom:-2px}
+.ch{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka,system-ui;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ch.on{background:#f59e0b;border-color:#d97706;color:#fff}
+.btn{border:0;background:#10b981;color:#fff;font:700 19px Fredoka,system-ui;border-radius:99px;padding:11px 24px;cursor:pointer;box-shadow:0 4px 0 #059669}
+.btn.g{background:#64748b;box-shadow:0 4px 0 #475569}.btn:active{transform:translateY(3px);box-shadow:none}
+.pill{background:var(--card);border:3px solid var(--bd);border-radius:18px;text-align:center;padding:6px 14px;min-width:90px}
+.pill b{display:block;font-size:26px;line-height:1.1}.pill small{color:var(--mu);font-size:14px;font-weight:600}
+#msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
+#bd{display:grid;width:min(100%,420px);margin:6px auto;background:#1e293b;gap:2px;padding:3px;border-radius:10px}.c{aspect-ratio:1;border:0;background:var(--card);color:var(--tx);font:700 clamp(22px,7vw,36px) Fredoka,system-ui;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.c.g{background:var(--soft);cursor:default}.c.s{background:#fde68a;color:#000}.c.e{background:#fecaca}.c.u{color:#2563eb}.pk{width:52px;height:52px;border:3px solid var(--bd);background:var(--card);border-radius:14px;font-size:26px;cursor:pointer;color:var(--tx)}.pk.x{background:#fee2e2}</style></head><body>
+<header><h1>🔢 Σούντοκου</h1><p>Συμπλήρωσε τα κενά: κάθε σύμβολο μία φορά σε κάθε γραμμή, στήλη και πλαίσιο!</p></header>
+<main><div class="row"><div class="lab">Μέγεθος</div><button class="ch on" data-n="4">😊 4×4</button><button class="ch" data-n="6">🙂 6×6</button></div>
+<div class="row"><div class="lab">Σύμβολα</div><button class="ch on" data-s="0">🔢 Αριθμοί</button><button class="ch" data-s="1">🐶 Ζωάκια</button></div>
+<div id="msg">Κάθε γραμμή, στήλη και πλαίσιο έχει κάθε σύμβολο μία φορά</div><div id="bd"></div><div id="pad" class="row"></div><div class="row"><button class="btn g" id="hint">💡 Βοήθεια</button><button class="btn" id="again">🔄 Νέο</button></div></main>
+<script>
+const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let AC;function beep(f,d=.12,t='sine',v=.08){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+const fanfare=()=>[523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.2),k*130));
+function sel(attr,val){document.querySelectorAll('['+attr+']').forEach(b=>b.classList.toggle('on',b.getAttribute(attr)===String(val)))}
+const SY=[['1','2','3','4','5','6'],['🐶','🐱','🐭','🐰','🦊','🐻']];let N=4,sym=0,sol,g,given,cur=null,over;
+const bw=()=>N===4?2:3,bh=()=>2;
+function ok(b,r,c,v){for(let i=0;i<N;i++){if(b[r][i]===v&&i!==c)return false;if(b[i][c]===v&&i!==r)return false}const r0=r-r%bh(),c0=c-c%bw();for(let i=0;i<bh();i++)for(let j=0;j<bw();j++){const rr=r0+i,cc=c0+j;if(b[rr][cc]===v&&(rr!==r||cc!==c))return false}return true}
+function solve(b,cnt,rand){for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(!b[r][c]){const vs=rand?sh([...Array(N).keys()].map(x=>x+1)):[...Array(N).keys()].map(x=>x+1);for(const v of vs)if(ok(b,r,c,v)){b[r][c]=v;const res=solve(b,cnt,rand);if(res&&!cnt){return true}if(cnt){cnt.n+=res===true?0:res;}if(!cnt&&res)return true;if(cnt&&cnt.n>=2){b[r][c]=0;return cnt.n}b[r][c]=0}return cnt?0:false}if(cnt){cnt.n++;return 1}return true}
+function count(b){const cnt={n:0};const bb=b.map(r=>r.slice());cnt.n=0;(function rec(){for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(!bb[r][c]){for(let v=1;v<=N;v++)if(ok(bb,r,c,v)){bb[r][c]=v;rec();bb[r][c]=0;if(cnt.n>=2)return}return}cnt.n++})();return cnt.n}
+function newG(){sol=Array.from({length:N},()=>Array(N).fill(0));solve(sol,null,true);g=sol.map(r=>r.slice());const cells=sh([...Array(N*N).keys()]);let rm=0,target=N===4?9:20;for(const k of cells){if(rm>=target)break;const r=k/N|0,c=k%N,v=g[r][c];g[r][c]=0;if(count(g)===1)rm++;else g[r][c]=v}
+ given=g.map(r=>r.map(v=>v>0));cur=null;over=false;$('msg').textContent='Κάθε γραμμή, στήλη και πλαίσιο έχει κάθε σύμβολο μία φορά';draw()}
+function conflict(r,c){return g[r][c]&&!ok(g,r,c,g[r][c])}
+function draw(){const bd=$('bd');bd.style.gridTemplateColumns='repeat('+N+',1fr)';bd.innerHTML='';for(let r=0;r<N;r++)for(let c=0;c<N;c++){const b=document.createElement('button');let cl='c'+(given[r][c]?' g':' u')+(cur&&cur[0]===r&&cur[1]===c?' s':'')+(conflict(r,c)?' e':'');b.className=cl;b.textContent=g[r][c]?SY[sym][g[r][c]-1]:'';
+  const st=b.style;if(c%bw()===bw()-1&&c<N-1)st.borderRight='4px solid #1e293b';if(r%bh()===bh()-1&&r<N-1)st.borderBottom='4px solid #1e293b';b.onclick=()=>{if(!over&&!given[r][c]){cur=[r,c];draw()}};bd.appendChild(b)}
+ const p=$('pad');p.innerHTML='';for(let v=1;v<=N;v++){const b=document.createElement('button');b.className='pk';b.textContent=SY[sym][v-1];b.onclick=()=>put(v);p.appendChild(b)}const x=document.createElement('button');x.className='pk x';x.textContent='⌫';x.onclick=()=>put(0);p.appendChild(x)}
+function put(v){if(over||!cur)return;g[cur[0]][cur[1]]=v;beep(500,.05);draw();if(g.every((r,i)=>r.every((x,j)=>x&&!conflict(i,j)))){over=true;$('msg').textContent='🎉 Μπράβο! Το έλυσες!';fanfare()}}
+$('hint').onclick=()=>{if(over)return;let t=cur&&!given[cur[0]][cur[1]]?cur:null;if(!t){const e=[];for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(!given[r][c]&&g[r][c]!==sol[r][c])e.push([r,c]);if(!e.length)return;t=e[Math.random()*e.length|0]}g[t[0]][t[1]]=sol[t[0]][t[1]];given[t[0]][t[1]]=true;cur=null;draw();if(g.every((r,i)=>r.every((x,j)=>x&&!conflict(i,j)))){over=true;$('msg').textContent='🎉 Ολοκληρώθηκε!';fanfare()}};
+document.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{N=+b.dataset.n;sel('data-n',N);newG()});document.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{sym=+b.dataset.s;sel('data-s',sym);draw()});$('again').onclick=newG;newG();
+</script></body></html>

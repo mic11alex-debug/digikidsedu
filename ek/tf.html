@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Αλήθεια ή Ψέμα</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--soft:#f1f5f9;--g1:#22c55e;--g2:#ef4444}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;min-height:100vh}
+header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(26px,5vw,36px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
+main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
+.row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0;align-items:center}
+.row .lab{width:100%;text-align:center;color:var(--mu);font-size:15px;font-weight:600;margin-bottom:-2px}
+.ch{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka,system-ui;border-radius:99px;padding:8px 16px;cursor:pointer}
+.ch.on{background:#f59e0b;border-color:#d97706;color:#fff}
+.btn{border:0;background:#10b981;color:#fff;font:700 19px Fredoka,system-ui;border-radius:99px;padding:11px 24px;cursor:pointer;box-shadow:0 4px 0 #059669}
+.btn.g{background:#64748b;box-shadow:0 4px 0 #475569}.btn:active{transform:translateY(3px);box-shadow:none}
+.pill{background:var(--card);border:3px solid var(--bd);border-radius:18px;text-align:center;padding:6px 14px;min-width:90px}
+.pill b{display:block;font-size:26px;line-height:1.1}.pill small{color:var(--mu);font-size:14px;font-weight:600}
+#msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
+</style></head><body>
+<header><h1>✅ Αλήθεια ή Ψέμα ❌</h1><p>Διάβασε την πρόταση και κρίνε αν είναι σωστή!</p></header>
+<main><div class="row"><div class="pill"><small>Σωστές</small><b id="ok">0</b></div><div class="pill"><small>Ερώτηση</small><b id="n">0/12</b></div><div class="pill"><small>Σερί</small><b id="st">0</b></div></div>
+<div class="card" style="text-align:center;min-height:130px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700" id="s">Πάτα «Έναρξη»</div><div id="msg"></div>
+<div class="row"><button class="btn" id="t" style="background:#22c55e;box-shadow:0 4px 0 #15803d;font-size:24px">✅ Αλήθεια</button><button class="btn" id="f" style="background:#ef4444;box-shadow:0 4px 0 #b91c1c;font-size:24px">❌ Ψέμα</button></div><div class="row"><button class="btn g" id="go">▶ Νέο παιχνίδι</button></div></main>
+<script>
+const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let AC;function beep(f,d=.12,t='sine',v=.08){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+const fanfare=()=>[523,659,784,1047].forEach((f,k)=>setTimeout(()=>beep(f,.2),k*130));
+function sel(attr,val){document.querySelectorAll('['+attr+']').forEach(b=>b.classList.toggle('on',b.getAttribute(attr)===String(val)))}
+const T=[["Η Λευκωσία είναι η πρωτεύουσα της Κύπρου.", 1, ""], ["Η Κύπρος είναι νησί στη Μεσόγειο θάλασσα.", 1, ""], ["Η καμηλοπάρδαλη είναι το ψηλότερο ζώο.", 1, ""], ["Η αράχνη έχει 6 πόδια.", 0, "Η αράχνη έχει 8 πόδια· τα έντομα έχουν 6."], ["Ο πιγκουίνος μπορεί να πετάξει.", 0, "Ο πιγκουίνος κολυμπά αλλά δεν πετάει."], ["Το χαλλούμι είναι παραδοσιακό τυρί της Κύπρου.", 1, ""], ["Το ποντίκι είναι συσκευή του υπολογιστή.", 1, ""], ["Ο εκτυπωτής χρησιμοποιείται για να ακούμε μουσική.", 0, "Ο εκτυπωτής τυπώνει σε χαρτί."], ["Το Word είναι πρόγραμμα για ζωγραφική.", 0, "Το Word είναι για κείμενα· για ζωγραφική χρησιμοποιούμε το Paint."], ["Δεν πρέπει να λέμε τον κωδικό μας σε κανέναν.", 1, ""], ["Η ώρα έχει 100 λεπτά.", 0, "Η ώρα έχει 60 λεπτά."], ["7 × 8 = 56.", 1, ""], ["Το εξάγωνο έχει 6 πλευρές.", 1, ""], ["Ο ήλιος γυρίζει γύρω από τη Γη.", 0, "Η Γη γυρίζει γύρω από τον Ήλιο."], ["Οι μέλισσες φτιάχνουν μέλι.", 1, ""], ["Η φάλαινα είναι ψάρι.", 0, "Η φάλαινα είναι θηλαστικό."], ["Ο Όλυμπος είναι το ψηλότερο βουνό της Κύπρου.", 1, ""], ["Το νερό παγώνει στους 0 βαθμούς Κελσίου.", 1, ""], ["Η Γη έχει δύο φεγγάρια.", 0, "Η Γη έχει ένα φεγγάρι."], ["Η κάμπια γίνεται πεταλούδα.", 1, ""], ["Το Google είναι παιχνίδι.", 0, "Το Google είναι μηχανή αναζήτησης."], ["Το πλήκτρο Enter αλλάζει γραμμή.", 1, ""], ["Το 15 είναι ζυγός αριθμός.", 0, "Το 15 είναι μονός αριθμός."], ["Το φθινόπωρο πέφτουν τα φύλλα από τα φυλλοβόλα δέντρα.", 1, ""], ["Η Κύπρος έχει την Ελλάδα ως γειτονική χώρα στην ξηρά.", 0, "Η Κύπρος είναι νησί· δεν έχει χερσαία σύνορα με την Ελλάδα."], ["Το λεμόνι είναι γλυκό φρούτο.", 0, "Το λεμόνι είναι ξινό."], ["Μπορούμε να εμπιστευόμαστε κάθε μήνυμα που μας στέλνει ένας άγνωστος.", 0, "Δεν εμπιστευόμαστε αγνώστους και δεν ανοίγουμε περίεργους συνδέσμους."], ["Το πολύ χρόνο στην οθόνη δεν κάνει καλό στα μάτια μας.", 1, ""], ["Ο πάγος είναι νερό σε στερεή μορφή.", 1, ""]];let L,i,ok,st,lock=true;
+function go(){L=sh(T).slice(0,12);i=0;ok=0;st=0;$('ok').textContent=0;$('st').textContent=0;show()}
+function show(){if(i>=L.length){$('s').textContent=ok>=10?'🏆 Φοβερό! '+ok+' στις 12!':ok>=7?'👏 Μπράβο! '+ok+' στις 12!':'👍 Έκανες '+ok+' στις 12. Δοκίμασε ξανά!';$('msg').textContent='';lock=true;if(ok>=7)fanfare();return}$('s').textContent=L[i][0];$('n').textContent=(i+1)+'/12';$('msg').textContent='';lock=false}
+function ans(v){if(lock)return;lock=true;const q=L[i];const right=!!q[1]===v;if(right){ok++;st++;beep(784,.2);$('msg').textContent='✅ Σωστά!'}else{st=0;beep(160,.3,'sawtooth');$('msg').textContent='❌ Όχι… '+(q[2]||(q[1]?'Αυτό ισχύει!':''))}$('ok').textContent=ok;$('st').textContent=st;i++;setTimeout(show,1900)}
+$('t').onclick=()=>ans(true);$('f').onclick=()=>ans(false);$('go').onclick=go;addEventListener('keydown',e=>{if(e.key==='ArrowLeft')ans(true);if(e.key==='ArrowRight')ans(false)});
+</script></body></html>

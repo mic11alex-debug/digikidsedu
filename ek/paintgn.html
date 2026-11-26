@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Γνωρίζω το Paint</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350;--hl:#4a3f10}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px}
+header{background:linear-gradient(135deg,#0ea5e9,#8b5cf6);color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:2px 0 0;opacity:.92;font-size:15px}
+#tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 10px 0}
+#tabs button{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:700 16px Fredoka;border-radius:99px;padding:8px 16px;cursor:pointer;position:relative}
+#tabs button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#tabs button.ok::after{content:"✓";position:absolute;right:-4px;top:-8px;background:var(--green);color:#fff;border-radius:50%;width:22px;height:22px;font-size:14px;display:grid;place-items:center}
+main{max-width:900px;margin:0 auto;padding:12px 14px 40px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 14px}
+.btn{border:0;cursor:pointer;font:700 19px Fredoka;color:#fff;background:var(--teal);padding:12px 24px;border-radius:16px;box-shadow:0 5px 0 #0d9488;margin:4px}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.b{background:var(--blue);box-shadow:0 5px 0 #1d4ed8}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn:disabled{opacity:.45}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.win{text-align:center;padding:14px}.win .big{font-size:76px}
+.opt{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:18px;padding:12px;font:600 20px Fredoka;cursor:pointer}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.prog{height:14px;border-radius:99px;background:var(--soft);overflow:hidden;margin:6px 0 14px}.prog i{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+.stars{font-size:34px;letter-spacing:4px}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:14px}
+.cert input{font:700 24px Fredoka;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+.rc{text-align:center;padding:10px}.rc .em{font-size:96px;line-height:1.1}.rc p{font-size:clamp(22px,4.5vw,30px);font-weight:600;margin:10px 0}
+.dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}.dots i{width:14px;height:14px;border-radius:50%;background:var(--bd)}.dots i.on{background:var(--amber)}.dots i.d{background:var(--green)}
+.big2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}.big2 .opt{font-size:26px;padding:18px}
+.sit{font-size:clamp(22px,4.5vw,30px);font-weight:600;text-align:center;padding:16px;background:var(--hl);border-radius:20px;margin:12px 0}.sit .em{display:block;font-size:80px}
+.pr-stw{position:relative;border-radius:24px;overflow:hidden;border:4px solid #1e293b;box-shadow:0 8px 0 rgba(0,0,0,.14)}
+.pr-st{position:relative;aspect-ratio:16/9;overflow:hidden;container-type:inline-size;user-select:none}
+.pr-i{position:absolute;line-height:1;transform:translate(-50%,-50%);white-space:nowrap}
+.pr-i>span{display:block;filter:drop-shadow(0 .6cqw .5cqw rgba(0,0,0,.25))}
+.pr-ti{position:absolute;left:3.5cqw;top:3cqw;font-weight:800;font-size:4.4cqw;color:#fff;text-shadow:0 .4cqw 0 rgba(0,0,0,.25);animation:prslide .6s both;z-index:4;max-width:70cqw;line-height:1.15}
+.pr-ti.c{left:50%;top:34%;text-align:center;font-size:6.2cqw;max-width:86cqw;transform:translate(-50%,-50%);animation:prpopc .8s both}
+.pr-ti.c small{display:block;font-size:2.6cqw;font-weight:700;margin-top:1.4cqw;opacity:.95}
+.pr-bar{position:absolute;left:0;right:0;bottom:0;height:7px;background:rgba(255,255,255,.35);z-index:6}.pr-bar i{display:block;height:100%;width:0;background:#fff;border-radius:0 6px 6px 0}.pr-bar i.go{animation:prbar var(--d,5s) linear forwards}
+.pr-cnt{position:absolute;right:2.5cqw;top:2.5cqw;font-weight:800;font-size:2.2cqw;color:#fff;background:rgba(0,0,0,.3);border-radius:99px;padding:.3cqw 1.8cqw;z-index:6}
+.pr-cap{margin:14px 0 8px;min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center;background:var(--soft);border:3px solid var(--bd);border-radius:18px;padding:12px 16px;font-weight:700;font-size:clamp(17px,2.8vw,23px);line-height:1.45;animation:prfade .5s both}
+.pr-ct{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.pr-ct button{font:800 20px Fredoka,system-ui,sans-serif;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;width:58px;height:50px;cursor:pointer;box-shadow:0 4px 0 var(--bd)}.pr-ct button.big{width:auto;padding:0 22px;background:var(--teal);color:#fff;border-color:#0d9488;box-shadow:0 4px 0 #0d9488}
+.pr-ct button:active{transform:translateY(3px);box-shadow:none}
+.pr-dots{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:12px}.pr-dots b{width:14px;height:14px;border-radius:50%;background:var(--bd);cursor:pointer;transition:.2s}.pr-dots b.on{background:var(--teal);transform:scale(1.35)}.pr-dots b.dn{background:#99f6e4}
+.pr.paused .pr-st *,.pr.paused .pr-bar i{animation-play-state:paused!important}
+.pr-bub{position:absolute;transform:translate(-50%,-50%);background:#fff;color:#1e293b;font-weight:800;font-size:2.8cqw;border-radius:2.4cqw;padding:1cqw 2.2cqw;box-shadow:0 .5cqw 0 rgba(0,0,0,.2);border:.4cqw solid #1e293b;animation:prpopc .5s both;z-index:3;white-space:nowrap}
+.pr-lb{position:absolute;left:64cqw;font-weight:800;font-size:2.7cqw;color:#064e3b;background:#fff;border:.4cqw solid #047857;border-radius:2cqw;padding:.8cqw 1.8cqw;animation:prslide .5s both;box-shadow:0 .5cqw 0 rgba(0,0,0,.18);white-space:nowrap}
+.pr-pz{position:absolute;left:22cqw;top:12cqw;width:38cqw;background:#fff;border-radius:3cqw;padding:1.5cqw;border:.5cqw solid #064e3b;box-shadow:0 1cqw 0 rgba(0,0,0,.2)}.pr-pz svg{width:100%;height:auto;display:block}
+.pr-pz .bad,.pr-pz .good{position:absolute;inset:1.5cqw}.pr-pz .bad{animation:prout .6s 1.8s both}.pr-pz .good{opacity:0;animation:prin .6s 2s both}
+.pr-pz .tg{position:absolute;left:50%;top:-2.6cqw;transform:translateX(-50%);font-weight:800;font-size:2.6cqw;border-radius:99px;padding:.3cqw 2cqw;color:#fff;background:#dc2626;white-space:nowrap}.pr-pz .tg.g{background:#16a34a;opacity:0;animation:prin .5s 2s both}.pr-pz .tg.r{animation:prout .5s 1.8s both}
+.pr-go{font:800 clamp(16px,2.6vw,21px) Fredoka,system-ui,sans-serif;border:3px solid #0d9488;background:var(--teal);color:#fff;border-radius:16px;padding:8px 20px;cursor:pointer;box-shadow:0 4px 0 #0d9488;margin-left:12px}
+.a-bob{animation:prbob 2.2s ease-in-out infinite}.a-wob{animation:prwob 1.6s ease-in-out infinite}.a-up{animation:prup 4s ease-in infinite}.a-pop{animation:prpop .6s both}.a-stamp{animation:prstamp .5s both}.a-blink{animation:prblink 1.2s infinite}.a-shake{animation:prshake .6s infinite}.a-spin{animation:prspin 6s linear infinite}.a-pulse{animation:prpulse 1.4s ease-in-out infinite}.a-raise{animation:prraise 2.4s ease-in-out infinite}.a-sway{animation:prsway 2s ease-in-out infinite}
+.a-walk{animation:prwalk 4.6s ease-in-out both}.a-swap{animation:prswap 3.2s ease-in-out infinite}.a-toss{animation:prtoss 2.4s ease-in both infinite}.a-slidein{animation:prslidein 2s 1.5s ease-out both}.a-sweep{animation:prsweep 1s ease-in-out infinite}.a-germ{animation:prgerm 3.6s ease-in-out infinite}.a-grow{animation:prgrow 1s 2s both}.a-reach{animation:prreach 3.4s ease-in-out both}
+@keyframes prbar{to{width:100%}}@keyframes prfade{from{opacity:0;transform:translateY(8px)}}@keyframes prslide{from{opacity:0;transform:translateX(-30px)}}
+@keyframes prbob{50%{transform:translateY(-6%)}}@keyframes prwob{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+@keyframes prup{0%{transform:translateY(0) scale(.6);opacity:0}15%{opacity:1}100%{transform:translateY(-34cqw) scale(1.1);opacity:0}}
+@keyframes prpop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.2);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes prpopc{0%{transform:translate(-50%,-50%) scale(0);opacity:0}70%{transform:translate(-50%,-50%) scale(1.15);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:1}}
+@keyframes prstamp{0%{transform:scale(4) rotate(-20deg);opacity:0}60%{transform:scale(.9) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes prblink{0%,100%{opacity:.2;transform:scale(.7)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes prshake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5%)}75%{transform:translateX(5%)}}
+@keyframes prspin{to{transform:rotate(360deg)}}@keyframes prpulse{50%{transform:scale(1.18)}}
+@keyframes prraise{0%,100%{transform:translateY(8%) rotate(-4deg)}50%{transform:translateY(-10%) rotate(4deg)}}
+@keyframes prsway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes prwalk{from{left:8%}to{left:72%}}
+@keyframes prswap{0%,100%{transform:translateX(-120%)}50%{transform:translateX(120%)}}
+@keyframes prtoss{0%{transform:translate(0,0) scale(1);opacity:1}45%{transform:translate(calc(var(--dx)*.5),-14cqw) rotate(180deg)}85%{transform:translate(var(--dx),var(--dy)) scale(.5) rotate(360deg);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.2);opacity:0}}
+@keyframes prslidein{from{transform:translateX(40cqw)}to{transform:translateX(0)}}
+@keyframes prsweep{0%,100%{transform:rotate(-25deg) translateX(-30%)}50%{transform:rotate(25deg) translateX(30%)}}
+@keyframes prgerm{0%{transform:translate(0,0) scale(1);opacity:1}55%{transform:translate(var(--gx),var(--gy)) scale(1.15);opacity:1}75%{transform:translate(calc(var(--gx)*1.05),var(--gy)) scale(.5) rotate(60deg);opacity:0}100%{opacity:0}}
+@keyframes prgrow{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes prreach{0%{transform:translateY(-60%)}40%{transform:translateY(40%)}100%{transform:translateY(40%)}}
+@keyframes prout{to{opacity:0}}@keyframes prin{to{opacity:1}}
+@keyframes prfall{from{transform:translateY(-12cqw) rotate(0)}to{transform:translateY(70cqw) rotate(540deg)}}
+.pr-cf{position:absolute;top:0;animation:prfall linear infinite;line-height:1}
+@media(prefers-reduced-motion:reduce){.pr-st *{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+.og{display:grid;gap:10px}.opt.s{font-size:18px;text-align:left}.og .opt{text-align:left;font-size:19px}
+.pr-ph{position:absolute;left:50%;top:3cqw;transform:translateX(-50%);width:32cqw;height:50cqw;background:#0f172a;border-radius:3cqw;border:.6cqw solid #94a3b8;padding:2cqw;overflow:hidden;box-shadow:0 1cqw 0 rgba(0,0,0,.3)}
+.pr-ph h6{margin:0 0 1cqw;color:#94a3b8;font-size:1.9cqw;text-align:center}
+.pr-cb{max-width:84%;padding:1cqw 1.6cqw;border-radius:1.8cqw;font-weight:700;font-size:2cqw;margin:1.3cqw 0;opacity:0;animation:prcb .45s both;line-height:1.3}.pr-cb.s{background:#475569;color:#fff;border-bottom-left-radius:.4cqw}.pr-cb.m{background:#22c55e;color:#052e16;margin-left:auto;border-bottom-right-radius:.4cqw}
+@keyframes prcb{from{opacity:0;transform:translateY(2cqw) scale(.9)}to{opacity:1;transform:none}}
+.pr-pw{position:absolute;top:14cqw;width:41cqw;background:#fff;border-radius:2.4cqw;padding:2cqw;border:.5cqw solid #1e293b;box-shadow:0 .8cqw 0 rgba(0,0,0,.25);color:#1e293b;text-align:center;font-weight:800;font-size:2.4cqw;animation:prpop .6s both}
+.pr-pw .ty{font-family:ui-monospace,Menlo,monospace;font-size:3.6cqw;margin:1.4cqw 0;overflow:hidden;white-space:nowrap;display:inline-block;width:0;animation:prtype 1.6s steps(12) var(--td,.6s) forwards;vertical-align:bottom}
+.pr-m{height:2.2cqw;border-radius:99px;background:#e2e8f0;overflow:hidden;margin-top:1.2cqw}.pr-m i{display:block;height:100%;width:0;animation:prmeter 1.6s var(--md,1s) ease-out forwards}
+@keyframes prtype{to{width:var(--ch)}}@keyframes prmeter{to{width:var(--w)}}
+.a-vault{animation:prvault 2.6s ease-in infinite}@keyframes prvault{0%{transform:translate(0,0) scale(1);opacity:1}70%{transform:translate(var(--dx),var(--dy)) scale(.35);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.1);opacity:0}}
+.pr-mail{background:#fff;color:#1e293b;border:.5cqw solid #1e293b;border-radius:2cqw;padding:1.6cqw 2.4cqw;font-weight:800;font-size:2.4cqw;text-align:center;box-shadow:0 .7cqw 0 rgba(0,0,0,.25);white-space:normal;width:38cqw}
+.pr-mail b{display:inline-block;margin-top:1cqw;background:#ef4444;color:#fff;border-radius:99px;padding:.6cqw 2cqw;animation:prpulse 1s infinite}
+.a-hook{animation:prhook 3.4s ease-in-out both}@keyframes prhook{0%{transform:translateY(-70%)}45%{transform:translateY(25%)}100%{transform:translateY(25%)}}
+.a-foot{animation:prin .01s both;opacity:0}
+.pr-big{position:absolute;left:50%;transform:translateX(-50%);font-weight:800;color:#fff;text-shadow:0 .4cqw 0 rgba(0,0,0,.3);text-align:center;animation:prfade .6s both;white-space:nowrap}
+.fdbk{min-height:56px;text-align:center;font-weight:700;margin:10px 0}
+.post{border:3px solid var(--bd);border-radius:20px;padding:14px 16px;background:var(--card);line-height:1.8;font-size:19px;max-width:640px;margin:0 auto}
+.post .hd{font-weight:700;margin-bottom:6px}.post .cl{cursor:pointer;border-bottom:3px dotted var(--amber);border-radius:4px;transition:.2s}.post .cl:hover{background:var(--hl)}.post .cl.f{background:#bbf7d0;border-bottom:3px solid var(--green)}
+.clist{display:grid;gap:8px;margin:12px auto;max-width:640px}.clist div{border:3px solid var(--bd);border-radius:14px;padding:8px 12px;font-size:17px;background:var(--soft)}.clist div.f{background:#bbf7d0;border-color:var(--green);color:#14532d}
+.stp{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:12px 0}.stp .opt{font-size:18px;text-align:left}.stp .opt.used{opacity:.4}
+.ord{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.ord span{background:#bbf7d0;border:3px solid var(--green);border-radius:14px;padding:6px 12px;font-weight:700;font-size:16px;color:#14532d}
+.sl{width:100%;max-width:640px;display:block;margin:10px auto;accent-color:var(--amber);height:34px}.phv{border:4px solid var(--tx);border-radius:14px;overflow:hidden;max-width:640px;margin:0 auto;background:#fff}.phv svg{display:block;width:100%;height:auto}.cap0{text-align:center;font-weight:800;margin:6px 0}
+.flt{transition:filter .5s}.flt.on{filter:saturate(2.6) contrast(1.25) brightness(1.1) hue-rotate(-12deg)}
+</style></head><body>
+<header><h1>🎨 Γνωρίζω το Paint</h1><p>Μαθαίνω τα εργαλεία και ζωγραφίζω</p></header>
+<div id="tabs"></div><main><div class="card" id="v"></div></main>
+<script>
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+const sh=a=>[...a].sort(()=>Math.random()-.5);
+let done={},cur=0;const KEY='paint2.done';
+try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+const mark=i=>{if(!done[i]){done[i]=1;try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}tabs()}};
+function tabs(){const t=$('tabs');t.innerHTML='';T.forEach((x,i)=>{const b=el('button',(i==cur?'on ':'')+(done[i]?'ok':''),x[0]);b.onclick=()=>go(i);t.appendChild(b)})}
+function go(i){cur=i;tabs();const v=$('v');v.innerHTML='';v.appendChild(el('h2','',T[i][1]));T[i][2](v);scrollTo(0,0)}
+function stars(n,m){return '⭐'.repeat(n)+'☆'.repeat(m-n)}
+const PI=(e,x,y,sz,cls,dl,ex)=>`<span class="pr-i" style="left:${x}%;top:${y}%;font-size:${sz}cqw;${ex||''}"><span class="${cls||''}" style="animation-delay:${dl||0}s">${e}</span></span>`;
+const PBUB=(t,x,y,dl)=>`<div class="pr-bub" style="left:${x}%;top:${y}%;animation-delay:${dl}s">${t}</div>`;
+const prep=(n,f)=>Array.from({length:n},(_,i)=>f(i)).join('');
+function SLIDES(v,ix,SC,after){
+ const N=SC.length;let idx=0,paused=false,t=0,t0=0,rem=0;
+ try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)paused=true}catch(e){}
+ v.appendChild(el('p','lead','Μια σύντομη παρουσίαση. Μπορείς να την παύσεις και να πας μπροστά ή πίσω!'));
+ const root=el('div','pr'+(paused?' paused':''),`<div class="pr-stw"><div class="pr-st" id="prSt"></div><div class="pr-cnt" id="prCnt"></div><div class="pr-bar"><i id="prBar"></i></div></div><div class="pr-cap" id="prCap"></div><div class="pr-ct"><button type="button" id="prP" aria-label="Προηγούμενο">⏮</button><button type="button" class="big" id="prPl">${paused?'▶ Παίξε':'⏸ Παύση'}</button><button type="button" id="prN" aria-label="Επόμενο">⏭</button></div><div class="pr-dots" id="prDt"></div>`);v.appendChild(root);
+ const q=s=>root.querySelector(s);
+ const dots=q('#prDt');SC.forEach((_,i)=>{const b=document.createElement('b');b.onclick=()=>show(i);dots.appendChild(b)});
+ const arm=ms=>{clearTimeout(t);if(paused||SC[idx].fin)return;t0=Date.now();rem=ms;t=setTimeout(()=>show(idx+1),ms)};
+ function show(i){if(!root.isConnected)return;idx=Math.max(0,Math.min(N-1,i));const s=SC[idx];const st=q('#prSt');st.style.background=s.bg;st.innerHTML=s.art();
+  const cap=q('#prCap');cap.innerHTML=s.cap;cap.style.animation='none';void cap.offsetWidth;cap.style.animation='';
+  if(s.fin){const b=el('button','pr-go',after[0]);b.onclick=after[1];cap.appendChild(b);mark(ix)}
+  q('#prCnt').textContent=(idx+1)+' / '+N;[...dots.children].forEach((d,k)=>d.className=k==idx?'on':k<idx?'dn':'');
+  const bar=q('#prBar');bar.classList.remove('go');void bar.offsetWidth;bar.style.setProperty('--d',(s.d/1000)+'s');bar.style.width=s.d?'':'100%';if(s.d)bar.classList.add('go');
+  arm(s.d)}
+ q('#prN').onclick=()=>show(idx+1);q('#prP').onclick=()=>show(idx-1);
+ const tog=()=>{paused=!paused;root.classList.toggle('paused',paused);q('#prPl').textContent=paused?'▶ Παίξε':'⏸ Παύση';if(paused){clearTimeout(t);rem=Math.max(300,rem-(Date.now()-t0))}else if(!SC[idx].fin){t0=Date.now();t=setTimeout(()=>show(idx+1),rem)}};
+ q('#prPl').onclick=tog;
+ const kd=e=>{if(!root.isConnected){removeEventListener('keydown',kd);clearTimeout(t);return}if(e.target.tagName==='BUTTON'&&e.key===' ')return;if(e.key==='ArrowRight'){show(idx+1)}else if(e.key==='ArrowLeft'){show(idx-1)}else if(e.key===' '){e.preventDefault();tog()}};addEventListener('keydown',kd);
+ show(0);
+}
+function quiz(v,qs,done,o){o=o||{};let i=0,ok=0;const box=el('div','','');v.appendChild(box);
+ const draw=()=>{box.innerHTML='';
+  if(i>=qs.length){box.append(el('div','win',`<div class="big">${ok==qs.length?'🏆':ok>=qs.length*.7?'🌟':'💪'}</div><b>${ok} από ${qs.length} σωστά!</b><div class="stars">${stars(ok,qs.length)}</div>`));const b=el('button','btn g','↺ Ξανά από την αρχή');b.onclick=()=>{i=0;ok=0;draw()};box.append(b);done&&done(ok);return}
+  const q=qs[i];box.append(el('div','prog',`<i style="width:${i/qs.length*100}%"></i>`));box.append(el('div','sit',(q.em?`<span class="em">${q.em}</span>`:'')+q.q));
+  const g=el('div',q.opts.length==2?'big2':'og','');let order=q.opts.map((_,k)=>k);if(o.shuf)order=sh(order);
+  const fb=el('div','','');fb.style.cssText='min-height:56px;text-align:center;font-weight:700;margin:10px 0';let answered=0;
+  order.forEach(k=>{const b=el('button','opt'+(o.small?' s':''),q.opts[k]);b.onclick=()=>{if(answered)return;answered=1;const right=k==q.a;if(right)ok++;b.classList.add(right?'right':'wrong');if(!right)[...g.children].forEach((x,j)=>{if(order[j]==q.a)x.classList.add('right')});fb.innerHTML=(right?'<span class="ok-t">✔ Σωστά! </span>':'<span class="bad-t">✖ Όχι ακριβώς. </span>')+(q.why||'');const nx=el('button','btn',i<qs.length-1?'Επόμενο ➜':'Τέλος ✓');nx.onclick=()=>{i++;draw()};box.append(nx)};g.appendChild(b)});
+  box.append(g,fb)};draw()}
+
+const TP1=(()=>{
+const bst=document.createElement('style');bst.textContent=`
+.pw{border:3px solid #1e293b;border-radius:12px;overflow:hidden;background:#f1f5f9;max-width:880px;margin:10px auto;color:#1e293b}
+.pt{display:flex;gap:6px;align-items:center;background:#dbeafe;padding:4px 8px;font-size:15px;font-weight:600}
+.pr{display:flex;flex-wrap:wrap;gap:4px;padding:6px;background:#fff;border-bottom:2px solid #cbd5e1;align-items:stretch}
+.pg{border-right:2px solid #e2e8f0;padding:2px 6px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:2px}.pg:last-child{border:0}
+.pg small{font-size:11px;color:#64748b;font-weight:600}.pgr{display:flex;flex-wrap:wrap;justify-content:center;max-width:190px}
+.pp{border:3px solid transparent;border-radius:8px;background:transparent;cursor:pointer;font:600 22px Fredoka;min-width:36px;min-height:36px;padding:0 4px;color:#1e293b}
+.pp:hover{border-color:#f59e0b;background:#fef9c3}.pp.sel{border-color:#ef4444;background:#fee2e2}.pp.ok{border-color:#10b981;background:#bbf7d0}.pp.no{animation:shk .4s}
+@keyframes shk{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.sw{display:grid;grid-template-columns:repeat(10,20px);gap:2px}.sw .pp{min-width:0;min-height:0;width:20px;height:20px;padding:0;border-width:2px;border-radius:3px;border-color:#94a3b8}
+.cs{display:flex;gap:6px}.cs .pp{width:42px;height:42px;display:grid;place-items:center;font-size:12px;line-height:1}
+.pcv{display:block;width:100%;height:130px;border:0;border-top:2px solid #cbd5e1;background:#fff;border-radius:0;font:600 20px Fredoka;color:#94a3b8}
+.pcv.sel{background:#fee2e2}.pcv.ok{background:#bbf7d0}
+.inf{background:var(--hl);border:3px solid var(--amber);border-radius:16px;padding:12px 14px;max-width:880px;margin:8px auto;text-align:center;font-size:20px;min-height:80px}
+.mdb{display:flex;gap:8px;justify-content:center;margin:8px 0}.mdb button{border:3px solid var(--bd);background:var(--card);border-radius:99px;padding:6px 16px;font:700 17px Fredoka;color:var(--tx);cursor:pointer}.mdb button.on{background:var(--blue);border-color:#1d4ed8;color:#fff}
+.stp2{display:grid;gap:10px;margin:12px 0}.stp2 .opt{text-align:left;font-size:19px}.stp2 .opt.used{opacity:.4}
+.ord2{display:grid;gap:6px;margin:10px 0}.ord2 span{background:#bbf7d0;border:3px solid var(--green);border-radius:14px;padding:6px 12px;font-weight:700;color:#14532d}
+`;document.head.appendChild(bst);
+const PARTS=[
+['save','💾','Αποθήκευση','Πατάω τη δισκέτα για να αποθηκεύσω τη ζωγραφιά μου. Μετά γράφω ένα όνομα και πατάω «Αποθήκευση».'],
+['title','Χωρίς τίτλο - Ζωγραφική','Όνομα αρχείου','Εδώ φαίνεται το όνομα της ζωγραφιάς μου. Αν δεν την έχω αποθηκεύσει, γράφει «Χωρίς τίτλο».'],
+['select','⬚','Επιλογή','Διαλέγω ένα κομμάτι της ζωγραφιάς για να το μετακινήσω ή να το αντιγράψω.'],
+['pencil','✏️','Μολύβι','Ζωγραφίζω λεπτές γραμμές και γράφω με το χέρι.'],
+['fill','🪣','Γέμισμα με χρώμα','Γεμίζω με χρώμα μια κλειστή περιοχή της ζωγραφιάς.'],
+['text','🅰️','Εισαγωγή κειμένου','Γράφω γράμματα και λέξεις πάνω στη ζωγραφιά μου.'],
+['eraser','🧽','Γόμα','Σβήνω ό,τι δεν μου αρέσει.'],
+['picker','💉','Επιλογή χρώματος','Παίρνω το χρώμα που υπάρχει ήδη στη ζωγραφιά και ζωγραφίζω με αυτό.'],
+['brush','🖌️','Επιλογή πινέλου','Διαλέγω πινέλο και ζωγραφίζω με χοντρές, όμορφες πινελιές.'],
+['shapes','⭕','Σχήματα','Ζωγραφίζω έτοιμα σχήματα: γραμμή, κύκλο, τρίγωνο, ορθογώνιο, καρδιά, αστέρι.'],
+['outline','▭','Περίγραμμα και γέμισμα για τα σχήματα','Διαλέγω πώς θα είναι το περίγραμμα και αν θα γεμίσει με χρώμα το σχήμα.'],
+['size','☰','Μέγεθος πινέλου και μολυβιού','Διαλέγω πόσο λεπτή ή χοντρή θα είναι η γραμμή μου.'],
+['color1','1','Χρώμα 1','Το χρώμα με το οποίο ζωγραφίζω τώρα.'],
+['color2','2','Χρώμα βάσης (Χρώμα 2)','Το χρώμα του φόντου. Το χρησιμοποιεί και η γόμα.'],
+['palette','','Επιλογή χρωμάτων','Πατάω ένα χρώμα της παλέτας για να το διαλέξω.'],
+['more','🌈','Περισσότερα χρώματα','Φτιάχνω το δικό μου χρώμα. Πατάω «Επεξεργασία χρωμάτων».'],
+['canvas','','Χώρος όπου ζωγραφίζω','Εδώ ζωγραφίζω! Είναι σαν ένα λευκό χαρτί.']
+];
+const PB={};PARTS.forEach(p=>PB[p[0]]=p);
+const PAL=['#000000','#7f7f7f','#880015','#ed1c24','#ff7f27','#fff200','#22b14c','#00a2e8','#3f48cc','#a349a4','#ffffff','#c3c3c3','#b97a57','#ffaec9','#ffc90e','#efe4b0','#b5e61d','#99d9ea','#7092be','#c8bfe7'];
+function paintWin(onPick){
+ const w=el('div','pw','');
+ const b=(k,t,c)=>`<button type="button" class="pp ${c||''}" data-k="${k}" aria-label="${PB[k][2]}">${t}</button>`;
+ w.innerHTML=`<div class="pt">${b('save','💾')} <span style="opacity:.6">↶ ↷</span> ${b('title','Χωρίς τίτλο - Ζωγραφική')}</div>
+ <div class="pr">
+  <div class="pg"><div>${b('select','⬚')}</div><small>Εικόνα</small></div>
+  <div class="pg"><div class="pgr" style="max-width:150px">${b('pencil','✏️')}${b('fill','🪣')}${b('text','🅰️')}${b('eraser','🧽')}${b('picker','💉')}</div><small>Εργαλεία</small></div>
+  <div class="pg"><div>${b('brush','🖌️')}</div><small>Πινέλα</small></div>
+  <div class="pg"><div class="pgr">${['╲','◯','▭','△','◇','☆','♡'].map(s=>b('shapes',s)).join('')}</div><small>Σχήματα</small></div>
+  <div class="pg"><div>${b('outline','▭')}</div><small>Περίγραμμα / Γέμισμα</small></div>
+  <div class="pg"><div>${b('size','☰')}</div><small>Μέγεθος</small></div>
+  <div class="pg"><div class="cs">${b('color1','1')}${b('color2','2')}</div><small>Χρώμα 1 · 2</small></div>
+  <div class="pg"><div class="sw">${PAL.map(c=>`<button type="button" class="pp" data-k="palette" style="background:${c}" aria-label="χρώμα"></button>`).join('')}</div><small>Χρώματα</small></div>
+  <div class="pg"><div>${b('more','🌈')}</div><small>Περισσότερα</small></div>
+ </div>
+ <button type="button" class="pp pcv" data-k="canvas">Εδώ ζωγραφίζω</button>`;
+ w.querySelectorAll('[data-k]').forEach(x=>x.onclick=()=>onPick(x.dataset.k,x));
+ const cs=w.querySelector('[data-k=color1]');cs.style.background='#000';cs.style.color='#fff';w.querySelector('[data-k=color2]').style.background='#fff';
+ return w}
+const TA=[
+['🎨 Τα μέρη','Τα μέρη του Paint',v=>{
+ v.appendChild(el('p','lead','Αυτό είναι το πρόγραμμα ζωγραφικής Paint. Πάτησε στα μέρη του για να τα γνωρίσεις!'));
+ let mode='learn';const inf=el('div','inf','Πάτησε ένα εικονίδιο.');const mb=el('div','mdb','');
+ const bl=el('button','on','👆 Μαθαίνω'),bf=el('button','','🎯 Βρες το');mb.append(bl,bf);
+ let q=0,sc=0,cur=null,order=[];
+ const win=paintWin((k,x)=>{
+  if(mode=='learn'){win.querySelectorAll('.sel').forEach(e=>e.classList.remove('sel'));(k=='palette'?win.querySelectorAll('[data-k=palette]'):[x]).forEach(e=>e.classList.add('sel'));inf.innerHTML='<b>'+PB[k][2]+'</b><br>'+PB[k][3];return}
+  if(cur==null)return;const ok=k==cur;if(ok)sc++;
+  const els=k==cur?[x]:[];(k==cur?(k=='palette'?win.querySelectorAll('[data-k=palette]'):[x]):[]).forEach(e=>e.classList.add('ok'));
+  if(!ok){x.classList.add('no');setTimeout(()=>x.classList.remove('no'),400)}
+  inf.innerHTML=(ok?'<span class="ok-t">✔ Μπράβο!</span> ':'<span class="bad-t">✖ Όχι, αυτό είναι: '+PB[k][2]+'.</span> ')+'<br>'+PB[cur][2]+': '+PB[cur][3];
+  cur=null;setTimeout(next,1900)});
+ const next=()=>{win.querySelectorAll('.ok,.sel').forEach(e=>e.classList.remove('ok','sel'));if(q>=8){inf.innerHTML='<div class="win"><div class="big">'+(sc>=7?'🏆':'👏')+'</div><b>'+sc+' από 8!</b></div>';cur=null;if(sc>=6)mark(0);return}
+  cur=order[q++];inf.innerHTML='Πάτησε: <b>'+PB[cur][2]+'</b> <small>('+q+'/8)</small>'};
+ const setm=m=>{mode=m;bl.classList.toggle('on',m=='learn');bf.classList.toggle('on',m=='find');win.querySelectorAll('.ok,.sel').forEach(e=>e.classList.remove('ok','sel'));
+  if(m=='learn'){inf.textContent='Πάτησε ένα εικονίδιο.';cur=null}else{q=0;sc=0;order=sh(PARTS.map(p=>p[0]).filter(k=>k!='title')).slice(0,8);next()}};
+ bl.onclick=()=>setm('learn');bf.onclick=()=>setm('find');
+ v.append(mb,win,inf);
+ v.appendChild(el('p','lead','<small>Το Paint υπάρχει στα Windows: Έναρξη → Όλα τα προγράμματα → Βοηθήματα → Ζωγραφική.</small>'))}],
+['🧰 Εργαλεία','Ποιο εργαλείο χρησιμοποιώ;',v=>{
+ v.appendChild(el('p','lead','Διάλεξε το σωστό εργαλείο για κάθε δουλειά.'));
+ const O=['✏️ Μολύβι','🪣 Γέμισμα με χρώμα','🧽 Γόμα','🅰️ Κείμενο','⭕ Σχήματα','💉 Επιλογή χρώματος'];
+ const Q=[['Θέλω να γεμίσω τον ουρανό με γαλάζιο.',1],['Έκανα λάθος και θέλω να σβήσω.',2],['Θέλω να γράψω το όνομά μου με το χέρι.',0],['Θέλω να φτιάξω έναν κύκλο.',4],['Θέλω να γράψω μια λέξη με γράμματα.',3],['Θέλω το ίδιο χρώμα με αυτό που ήδη υπάρχει στη ζωγραφιά.',5],['Θέλω να φτιάξω ένα τρίγωνο για τη στέγη.',4],['Θέλω να χρωματίσω το σπίτι μέσα.',1]];
+ quiz(v,Q.map(x=>({q:x[0],a:x[1],opts:O,em:'🎨',why:'Σωστό εργαλείο: '+O[x[1]]})),ok=>{if(ok>=6)mark(1)},{shuf:1,small:1})}],
+['🔢 Με τη σειρά','Βάλε τα βήματα στη σειρά',v=>{
+ v.appendChild(el('p','lead','Πατάς με τη σωστή σειρά.'));
+ const SETS=[['Πώς ανοίγω το Paint;',['Πατάω το κουμπί Έναρξη','Διαλέγω «Όλα τα προγράμματα»','Διαλέγω «Βοηθήματα»','Πατάω «Ζωγραφική»']],['Πώς αποθηκεύω τη ζωγραφιά μου;',['Πατάω τη δισκέτα','Γράφω το όνομα της ζωγραφιάς','Διαλέγω τον φάκελο μου','Πατάω «Αποθήκευση»']]];
+ let si=0;const box=el('div','','');v.appendChild(box);
+ const draw=()=>{box.innerHTML='';if(si>=SETS.length){box.innerHTML='<div class="win"><div class="big">🏆</div><b>Τέλεια!</b></div>';mark(2);return}
+  const [t,S]=SETS[si];let k=0;const ob=el('div','stp2','');const ord=el('div','ord2','');const fb=el('div','fdbk','');
+  sh(S.map((s,i)=>[s,i])).forEach(([s,i])=>{const b=el('button','opt',s);b.onclick=()=>{if(b.classList.contains('used'))return;if(i==k){b.classList.add('used');ord.append(el('span','',(k+1)+'. '+s));k++;fb.innerHTML='';if(k==S.length){fb.innerHTML='<span class="ok-t">🎉 Σωστά!</span>';const n=el('button','btn','Επόμενο ➜');n.onclick=()=>{si++;draw()};box.append(n)}}else fb.innerHTML='<span class="bad-t">Όχι ακόμα, δοκίμασε άλλο.</span>'};ob.append(b)});
+  box.append(el('h3','',t),ob,ord,fb)};draw()}],
+['❓ Κουίζ','Τι έμαθα για το Paint;',v=>{
+ const Q=[
+ {em:'🎨',q:'Σε τι χρησιμεύει το Paint;',opts:['Να γράφω γράμματα','Να φτιάχνω ζωγραφιές','Να βλέπω ταινίες'],a:1,why:'Είναι πρόγραμμα ζωγραφικής.'},
+ {em:'💾',q:'Τι κάνει η δισκέτα;',opts:['Αποθηκεύει τη ζωγραφιά','Σβήνει τη ζωγραφιά','Αλλάζει χρώμα'],a:0,why:'Αποθηκεύω με το όνομα που θέλω.'},
+ {em:'🧽',q:'Τι κάνει η γόμα;',opts:['Ζωγραφίζει','Σβήνει','Γεμίζει με χρώμα'],a:1,why:'Σβήνει ό,τι δεν θέλω.'},
+ {em:'🪣',q:'Ο κουβάς χρωματίζει:',opts:['Μια κλειστή περιοχή','Μόνο μια γραμμή','Μόνο το όνομα'],a:0,why:'Γεμίζει με χρώμα την περιοχή.'},
+ {em:'1️⃣',q:'Το «Χρώμα 1» είναι:',opts:['Το χρώμα που ζωγραφίζω','Το χρώμα του υπολογιστή','Το χρώμα του ποντικιού'],a:0,why:'Με αυτό ζωγραφίζω.'},
+ {em:'📐',q:'Πού βρίσκω έτοιμους κύκλους και τρίγωνα;',opts:['Στα Σχήματα','Στη Γόμα','Στο Μέγεθος'],a:0,why:'Τα σχήματα είναι έτοιμα.'},
+ {em:'📛',q:'Πριν αποθηκεύσω, τι δίνω στη ζωγραφιά;',opts:['Ένα όνομα','Έναν αριθμό τηλεφώνου','Τίποτα'],a:0,why:'Το όνομα με βοηθάει να τη βρω.'},
+ {em:'📄',q:'Πώς λέγεται ο χώρος που ζωγραφίζω;',opts:['Παλέτα','Καμβάς (λευκό χαρτί)','Γραμμή τίτλου'],a:1,why:'Είναι ο χώρος όπου ζωγραφίζω.'}];
+ quiz(v,Q,ok=>{if(ok>=6)mark(5)},{shuf:1,small:1})}]
+];
+return TA;
+})();
+const TP2=(()=>{
+const bst=document.createElement('style');bst.textContent=`
+.pn{max-width:900px;margin:0 auto}
+.tb{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;background:#e8eef7;border:3px solid #94a3b8;border-radius:14px;padding:8px;margin-bottom:8px;color:#1e293b}
+.tb button{border:3px solid transparent;background:#fff;border-radius:10px;min-width:44px;height:44px;font:600 22px Fredoka;cursor:pointer;color:#1e293b;padding:0 6px}
+.tb button.on{border-color:#ef4444;background:#fee2e2}.tb .sep{width:2px;height:34px;background:#94a3b8}
+.tb .sw2{display:grid;grid-template-columns:repeat(10,22px);gap:2px}.tb .sw2 button{min-width:0;width:22px;height:22px;border:2px solid #64748b;border-radius:3px;padding:0}.tb .sw2 button.on{border-color:#ef4444;box-shadow:0 0 0 2px #fff inset}
+.tb .cc{width:44px;height:44px;border:3px solid #64748b;border-radius:8px;font-size:12px;font-weight:700}.tb .cc.on{border-color:#ef4444}
+.cvw{position:relative;border:4px solid #1e293b;border-radius:10px;overflow:hidden;background:#fff;touch-action:none}
+canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:none}
+.ti2{position:absolute;font:600 22px Fredoka,sans-serif;border:2px dashed #3b82f6;background:rgba(255,255,255,.7);min-width:120px;padding:0 4px;outline:0}
+.ms{display:grid;gap:10px;margin:12px 0}.mi{border:3px solid var(--bd);border-radius:16px;padding:10px 14px;background:var(--card)}.mi.cur{border-color:var(--amber);background:var(--hl)}.mi.fin{border-color:var(--green);background:#bbf7d0;color:#14532d}
+.mi b{font-size:20px}.ck{list-style:none;padding:0;margin:6px 0 0}.ck li{font-size:17px}.ck li::before{content:'⬜ '}.ck li.d::before{content:'✅ '}
+.act{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:8px 0}.act input{font:600 18px Fredoka;border:3px solid var(--bd);border-radius:12px;padding:8px;width:180px;background:var(--card);color:var(--tx)}
+`;document.head.appendChild(bst);
+const W=720,H=450;
+function hsl(h){const r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b),d=mx-mn;let hh=0;if(d){hh=mx==r?((g-b)/d)%6:mx==g?(b-r)/d+2:(r-g)/d+4;hh*=60;if(hh<0)hh+=360}const l=(mx+mn)/2,s=d?d/(1-Math.abs(2*l-1)):0;return [hh,s,l]}
+const fam=h=>{const [a,s,l]=hsl(h);if(l>.93)return 'white';if(l<.12)return 'black';if(s<.2)return 'gray';if(a<18||a>=340)return 'red';if(a<42)return 'orange';if(a<70)return 'yellow';if(a<170)return 'green';if(a<260)return 'blue';return 'purple'};
+const PAL=['#000000','#7f7f7f','#880015','#ed1c24','#ff7f27','#fff200','#22b14c','#00a2e8','#3f48cc','#a349a4','#ffffff','#c3c3c3','#b97a57','#ffaec9','#ffc90e','#efe4b0','#b5e61d','#99d9ea','#7092be','#c8bfe7'];
+const MS=[
+['✏️','Το όνομά μου',['Διάλεξε το μολύβι','Διάλεξε πράσινο χρώμα','Γράψε το όνομά σου'],L=>L.tools.has('pencil'),'Ζωγραφιά1',
+  [['Χρησιμοποίησες το μολύβι',L=>L.str.some(s=>s.t=='pencil')],['Με πράσινο χρώμα',L=>L.str.some(s=>s.t=='pencil'&&fam(s.c)=='green')]]],
+['🔷','Σχήματα',['Φτιάξε κύκλο, τρίγωνο, τετράγωνο και ορθογώνιο','Γέμισέ τα με χρώμα της επιλογής σου'],0,'Ζωγραφιά2',
+  [['Κύκλος (έλλειψη)',L=>L.sh.some(s=>s.k=='ellipse')],['Τρίγωνο',L=>L.sh.some(s=>s.k=='triangle')],['Ορθογώνιο ή τετράγωνο',L=>L.sh.some(s=>s.k=='rect')],['Γέμισμα με χρώμα',L=>L.fl.length>0||L.sh.some(s=>s.f)]]],
+['🌞','Το αριστούργημα',['Γραμμή στη μέση του χαρτιού','Γαλάζιος ουρανός, πράσινη γη','Πορτοκαλί κύκλος, κίτρινο γέμισμα'],0,'Αριστούργημα',
+  [['Γραμμή (ορίζοντας)',L=>L.sh.some(s=>s.k=='line')||L.str.length>0],['Γέμισμα ουρανού με γαλάζιο',L=>L.fl.some(c=>fam(c)=='blue')],['Γέμισμα γης με πράσινο',L=>L.fl.some(c=>fam(c)=='green')],['Κύκλος για τον ήλιο',L=>L.sh.some(s=>s.k=='ellipse')],['Κίτρινο γέμισμα',L=>L.fl.some(c=>fam(c)=='yellow')||L.sh.some(s=>s.f&&fam(s.f)=='yellow')]]],
+['❤️','Η καρδιά',['Με πινέλο φτιάξε μια καρδιά','Γέμισέ την με κόκκινο'],0,'Καρδιά',
+  [['Χρησιμοποίησες πινέλο',L=>L.str.some(s=>s.t=='brush')],['Κόκκινο χρώμα',L=>L.str.some(s=>fam(s.c)=='red')||L.fl.some(c=>fam(c)=='red')]]],
+['🏠','Σπίτι και δέντρα',['Σπίτι από ορθογώνιο και τρίγωνο','Δέντρα με ορθογώνιο και κύκλο','Ήλιος και χρώματα'],0,'Σπιτάκι',
+  [['Ορθογώνιο',L=>L.sh.some(s=>s.k=='rect')],['Τρίγωνο (στέγη)',L=>L.sh.some(s=>s.k=='triangle')],['Κύκλος ή έλλειψη (δέντρο, ήλιος)',L=>L.sh.some(s=>s.k=='ellipse')],['Τουλάχιστον 3 γεμίσματα',L=>L.fl.length+L.sh.filter(s=>s.f).length>=3]]],
+['🤡','Ο κλόουν',['Με γραμμές, ορθογώνιο, έλλειψη και άλλα σχήματα φτιάξε έναν κλόουν'],0,'Κλόουν',
+  [['Γραμμή',L=>L.sh.some(s=>s.k=='line')],['Ορθογώνιο',L=>L.sh.some(s=>s.k=='rect')],['Έλλειψη',L=>L.sh.some(s=>s.k=='ellipse')],['Τουλάχιστον 4 χρώματα',L=>L.cols.size>=4]]]
+];
+function PAINT(v,mis){
+ const root=el('div','pn','');v.appendChild(root);
+ const cv=el('canvas','','');cv.width=W;cv.height=H;const ctx=cv.getContext('2d',{willReadFrequently:true});ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+ let tool='pencil',c1='#000000',c2='#ffffff',act=1,size=3,fillSh=0,txt=null;
+ let L={tools:new Set(),str:[],sh:[],fl:[],cols:new Set()};const undo=[];
+ const tb=el('div','tb','');root.appendChild(tb);
+ const TL=[['pencil','✏️','Μολύβι'],['brush','🖌️','Πινέλο'],['eraser','🧽','Γόμα'],['fill','🪣','Γέμισμα'],['text','🅰️','Κείμενο'],['picker','💉','Επιλογή χρώματος'],['line','╲','Γραμμή'],['ellipse','◯','Έλλειψη'],['rect','▭','Ορθογώνιο'],['triangle','△','Τρίγωνο'],['diamond','◇','Ρόμβος'],['star','☆','Αστέρι'],['heart','♡','Καρδιά']];
+ const tbs={};
+ TL.forEach(([k,e,t])=>{const b=el('button',k==tool?'on':'',e);b.title=t;b.setAttribute('aria-label',t);b.onclick=()=>{tool=k;[...Object.values(tbs)].forEach(x=>x.classList.remove('on'));b.classList.add('on');if(txt)txt.remove()};tbs[k]=b;tb.append(b)});
+ tb.append(el('span','sep',''));
+ const sz=el('button','','●');sz.title='Μέγεθος';const szl=[2,4,8,14];let si=1;size=szl[si];sz.textContent='● '+size;sz.onclick=()=>{si=(si+1)%szl.length;size=szl[si];sz.textContent='● '+size};tb.append(sz);
+ const fb=el('button','','▭ χωρίς γέμισμα');fb.title='Γέμισμα σχήματος με Χρώμα 2';fb.onclick=()=>{fillSh=!fillSh;fb.textContent=fillSh?'▰ γέμισμα με Χρώμα 2':'▭ χωρίς γέμισμα'};tb.append(fb);
+ tb.append(el('span','sep',''));
+ const b1=el('button','cc on','Χρώμα 1');const b2=el('button','cc','Χρώμα 2');b1.style.background=c1;b1.style.color='#fff';b2.style.background=c2;
+ const setc=(c)=>{if(act==1){c1=c;b1.style.background=c;b1.style.color=hsl(c)[2]<.5?'#fff':'#000'}else{c2=c;b2.style.background=c;b2.style.color=hsl(c)[2]<.5?'#fff':'#000'}};
+ b1.onclick=()=>{act=1;b1.classList.add('on');b2.classList.remove('on')};b2.onclick=()=>{act=2;b2.classList.add('on');b1.classList.remove('on')};tb.append(b1,b2);
+ const sw=el('div','sw2','');PAL.forEach(c=>{const b=el('button','','');b.style.background=c;b.setAttribute('aria-label',c);b.onclick=()=>setc(c);sw.append(b)});tb.append(sw);
+ const mc=el('input','','');mc.type='color';mc.title='Περισσότερα χρώματα';mc.style.cssText='width:44px;height:44px;border:3px solid #64748b;border-radius:8px;padding:0;background:#fff';mc.oninput=()=>setc(mc.value);tb.append(mc);
+ tb.append(el('span','sep',''));
+ const ub=el('button','','↶');ub.title='Αναίρεση';tb.append(ub);const nb=el('button','','🗑️');nb.title='Νέο χαρτί';tb.append(nb);
+ const wrap=el('div','cvw','');wrap.append(cv);root.appendChild(wrap);
+ const snap=()=>{undo.push(ctx.getImageData(0,0,W,H));if(undo.length>25)undo.shift()};
+ ub.onclick=()=>{if(undo.length)ctx.putImageData(undo.pop(),0,0)};
+ const clearAll=()=>{snap();ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);L={tools:new Set(),str:[],sh:[],fl:[],cols:new Set()};upd()};nb.onclick=clearAll;
+ const pos=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
+ function flood(x,y,col){x=Math.floor(x);y=Math.floor(y);const id=ctx.getImageData(0,0,W,H),d=id.data;const i0=(y*W+x)*4;const tr=d[i0],tg=d[i0+1],tbb=d[i0+2];const n=parseInt(col.slice(1),16),fr=n>>16,fg=(n>>8)&255,fbv=n&255;if(Math.abs(tr-fr)+Math.abs(tg-fg)+Math.abs(tbb-fbv)<6)return false;
+  const m=(i)=>Math.abs(d[i]-tr)+Math.abs(d[i+1]-tg)+Math.abs(d[i+2]-tbb)<90;const st=[[x,y]];
+  while(st.length){let [px,py]=st.pop();let xx=px;while(xx>=0&&m((py*W+xx)*4))xx--;xx++;let up=false,dn=false;
+   while(xx<W&&m((py*W+xx)*4)){const i=(py*W+xx)*4;d[i]=fr;d[i+1]=fg;d[i+2]=fbv;d[i+3]=255;
+    if(py>0){const u=m(((py-1)*W+xx)*4);if(u&&!up){st.push([xx,py-1]);up=true}else if(!u)up=false}
+    if(py<H-1){const q=m(((py+1)*W+xx)*4);if(q&&!dn){st.push([xx,py+1]);dn=true}else if(!q)dn=false}xx++}}
+  ctx.putImageData(id,0,0);return true}
+ const path=(k,x0,y0,x1,y1)=>{ctx.beginPath();const w=x1-x0,h=y1-y0;
+  if(k=='line'){ctx.moveTo(x0,y0);ctx.lineTo(x1,y1)}
+  else if(k=='rect')ctx.rect(x0,y0,w,h);
+  else if(k=='ellipse')ctx.ellipse(x0+w/2,y0+h/2,Math.abs(w/2),Math.abs(h/2),0,0,Math.PI*2);
+  else if(k=='triangle'){ctx.moveTo(x0+w/2,y0);ctx.lineTo(x1,y1);ctx.lineTo(x0,y1);ctx.closePath()}
+  else if(k=='diamond'){ctx.moveTo(x0+w/2,y0);ctx.lineTo(x1,y0+h/2);ctx.lineTo(x0+w/2,y1);ctx.lineTo(x0,y0+h/2);ctx.closePath()}
+  else if(k=='star'){const cx=x0+w/2,cy=y0+h/2;for(let i=0;i<10;i++){const r=i%2?.45:1,a=-Math.PI/2+i*Math.PI/5;const px=cx+Math.cos(a)*r*w/2,py=cy+Math.sin(a)*r*h/2;i?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.closePath()}
+  else if(k=='heart'){const cx=x0+w/2;ctx.moveTo(cx,y0+h*.9);ctx.bezierCurveTo(x0-w*.1,y0+h*.45,x0+w*.1,y0-h*.1,cx,y0+h*.28);ctx.bezierCurveTo(x1-w*.1,y0-h*.1,x1+w*.1,y0+h*.45,cx,y0+h*.9);ctx.closePath()}};
+ let dr=null,base=null;
+ cv.onpointerdown=e=>{if(txt)txt.remove();e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}const [x,y]=pos(e);
+  if(tool=='fill'){snap();if(flood(x,y,c1)){L.fl.push(c1);L.cols.add(c1);L.tools.add('fill')}upd();return}
+  if(tool=='picker'){const p=ctx.getImageData(Math.floor(x),Math.floor(y),1,1).data;const h='#'+[p[0],p[1],p[2]].map(n=>n.toString(16).padStart(2,'0')).join('');setc(h);L.tools.add('picker');upd();return}
+  if(tool=='text'){const t=el('input','ti2','');t.style.left=(x*cv.getBoundingClientRect().width/W)+'px';t.style.top=(y*cv.getBoundingClientRect().height/H)+'px';wrap.append(t);txt=t;setTimeout(()=>t.focus(),0);t.onkeydown=k=>{if(k.key=='Enter'){snap();ctx.fillStyle=c1;ctx.font='600 26px Fredoka,Arial,sans-serif';ctx.textBaseline='top';ctx.fillText(t.value,x,y);L.tools.add('text');L.cols.add(c1);t.remove();txt=null;upd()}else if(k.key=='Escape'){t.remove();txt=null}};return}
+  snap();dr={x,y,lx:x,ly:y};
+  if(['pencil','brush','eraser'].includes(tool)){ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=tool=='eraser'?c2:c1;ctx.lineWidth=tool=='pencil'?Math.max(1,size/2.5):tool=='brush'?size*1.6:size*3;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+.01,y+.01);ctx.stroke();dr.moved=1}
+  else base=ctx.getImageData(0,0,W,H)};
+ cv.onpointermove=e=>{if(!dr)return;const [x,y]=pos(e);
+  if(['pencil','brush','eraser'].includes(tool)){ctx.beginPath();ctx.moveTo(dr.lx,dr.ly);ctx.lineTo(x,y);ctx.stroke();dr.lx=x;dr.ly=y}
+  else{ctx.putImageData(base,0,0);ctx.lineWidth=Math.max(1,size/1.5);ctx.lineCap='round';ctx.lineJoin='round';ctx.strokeStyle=c1;path(tool,dr.x,dr.y,x,y);if(fillSh&&tool!='line'){ctx.fillStyle=c2;ctx.fill()}ctx.stroke();dr.lx=x;dr.ly=y}};
+ const end=e=>{if(!dr)return;const t=tool;
+  if(['pencil','brush','eraser'].includes(t)){L.tools.add(t);if(t!='eraser'){L.str.push({t,c:c1});L.cols.add(c1)}}
+  else if(Math.abs(dr.lx-dr.x)>3||Math.abs(dr.ly-dr.y)>3){L.sh.push({k:t,f:fillSh&&t!='line'?c2:0});L.tools.add(t);L.cols.add(c1);if(fillSh&&t!='line')L.cols.add(c2)}
+  dr=null;base=null;upd()};
+ cv.onpointerup=end;cv.onpointercancel=end;
+ // ---- save
+ const bar=el('div','act','');const nm=el('input','','');nm.placeholder='Όνομα ζωγραφιάς';nm.maxLength=30;const sv=el('button','btn','💾 Αποθήκευση');const tt=el('div','fdbk','');
+ sv.onclick=()=>{const n=(nm.value.trim()||'Ζωγραφιά').replace(/[\\/:*?"<>|]/g,'_');cv.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n+'.png';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);tt.innerHTML='<span class="ok-t">💾 Αποθηκεύτηκε με όνομα «'+n+'»</span>';if(!mis)mark(4)})};
+ bar.append(nm,sv);root.append(bar,tt);
+ let mi=0,fin={};const ml=el('div','ms','');
+ function upd(){if(!mis)return;ml.innerHTML='';MS.forEach((m,i)=>{const ch=m[5].map(c=>[c[0],c[1](L)]);const all=ch.every(c=>c[1]);if(i==mi&&all&&!fin[i]){fin[i]=1;mark(3)}
+  const d=el('div','mi '+(fin[i]?'fin':i==mi?'cur':''),`<b>${m[0]} ${i+1}. ${m[1]}</b>`);
+  if(i==mi||fin[i]){const ul=el('ul','ck','');ul.innerHTML=m[3]?'':'';m[2].forEach(s=>ul.append(el('li','',s)));d.append(el('div','',m[2].join(' · ')));const ck=el('ul','ck','');ch.forEach(c=>ck.append(el('li',c[1]?'d':'',c[0])));d.append(ck);
+   if(i==mi){if(all){d.append(el('div','ok-t','🎉 Τέλειο! Αποθήκευσε με το όνομα «'+m[4]+'»'));const nx=el('button','btn','Επόμενη αποστολή ➜');nx.onclick=()=>{if(mi<MS.length-1)mi++;clearAll();nm.value=MS[mi][4]};d.append(nx)}
+    else{const sk=el('button','btn g','✓ Το έκανα (παράκαμψη ελέγχου)');sk.onclick=()=>{fin[i]=1;mark(3);if(mi<MS.length-1)mi++;clearAll();nm.value=MS[mi][4]};d.append(sk)}}}
+  else if(i<mi)d.classList.add('fin');ml.append(d)})}
+ if(mis){nm.value=MS[0][4];root.append(el('h3','','🎯 Αποστολές'),ml);upd()}
+ else root.append(el('p','lead','Ζωγράφισε ελεύθερα! Δοκίμασε όλα τα εργαλεία.'));
+}
+return [['🎯 Αποστολές','Αποστολές στο Paint',v=>{v.appendChild(el('p','lead','Ακολούθησε τις οδηγίες. Το πρόγραμμα ελέγχει πότε τελείωσες κάθε αποστολή!'));PAINT(v,1)}],['🖌️ Ελεύθερα','Ελεύθερη ζωγραφική',v=>PAINT(v,0)]];
+
+})();
+const T=[TP1[0],TP1[1],TP1[2],TP2[0],TP2[1],TP1[3]];
+
+tabs();go(0);
+</script></body></html>

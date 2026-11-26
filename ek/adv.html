@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ελληνικά — Το διαφημιστικό μου</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--teal:#14b8a6;--blue:#3b82f6;--purple:#8b5cf6;--amber:#f59e0b;--green:#10b981;--red:#ef4444;--soft:#f1f5f9;--hl:#fef9c3}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350;--hl:#4a3f10}}
+*{box-sizing:border-box}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:18px}
+header{background:linear-gradient(135deg,var(--teal),var(--blue),var(--purple));color:#fff;padding:14px 16px;text-align:center}
+header h1{margin:0;font-size:clamp(24px,5vw,34px)}header p{margin:2px 0 0;opacity:.9;font-size:15px}
+#dots{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:12px 8px 0}
+#dots button{border:3px solid var(--bd);background:var(--card);color:var(--tx);width:44px;height:44px;border-radius:50%;font:700 18px Fredoka;cursor:pointer;position:relative}
+#dots button.on{background:var(--amber);border-color:#d97706;color:#fff}
+#dots button.ok::after{content:"✓";position:absolute;right:-4px;top:-6px;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-size:13px;display:grid;place-items:center}
+main{max-width:900px;margin:0 auto;padding:12px 14px 90px}
+.card{background:var(--card);border:3px solid var(--bd);border-radius:24px;padding:18px;box-shadow:0 8px 0 rgba(0,0,0,.07)}
+h2{margin:0 0 6px;font-size:clamp(22px,4.5vw,30px)}.lead{color:var(--mu);margin:0 0 14px}
+.btn{border:0;cursor:pointer;font:700 18px Fredoka;color:#fff;background:var(--teal);padding:12px 24px;border-radius:16px;box-shadow:0 5px 0 #0d9488}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #0d9488}.btn.b{background:var(--blue);box-shadow:0 5px 0 #1d4ed8}.btn.g{background:var(--soft);color:var(--tx);box-shadow:0 5px 0 var(--bd)}.btn:disabled{opacity:.45}
+nav.n{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:3px solid var(--bd);display:flex;justify-content:space-between;padding:10px 14px;gap:10px;z-index:9}
+.step{display:flex;gap:12px;align-items:flex-start;margin:10px 0}.step b.num{flex:none;width:38px;height:38px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font-size:20px}
+.url{display:flex;align-items:center;gap:8px;background:var(--soft);border:3px solid var(--bd);border-radius:99px;padding:6px 14px}
+.url input,.f input,.f textarea{font:600 20px Fredoka;border:0;background:transparent;color:var(--tx);outline:0;flex:1;min-width:0;width:100%}
+.ok-t{color:var(--green);font-weight:700}.bad-t{color:var(--red);font-weight:700}
+.grid21{display:grid;grid-template-columns:repeat(auto-fill,minmax(52px,1fr));gap:8px;margin:10px 0}
+.grid21 button{font:700 20px Fredoka;border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:14px;padding:8px 0;cursor:pointer}
+.grid21 button.on{background:var(--blue);color:#fff;border-color:#1d4ed8}
+.addr{font:700 clamp(20px,5vw,32px) Fredoka;text-align:center;padding:12px;background:var(--hl);border-radius:18px;margin:10px 0;word-break:break-all}
+.addr .n1{color:var(--red)}.addr .n2{color:var(--blue)}.addr .n3{color:var(--purple)}.addr .n4{color:var(--green)}
+.legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;font-size:15px;margin-bottom:8px}.legend span{padding:2px 10px;border-radius:99px;background:var(--soft)}
+.secret{background:#fee2e2;border:3px dashed var(--red);border-radius:18px;padding:12px;margin:12px 0;color:#7f1d1d}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .secret{background:#450a0a;color:#fecaca}}
+.mock{border:3px solid var(--bd);border-radius:18px;overflow:hidden;background:var(--card)}
+.mock .bar{background:var(--soft);padding:8px 12px;display:flex;gap:10px;align-items:center;font-size:15px;flex-wrap:wrap}
+.mock .body{display:grid;grid-template-columns:150px 1fr}
+.side{background:var(--soft);padding:8px;display:flex;flex-direction:column;gap:6px}
+.hot{border:3px dashed transparent;border-radius:12px;padding:6px 8px;cursor:pointer;background:transparent;font:600 16px Fredoka;color:var(--tx);text-align:left}
+.hot:hover{border-color:var(--amber)}.hot.done{background:#bbf7d0;color:#14532d;border-style:solid;border-color:var(--green)}
+.mails{padding:8px;display:flex;flex-direction:column;gap:6px}.mails div{padding:8px 10px;border-radius:10px;background:var(--soft);font-size:15px}
+#info{margin-top:12px;min-height:58px;padding:12px;border-radius:16px;background:var(--hl)}
+.mc{display:grid;gap:8px}.opt{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:16px;padding:12px;font:600 19px Fredoka;cursor:pointer;text-align:left}
+.opt.right{background:#bbf7d0;border-color:var(--green);color:#14532d}.opt.wrong{background:#fecaca;border-color:var(--red);color:#7f1d1d}
+.email{border:3px solid var(--bd);border-radius:18px;overflow:hidden;background:var(--card)}
+.email .hd{background:var(--blue);color:#fff;padding:8px 14px;font-weight:700;display:flex;justify-content:space-between}
+.f{display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--bd);padding:8px 14px;min-height:52px}
+.f label{flex:none;width:76px;font-weight:700;color:var(--purple)}
+.f.area{align-items:flex-start;border-bottom:0}.f textarea{height:130px;resize:none}
+.reg{cursor:pointer}.reg.sel{outline:4px solid var(--amber);outline-offset:-4px}
+.tbar{display:flex;gap:10px;padding:10px 14px;align-items:center;background:var(--soft);flex-wrap:wrap}
+.chip{display:inline-flex;gap:6px;align-items:center;background:#dbeafe;color:#1e3a8a;border-radius:99px;padding:4px 12px;font-size:16px}
+.chk{list-style:none;padding:0;margin:12px 0}.chk li{padding:4px 0}.chk li::before{content:"⬜ "}.chk li.y::before{content:"✅ "}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.7);display:none;place-items:center;z-index:50;padding:14px}.modal.on{display:grid}
+.modal .box{background:var(--card);border-radius:22px;padding:18px;max-width:420px;width:100%}
+.file{display:flex;gap:12px;align-items:center;padding:10px;border-radius:14px;border:3px solid var(--bd);margin:8px 0;cursor:pointer;font-weight:600}.file:hover{border-color:var(--amber)}
+.win{text-align:center;padding:10px}.win .big{font-size:70px}
+.cert{border:6px double var(--amber);border-radius:20px;padding:18px;text-align:center;background:var(--hl);margin-top:12px}
+.cert input{font:700 24px Fredoka;text-align:center;border:0;border-bottom:3px solid var(--amber);background:transparent;color:var(--tx);width:90%;outline:0}
+@media(max-width:560px){.mock .body{grid-template-columns:1fr}.side{flex-direction:row;flex-wrap:wrap}.f label{width:60px}}
+</style><style id="prcss">
+#prn{display:none}
+#prn .ph{margin:0 0 3mm;font-size:22pt;text-align:center}
+#prn .pn{display:flex;gap:6mm;align-items:flex-end;font-size:12pt;margin:0 0 6mm;color:#444}
+#prn .pn i{flex:1;border-bottom:1.5px solid #888;height:1em}
+#prn .pf{margin-top:8mm;text-align:center;font-size:9pt;color:#777}
+#prn svg{max-width:100%;height:auto}
+#prn .ptb{border-collapse:collapse;margin:4mm 0;font-size:13pt}#prn .ptb th,#prn .ptb td{border:1.5px solid #94a3b8;padding:2mm 4mm;text-align:left}#prn .ptb th{background:#e2e8f0}#prn .ptb td.n{text-align:right}
+#prn .ds,#prn .slide{max-width:none!important;width:75%;margin:0 auto 4mm!important;break-inside:avoid}
+#prn .pdoc{font:16pt/1.5 'Times New Roman',Georgia,serif;color:#000;padding:4mm 2mm;min-height:120mm}
+#prn .pslide{aspect-ratio:16/9;width:78%;margin:0 auto 7mm;border:2px solid #94a3b8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;break-inside:avoid;padding:4mm;overflow:hidden}
+#prn .pslide .pe{font-size:54pt;line-height:1.1}#prn .pslide .pt{font-size:28pt;font-weight:700}#prn .pslide .px{font-size:16pt;margin-top:2mm}#prn .pslide .pn2{position:absolute;right:8px;bottom:5px;font-size:10pt;color:#64748b}
+#prn .hero{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;border:1.5px solid #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;break-inside:avoid}
+#prn .prpg{position:relative;width:680px;height:382px;overflow:hidden;margin:0 auto 8mm;border:2px solid #94a3b8;break-inside:avoid}#prn .prpg>div{transform:scale(.85);transform-origin:0 0}
+#prn .pimg{display:block;width:100%;height:auto;border:2px solid #94a3b8;margin:0 auto}
+#prn .dip{border:8px double #d97706;border-radius:18px;padding:16mm 10mm;text-align:center;margin:20mm auto 0;break-inside:avoid}#prn .dip .dt{font-size:34pt;font-weight:700;margin:4mm 0}#prn .dip .dn{font-size:30pt;font-weight:700;margin:8mm 0;border-bottom:2px solid #d97706;display:inline-block;min-width:60%}#prn .dip .dx{font-size:18pt}
+#prn-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 18px;border-radius:14px;font:600 16px system-ui,sans-serif;z-index:99999;max-width:90vw;text-align:center}
+@media print{
+ body.printing>*:not(#prn){display:none!important}
+ body.printing{background:#fff!important;color:#111!important;margin:0!important;--bg:#fff;--card:#fff;--tx:#111;--mu:#555;--bd:#cbd5e1;--soft:#f1f5f9;--hl:#fef9c3}
+ body.printing #prn{display:block!important;font-family:Fredoka,system-ui,sans-serif;color:#111;font-size:14pt}
+ #prn,#prn *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style><style>
+main{max-width:1150px!important}
+.panel{border:3px solid var(--bd);border-radius:18px;padding:10px 14px;margin:10px 0;background:var(--card)}
+.panel h4{margin:0 0 8px;font-size:19px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:6px 0}.row label{font-weight:600;font-size:16px}
+.bt{border:3px solid var(--bd);background:var(--card);color:var(--tx);font:600 16px Fredoka;border-radius:12px;padding:6px 12px;cursor:pointer}.bt:hover{border-color:var(--amber)}.bt.on{background:var(--amber);color:#fff;border-color:#d97706}.bt:disabled{opacity:.4;cursor:default}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--bd);cursor:pointer;padding:0}.sw.on{outline:4px solid var(--blue);outline-offset:1px}
+select,input[type=text],textarea{font:600 17px Fredoka;border:3px solid var(--bd);border-radius:12px;padding:6px 10px;background:var(--card);color:var(--tx);max-width:100%}
+textarea{width:100%;resize:vertical}
+canvas.cnv{width:100%;height:auto;display:block;border:4px solid var(--bd);border-radius:14px;background:#fff;touch-action:none}
+.hint2{color:var(--mu);font-size:15px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:14px;align-items:start}@media(max-width:880px){.grid2{grid-template-columns:1fr}}
+.stk{display:flex;flex-wrap:wrap;gap:4px}.stk button{font-size:28px;border:2px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;padding:2px 6px}.stk button:hover{border-color:var(--amber)}
+#msg{min-height:1.6em;font-weight:700;color:var(--purple);text-align:center}
+input[type=range]{vertical-align:middle;max-width:160px}
+
+.topbar{position:sticky;top:0;z-index:20;background:var(--card);padding:6px 0;margin:-6px 0 10px}
+.nav{display:flex;gap:6px;overflow-x:auto;padding:4px 2px}
+.st{flex:0 0 auto;min-width:78px;border:3px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:600 12px Fredoka;padding:6px 6px;cursor:pointer;position:relative;text-align:center}
+.st .ic{display:block;font-size:24px}.st.on{border-color:var(--blue);background:#dbeafe;color:#111}.st.ok{border-color:var(--green)}.st i{position:absolute;top:-6px;right:-4px;background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;font-style:normal;font-size:12px;line-height:20px}
+.pbar{display:flex;justify-content:space-between;align-items:center;margin-top:6px}#pts{font:700 20px Fredoka;color:var(--amber)}
+.act{border:3px solid var(--bd);border-radius:18px;padding:12px 16px;margin:14px 0;background:var(--card)}.act h3{margin:0 0 6px;font-size:21px}.sub{color:var(--mu);font-size:16px;margin:4px 0 8px}
+.info,.story,.qs{background:#eff6ff;border-left:6px solid var(--blue);border-radius:10px;padding:10px 14px;font-size:17px;line-height:1.5;color:#111}.fig{font-size:46px}
+.vid video{width:100%;max-height:420px;border-radius:14px;background:#000;margin-top:8px}
+.qz,.ord,.srt{margin-top:8px}.qq{font-size:19px;font-weight:600;margin:6px 0}.qn,.sc{color:var(--mu);font-size:14px}
+.qo{display:flex;flex-wrap:wrap;gap:8px}.qb,.pb{flex:1 1 200px}.bt.good{background:var(--green)!important;color:#fff;border-color:#15803d}.bt.bad{background:#fecaca!important;color:#7f1d1d;border-color:var(--red)}
+.qf p{background:#dcfce7;color:#14532d;padding:8px 12px;border-radius:10px}.res{font:700 22px Fredoka;margin:8px 0}
+.slots,.pool{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.slot{min-width:84px;min-height:70px;border:3px dashed var(--bd);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;padding:4px}.slot b{position:absolute;top:2px;left:6px;font-size:12px;color:var(--mu)}.slot.full{border-style:solid;border-color:var(--green);background:#f0fdf4;color:#111}
+.tok{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:12px;padding:6px 10px;cursor:pointer;font:600 15px Fredoka}.tok:hover{border-color:var(--blue)}.tok:disabled{opacity:.9}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}.fb{min-height:1.4em;font-weight:600;color:var(--purple)}
+.pl{display:flex;flex-direction:column;align-items:center;font-size:12px;min-width:56px}.pl.big{font-size:18px;font-weight:700}.sunline{font-weight:700;color:#d97706;margin:6px 0}
+.card2{font-size:22px;text-align:center;padding:16px;border:3px solid var(--bd);border-radius:16px;margin:8px 0;background:#fffbeb;color:#111}.sc2{font-size:22px;font-weight:700}
+.bins{display:flex;flex-wrap:wrap;gap:10px}.bin{flex:1 1 140px;border:4px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);font:700 19px Fredoka;padding:14px;cursor:pointer}.bin.good{background:var(--green);color:#fff}.bin.bad{background:#fecaca;color:#7f1d1d}
+.sunbox p{font-size:17px}.sunbig{background:linear-gradient(90deg,#f59e0b,#fbbf24);border-radius:16px;height:110px;position:relative;display:flex;align-items:center;padding:0 20px;font:700 24px Fredoka;color:#78350f}.dot{position:absolute;right:20px;bottom:12px;width:5px;height:5px;background:#2563eb;border-radius:50%}
+.race{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}.rc{border:3px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);padding:8px;cursor:pointer;font:600 14px Fredoka;display:flex;flex-direction:column;align-items:center;gap:2px}.rc span{font-size:30px}.rc .rt{display:none}.rc.open{border-color:var(--green);background:#f0fdf4;color:#111}.rc .rv{font-size:16px}
+.tilt{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.big{font:700 34px Fredoka}
+.rsim{display:flex;flex-wrap:wrap;gap:16px;align-items:center}.rc2{flex:1 1 240px}.clk{display:flex;gap:10px;align-items:center;border:3px solid var(--bd);border-radius:12px;padding:6px 10px;margin:6px 0}.clk span{font:700 30px Fredoka}.clk i{font-style:normal}
+.orb{display:flex;flex-wrap:wrap;gap:12px;align-items:center}.oinfo{flex:1 1 240px;background:#fffbeb;color:#111;border-radius:12px;padding:10px 14px;font-size:17px;min-height:80px}
+.ev{display:flex;flex-direction:column;align-items:center;font-size:16px}.ev small{font-weight:400}
+.bar{display:flex;height:46px;border-radius:12px;overflow:hidden;font:700 16px Fredoka;margin:8px 0}.day{background:#fbbf24;color:#78350f;display:flex;align-items:center;justify-content:center}.night{background:#1e293b;color:#fff;display:flex;align-items:center;justify-content:center}
+.rays{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.rays>div{flex:1 1 240px}.clm{max-width:520px}
+.bagbox{display:flex;flex-wrap:wrap;gap:14px}.bpool{flex:1 1 260px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start}.suit{flex:1 1 260px;border:4px solid #92400e;border-radius:18px;background:#fef3c7;color:#111;padding:8px;min-height:180px}.suit .sl{font-weight:700;color:#92400e}.bin2{display:flex;flex-wrap:wrap;gap:6px}.bin2 .tok{background:#fff;color:#111;border-color:var(--green)}
+.pass{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin:10px 0}.stamp{border:4px dashed var(--bd);border-radius:14px;padding:8px;text-align:center;opacity:.5}.stamp span{font-size:34px;display:block}.stamp small{display:block}.stamp.on{opacity:1;border-color:#dc2626;color:#dc2626;transform:rotate(-3deg);border-style:solid}.stamp b{font-size:12px}
+.pq{margin:8px 0}.foot{display:flex;justify-content:space-between;gap:10px;margin:18px 0 6px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 20px;border-radius:14px;font:700 18px Fredoka;z-index:9999}
+.gd{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9998;overflow:auto;padding:16px}.gdc{max-width:760px;margin:0 auto;background:var(--card);border-radius:18px;padding:18px;font-size:16px;line-height:1.5}
+.wk li{margin:14px 0;font-size:14pt}
+
+.ped{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:14px;align-items:start}@media(max-width:900px){.ped{grid-template-columns:1fr}}
+.pcv{max-width:560px;margin:0 auto}.pcv canvas{touch-action:none;border:4px solid var(--bd);border-radius:6px;cursor:grab}
+.pan{border:3px solid var(--bd);border-radius:14px;padding:8px 10px;margin-bottom:10px;background:var(--card)}.pan h4{margin:0 0 6px}
+.pck .ck{padding:3px 6px;border-radius:8px;font-size:15px;margin:2px 0}.pck .ck.ok{background:#dcfce7;color:#14532d}
+.ped textarea{width:100%}.ped .bt.on{background:var(--amber);color:#fff}
+.ped .row{margin:5px 0}.pst{max-height:130px;overflow:auto}
+.dgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.cardf{border:3px solid var(--bd);border-radius:14px;padding:8px;text-align:center;background:var(--card);cursor:pointer;min-height:150px}.cardf .big2{font-size:46px}.cardf.open{background:#fffbeb;color:#111}
+.chart{width:100%;max-width:560px}.tbl{border-collapse:collapse;width:100%;font-size:15px}.tbl th,.tbl td{border:2px solid var(--bd);padding:4px 8px;text-align:center}.tbl th{background:#dbeafe;color:#111}.tbl input{width:70px;font:600 15px Fredoka;text-align:center;border:2px solid var(--bd);border-radius:6px;padding:2px}
+</style></head><body>
+<header style="background:linear-gradient(135deg,#f97316,#ec4899)"><h1>📣 Το διαφημιστικό μου</h1><p>Ελληνικά Γ΄–Δ΄ · Φτιάξε ένα πειστικό διαφημιστικό φυλλάδιο για έναν τόπο της Κύπρου</p></header>
+<main><div class="card"><div class="topbar"><div id="nav" class="nav"></div><div class="pbar"><span id="pts">⭐ 0</span><button class="bt" id="gb">👩‍🏫 Οδηγός</button></div></div>
+<div id="stage"></div>
+<div id="gd" class="gd"><div class="gdc"><button class="bt" id="gx" style="float:right">✖ Κλείσιμο</button><h3>👩‍🏫 Οδηγός εκπαιδευτικού</h3>
+<p><b>Μάθημα:</b> Ελληνικά (Γ΄–Δ΄) με Πληροφορική — «Διαφημιστικό φυλλάδιο» (Επαναληπτική ενότητα, Word). Διάρκεια: 1–2 διδακτικές ώρες.</p>
+<p><b>Στόχοι:</b> να καταλαβαίνουν τον σκοπό της διαφήμισης· να χρησιμοποιούν πειστικές προτάσεις (προστακτική, επίθετα, θαυμαστικά, ομοιοκαταληξία)· να εφαρμόζουν στη Word: περίγραμμα και χρώμα σελίδας, πολύχρωμο τίτλο, γραμματοσειρές και χρώματα, υπογραμμισμένο όνομα, εικόνες.</p>
+<p><b>Ροή:</b> 1) Σταθμοί 1–3 σε ζεύγη (15΄). 2) Σταθμός 4: πρώτα δοκιμάζουν όλα τα εργαλεία στον επεξεργαστή της εφαρμογής, που έχει λίστα ελέγχου με τα ίδια κριτήρια με τη διαφάνεια της ενότητας (10΄–15΄). 3) Εκτελούν την εργασία στη Word και την αποθηκεύουν με όνομα «Διαφημιστικό». 4) Διαβατήριο και αυτοαξιολόγηση.</p>
+<p><b>Παρατηρήσεις:</b> η εφαρμογή δεν αποθηκεύει εικόνες των μαθητών στο διαδίκτυο· οι δικές τους φωτογραφίες μένουν στη συσκευή. Ζητήστε από τα παιδιά να μη γράφουν προσωπικά στοιχεία (τηλέφωνο, διεύθυνση) στο φυλλάδιο.</p></div></div><div id="msg"></div></div></main>
+<script>
+
+const $=id=>document.getElementById(id);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e};
+function msg(t){const m=$('msg');if(!m)return;m.textContent=t;clearTimeout(msg.t);msg.t=setTimeout(()=>m.textContent='',4500)}
+async function saveFile(name,blob){let dl=null;try{dl=window.claude&&await claude.use('downloads')}catch(e){}
+ if(dl&&dl.save){try{const buf=new Uint8Array(await blob.arrayBuffer());await dl.save({filename:name,data:buf,mimeType:blob.type});return true}catch(e){}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();return true}
+function dlCanvas(cv,name){cv.toBlob(async b=>{if(await saveFile(name,b))msg('💾 Σώθηκε ως εικόνα!')},'image/png')}
+function prCanvas(cv,title,land){prnOut(title,'<img class="pimg" src="'+cv.toDataURL('image/jpeg',.92)+'" alt="">',{noName:1,land:!!land})}
+const rngS=s=>()=>{s=(s*16807)%2147483647;return (s-1)/2147483646};
+const KEY='dk_adv';
+const ST=[{id:'intro',ic:'📣',t:'Τι είναι;',n:1},{id:'words',ic:'💬',t:'Πειστικά λόγια',n:3},{id:'slog',ic:'🎶',t:'Συνθήματα',n:2},{id:'make',ic:'🖼️',t:'Φτιάξε το φυλλάδιο',n:1},{id:'end',ic:'🏅',t:'Διαβατήριο',n:0}];
+/* ===== Πυρήνας ===== */
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[<&>]/g,c=>({'<':'&lt;','&':'&amp;','>':'&gt;'}[c]));
+let P={done:{},pts:0,pred:{},name:''};
+try{P=Object.assign(P,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}};
+let cur=0;
+const cnt=id=>Object.keys(P.done).filter(k=>k.startsWith(id+':')).length;
+const stDone=s=>s.n>0&&cnt(s.id)>=s.n;
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2200)}
+function act(id,key,pts,txt){const k=id+':'+key;if(P.done[k])return;P.done[k]=1;P.pts+=(pts==null?10:pts);save();toast(txt||'⭐ +'+(pts==null?10:pts));drawNav()}
+function drawNav(){const n=$('nav');n.innerHTML='';ST.forEach((s,i)=>{const b=document.createElement('button');b.className='st'+(i==cur?' on':'')+(stDone(s)?' ok':'');b.innerHTML='<span class="ic">'+s.ic+'</span><small>'+s.t+'</small>'+(stDone(s)?'<i>✔</i>':'');b.onclick=()=>go(i);n.appendChild(b)});$('pts').textContent='⭐ '+P.pts}
+function go(i){cur=i;drawNav();const s=$('stage');s.innerHTML='';FN[ST[i].id](s);document.getElementById('nav').scrollIntoView({block:'start',behavior:'smooth'})}
+function foot(root){const d=document.createElement('div');d.className='foot';const i=cur;d.innerHTML=(i>0?'<button class="btn g" id="pv">⬅️ Πίσω</button>':'')+(i<ST.length-1?'<button class="btn" id="nx">Επόμενος σταθμός ➡️</button>':'');root.appendChild(d);if($('pv'))$('pv').onclick=()=>go(i-1);if($('nx'))$('nx').onclick=()=>go(i+1)}
+const sec=(root,h,sub)=>{const d=document.createElement('section');d.className='act';d.innerHTML='<h3>'+h+'</h3>'+(sub?'<p class="sub">'+sub+'</p>':'');root.appendChild(d);return d};
+/* video */
+function video(root,id,src,poster,cap){const d=document.createElement('div');d.className='vid';d.innerHTML='<video controls preload="metadata" playsinline poster="'+poster+'" src="'+src+'"></video><p class="sub">'+cap+'</p>';root.appendChild(d);const v=d.querySelector('video');v.addEventListener('timeupdate',()=>{if(v.duration&&v.currentTime/v.duration>.85)act(id,'video',5,'🎬 Είδες το βίντεο! +5')});v.addEventListener('error',()=>{d.querySelector('.sub').innerHTML='⚠️ Το βίντεο δεν φορτώθηκε. Άνοιξε τη σελίδα από το digikidsedu.com.'});return v}
+/* quiz: Q=[{q,o:[..],a:idx,w:'γιατί'}], fixed:true=δεν ανακατεύονται */
+function quiz(root,id,key,Q,fixed,pts){const box=document.createElement('div');box.className='qz';root.appendChild(box);let i=0,ok=0;
+ function show(){if(i>=Q.length){box.innerHTML='<div class="res">'+(ok==Q.length?'🏆 Τέλεια!':'👍 Μπράβο!')+' '+ok+'/'+Q.length+' σωστά</div><button class="bt" id="rq'+key+'">🔁 Ξανά</button>';act(id,key,Math.round((pts||15)*ok/Q.length)+5);$('rq'+key).onclick=()=>{i=0;ok=0;show()};return}
+  const q=Q[i];let o=q.o.map((t,k)=>[t,k]);if(!fixed)o=shuf(o);
+  box.innerHTML='<div class="qn">Ερώτηση '+(i+1)+'/'+Q.length+'</div><div class="qq">'+q.q+'</div><div class="qo">'+o.map(([t,k])=>'<button class="bt qb" data-k="'+k+'" data-ok="'+(k==q.a?1:0)+'">'+t+'</button>').join('')+'</div><div class="qf"></div>';
+  let tries=0;box.querySelectorAll('.qb').forEach(b=>b.onclick=()=>{if(b.dataset.ok=='1'){b.classList.add('good');if(!tries)ok++;box.querySelectorAll('.qb').forEach(x=>x.disabled=true);box.querySelector('.qf').innerHTML='<p>'+(q.w?'✅ '+q.w:'✅ Σωστά!')+'</p><button class="btn" id="qn'+key+'">'+(i+1<Q.length?'Επόμενη ➡️':'Τέλος ✔️')+'</button>';$('qn'+key).onclick=()=>{i++;show()}}else{tries++;b.classList.add('bad');b.disabled=true}})}
+ show()}
+/* σειρά: items σωστή σειρά [{h:html,k:'..'}] */
+function order(root,id,key,items,label,pts){const box=document.createElement('div');box.className='ord';root.appendChild(box);let pos=0;
+ const slots=document.createElement('div');slots.className='slots';slots.innerHTML=items.map((_,i)=>'<div class="slot" data-i="'+i+'"><b>'+(i+1)+'</b></div>').join('');
+ const pool=document.createElement('div');pool.className='pool';
+ shuf(items.map((x,i)=>[x,i])).forEach(([x,i])=>{const t=document.createElement('button');t.className='tok';t.innerHTML=x.h;t.dataset.i=i;t.onclick=()=>{if(+t.dataset.i==pos){const s=slots.children[pos];s.innerHTML=x.h;s.classList.add('full');t.remove();pos++;if(pos==items.length){box.querySelector('.fb').textContent='🎉 Σωστή σειρά!';act(id,key,pts||15)}else box.querySelector('.fb').textContent=''}else{t.classList.add('shake');setTimeout(()=>t.classList.remove('shake'),400);box.querySelector('.fb').textContent='🤔 Όχι ακόμα — δοκίμασε άλλο. '+(label||'')}};pool.appendChild(t)});
+ box.appendChild(slots);box.appendChild(pool);const fb=document.createElement('div');fb.className='fb';box.appendChild(fb)}
+/* ταξινόμηση: items [{t,b}], bins [{id,t,h}] */
+function sortg(root,id,key,items,bins,pts){const box=document.createElement('div');box.className='srt';root.appendChild(box);let L=shuf(items),i=0,err=0;
+ function show(){if(i>=L.length){box.innerHTML='<div class="res">'+(err?'👍 Τα κατάφερες! ('+err+' λάθη)':'🏆 Χωρίς κανένα λάθος!')+'</div><button class="bt" id="rs'+key+'">🔁 Ξανά</button>';act(id,key,Math.max(5,(pts||15)-2*err));$('rs'+key).onclick=()=>{L=shuf(items);i=0;err=0;show()};return}
+  box.innerHTML='<div class="sc">'+(i+1)+'/'+L.length+'</div><div class="card2">'+L[i].t+'</div><div class="bins">'+bins.map(b=>'<button class="bin" data-b="'+b.id+'">'+(b.h||b.t)+'</button>').join('')+'</div><div class="fb"></div>';
+  box.querySelectorAll('.bin').forEach(b=>b.onclick=()=>{if(b.dataset.b==L[i].b){b.classList.add('good');box.querySelectorAll('.bin').forEach(x=>x.disabled=true);setTimeout(()=>{i++;show()},450)}else{err++;b.classList.add('bad');box.querySelector('.fb').textContent='🤔 Δοκίμασε ξανά!';setTimeout(()=>b.classList.remove('bad'),450)}})}
+ show()}
+const FN={};
+/* ===== Επεξεργαστής σελίδας (φυλλάδιο / poster) ===== */
+const PFONTS=[['Fredoka','Στρογγυλά'],['Comic Sans MS','Χειρόγραφα'],['Georgia','Κλασικά'],['Arial Black','Χοντρά'],['Courier New','Γραφομηχανή'],['Times New Roman','Εφημερίδα'],['Impact','Πολύ χοντρά'],['Trebuchet MS','Μοντέρνα']];
+const PCOLS=['#111827','#ef4444','#f97316','#eab308','#16a34a','#06b6d4','#2563eb','#7c3aed','#ec4899','#ffffff'];
+const PBG=['#ffffff','#fef9c3','#dcfce7','#dbeafe','#fce7f3','#ede9fe','#ffedd5','#fde68a','#bbf7d0','#bae6fd','#1e293b','#14532d'];
+const PBD=[['none','Χωρίς'],['solid','Συνεχές'],['dashed','Διακεκομμένο'],['double','Διπλό'],['🌿','Φύλλα'],['🌸','Λουλούδια'],['⭐','Αστέρια'],['🐜','Μυρμήγκια'],['❤️','Καρδιές'],['🌊','Κύματα']];
+function PEd(root,o){
+ const W=o.W||800,H=o.H||1100;
+ const S={bg:'#ffffff',bd:'none',bdc:'#2563eb',items:[],sel:-1};
+ const wrap=document.createElement('div');wrap.className='ped';root.appendChild(wrap);
+ wrap.innerHTML=`<div class="pl1"><div class="pcv"><canvas width="${W}" height="${H}" class="cnv"></canvas></div></div>
+ <div class="pl2"><div class="pan"><h4>📄 Σελίδα</h4><div class="row"><label>Χρώμα σελίδας:</label><span class="pbg"></span></div>
+ <div class="row"><label>Περίγραμμα:</label><select class="pbd"></select><span class="pbc"></span></div></div>
+ <div class="pan"><h4>➕ Πρόσθεσε</h4><div class="row"><button class="bt padd">🔤 Κείμενο</button><label class="bt pimg">📷 Ανέβασε φωτογραφία/ες<input type="file" accept="image/*" multiple hidden></label></div><div class="stk pst"></div></div>
+ <div class="pan psel"><h4>✏️ Το επιλεγμένο</h4><div class="pnone hint2">Πάτα ένα κείμενο ή εικόνα στη σελίδα για να το αλλάξεις. Μπορείς να τα σύρεις με το ποντίκι ή το δάχτυλο.</div>
+ <div class="pedit" style="display:none"><textarea class="ptx" rows="3"></textarea>
+ <div class="row ptt"><select class="pfn"></select><label>Μέγεθος <input type="range" class="psz" min="2" max="16" step=".2"></label></div>
+ <div class="row ptt"><span class="pco"></span></div>
+ <div class="row ptt"><button class="bt pb">Β έντονα</button><button class="bt pu" style="text-decoration:underline">Υπογράμμιση</button><button class="bt pr">🌈 Πολύχρωμο</button></div>
+ <div class="row pim" style="display:none"><label>Μέγεθος <input type="range" class="pis" min="10" max="95"></label></div>
+ <div class="row"><button class="bt pfw">⬆️ Μπροστά</button><button class="bt pdel">🗑️ Σβήσε</button></div></div></div>
+ <div class="pan"><h4>✅ Τι πρέπει να έχει η εργασία</h4><div class="pck"></div></div>
+ <div class="row"><button class="btn pdl">💾 Αποθήκευση εικόνας</button><button class="btn b ppr">🖨️ Εκτύπωση</button></div>
+ <div class="row"><button class="bt prs">🔁 Ξαναρχίζω</button></div></div>`;
+ const q=s=>wrap.querySelector(s),cv=q('canvas'),cx=cv.getContext('2d');
+ // στοιχεία ελέγχου
+ const sw=(host,cols,cb,on)=>{host.innerHTML='';cols.forEach(c=>{const b=document.createElement('button');b.className='sw'+(c==on?' on':'');b.style.background=c;b.title=c;b.onclick=()=>{[...host.children].forEach(x=>x.classList.toggle('on',x==b));cb(c)};host.appendChild(b)})};
+ PBD.forEach(([k,n])=>{const op=document.createElement('option');op.value=k;op.textContent=(k.length<3&&k!='none'?k+' ':'')+n;q('.pbd').appendChild(op)});
+ PFONTS.forEach(([k,n])=>{const op=document.createElement('option');op.value=k;op.textContent=n;q('.pfn').appendChild(op)});
+ q('.pbd').onchange=e=>{S.bd=e.target.value;ch()};
+ sw(q('.pbg'),PBG,c=>{S.bg=c;ch()},S.bg);sw(q('.pbc'),['#2563eb','#dc2626','#16a34a','#7c3aed','#f59e0b','#111827'],c=>{S.bdc=c;ch()},S.bdc);
+ sw(q('.pco'),PCOLS,c=>{const it=cur2();if(it&&it.k=='text'){it.col=c;it.rain=false;ch();syncSel()}},'');
+ (o.stickers||[]).forEach(e=>{const b=document.createElement('button');b.textContent=e;b.onclick=()=>{S.items.push({k:'emo',s:e,x:.5,y:.5,sz:.2});S.sel=S.items.length-1;ch();syncSel()};q('.pst').appendChild(b)});
+ q('.padd').onclick=()=>{S.items.push({k:'text',s:'Γράψε εδώ…',x:.5,y:.5,sz:5,col:'#111827',ff:'Fredoka',b:0,ul:0,rain:0,w:.8});S.sel=S.items.length-1;ch();syncSel();q('.ptx').focus();q('.ptx').select()};
+ q('.pimg input').onchange=e=>{const fs=[...e.target.files];e.target.value='';fs.forEach((f,n)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const m=Math.max(im.width,im.height),sc=m>900?900/m:1,c=document.createElement('canvas');c.width=im.width*sc;c.height=im.height*sc;c.getContext('2d').drawImage(im,0,0,c.width,c.height);const im2=new Image();im2.onload=()=>{const k=S.items.filter(i=>i.k=='img').length%4;S.items.push({k:'img',im:im2,x:.35+k*.1,y:.4+k*.08,w:fs.length>1?.38:.5});S.sel=S.items.length-1;ch();syncSel()};im2.src=c.toDataURL('image/jpeg',.85)};im.src=r.result};r.readAsDataURL(f)})};
+ const cur2=()=>S.items[S.sel];
+ q('.ptx').oninput=e=>{const it=cur2();if(it&&it.k=='text'){it.s=e.target.value;ch()}};
+ q('.pfn').onchange=e=>{const it=cur2();if(it&&it.k=='text'){it.ff=e.target.value;ch()}};
+ q('.psz').oninput=e=>{const it=cur2();if(it&&it.k=='text'){it.sz=+e.target.value;ch()}};
+ q('.pis').oninput=e=>{const it=cur2();if(it&&it.k=='img'){it.w=+e.target.value/100;ch()}};
+ q('.pb').onclick=()=>{const it=cur2();if(it){it.b=it.b?0:1;ch();syncSel()}};
+ q('.pu').onclick=()=>{const it=cur2();if(it){it.ul=it.ul?0:1;ch();syncSel()}};
+ q('.pr').onclick=()=>{const it=cur2();if(it){it.rain=it.rain?0:1;ch();syncSel()}};
+ q('.pdel').onclick=()=>{if(S.sel>=0){S.items.splice(S.sel,1);S.sel=-1;ch();syncSel()}};
+ q('.pfw').onclick=()=>{if(S.sel>=0){const it=S.items.splice(S.sel,1)[0];S.items.push(it);S.sel=S.items.length-1;ch()}};
+ function syncSel(){const it=cur2();q('.pnone').style.display=it?'none':'block';q('.pedit').style.display=it?'block':'none';if(!it)return;
+  const t=it.k=='text';q('.ptt').style.display=t?'flex':'none';document.querySelectorAll('.ped .ptt').forEach(x=>x.style.display=t?'flex':'none');q('.ptx').style.display=t?'block':'none';q('.pim').style.display=it.k=='img'?'flex':'none';
+  if(t){q('.ptx').value=it.s;q('.pfn').value=it.ff;q('.psz').value=it.sz;q('.pb').classList.toggle('on',!!it.b);q('.pu').classList.toggle('on',!!it.ul);q('.pr').classList.toggle('on',!!it.rain)}else if(it.k=='img')q('.pis').value=it.w*100}
+ // σχεδίαση
+ function lines(txt,px,maxW){cx.font=px+'px '+cx.fontFamilyTmp;const out=[];String(txt).split('\n').forEach(par=>{if(!par.trim()){out.push('');return}let l='';par.split(' ').forEach(w=>{const t=l?l+' '+w:w;if(l&&cx.measureText(t).width>maxW){out.push(l);l=w}else l=t});out.push(l)});return out}
+ const RB=['#ef4444','#f97316','#eab308','#22c55e','#06b6d4','#3b82f6','#8b5cf6','#ec4899'];
+ function draw(){cx.clearRect(0,0,W,H);cx.fillStyle=S.bg;cx.fillRect(0,0,W,H);border();S.items.forEach((it,i)=>drawIt(it,i));
+  if(S.sel>=0&&S.items[S.sel]&&S.items[S.sel].bb){const b=S.items[S.sel].bb;cx.save();cx.strokeStyle='#2563eb';cx.lineWidth=3;cx.setLineDash([10,7]);cx.strokeRect(b[0],b[1],b[2]-b[0],b[3]-b[1]);cx.restore()}}
+ function border(){const m=W*.025;cx.save();cx.strokeStyle=S.bdc;if(S.bd=='solid'){cx.lineWidth=W*.014;cx.strokeRect(m,m,W-2*m,H-2*m)}
+  else if(S.bd=='dashed'){cx.lineWidth=W*.012;cx.setLineDash([W*.04,W*.025]);cx.strokeRect(m,m,W-2*m,H-2*m)}
+  else if(S.bd=='double'){cx.lineWidth=W*.006;cx.strokeRect(m,m,W-2*m,H-2*m);cx.strokeRect(m*1.8,m*1.8,W-3.6*m,H-3.6*m)}
+  else if(S.bd.length<4&&S.bd!='none'){const px=W*.045;cx.font=px+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';cx.textAlign='center';cx.textBaseline='middle';const st=px*1.05;for(let x=m+px/2;x<W-m;x+=st){cx.fillText(S.bd,x,m+px/2);cx.fillText(S.bd,x,H-m-px/2)}for(let y=m+px*1.5;y<H-m-px;y+=st){cx.fillText(S.bd,m+px/2,y);cx.fillText(S.bd,W-m-px/2,y)}}
+  cx.restore()}
+ function drawIt(it){if(it.k=='emo'){const px=it.sz*W;cx.font=px+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillStyle='#000';cx.fillText(it.s,it.x*W,it.y*H);it.bb=[it.x*W-px*.6,it.y*H-px*.6,it.x*W+px*.6,it.y*H+px*.6];return}
+  if(it.k=='img'){const w=it.w*W,h=w*it.im.height/it.im.width,x=it.x*W,y=it.y*H;cx.save();cx.shadowColor='rgba(0,0,0,.3)';cx.shadowBlur=14;cx.shadowOffsetY=4;cx.drawImage(it.im,x-w/2,y-h/2,w,h);cx.restore();it.bb=[x-w/2,y-h/2,x+w/2,y+h/2];return}
+  const px=it.sz/100*W*1.55;cx.fontFamilyTmp='"'+it.ff+'",sans-serif';const fw=(it.b?'700 ':'400 ');cx.font=fw+px+'px '+cx.fontFamilyTmp;
+  const L=[];String(it.s).split('\n').forEach(par=>{if(!par.trim()){L.push('');return}let l='';par.split(' ').forEach(w=>{const t=l?l+' '+w:w;if(l&&cx.measureText(t).width>it.w*W){L.push(l);l=w}else l=t});L.push(l)});
+  const lh=px*1.25,h=L.length*lh,x=it.x*W,y=it.y*H;cx.textBaseline='middle';cx.textAlign='left';let mw=0,k=0;
+  L.forEach((l,li)=>{const lw=cx.measureText(l).width;mw=Math.max(mw,lw);const ly=y-h/2+lh*(li+.5);let sx=x-lw/2;
+   if(it.rain){for(const ch of l){const cw=cx.measureText(ch).width;cx.fillStyle=ch==' '?'#000':RB[k++%RB.length];cx.fillText(ch,sx,ly);sx+=cw}}else{cx.fillStyle=it.col;cx.fillText(l,sx,ly)}
+   if(it.ul&&l){cx.fillStyle=it.rain?'#111827':it.col;cx.fillRect(x-lw/2,ly+px*.52,lw,Math.max(2,px*.06))}});
+  it.bb=[x-mw/2-8,y-h/2-6,x+mw/2+8,y+h/2+6]}
+ // έλεγχοι
+ function checks(){const T=S.items.filter(i=>i.k=='text'),res=(o.checks||[]).map(c=>[c,!!c.f(S,T)]);q('.pck').innerHTML=res.map(([c,ok])=>'<div class="ck'+(ok?' ok':'')+'">'+(ok?'✅':'⬜')+' '+c.t+'</div>').join('');
+  if(res.length&&res.every(r=>r[1])&&o.onDone)o.onDone()}
+ function ch(){draw();checks();if(o.onChange)o.onChange(S)}
+ // σύρσιμο
+ let drag=null;const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
+ cv.addEventListener('pointerdown',e=>{const [x,y]=pt(e);let hit=-1;for(let i=S.items.length-1;i>=0;i--){const b=S.items[i].bb;if(b&&x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]){hit=i;break}}S.sel=hit;syncSel();draw();if(hit>=0){drag={i:hit,dx:x-S.items[hit].x*W,dy:y-S.items[hit].y*H};cv.setPointerCapture(e.pointerId)}});
+ cv.addEventListener('pointermove',e=>{if(!drag)return;const [x,y]=pt(e),it=S.items[drag.i];it.x=Math.min(1,Math.max(0,(x-drag.dx)/W));it.y=Math.min(1,Math.max(0,(y-drag.dy)/H));draw()});
+ cv.addEventListener('pointerup',()=>{if(drag){drag=null;ch()}});
+ // πρότυπα
+ function load(t){S.bg=t.bg||'#ffffff';S.bd=t.bd||'none';S.bdc=t.bdc||'#2563eb';S.items=JSON.parse(JSON.stringify(t.items||[]));S.sel=-1;q('.pbd').value=S.bd;
+  sw(q('.pbg'),PBG,c=>{S.bg=c;ch()},S.bg);ch();syncSel()}
+ q('.prs').onclick=()=>{if(confirm('Να ξαναρχίσεις από την αρχή;'))load(o.start||{})};
+ q('.pdl').onclick=()=>{draw();S.sel=-1;draw();dlCanvas(cv,o.file||'ergasia.png')};
+ q('.ppr').onclick=()=>{S.sel=-1;draw();prCanvas(cv,o.title||'Η εργασία μου')};
+ load(o.start||{});
+ return {S,load,draw,checks,el:wrap}}
+/* ===== Σταθμοί ===== */
+FN.intro=root=>{
+ const a=sec(root,'📣 Η αποστολή: φτιάξε ένα διαφημιστικό!');
+ a.innerHTML+=`<div class="story"><div class="fig">🧒🏻 🧒🏽</div><p>Η <b>Ελένη</b> και ο <b>Μάριος</b> αγαπούν πολύ την Κύπρο. Θέλουν να πείσουν τους φίλους τους να επισκεφτούν τον αγαπημένο τους τόπο. Τι θα κάνουν; Θα φτιάξουν ένα <b>διαφημιστικό φυλλάδιο</b>!</p><p>Το διαφημιστικό φυλλάδιο έχει έναν σκοπό: να <b>πείσει</b> τον αναγνώστη να επισκεφτεί ή να αγοράσει κάτι. Για να τα καταφέρει χρησιμοποιεί <b>εντυπωσιακές εικόνες</b>, <b>όμορφα χρώματα</b> και <b>πειστικά λόγια</b>.</p></div>
+ <div class="info"><b>Τι πρέπει να έχει το φυλλάδιό σου:</b><br>📝 <b>Τίτλο</b> · 💬 <b>Προτάσεις</b> που καλούν τον αναγνώστη να επισκεφτεί τον τόπο · 🖼️ <b>Εικόνα ή εικόνες</b> · ✍️ το <b>όνομά</b> σου<br><b>Εργαλεία:</b> περίγραμμα και χρώμα σελίδας · πολύχρωμος τίτλος · υπογραμμισμένο όνομα στο τέλος · διάφορες γραμματοσειρές και χρώματα</div>`;
+ const q=sec(root,'❓ Ας δούμε τι κατάλαβες');
+ quiz(q,'intro','quiz',[
+  {q:'Ποιος είναι ο βασικός σκοπός ενός διαφημιστικού φυλλαδίου;',o:['Να πείσει τον αναγνώστη','Να τον κουράσει','Να του πει ένα παραμύθι'],a:0,w:'Η διαφήμιση θέλει να πείσει τον αναγνώστη να επισκεφτεί ή να αγοράσει κάτι.'},
+  {q:'Ποιο από τα παρακάτω δεν είναι κατάλληλο για διαφήμιση ενός όμορφου τόπου;',o:['Μια όμορφη εικόνα','Πολύχρωμος τίτλος','Μια βαρετή, μακριά παράγραφος χωρίς εικόνες'],a:2,w:'Οι διαφημίσεις είναι σύντομες, χρωματιστές και έχουν εικόνες.'},
+  {q:'Στο τέλος του φυλλαδίου γράφουμε…',o:['το όνομά μας υπογραμμισμένο','τίποτα','τον αριθμό του κινητού μας'],a:0,w:'Γράφουμε το όνομά μας και το υπογραμμίζουμε. Προσωπικά στοιχεία όπως το τηλέφωνο δεν τα βάζουμε ποτέ.'}],false,15);
+ foot(root)};
+FN.words=root=>{
+ const a=sec(root,'💬 Πειστικά λόγια');
+ a.innerHTML+='<div class="info">Οι διαφημίσεις χρησιμοποιούν <b>προτάσεις που καλούν τον αναγνώστη</b>. Συχνά περιέχουν ρήματα στην <b>προστακτική</b> (<i>Έλα! Επισκέψου! Ανακάλυψε!</i>), όμορφα <b>επίθετα</b> (<i>μοναδικός, υπέροχη, κρυστάλλινα</i>) και <b>θαυμαστικά</b>.</div>';
+ const s=sec(root,'🔎 Άσκηση 1 — Πειστική πρόταση ή απλή πληροφορία;','Τα διαφημιστικά περιέχουν πειστικές προτάσεις. Ταξινόμησε κάθε πρόταση.');
+ sortg(s,'words','sort',[['Έλα να ζήσεις μια μοναδική εμπειρία!','p'],['Επισκέψου το πιο όμορφο νησί!','p'],['Δεν θα το ξεχάσεις ποτέ!','p'],['Ανακάλυψε τις υπέροχες παραλίες!','p'],['Η Πάφος βρίσκεται στη δυτική Κύπρο.','i'],['Το μουσείο ανοίγει στις εννιά.','i'],['Το εισιτήριο κοστίζει δέκα ευρώ.','i'],['Η Λάρνακα έχει αεροδρόμιο.','i']].map(x=>({t:'<div class="sc2" style="font-size:19px">'+x[0]+'</div>',b:x[1]})),[{id:'p',t:'📣 Πειστική (διαφήμιση)'},{id:'i',t:'ℹ️ Απλή πληροφορία'}],15);
+ const o=sec(root,'🧩 Άσκηση 2 — Φτιάξε την πρόταση','Πάτησε τις λέξεις με τη σωστή σειρά για να φτιάξεις μια διαφημιστική πρόταση.');
+ order(o,'words','order',['Έλα','στην','Κύπρο','και','ζήσε','το','καλοκαίρι','σου!'].map(w=>({h:'<b>'+w+'</b>'})),'Ξεκίνα με ένα ρήμα που καλεί.',15);
+ const q=sec(root,'✏️ Άσκηση 3 — Γλώσσα της διαφήμισης');
+ quiz(q,'words','quiz',[
+  {q:'Ποια λέξη είναι <b>προστακτική</b> (δίνει πρόσκληση);',o:['Επισκέψου','Επισκέφτηκα','Επισκέπτομαι'],a:0,w:'«Επισκέψου!» καλεί τον αναγνώστη να κάνει κάτι.'},
+  {q:'Ανακάλυψε τα ______ νερά της θάλασσας! Ποιο επίθετο ταιριάζει;',o:['κρυστάλλινα','κρυστάλλινος','κρυστάλλινη'],a:0,w:'Το «νερά» είναι ουδέτερο πληθυντικού: κρυστάλλινα νερά.'},
+  {q:'Ποια πρόταση <b>καλεί</b> τον αναγνώστη;',o:['Έλα να γνωρίσεις την Πάφο!','Η Πάφος έχει λιμάνι.','Η Πάφος είναι πόλη.'],a:0,w:'Η πρώτη έχει προστακτική και θαυμαστικό.'},
+  {q:'Ποιο σημείο στίξης δείχνει ενθουσιασμό στο τέλος μιας διαφήμισης;',o:['Το θαυμαστικό (!)','Η τελεία (.)','Το ερωτηματικό (;)'],a:0,w:'Το θαυμαστικό δείχνει ενθουσιασμό και προσκαλεί.'}],false,20);
+ foot(root)};
+const RHY=[{q:'Ανακάλυψε την ιστορία, δες τη χρυσή ______!',o:['παραλία','θάλασσα','βουνό'],a:0,w:'ιστορία – παραλία: τελειώνουν και τα δύο σε «-ία».'},{q:'Έλα στη μεγάλη γιορτή, να χαρεί η ______!',o:['ψυχή','καρδιά','μέρα'],a:0,w:'γιορτή – ψυχή: τελειώνουν σε «-ή».'},{q:'Θα ξανάρθεις μια ακόμα φορά, γιατί θα περάσεις με ______!',o:['χαρά','λύπη','βιασύνη'],a:0,w:'φορά – χαρά: τελειώνουν σε «-ά».'}];
+FN.slog=root=>{
+ const a=sec(root,'🎶 Συνθήματα με ομοιοκαταληξία');
+ a.innerHTML+='<div class="info">Τα καλά συνθήματα είναι σύντομα, εύκολα να τα θυμηθείς και συχνά έχουν <b>ομοιοκαταληξία</b> (οι τελευταίες λέξεις ακούγονται παρόμοια: <i>γιορτή – ψυχή</i>).</div>';
+ const q=sec(root,'🎵 Άσκηση 1 — Βρες τη λέξη που ομοιοκαταληκτεί');
+ quiz(q,'slog','rhyme',RHY,false,15);
+ const b=sec(root,'🛠️ Άσκηση 2 — Φτιάξε το δικό σου σύνθημα','Διάλεξε τα μέρη και δες το σύνθημά σου!');
+ const V=[['Έλα','pre'],['Επισκέψου','acc'],['Ανακάλυψε','acc'],['Γνώρισε','acc'],['Ζήσε','acc']],PL=[['Πάφο','στην Πάφο','την Πάφο'],['Λεμεσό','στη Λεμεσό','τη Λεμεσό'],['Λάρνακα','στη Λάρνακα','τη Λάρνακα'],['Αγία Νάπα','στην Αγία Νάπα','την Αγία Νάπα'],['Λευκωσία','στη Λευκωσία','τη Λευκωσία']],EN=['μια μοναδική εμπειρία!','θα τη θυμάσαι για πάντα!','σε περιμένουμε με χαρά!','θα την αγαπήσεις!'];
+ b.insertAdjacentHTML('beforeend','<div class="row"><select id="sv">'+V.map((v,i)=>'<option value="'+i+'">'+v[0]+'</option>').join('')+'</select><select id="sp">'+PL.map((p,i)=>'<option value="'+i+'">'+p[0]+'</option>').join('')+'</select><select id="se">'+EN.map((e,i)=>'<option value="'+i+'">'+e+'</option>').join('')+'</select></div><div class="big2 slg" id="so"></div><div class="row"><button class="btn" id="sk">✔ Θα το χρησιμοποιήσω στο φυλλάδιό μου</button></div>');
+ const mk=()=>{const v=V[+$('sv').value],p=PL[+$('sp').value];return v[0]+' '+(v[1]=='pre'?p[1]:p[2])+' — '+EN[+$('se').value]};
+ const up=()=>{$('so').textContent='📣 '+mk()};['sv','sp','se'].forEach(i=>$(i).onchange=up);up();
+ $('sk').onclick=()=>{P.slogan=mk();save();act('slog','build',10,'📣 Το σύνθημά σου αποθηκεύτηκε!');$('so').textContent='✅ '+P.slogan};
+ foot(root)};
+const STK=['🏖️','🌊','☀️','🏰','⛰️','🌲','🏛️','🏺','🐢','🌸','🍇','🍊','🍋','🏊','⛵','🚗','🏨','🎶','📸','🌅','🧳','✈️','🌴','🐚','🇨🇾','⭐','❤️','🦋'];
+const PLACES={paf:['Πάφος','🏛️','Δες τα ψηφιδωτά και το κάστρο στο λιμάνι!'],lem:['Λεμεσός','🏖️','Περπάτησε στην παραλία και στο παλιό λιμάνι!'],tro:['Τρόοδος','⛰️','Απόλαυσε τα δάση και τον δροσερό αέρα!'],lar:['Λάρνακα','🌴','Φάε δίπλα στη θάλασσα στη Φινικούδες!'],aye:['Αγία Νάπα','🌊','Κολύμπησε στα κρυστάλλινα νερά!'],lef:['Λευκωσία','🏰','Γνώρισε την πρωτεύουσα και τα Ενετικά τείχη!']};
+function advTpl(k){const p=PLACES[k];return {bg:'#ffffff',bd:'none',items:[
+ {k:'text',s:p[0].normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase(),x:.5,y:.1,sz:9,col:'#111827',ff:'Fredoka',b:1,ul:0,rain:0,w:.9},
+ {k:'text',s:'Έλα στην πανέμορφη '+p[0]+'!\n'+p[2],x:.5,y:.27,sz:3.5,col:'#111827',ff:'Georgia',b:0,ul:0,rain:0,w:.85},
+ {k:'text',s:'Θα την αγαπήσεις και θα θέλεις να ξανάρθεις!',x:.5,y:.45,sz:3.6,col:'#2563eb',ff:'Comic Sans MS',b:0,ul:0,rain:0,w:.8},
+ {k:'emo',s:p[1],x:.5,y:.68,sz:.34},
+ {k:'text',s:'ΟΝΟΜΑ: ______',x:.5,y:.93,sz:4,col:'#111827',ff:'Fredoka',b:0,ul:0,rain:0,w:.6}]}}
+const ADVCK=[
+ {t:'Τίτλος (μεγάλα γράμματα)',f:(S,T)=>T.some(t=>t.sz>=7&&t.s.trim().length>2)},
+ {t:'2 ή περισσότερες προτάσεις που καλούν τον αναγνώστη',f:(S,T)=>T.filter(t=>t.sz<7&&t.s.replace(/[\s_:]/g,'').length>=15&&!/^ΟΝΟΜΑ/i.test(t.s.trim())).length>=2},
+ {t:'Εικόνα ή εικόνες',f:S=>S.items.some(i=>i.k!='text')},
+ {t:'Περίγραμμα σελίδας',f:S=>S.bd!='none'},
+ {t:'Χρώμα σελίδας (όχι λευκό)',f:S=>S.bg.toLowerCase()!='#ffffff'},
+ {t:'Πολύχρωμος τίτλος 🌈',f:(S,T)=>T.some(t=>t.rain&&t.sz>=7)},
+ {t:'Όνομα στο τέλος, υπογραμμισμένο',f:(S,T)=>T.some(t=>t.ul&&t.y>.8&&t.s.replace(/[\s_:]/g,'').length>=3)},
+ {t:'Τουλάχιστον 3 διαφορετικές γραμματοσειρές',f:(S,T)=>new Set(T.map(t=>t.ff)).size>=3},
+ {t:'Τουλάχιστον 4 διαφορετικά χρώματα στα γράμματα',f:(S,T)=>new Set(T.map(t=>t.rain?'rainbow':t.col)).size>=4}];
+FN.make=root=>{
+ const a=sec(root,'🖼️ Φτιάξε το διαφημιστικό σου φυλλάδιο','Διάλεξε έναν τόπο της Κύπρου και φτιάξε το φυλλάδιό σου. Άλλαξε τα κείμενα, βάλε εικόνες και εφάρμοσε <b>όλα τα εργαλεία</b> της λίστας — μόλις ολοκληρωθούν, παίρνεις αστέρια! Στο τέλος κάνε το ίδιο και στην <b>Word</b>.');
+ const r=document.createElement('div');r.className='row';a.appendChild(r);
+ let ed;Object.keys(PLACES).forEach(k=>{const b=el('button','bt',PLACES[k][1]+' '+PLACES[k][0]);b.onclick=()=>{ed.load(advTpl(k))};r.appendChild(b)});
+ const h=document.createElement('div');a.appendChild(h);
+ ed=window.__ed=PEd(h,{W:800,H:1100,stickers:STK,checks:ADVCK,file:'Diafimistiko.png',title:'Το διαφημιστικό μου',start:advTpl('paf'),onDone:()=>act('make','done',30,'🏆 Ολοκλήρωσες το διαφημιστικό! +30')});
+ if(P.slogan)h.insertAdjacentHTML('beforeend','<p class="sub">💡 Το σύνθημά σου: <b>'+esc(P.slogan)+'</b> — αντίγραψέ το σε ένα κείμενο!</p>');
+ const w=sec(root,'💻 Τώρα κάν’ το στη Word','Άνοιξε τη <b>Microsoft Word</b> και ακολούθησε τα βήματα. Μην ξεχάσεις να αποθηκεύσεις με όνομα <b>Διαφημιστικό</b>!');
+ w.insertAdjacentHTML('beforeend','<table class="tbl"><tr><th>Τι θέλω</th><th>Πού το βρίσκω στη Word</th></tr><tr><td>Περίγραμμα σελίδας</td><td>Σχεδίαση → Περιγράμματα σελίδας</td></tr><tr><td>Χρώμα σελίδας</td><td>Σχεδίαση → Χρώμα σελίδας</td></tr><tr><td>Πολύχρωμος τίτλος</td><td>Εισαγωγή → WordArt (ή διάλεξε κάθε γράμμα και άλλαξε χρώμα)</td></tr><tr><td>Διαφορετικές γραμματοσειρές και χρώματα</td><td>Κεντρική → Γραμματοσειρά και Χρώμα γραμματοσειράς</td></tr><tr><td>Υπογραμμισμένο όνομα</td><td>Κεντρική → <u>Υ</u> (Υπογράμμιση) ή Ctrl + U</td></tr><tr><td>Εικόνα</td><td>Εισαγωγή → Εικόνες (ή Εικονίδια)</td></tr><tr><td>Αποθήκευση</td><td>Αρχείο → Αποθήκευση ως → όνομα «Διαφημιστικό»</td></tr></table><p class="sub">Τα ονόματα των εντολών μπορεί να διαφέρουν λίγο ανάλογα με την έκδοση της Word.</p>');
+ foot(root)};
+FN.end=root=>{
+ const tot=ST.filter(s=>s.n>0).length,ok=ST.filter(stDone).length;
+ const s=sec(root,'🛂 Το διαβατήριό σου');
+ s.insertAdjacentHTML('beforeend','<div class="row"><label>Όνομα:</label><input type="text" id="nm" maxlength="30" placeholder="Γράψε το όνομά σου" value="'+esc(P.name||'')+'"></div><div class="pass">'+ST.filter(x=>x.n>0).map(x=>'<div class="stamp'+(stDone(x)?' on':'')+'"><span>'+x.ic+'</span><small>'+x.t+'</small><b>'+(stDone(x)?'ΕΓΚΡΙΘΗΚΕ':'—')+'</b></div>').join('')+'</div><p class="big">⭐ '+P.pts+' αστέρια · '+ok+'/'+tot+' σφραγίδες</p>');
+ $('nm').oninput=()=>{P.name=$('nm').value;save()};
+ const b=sec(root,'🎓 Βραβείο και φύλλο εργασίας');
+ b.insertAdjacentHTML('beforeend','<p class="sub">Συμπλήρωσε όλες τις σφραγίδες για το δίπλωμα «Μικρός Διαφημιστής».</p><div class="row"><button class="btn" id="pd" '+(ok<tot?'disabled':'')+'>🖨️ Εκτύπωση διπλώματος</button><button class="btn g" id="pw">📝 Φύλλο αυτοαξιολόγησης</button></div>');
+ $('pd').onclick=()=>prnOut('Ελληνικά — Το διαφημιστικό μου',prDip('για τη δημιουργία ενός πειστικού διαφημιστικού φυλλαδίου',P.name),{noName:1,land:1});
+ $('pw').onclick=()=>prnOut('Αυτοαξιολόγηση — Διαφημιστικό φυλλάδιο','<ul class="wk" style="list-style:none">'+ADVCK.map(c=>'<li>☐ '+c.t+'</li>').join('')+'<li>☐ Το αποθήκευσα με όνομα «Διαφημιστικό»</li></ul><p style="font-size:14pt">Το αγαπημένο μου σημείο της εργασίας: ______________________________</p>');
+ foot(root)};
+
+function guide(){const d=$('gd');d.style.display=d.style.display=='block'?'none':'block'}
+$('gb').onclick=guide;$('gx').onclick=guide;
+drawNav();go(0);
+
+</script><script id="prjs">
+const escP=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function prBtn(fn,t,cls){const b=document.createElement('button');b.className=cls||'btn g';b.type='button';b.textContent=t||'🖨️ Εκτύπωση';b.onclick=fn;return b}
+function prMsg(t){let m=document.getElementById('prn-toast');if(m)m.remove();m=document.createElement('div');m.id='prn-toast';m.textContent=t;document.body.appendChild(m);setTimeout(()=>m.remove(),6000)}
+function prPop(title,inner){const w=window.open('','_blank');if(!w){prMsg('Η εκτύπωση δεν άνοιξε. Δοκίμασε Ctrl+P ή άνοιξε το παιχνίδι σε νέα καρτέλα.');return}
+ const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+ w.document.write('<!doctype html><html lang="el"><head><meta charset="utf-8"><title>'+escP(title)+'</title><style>'+css+'#prn{display:block!important;max-width:800px;margin:0 auto;padding:12px}</style></head><body class="printing"><div id="prn">'+inner+'</div></body></html>');w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},700)}
+function prnOut(title,html,o){o=o||{};
+ const old=document.getElementById('prn');if(old)old.remove();
+ const p=document.createElement('div');p.id='prn';
+ html=String(html).replace(/\sid="([^"]*)"/g,' id="p_$1"').replace(/url\(#([^)]+)\)/g,'url(#p_$1)');
+ p.innerHTML='<h1 class="ph">'+escP(title)+'</h1>'+(o.noName?'':'<div class="pn">Όνομα: <i></i> Τάξη: <i></i></div>')+html+'<p class="pf">DigiKidsEdu</p>';
+ document.body.appendChild(p);
+ let st=document.getElementById('prs');if(!st){st=document.createElement('style');st.id='prs';document.head.appendChild(st)}
+ st.textContent='@page{size:A4 '+(o.land?'landscape':'portrait')+';margin:10mm}';
+ document.body.classList.add('printing');
+ let started=false,ended=false;
+ const end=()=>{if(ended)return;ended=true;document.body.classList.remove('printing');const q=document.getElementById('prn');if(q)q.remove();removeEventListener('afterprint',end)};
+ addEventListener('beforeprint',()=>{started=true},{once:true});addEventListener('afterprint',end);
+ setTimeout(()=>{try{window.print()}catch(e){}
+  setTimeout(()=>{if(!started){const inner=p.innerHTML;end();prPop(title,inner)}else if(!ended){addEventListener('pointerdown',end,{once:true,capture:true});setTimeout(end,120000)}},500)},60)}
+
+function prDip(what,name){return '<div class="dip"><div style="font-size:60pt">🎓</div><div class="dt">Δίπλωμα</div><div class="dx">Απονέμεται στον/στην</div><div class="dn">'+(name?escP(name):'&nbsp;'.repeat(24))+'</div><div class="dx">'+escP(what)+'</div></div>'}
+</script></body></html>

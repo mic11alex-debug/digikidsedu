@@ -1,0 +1,133 @@
+<!doctype html><html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ασφαλή παιχνίδια και εφαρμογές</title><style>*{box-sizing:border-box}html,body{margin:0;min-height:100%}
+body{font-family:'Segoe UI',system-ui,Arial,sans-serif;background:linear-gradient(160deg,#fecaca,#c7d2fe);color:#1a1446;padding:12px;overflow-x:hidden}
+.w{max-width:780px;margin:0 auto}
+.top{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:6px}
+h1{font-size:clamp(20px,4.4vw,30px);margin:0;line-height:1.15}
+.snd{font:inherit;font-size:22px;border:4px solid #1a1446;border-radius:99px;background:#fff;cursor:pointer;padding:2px 10px}
+.pg{height:14px;border:3px solid #1a1446;border-radius:99px;background:#fff;overflow:hidden;margin:6px 0 12px}.pg i{display:block;height:100%;width:0;background:#35e0a6;transition:width .3s}
+.card{background:#fff;border:5px solid #1a1446;border-radius:26px;box-shadow:8px 8px 0 #1a1446;padding:18px;position:relative}
+.em{font-size:clamp(54px,14vw,84px);text-align:center;line-height:1.1}
+.who{display:inline-block;background:#ffd23f;border:3px solid #1a1446;border-radius:99px;padding:2px 12px;font-weight:800;font-size:14px}
+.sit{font-size:clamp(18px,3.6vw,23px);font-weight:700;margin:10px 0 14px;line-height:1.35}
+.opts{display:grid;gap:10px}
+.opt{font:inherit;font-weight:700;font-size:clamp(16px,3.2vw,19px);text-align:left;padding:13px 16px;border:4px solid #1a1446;border-radius:18px;background:#f4f1ff;color:#1a1446;cursor:pointer;box-shadow:0 4px 0 #1a1446;transition:transform .1s}
+.opt:hover:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 #1a1446}
+.opt.ok{background:#35e0a6}.opt.no{background:#ff9ec7}.opt:disabled{cursor:default}
+.fb{margin-top:14px;padding:12px 14px;border-radius:16px;border:4px solid #1a1446;font-weight:700;font-size:clamp(15px,3vw,18px);display:none}
+.fb.ok{background:#d9fbe9}.fb.no{background:#ffe1ef}
+.btn{font:inherit;font-weight:800;font-size:18px;padding:11px 22px;border:4px solid #1a1446;border-radius:99px;background:#ffd23f;color:#1a1446;cursor:pointer;box-shadow:0 5px 0 #1a1446;margin-top:14px}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #1a1446}
+.stars{font-size:46px;text-align:center;letter-spacing:4px}
+ul.r{margin:10px 0 0;padding-left:22px;line-height:1.5;font-weight:600}
+.c{text-align:center}.sc2{font-size:clamp(20px,4vw,28px);font-weight:800;text-align:center;margin:6px 0}
+.pt{position:fixed;font-size:26px;pointer-events:none;z-index:99;animation:fly .9s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(260deg);opacity:0}}
+.shake{animation:shk .4s}@keyframes shk{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.pop{animation:pp .35s}@keyframes pp{50%{transform:scale(1.05)}}
+.wid{background:#fff;border:4px solid #1a1446;border-radius:20px;padding:8px 12px;margin-bottom:12px;font-weight:800}
+.bar{height:16px;border:3px solid #1a1446;border-radius:99px;background:#eee;overflow:hidden;flex:1}.bar i{display:block;height:100%;background:#35e0a6;transition:width .5s}
+.row2{display:flex;align-items:center;gap:10px}
+.ch{height:38px;width:auto;vertical-align:bottom}.trk{position:relative;height:84px}.lane{position:absolute;left:0;right:0;height:38px;border-bottom:4px dashed #1a1446aa}
+.lane:nth-child(2){top:44px}.mv{position:absolute;bottom:0;font-size:30px;transition:left .7s cubic-bezier(.3,1.4,.6,1)}.home{position:absolute;right:0;bottom:0;font-size:32px}
+.tr{display:flex;flex-wrap:wrap;gap:4px;min-height:34px}.tr span{border:3px solid #1a1446;border-radius:12px;padding:0 6px;font-size:20px;animation:pp .35s}.tr .g{background:#35e0a6}.tr .b{background:#ff9ec7}
+.bt{flex:1;height:26px;border:4px solid #1a1446;border-radius:10px;background:#fff;overflow:hidden}.bt i{display:block;height:100%;transition:width .6s,background .6s}
+.msg{display:flex;gap:10px;align-items:flex-start;margin:6px 0 14px}.av{font-size:44px}
+.bb{background:#e9e4ff;border:4px solid #1a1446;border-radius:6px 22px 22px 22px;padding:10px 14px;font-weight:700;font-size:clamp(17px,3.4vw,21px);line-height:1.35;min-width:70px}
+.dots i{display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a1446;margin:0 3px;animation:dt 1s infinite}.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes dt{50%{transform:translateY(-7px)}}
+.swc{touch-action:pan-y;cursor:grab;user-select:none;margin:0 auto;max-width:520px;text-align:center}
+.lbl{position:absolute;top:12px;font-weight:900;font-size:20px;opacity:0;border:4px solid;border-radius:12px;padding:2px 10px;background:#fff}.lbl.l{left:10px;color:#e11d48}.lbl.r{right:10px;color:#059669}
+.sb{display:flex;gap:14px;justify-content:center}.sb .btn{font-size:26px}
+.dc{touch-action:none;cursor:grab;user-select:none;max-width:420px;margin:0 auto 14px;text-align:center;z-index:5}
+.bks{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.bk{border:4px dashed #1a1446;border-radius:20px;padding:12px 6px;text-align:center;font-weight:800;font-size:clamp(13px,2.8vw,17px);min-height:92px;cursor:pointer;transition:transform .15s,background .15s}
+.bk b{display:block;font-size:30px}.bk.h{transform:scale(1.07);background:#fff!important}
+.b0{background:#bbf7d0}.b1{background:#fde68a}.b2{background:#fecaca}
+</style></head><body><div class="w"><div class="top"><h1>🎮 Ασφαλή παιχνίδια και εφαρμογές</h1><button class="snd" id="snd" title="Ήχος">🔊</button></div><p id="intro" style="font-weight:700;margin:0 0 6px"></p><div class="pg"><i></i></div><div id="main"></div></div><script>
+const APP={"mode": "xp", "how": "🏅 Κέρδισε πόντους, ανέβα επίπεδο κάθε 3 σωστές και κράτα τις καρδιές σου!", "id": "sfgame", "title": "Ασφαλή παιχνίδια και εφαρμογές", "who": "Παίκτης με μυαλό", "intro": "Τα online παιχνίδια είναι διασκεδαστικά, όταν ξέρεις πώς να παίζεις με ασφάλεια. Ας δούμε τι κάνει ένας έξυπνος παίκτης.", "n": 8, "rules": ["Παίζω παιχνίδια που ταιριάζουν στην ηλικία μου.", "Δεν αγοράζω τίποτα χωρίς την άδεια των γονιών μου.", "Μιλάω στο chat μόνο με ανθρώπους που ξέρω."], "pool": [{"e": "🔞", "s": "Βλέπεις στο παιχνίδι ένδειξη ηλικίας «12+», αλλά εσύ είσαι 9 ετών.", "g": "Σέβομαι την ένδειξη και ρωτώ τους γονείς μου.", "b": ["Δεν με νοιάζει, θα παίξω.", "Λέω ψέματα για την ηλικία μου."], "f": "Οι ενδείξεις ηλικίας υπάρχουν για να προστατεύουν τα παιδιά."}, {"e": "💳", "s": "Το παιχνίδι σού προτείνει «Αγόρασε νομίσματα μόνο με 2,99 €».", "g": "Δεν αγοράζω τίποτα χωρίς την άδεια των γονιών μου.", "b": ["Πατάω «Αγορά» με την κάρτα του γονιού.", "Ζητώ από φίλο να το αγοράσει για μένα."], "f": "Οι αγορές μέσα στα παιχνίδια κοστίζουν πραγματικά χρήματα."}, {"e": "🎤", "s": "Ένα παιχνίδι ζητά πρόσβαση στην κάμερα και το μικρόφωνο, χωρίς να τις χρειάζεται.", "g": "Δεν το επιτρέπω και ρωτώ έναν μεγάλο.", "b": ["Επιτρέπω τα πάντα.", "Επιτρέπω και στέλνω φωτογραφία."], "f": "Οι εφαρμογές πρέπει να ζητούν μόνο όσα χρειάζονται."}, {"e": "💬", "s": "Ένας άγνωστος παίκτης σού στέλνει μήνυμα στο chat του παιχνιδιού.", "g": "Δεν απαντώ και κλείνω ή περιορίζω το chat.", "b": ["Του απαντώ και του λέω πώς με λένε.", "Του δίνω το κινητό μου για να παίξουμε αλλού."], "f": "Στο chat μιλάμε μόνο με ανθρώπους που ξέρουμε."}, {"e": "🪙", "s": "Βλέπεις διαφήμιση: «Δωρεάν γεννήτρια νομισμάτων!»", "g": "Δεν την κατεβάζω, είναι παγίδα.", "b": ["Την κατεβάζω αμέσως.", "Δίνω τον κωδικό μου για να λειτουργήσει."], "f": "Οι «γεννήτριες» νομισμάτων είναι συνήθως απάτες ή ιοί."}, {"e": "📦", "s": "Από πού κατεβάζω εφαρμογές και παιχνίδια;", "g": "Από το επίσημο κατάστημα, με άδεια των γονιών μου.", "b": ["Από οποιαδήποτε σελίδα βρω.", "Από σύνδεσμο που μου έστειλε άγνωστος."], "f": "Οι άγνωστες σελίδες μπορεί να έχουν ιούς."}, {"e": "🔗", "s": "Ένας παίκτης λέει: «Έλα να μιλήσουμε σε άλλη εφαρμογή, εκεί δεν μας βλέπει κανείς».", "g": "Αρνούμαι και το λέω σε έναν μεγάλο.", "b": ["Πηγαίνω, αφού είναι φίλος.", "Πηγαίνω αν δεν το πω σε κανέναν."], "f": "Όποιος θέλει να μιλήσει κρυφά με ένα παιδί, δεν έχει καλές προθέσεις."}, {"e": "🦸", "s": "Επιλέγεις όνομα παίκτη.", "g": "Ένα ψευδώνυμο που δεν δείχνει ποιος είμαι.", "b": ["Το πλήρες όνομά μου.", "Το όνομά μου με το σχολείο μου."], "f": "Το ψευδώνυμο κρύβει την πραγματική μας ταυτότητα."}, {"e": "🔒", "s": "Η εφαρμογή έχει ρύθμιση «Προφίλ δημόσιο ή ιδιωτικό».", "g": "Επιλέγω ιδιωτικό προφίλ με τη βοήθεια των γονιών μου.", "b": ["Το αφήνω δημόσιο για να με βλέπουν όλοι.", "Δεν ξέρω, πατάω ό,τι να ‘ναι."], "f": "Το ιδιωτικό προφίλ μάς προστατεύει από αγνώστους."}, {"e": "😤", "s": "Έχασες στο παιχνίδι και θυμώνεις πολύ.", "g": "Αναπνέω βαθιά, σταματώ για λίγο και ξαναπαίζω ήρεμα.", "b": ["Βρίζω τους άλλους παίκτες.", "Σπάω το χειριστήριο."], "f": "Ένας καλός παίκτης χάνει με χαμόγελο και συνεχίζει."}, {"e": "🧑‍🤝‍🧑", "s": "Παίζεις με παιδιά που δεν ξέρεις και ξαφνικά σε προσβάλλουν.", "g": "Τους αναφέρω και τους μπλοκάρω.", "b": ["Τους προσβάλλω κι εγώ.", "Δεν το λέω σε κανέναν."], "f": "Το μπλοκάρισμα και η αναφορά κρατούν το παιχνίδι ευχάριστο."}, {"e": "📝", "s": "Η εφαρμογή ζητά να δώσεις πολλά προσωπικά στοιχεία για να εγγραφείς.", "g": "Ρωτώ έναν μεγάλο πριν δώσω οτιδήποτε.", "b": ["Τα δίνω όλα για να ξεκινήσω.", "Βάζω ψεύτικα στοιχεία, όποια να ‘ναι."], "f": "Αν ζητούνται πολλά στοιχεία, κάτι δεν πάει καλά."}], "fixed": false},M=APP.mode,DOG='',CAT='';
+const $=s=>document.querySelector(s);
+const SEEN='sf_'+APP.id;let seen=[];try{seen=JSON.parse(localStorage.getItem(SEEN)||'[]')}catch(e){}
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let snd=true,AC=window.AudioContext||window.webkitAudioContext,ac;
+function tone(f,d,t){if(!snd||!AC)return;try{ac=ac||new AC();const o=ac.createOscillator(),g=ac.createGain();o.type=t||'sine';o.frequency.value=f;g.gain.value=.12;o.connect(g);g.connect(ac.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.stop(ac.currentTime+d)}catch(e){}}
+const sOK=()=>{tone(660,.15);setTimeout(()=>tone(880,.2),110)},sNO=()=>tone(180,.35,'square'),sUP=()=>[523,659,784,1046].forEach((f,i)=>setTimeout(()=>tone(f,.18),i*110));
+function burst(x,y,arr,n){for(let k=0;k<(n||14);k++){const s=document.createElement('span');s.className='pt';s.textContent=arr[k%arr.length];s.style.left=x+'px';s.style.top=y+'px';const a=Math.random()*6.28,d=60+Math.random()*130;s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d-40+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+const cen=el=>{const r=(el||document.body).getBoundingClientRect();return[r.left+r.width/2,r.top+Math.min(r.height/2,200)]};
+let q=[],i=0,sc=0,wr=0,streak=0,best=0,meter=50,done=false,tm=0,pts=0;
+const N=()=>q.length;
+function start(){
+ const P=APP.pool.map((x,k)=>({...x,k}));
+ let fresh=sh(P.filter(x=>!seen.includes(x.k))),old=sh(P.filter(x=>seen.includes(x.k)));
+ if(fresh.length<APP.n){seen=[];fresh=sh(P);old=[]}
+ q=fresh.concat(old).slice(0,APP.n);
+ try{seen=seen.concat(q.map(x=>x.k));localStorage.setItem(SEEN,JSON.stringify(seen))}catch(e){}
+ i=0;sc=0;wr=0;streak=0;best=0;meter=50;pts=0;
+ $('#main').innerHTML='<div id="wid"></div><div id="stage"></div>';initW();show()}
+function initW(){
+ const w=$('#wid');w.className='wid';
+ if(M=='race')w.innerHTML='<div class="trk"><div class="lane"><span class="mv" id="hero" style="left:0"><img class="ch" src="'+DOG+'"><img class="ch" src="'+CAT+'"></span><span class="home">🏠</span></div><div class="lane"><span class="mv" id="bad" style="left:0">🦹</span></div></div>';
+ else if(M=='chat')w.innerHTML='<div class="row2"><span id="face" style="font-size:34px">😐</span><span>Διάθεση φίλου</span><div class="bar"><i id="mf" style="width:50%"></i></div></div>';
+ else if(M=='trail')w.innerHTML='<div>Τα ίχνη μου 👣</div><div class="tr" id="tr"></div>';
+ else if(M=='battery')w.innerHTML='<div class="row2"><span id="bf" style="font-size:34px">😀</span><span>🔋 Ενέργεια</span><div class="bt"><i id="bi" style="width:50%;background:#facc15"></i></div><b id="bp">50%</b></div>';
+ else if(M=='xp')w.innerHTML='<div class="row2"><span id="hr">❤️❤️❤️</span><b id="lv">Επίπεδο 1</b><div class="bar"><i id="xi" style="width:0"></i></div></div>';
+ else if(M=='swipe')w.innerHTML='<div class="row2"><span>🔥 <b id="cb">0</b></span><span>⭐ <b id="sp">0</b></span><div class="bar"><i id="tmb" style="width:100%;background:#facc15;transition:none"></i></div></div>';
+ else w.style.display='none'}
+function updW(ok){
+ if(M=='race'){$('#hero').style.left=(sc/N()*78)+'%';$('#bad').style.left=(wr/N()*78)+'%'}
+ if(M=='chat'){meter=Math.max(0,Math.min(100,meter+(ok?20:-20)));$('#mf').style.width=meter+'%';$('#face').textContent=meter>80?'🤩':meter>55?'😊':meter>30?'😐':'😢'}
+ if(M=='trail'){const s=document.createElement('span');s.className=ok?'g':'b';s.textContent=ok?'👣':'👣✖';$('#tr').appendChild(s)}
+ if(M=='battery'){meter=Math.max(0,Math.min(100,meter+(ok?15:-15)));const b=$('#bi');b.style.width=meter+'%';b.style.background=meter>60?'#35e0a6':meter>30?'#facc15':'#f87171';$('#bp').textContent=meter+'%';$('#bf').textContent=meter>80?'🤩':meter>60?'😀':meter>30?'😐':'😴'}
+ if(M=='xp'){$('#hr').textContent='❤️'.repeat(Math.max(0,3-wr))+'🖤'.repeat(Math.min(3,wr));const lv=1+Math.floor(sc/3);$('#lv').textContent='Επίπεδο '+lv;$('#xi').style.width=((sc%3)/3*100)+'%';if(ok&&sc%3==0&&sc>0){sUP();const[x,y]=cen($('#lv'));burst(x,y,['⭐','🏅','✨'],18);$('#lv').textContent='⬆️ Επίπεδο '+lv+'!'}}
+ if(M=='swipe'){pts+=ok?10+Math.min(streak,5)*5:0;$('#cb').textContent=streak;$('#sp').textContent=pts}}
+function show(){
+ done=false;const x=q[i];$('.pg i').style.width=(i/N()*100)+'%';
+ const hd=`<div class="em">${x.e}</div><div class="c"><span class="who">${APP.who} · ${i+1}/${N()}</span></div>`;
+ const fbn=`<div class="fb" id="fb"></div><div class="c"><button class="btn" id="nx" style="display:none">${i<N()-1?'Επόμενο ➜':'Τέλος ✔'}</button></div>`;
+ const st=$('#stage');
+ if(M=='swipe'){
+  st.innerHTML=`<div class="card swc" id="cd">${hd}<div class="sit">${x.s}</div><div class="lbl l">❌ Ψεύτικο</div><div class="lbl r">✅ Αληθινό</div></div><div class="sb"><button class="btn" id="bf2">❌ Ψεύτικο</button><button class="btn" id="bt2">✅ Αληθινό</button></div><p class="c" style="font-weight:700;margin:8px 0 0">👆 Σύρε την κάρτα δεξιά ή αριστερά</p>${fbn}`;
+  const true_=x.g=='Αληθινό',cd=$('#cd');
+  $('#bf2').onclick=()=>{if(!done){fly(cd,-1);answer(!true_,cd)}};$('#bt2').onclick=()=>{if(!done){fly(cd,1);answer(true_,cd)}};
+  dragify(cd,{move:(e,ox)=>{cd.querySelector('.l').style.opacity=Math.max(0,-ox/90);cd.querySelector('.r').style.opacity=Math.max(0,ox/90)},drop:(e,ox)=>{if(Math.abs(ox)>90){fly(cd,Math.sign(ox));answer((ox>0)===true_,cd);return true}return false},lock:true});
+  const b=$('#tmb');b.style.transition='none';b.style.width='100%';void b.offsetWidth;b.style.transition='width 12s linear';b.style.width='0';
+  tm=setTimeout(()=>{if(!done){answer(false,cd,'⏰ Ο χρόνος τελείωσε! ')}},12000);return}
+ if(M=='drag'){
+  st.innerHTML=`<div class="card dc" id="cd">${hd}<div class="sit">${x.s}</div></div><div class="bks">${APP.bk.map((t,n)=>`<div class="bk b${n}" data-k="${n}"><b>${t.split(' ')[0]}</b>${t.split(' ').slice(1).join(' ')}</div>`).join('')}</div>${fbn}`;
+  const cd=$('#cd');
+  document.querySelectorAll('.bk').forEach(b=>b.onclick=()=>{if(!done)drop(+b.dataset.k,b,cd)});
+  const under=e=>{cd.style.visibility='hidden';const el=document.elementFromPoint(e.clientX,e.clientY);cd.style.visibility='';return el&&el.closest('.bk')};
+  dragify(cd,{move:e=>{const b=under(e);document.querySelectorAll('.bk').forEach(k=>k.classList.toggle('h',k===b))},drop:e=>{document.querySelectorAll('.bk').forEach(k=>k.classList.remove('h'));const b=under(e);if(b){drop(+b.dataset.k,b,cd);return true}return false}});return}
+ let opts;
+ if(APP.fixed)opts=[x.g,...x.b].map((t,n)=>({t,ok:n===0}));else opts=sh([{t:x.g,ok:true},...x.b.map(t=>({t,ok:false}))]);
+ const ob=`<div class="opts">${opts.map(o=>`<button class="opt" data-ok="${o.ok?1:0}">${o.t}</button>`).join('')}</div>`;
+ if(M=='chat'){
+  st.innerHTML=`<div class="card"><div class="msg"><span class="av">${x.e}</span><div class="bb"><span class="dots"><i></i><i></i><i></i></span><span class="tx" style="display:none">${x.s}</span></div></div><div id="ow" style="display:none">${ob}</div>${fbn}</div>`;
+  setTimeout(()=>{const b=$('.dots');if(!b)return;b.style.display='none';$('.tx').style.display='';$('#ow').style.display='block';tone(520,.1)},800);
+ }else st.innerHTML=`<div class="card" id="cd">${hd}<div class="sit">${x.s}</div>${ob}${fbn}</div>`;
+ document.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(done)return;document.querySelectorAll('.opt').forEach(o=>{o.disabled=true;if(o.dataset.ok=='1')o.classList.add('ok')});const ok=b.dataset.ok=='1';if(!ok)b.classList.add('no');answer(ok,b)})}
+function fly(el,s){el.style.transition='transform .35s,opacity .35s';el.style.transform=`translateX(${s*500}px) rotate(${s*25}deg)`;el.style.opacity='0'}
+function drop(k,b,cd){const ok=k===q[i].g;if(ok){cd.style.opacity='0';b.querySelector('b').textContent=q[i].e}else{cd.style.transform='';b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400)}
+ answer(ok,b,'',ok)}
+function dragify(el,o){let sx,sy,on=false;
+ el.onpointerdown=e=>{if(done)return;on=true;sx=e.clientX;sy=e.clientY;try{el.setPointerCapture(e.pointerId)}catch(x){}el.style.transition='none'};
+ el.onpointermove=e=>{if(!on)return;const ox=e.clientX-sx,oy=o.lock?0:e.clientY-sy;el.style.transform=`translate(${ox}px,${oy}px) rotate(${ox/22}deg)`;o.move&&o.move(e,ox,oy)};
+ el.onpointerup=e=>{if(!on)return;on=false;el.style.transition='transform .25s';const r=o.drop(e,e.clientX-sx,e.clientY-sy);if(!r){el.style.transform='';o.move&&o.move(e,0,0)}}}
+function answer(ok,el,pre,keepCard){
+ if(done)return;done=true;clearTimeout(tm);const x=q[i];
+ if(ok){sc++;streak++;best=Math.max(best,streak);sOK()}else{wr++;streak=0;sNO()}
+ const[bx,by]=cen(el);burst(bx,by,ok?['⭐','✨','🎉','💚']:['💥','😮','🤔'],ok?14:6);
+ const c=$('#cd')||$('.card');if(!keepCard||!ok){c.classList.add(ok?'pop':'shake');setTimeout(()=>c.classList.remove('pop','shake'),450)}
+ updW(ok);
+ const f=$('#fb');f.className='fb '+(ok?'ok':'no');f.style.display='block';
+ f.textContent=(pre||'')+(ok?(streak>=3?'🔥 '+streak+' στη σειρά! ':'🎉 Μπράβο! '):'🤔 Όχι ακριβώς. ')+x.f;
+ const n=$('#nx');n.style.display='inline-block';n.onclick=()=>{i++;i<N()?show():end()};n.focus()}
+function end(){
+ $('.pg i').style.width='100%';$('#wid').style.display=M=='drag'?'none':'';
+ const r=sc/N(),st=r>=.85?3:r>=.6?2:r>=.35?1:0;
+ try{parent.postMessage({sgame:1,n:sc,t:N()},'*')}catch(e){}
+ if(st>=2){sUP();for(let k=0;k<4;k++)setTimeout(()=>burst(innerWidth*(.2+.2*k),innerHeight*.35,['🎉','⭐','🏅','✨','🎊'],16),k*250)}
+ $('#stage').innerHTML=`<div class="card"><div class="stars">${'⭐'.repeat(st)}${'☆'.repeat(3-st)}</div><div class="sc2">${sc} σωστά στα ${N()}${best>=3?' · 🔥 καλύτερη σειρά: '+best:''}</div><p class="c" style="font-weight:700;font-size:19px">${st==3?'Φανταστικά! Είσαι πραγματικός φύλακας του διαδικτύου! 🏆':st==2?'Πολύ καλά! Λίγο ακόμη και θα τα πας τέλεια.':'Καλή προσπάθεια! Διάβασε τους χρυσούς κανόνες και ξαναπροσπάθησε.'}</p><b>Οι χρυσοί κανόνες:</b><ul class="r">${APP.rules.map(r=>'<li>'+r+'</li>').join('')}</ul><div class="c"><button class="btn" id="again">🔄 Παίξε ξανά (με νέες ερωτήσεις)</button></div></div>`;
+ $('#again').onclick=start}
+$('#snd').onclick=()=>{snd=!snd;$('#snd').textContent=snd?'🔊':'🔇'};
+$('#intro').textContent=APP.how;start();
+</script></body></html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Φτιάχνω το κόμικ μου</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff7ed;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#fed7aa;--or:#f97316;--pk:#ec4899;--gr:#10b981;--rd:#ef4444;--soft:#ffedd5}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#2a1608;--card:#3b2210;--tx:#ffedd5;--mu:#fdba74;--bd:#7c4a1d;--soft:#4a2c14}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:18px}
+header{background:linear-gradient(135deg,#f97316,#ec4899,#8b5cf6);color:#fff;padding:10px 14px;text-align:center}header h1{margin:0;font-size:clamp(22px,4.5vw,32px)}header p{margin:0;font-size:14px;opacity:.95}
+main{max-width:1000px;margin:0 auto;padding:10px 12px 30px}
+button{font-family:inherit}.b{border:0;cursor:pointer;font:700 16px Fredoka;color:#fff;background:var(--or);padding:9px 14px;border-radius:14px;box-shadow:0 4px 0 #c2410c}.b:active{transform:translateY(3px);box-shadow:0 1px 0 #c2410c}
+.b.g{background:var(--soft);color:var(--tx);box-shadow:0 4px 0 var(--bd)}.b.p{background:var(--pk);box-shadow:0 4px 0 #9d174d}.b.v{background:var(--gr);box-shadow:0 4px 0 #047857}.b.r{background:var(--rd);box-shadow:0 4px 0 #991b1b}
+.bar{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:8px}.bar input.t{flex:1;min-width:160px;font:700 20px Fredoka;border:3px solid var(--bd);border-radius:12px;padding:8px 12px;background:var(--card);color:var(--tx)}
+.lay button{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:2px 6px;cursor:pointer;line-height:0}.lay button.on{border-color:var(--or);background:var(--soft)}
+.stagew{border:4px solid var(--bd);border-radius:14px;overflow:hidden;background:#fff}svg#svg{display:block;width:100%;height:auto;touch-action:none;user-select:none;-webkit-user-select:none}
+.panel{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:10px;margin-top:10px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.tabs button{border:3px solid var(--bd);background:var(--card);color:var(--tx);border-radius:99px;font:700 15px Fredoka;padding:6px 12px;cursor:pointer}.tabs button.on{background:var(--or);border-color:var(--or);color:#fff}
+.scn{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}.scn button{border:3px solid var(--bd);border-radius:12px;padding:0;overflow:hidden;cursor:pointer;background:var(--card);color:var(--tx);font:600 13px Fredoka}.scn svg{display:block;width:100%;height:auto}
+.pr{display:flex;flex-wrap:wrap;gap:6px}.pr button{font-size:34px;line-height:1;border:2px solid var(--bd);background:var(--card);border-radius:12px;width:54px;height:54px;cursor:pointer}.pr button:hover{background:var(--soft)}
+.pr button.w{width:auto;font:700 17px Fredoka;padding:0 14px;color:var(--tx)}
+.sel{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:8px;background:var(--soft);border-radius:14px;min-height:50px}.sel button{font-size:20px;border:2px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;padding:4px 10px;cursor:pointer}.sel input{flex:1;min-width:180px;font:600 18px Fredoka;border:3px solid var(--bd);border-radius:10px;padding:6px 10px;background:var(--card);color:var(--tx)}
+.sw{width:30px!important;min-width:30px!important;height:30px!important;padding:0!important;border-radius:50%!important;border:3px solid #fff!important;box-shadow:0 0 0 2px var(--bd)}
+.msg{min-height:26px;font-weight:600;margin:6px 2px;color:var(--mu)}.hint{color:var(--mu);font-size:15px}
+.dlg{position:fixed;inset:0;background:rgba(30,18,5,.65);display:grid;place-items:center;z-index:50;padding:14px}.dlg>div{background:var(--card);border-radius:22px;padding:20px;max-width:420px;width:100%;text-align:center}.dlg .bar{justify-content:center;margin:12px 0 0}
+</style><style id="prcss">
+#prn{display:none}
+#prn .ph{margin:0 0 3mm;font-size:22pt;text-align:center}
+#prn .pn{display:flex;gap:6mm;align-items:flex-end;font-size:12pt;margin:0 0 6mm;color:#444}
+#prn .pn i{flex:1;border-bottom:1.5px solid #888;height:1em}
+#prn .pf{margin-top:8mm;text-align:center;font-size:9pt;color:#777}
+#prn svg{max-width:100%;height:auto}
+#prn .ptb{border-collapse:collapse;margin:4mm 0;font-size:13pt}#prn .ptb th,#prn .ptb td{border:1.5px solid #94a3b8;padding:2mm 4mm;text-align:left}#prn .ptb th{background:#e2e8f0}#prn .ptb td.n{text-align:right}
+#prn .ds,#prn .slide{max-width:none!important;width:75%;margin:0 auto 4mm!important;break-inside:avoid}
+#prn .pdoc{font:16pt/1.5 'Times New Roman',Georgia,serif;color:#000;padding:4mm 2mm;min-height:120mm}
+#prn .pslide{aspect-ratio:16/9;width:78%;margin:0 auto 7mm;border:2px solid #94a3b8;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;break-inside:avoid;padding:4mm;overflow:hidden}
+#prn .pslide .pe{font-size:54pt;line-height:1.1}#prn .pslide .pt{font-size:28pt;font-weight:700}#prn .pslide .px{font-size:16pt;margin-top:2mm}#prn .pslide .pn2{position:absolute;right:8px;bottom:5px;font-size:10pt;color:#64748b}
+#prn .hero{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;border:1.5px solid #cbd5e1;border-radius:12px;padding:8px;margin-bottom:8px;break-inside:avoid}
+#prn .prpg{position:relative;width:680px;height:382px;overflow:hidden;margin:0 auto 8mm;border:2px solid #94a3b8;break-inside:avoid}#prn .prpg>div{transform:scale(.85);transform-origin:0 0}
+#prn .pimg{display:block;width:100%;height:auto;border:2px solid #94a3b8;margin:0 auto}
+#prn .dip{border:8px double #d97706;border-radius:18px;padding:16mm 10mm;text-align:center;margin:20mm auto 0;break-inside:avoid}#prn .dip .dt{font-size:34pt;font-weight:700;margin:4mm 0}#prn .dip .dn{font-size:30pt;font-weight:700;margin:8mm 0;border-bottom:2px solid #d97706;display:inline-block;min-width:60%}#prn .dip .dx{font-size:18pt}
+#prn-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 18px;border-radius:14px;font:600 16px system-ui,sans-serif;z-index:99999;max-width:90vw;text-align:center}
+@media print{
+ body.printing>*:not(#prn){display:none!important}
+ body.printing{background:#fff!important;color:#111!important;margin:0!important;--bg:#fff;--card:#fff;--tx:#111;--mu:#555;--bd:#cbd5e1;--soft:#f1f5f9;--hl:#fef9c3}
+ body.printing #prn{display:block!important;font-family:Fredoka,system-ui,sans-serif;color:#111;font-size:14pt}
+ #prn,#prn *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head><body>
+<header><h1>💥 Φτιάχνω το κόμικ μου</h1><p>Διάλεξε καρέ, φόντο, ήρωες και συννεφάκια. Σύρε τα για να τα μετακινήσεις!</p></header>
+<main>
+<div class="bar"><input class="t" id="ttl" maxlength="40" placeholder="Τίτλος του κόμικ" aria-label="Τίτλος">
+<span class="lay" id="lay"></span></div>
+<div class="bar"><button class="b g" id="bUndo">↩️ Πίσω</button><button class="b v" id="bSave">💾 Αποθήκευση</button><button class="b g" id="bOpen">📂 Άνοιγμα</button><button class="b p" id="bPng">🖼️ Εικόνα</button><button class="b g" id="bPrint">🖨️ Εκτύπωση</button><button class="b g" id="bIdea">🎲 Ιδέα</button><button class="b r" id="bNew">🆕 Νέο</button><input type="file" id="fi" accept=".json,application/json" hidden></div>
+<div class="stagew"><svg id="svg"></svg></div>
+<div class="msg" id="msg"></div>
+<div class="panel"><div class="hint" id="pinfo"></div><div class="tabs" id="tabs"></div><div id="pal"></div><div class="sel" id="sel"></div></div>
+</main>
+<script>
+const $=id=>document.getElementById(id);const FONT="'Comic Sans MS','Chalkboard SE','Segoe Print',Fredoka,'DejaVu Sans',sans-serif";
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const P6=(h)=>{const r=[];for(let i=0;i<6;i++)r.push([10+(i%2)*495,60+Math.floor(i/2)*360,485,350]);return r};
+const LAY={'1':{h:640,r:[[10,60,980,560]],n:'Ένα καρέ'},'2':{h:430,r:[[10,60,485,350],[505,60,485,350]],n:'Δύο καρέ'},'3':{h:790,r:[[10,60,980,350],[10,420,485,350],[505,420,485,350]],n:'Τρία καρέ'},'4':{h:790,r:P6().slice(0,4),n:'Τέσσερα καρέ'},'6':{h:1150,r:P6(),n:'Έξι καρέ'}};
+let S,sp=0,sel=null,tab='bg',uid=1,undo=[];
+const newP=()=>({bg:'sky',it:[]});
+const sample=()=>({title:'Το κόμικ μου',lay:'2',panels:[{bg:'sky',it:[{id:uid++,t:'e',e:'🐶',x:150,y:230,s:1.3,r:0,f:1},{id:uid++,t:'b',k:'say',x:300,y:80,s:1,r:0,w:210,tx:-90,ty:70,txt:'Γεια σου! Πάμε για παιχνίδι;'}]},{bg:'sea',it:[{id:uid++,t:'e',e:'🐱',x:330,y:240,s:1.3,r:0,f:-1},{id:uid++,t:'b',k:'think',x:170,y:90,s:1,r:0,w:200,tx:80,ty:85,txt:'Χμμ... καλή ιδέα!'}]},newP(),newP(),newP(),newP()]});
+function stars(w,h,n){let s='';for(let i=0;i<n;i++){const x=(i*137+31)%w,y=(i*71+17)%(h*.8),r=1+(i%3);s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" opacity=".85"/>`}return s}
+const BG={
+ sky:(w,h)=>`<defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#60a5fa"/><stop offset="1" stop-color="#dbeafe"/></linearGradient></defs><rect width="${w}" height="${h}" fill="url(#g1)"/><circle cx="${w*.82}" cy="${h*.2}" r="${h*.1}" fill="#fde047"/><ellipse cx="${w*.25}" cy="${h*.22}" rx="${w*.1}" ry="${h*.06}" fill="#fff"/><ellipse cx="${w*.34}" cy="${h*.26}" rx="${w*.08}" ry="${h*.05}" fill="#fff"/><rect y="${h*.78}" width="${w}" height="${h*.22}" fill="#4ade80"/>`,
+ forest:(w,h)=>{let t='';for(let i=0;i<5;i++){const x=w*(.1+i*.2),y=h*.55;t+=`<rect x="${x-9}" y="${y}" width="18" height="${h*.3}" fill="#92400e"/><circle cx="${x}" cy="${y}" r="${h*.17}" fill="${i%2?'#16a34a':'#15803d'}"/>`}return `<rect width="${w}" height="${h}" fill="#bbf7d0"/><rect y="${h*.8}" width="${w}" height="${h*.2}" fill="#65a30d"/>${t}`},
+ sea:(w,h)=>`<rect width="${w}" height="${h*.45}" fill="#bae6fd"/><circle cx="${w*.15}" cy="${h*.15}" r="${h*.08}" fill="#fde047"/><rect y="${h*.45}" width="${w}" height="${h*.4}" fill="#0ea5e9"/><path d="M0 ${h*.55} q${w*.05} -14 ${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0 t${w*.1} 0" stroke="#fff" stroke-width="4" fill="none" opacity=".7"/><rect y="${h*.85}" width="${w}" height="${h*.15}" fill="#fde68a"/>`,
+ space:(w,h)=>`<rect width="${w}" height="${h}" fill="#0f172a"/>${stars(w,h,40)}<circle cx="${w*.78}" cy="${h*.3}" r="${h*.14}" fill="#f97316"/><ellipse cx="${w*.78}" cy="${h*.3}" rx="${h*.24}" ry="${h*.04}" fill="none" stroke="#fde68a" stroke-width="4"/><circle cx="${w*.15}" cy="${h*.78}" r="${h*.08}" fill="#a78bfa"/>`,
+ school:(w,h)=>`<rect width="${w}" height="${h}" fill="#fef3c7"/><rect x="${w*.15}" y="${h*.12}" width="${w*.7}" height="${h*.45}" fill="#166534" stroke="#92400e" stroke-width="8"/><text x="${w*.5}" y="${h*.38}" text-anchor="middle" font-size="${h*.1}" fill="#fff" font-family="${FONT}">1 + 1 = 2</text><rect y="${h*.8}" width="${w}" height="${h*.2}" fill="#d6a46a"/>`,
+ home:(w,h)=>`<rect width="${w}" height="${h}" fill="#fde7f3"/><rect x="${w*.6}" y="${h*.15}" width="${w*.28}" height="${h*.35}" fill="#bae6fd" stroke="#fff" stroke-width="8"/><line x1="${w*.74}" x2="${w*.74}" y1="${h*.15}" y2="${h*.5}" stroke="#fff" stroke-width="6"/><rect y="${h*.78}" width="${w}" height="${h*.22}" fill="#c08457"/>`,
+ city:(w,h)=>{let b='';[[.05,.35,.14,'#64748b'],[.2,.2,.16,'#475569'],[.38,.4,.13,'#94a3b8'],[.53,.15,.15,'#64748b'],[.7,.3,.12,'#475569'],[.84,.45,.12,'#94a3b8']].forEach(([x,y,ww,c])=>{b+=`<rect x="${w*x}" y="${h*y}" width="${w*ww}" height="${h*(.8-y)}" fill="${c}"/>`;for(let j=0;j<6;j++)b+=`<rect x="${w*(x+.02+(j%2)*.055)}" y="${h*(y+.05+Math.floor(j/2)*.1)}" width="${w*.03}" height="${h*.05}" fill="#fde047"/>`});return `<rect width="${w}" height="${h}" fill="#bfdbfe"/>${b}<rect y="${h*.8}" width="${w}" height="${h*.2}" fill="#374151"/><rect x="0" y="${h*.89}" width="${w}" height="5" fill="#fde047" opacity=".8"/>`},
+ night:(w,h)=>`<rect width="${w}" height="${h}" fill="#1e1b4b"/>${stars(w,h,34)}<circle cx="${w*.8}" cy="${h*.22}" r="${h*.1}" fill="#fef9c3"/><path d="M0 ${h} L0 ${h*.75} Q${w*.25} ${h*.6} ${w*.5} ${h*.78} T${w} ${h*.7} L${w} ${h}Z" fill="#14532d"/>`,
+ snow:(w,h)=>`<rect width="${w}" height="${h}" fill="#e0f2fe"/>${stars(w,h,26).replace(/#fff/g,'#fff')}<path d="M0 ${h} L0 ${h*.78} Q${w*.3} ${h*.68} ${w*.6} ${h*.8} T${w} ${h*.75} L${w} ${h}Z" fill="#fff"/>`,
+ pop:(w,h)=>{let d='';for(let y=8;y<h;y+=22)for(let x=(y/22%2)*11;x<w;x+=22)d+=`<circle cx="${x}" cy="${y}" r="5" fill="#f472b6" opacity=".55"/>`;return `<rect width="${w}" height="${h}" fill="#fef9c3"/>${d}`},
+ blank:(w,h)=>`<rect width="${w}" height="${h}" fill="#fff"/>`
+};
+const BGN={sky:'☀️ Ουρανός',forest:'🌳 Δάσος',sea:'🌊 Θάλασσα',space:'🚀 Διάστημα',school:'🏫 Σχολείο',home:'🏠 Σπίτι',city:'🏙️ Πόλη',night:'🌙 Νύχτα',snow:'❄️ Χιόνι',pop:'💥 Κόμικ',blank:'⬜ Λευκό'};
+Object.assign(BG,{
+ castle:(w,h)=>{let t='';[[.3,.3],[.7,.3]].forEach(([x,y])=>{t+=`<rect x="${w*(x-.05)}" y="${h*y}" width="${w*.1}" height="${h*(.78-y)}" fill="#94a3b8"/><path d="M${w*(x-.07)} ${h*y} L${w*x} ${h*(y-.14)} L${w*(x+.07)} ${h*y}Z" fill="#dc2626"/>`});return `<rect width="${w}" height="${h}" fill="#bfdbfe"/><circle cx="${w*.9}" cy="${h*.15}" r="${h*.08}" fill="#fde047"/><rect y="${h*.78}" width="${w}" height="${h*.22}" fill="#4ade80"/><rect x="${w*.3}" y="${h*.42}" width="${w*.4}" height="${h*.36}" fill="#cbd5e1"/>${t}<path d="M${w*.45} ${h*.78} v${-h*.14} a${w*.05} ${w*.05} 0 0 1 ${w*.1} 0 v${h*.14}Z" fill="#78350f"/><line x1="${w*.5}" x2="${w*.5}" y1="${h*.1}" y2="${h*.2}" stroke="#78350f" stroke-width="3"/>`},
+ desert:(w,h)=>`<rect width="${w}" height="${h}" fill="#fde68a"/><circle cx="${w*.8}" cy="${h*.2}" r="${h*.12}" fill="#f97316"/><path d="M0 ${h} L0 ${h*.7} Q${w*.25} ${h*.55} ${w*.5} ${h*.72} T${w} ${h*.65} L${w} ${h}Z" fill="#fbbf24"/><path d="M0 ${h} L0 ${h*.85} Q${w*.3} ${h*.75} ${w*.6} ${h*.88} T${w} ${h*.82} L${w} ${h}Z" fill="#f59e0b"/><rect x="${w*.2}" y="${h*.55}" width="${w*.03}" height="${h*.22}" rx="6" fill="#15803d"/><rect x="${w*.15}" y="${h*.6}" width="${w*.025}" height="${h*.08}" rx="5" fill="#15803d"/><rect x="${w*.23}" y="${h*.56}" width="${w*.025}" height="${h*.08}" rx="5" fill="#15803d"/>`,
+ under:(w,h)=>{let s='';for(let i=0;i<9;i++)s+=`<circle cx="${(i*83+30)%w}" cy="${(i*47+20)%(h*.7)}" r="${4+i%4*3}" fill="none" stroke="#e0f2fe" stroke-width="2" opacity=".8"/>`;let a='';for(let i=0;i<5;i++){const x=w*(.1+i*.2);a+=`<path d="M${x} ${h} q-12 -${h*.1} 0 -${h*.2} q12 -${h*.1} 0 -${h*.2}" stroke="#16a34a" stroke-width="8" fill="none" stroke-linecap="round"/>`}return `<rect width="${w}" height="${h}" fill="#0891b2"/><rect width="${w}" height="${h*.4}" fill="#22d3ee" opacity=".4"/>${s}${a}<rect y="${h*.9}" width="${w}" height="${h*.1}" fill="#fde68a"/><g fill="#fb923c"><ellipse cx="${w*.62}" cy="${h*.4}" rx="22" ry="12"/><path d="M${w*.62+20} ${h*.4} l18 -12 v24z"/></g><g fill="#f472b6"><ellipse cx="${w*.3}" cy="${h*.55}" rx="18" ry="10"/><path d="M${w*.3-16} ${h*.55} l-15 -10 v20z"/></g>`},
+ candy:(w,h)=>{let l='';[[.15,.45,'#ef4444'],[.4,.55,'#a855f7'],[.7,.4,'#22c55e'],[.88,.55,'#f97316']].forEach(([x,y,c])=>{l+=`<rect x="${w*x-3}" y="${h*y}" width="6" height="${h*.4}" fill="#fff" stroke="#9ca3af"/><circle cx="${w*x}" cy="${h*y}" r="${h*.1}" fill="${c}" stroke="#fff" stroke-width="4"/><circle cx="${w*x}" cy="${h*y}" r="${h*.05}" fill="none" stroke="#fff" stroke-width="3"/>`});return `<rect width="${w}" height="${h}" fill="#fbcfe8"/><path d="M0 ${h} L0 ${h*.8} Q${w*.25} ${h*.7} ${w*.5} ${h*.82} T${w} ${h*.78} L${w} ${h}Z" fill="#fef3c7"/>${l}<ellipse cx="${w*.3}" cy="${h*.15}" rx="${w*.09}" ry="${h*.06}" fill="#fff"/><ellipse cx="${w*.75}" cy="${h*.18}" rx="${w*.08}" ry="${h*.05}" fill="#fff"/>`},
+ volcano:(w,h)=>`<rect width="${w}" height="${h}" fill="#fb923c"/><rect width="${w}" height="${h*.4}" fill="#fcd34d" opacity=".5"/><circle cx="${w*.5}" cy="${h*.15}" r="${h*.06}" fill="#9ca3af" opacity=".7"/><circle cx="${w*.45}" cy="${h*.07}" r="${h*.05}" fill="#6b7280" opacity=".6"/><path d="M${w*.15} ${h*.85} L${w*.42} ${h*.3} L${w*.58} ${h*.3} L${w*.85} ${h*.85}Z" fill="#78350f"/><path d="M${w*.42} ${h*.3} L${w*.58} ${h*.3} L${w*.54} ${h*.36} L${w*.5} ${h*.31} L${w*.46} ${h*.37}Z" fill="#ef4444"/><path d="M${w*.5} ${h*.34} L${w*.47} ${h*.85} L${w*.53} ${h*.85}Z" fill="#f97316" opacity=".8"/><rect y="${h*.85}" width="${w}" height="${h*.15}" fill="#431407"/>`,
+ island:(w,h)=>`<rect width="${w}" height="${h*.5}" fill="#7dd3fc"/><circle cx="${w*.15}" cy="${h*.15}" r="${h*.08}" fill="#fde047"/><rect y="${h*.5}" width="${w}" height="${h*.5}" fill="#0284c7"/><ellipse cx="${w*.55}" cy="${h*.62}" rx="${w*.25}" ry="${h*.1}" fill="#fde68a"/><path d="M${w*.55} ${h*.62} q10 -${h*.2} 0 -${h*.3}" stroke="#92400e" stroke-width="9" fill="none"/><path d="M${w*.55} ${h*.32} q-40 -10 -50 20 M${w*.55} ${h*.32} q40 -10 50 20 M${w*.55} ${h*.32} q0 -30 -30 -25 M${w*.55} ${h*.32} q10 -30 40 -20" stroke="#16a34a" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M${w*.12} ${h*.78} l${w*.18} 0 l-${w*.03} ${h*.08} h-${w*.12}Z" fill="#92400e"/><path d="M${w*.21} ${h*.78} v-${h*.22} l${w*.07} ${h*.2}Z" fill="#fff" stroke="#9ca3af"/>`,
+ farm:(w,h)=>`<rect width="${w}" height="${h}" fill="#bae6fd"/><circle cx="${w*.85}" cy="${h*.15}" r="${h*.08}" fill="#fde047"/><rect y="${h*.6}" width="${w}" height="${h*.4}" fill="#86efac"/><rect x="${w*.15}" y="${h*.35}" width="${w*.25}" height="${h*.3}" fill="#dc2626"/><path d="M${w*.12} ${h*.35} L${w*.275} ${h*.2} L${w*.43} ${h*.35}Z" fill="#7f1d1d"/><rect x="${w*.24}" y="${h*.47}" width="${w*.07}" height="${h*.18}" fill="#fef3c7"/><g stroke="#92400e" stroke-width="6"><line x1="${w*.5}" x2="${w}" y1="${h*.7}" y2="${h*.7}"/><line x1="${w*.5}" x2="${w}" y1="${h*.78}" y2="${h*.78}"/>${[.55,.68,.81,.94].map(x=>`<line x1="${w*x}" x2="${w*x}" y1="${h*.64}" y2="${h*.84}"/>`).join('')}</g>`,
+ park:(w,h)=>`<rect width="${w}" height="${h}" fill="#bfdbfe"/><rect y="${h*.72}" width="${w}" height="${h*.28}" fill="#4ade80"/><g stroke="#475569" stroke-width="7" fill="none"><path d="M${w*.15} ${h*.72} L${w*.25} ${h*.3} L${w*.35} ${h*.72}M${w*.2} ${h*.5} h${w*.0}"/><line x1="${w*.2}" x2="${w*.3}" y1="${h*.3}" y2="${h*.3}"/></g><path d="M${w*.2} ${h*.3} v${h*.3} M${w*.3} ${h*.3} v${h*.3}" stroke="#92400e" stroke-width="4"/><rect x="${w*.17}" y="${h*.6}" width="${w*.16}" height="8" fill="#f97316"/><path d="M${w*.6} ${h*.72} L${w*.6} ${h*.35} L${w*.85} ${h*.72}Z" fill="#f59e0b" stroke="#b45309" stroke-width="4"/><circle cx="${w*.85}" cy="${h*.15}" r="${h*.08}" fill="#fde047"/>`,
+ cave:(w,h)=>{let c='',s='';for(let i=0;i<7;i++){const x=w*(.05+i*.15);s+=`<path d="M${x} 0 l${w*.04} 0 l-${w*.02} ${h*(.12+i%3*.07)}Z" fill="#78716c"/>`}[[.25,.82,'#22d3ee'],[.6,.85,'#a78bfa'],[.82,.8,'#4ade80']].forEach(([x,y,col])=>{c+=`<path d="M${w*x} ${h*y} l-10 -${h*.12} l10 -${h*.06} l10 ${h*.06}Z" fill="${col}" stroke="#fff" stroke-width="2"/>`});return `<rect width="${w}" height="${h}" fill="#44403c"/><rect y="${h*.85}" width="${w}" height="${h*.15}" fill="#292524"/>${s}${c}`},
+ mount:(w,h)=>`<rect width="${w}" height="${h}" fill="#7dd3fc"/><path d="M0 ${h*.8} L${w*.25} ${h*.25} L${w*.5} ${h*.8}Z" fill="#64748b"/><path d="M${w*.15} ${h*.45} L${w*.25} ${h*.25} L${w*.35} ${h*.45} L${w*.3} ${h*.42} L${w*.25} ${h*.47} L${w*.2} ${h*.42}Z" fill="#fff"/><path d="M${w*.4} ${h*.8} L${w*.7} ${h*.15} L${w} ${h*.8}Z" fill="#475569"/><path d="M${w*.6} ${h*.35} L${w*.7} ${h*.15} L${w*.8} ${h*.35} L${w*.75} ${h*.32} L${w*.7} ${h*.37} L${w*.65} ${h*.32}Z" fill="#fff"/><rect y="${h*.8}" width="${w}" height="${h*.2}" fill="#16a34a"/>`,
+ rainbow:(w,h)=>{let r='';['#ef4444','#f97316','#facc15','#22c55e','#3b82f6','#8b5cf6'].forEach((c,i)=>{r+=`<path d="M${w*.1+i*10} ${h*.8} A${w*.4-i*10} ${w*.4-i*10} 0 0 1 ${w*.9-i*10} ${h*.8}" stroke="${c}" stroke-width="12" fill="none"/>`});return `<rect width="${w}" height="${h}" fill="#e0f2fe"/>${r}<ellipse cx="${w*.12}" cy="${h*.78}" rx="${w*.1}" ry="${h*.06}" fill="#fff"/><ellipse cx="${w*.88}" cy="${h*.78}" rx="${w*.1}" ry="${h*.06}" fill="#fff"/><rect y="${h*.85}" width="${w}" height="${h*.15}" fill="#4ade80"/>`},
+ haunted:(w,h)=>`<rect width="${w}" height="${h}" fill="#3b0764"/>${stars(w,h,20)}<circle cx="${w*.8}" cy="${h*.2}" r="${h*.1}" fill="#fef08a"/><rect x="${w*.3}" y="${h*.4}" width="${w*.4}" height="${h*.4}" fill="#1f2937"/><path d="M${w*.27} ${h*.4} L${w*.5} ${h*.2} L${w*.73} ${h*.4}Z" fill="#111827"/><rect x="${w*.36}" y="${h*.5}" width="${w*.07}" height="${h*.1}" fill="#fde047"/><rect x="${w*.57}" y="${h*.5}" width="${w*.07}" height="${h*.1}" fill="#fde047"/><rect x="${w*.47}" y="${h*.65}" width="${w*.07}" height="${h*.15}" fill="#fb923c"/><rect y="${h*.8}" width="${w}" height="${h*.2}" fill="#14532d"/>`,
+ stadium:(w,h)=>`<rect width="${w}" height="${h}" fill="#93c5fd"/><rect y="${h*.2}" width="${w}" height="${h*.25}" fill="#94a3b8"/><rect y="${h*.45}" width="${w}" height="${h*.55}" fill="#22c55e"/><g stroke="#fff" stroke-width="4" fill="none"><rect x="${w*.08}" y="${h*.55}" width="${w*.84}" height="${h*.38}"/><line x1="${w*.5}" x2="${w*.5}" y1="${h*.55}" y2="${h*.93}"/><circle cx="${w*.5}" cy="${h*.74}" r="${h*.1}"/></g>`,
+ jungle:(w,h)=>{let l='';for(let i=0;i<7;i++){const x=w*(.05+i*.15);l+=`<path d="M${x} 0 q${i%2?15:-15} ${h*.25} 0 ${h*(.3+i%3*.1)}" stroke="#166534" stroke-width="7" fill="none"/><ellipse cx="${x}" cy="${h*(.3+i%3*.1)}" rx="14" ry="22" fill="#22c55e"/>`}return `<rect width="${w}" height="${h}" fill="#86efac"/><rect y="${h*.85}" width="${w}" height="${h*.15}" fill="#365314"/>${l}<circle cx="${w*.5}" cy="${h*.2}" r="${h*.06}" fill="#fde047"/>`},
+ magic:(w,h)=>{let s='';for(let i=0;i<14;i++){const x=(i*97+23)%w,y=(i*61+11)%(h*.85);s+=`<path d="M${x} ${y-8} l2 6 l6 2 l-6 2 l-2 6 l-2 -6 l-6 -2 l6 -2z" fill="#fde047"/>`}return `<rect width="${w}" height="${h}" fill="#6d28d9"/><rect y="${h*.5}" width="${w}" height="${h*.5}" fill="#4c1d95" opacity=".6"/>${s}<path d="M0 ${h} L0 ${h*.85} Q${w*.5} ${h*.7} ${w} ${h*.85} L${w} ${h}Z" fill="#a78bfa"/>`}
+});
+Object.assign(BGN,{castle:'🏰 Κάστρο',desert:'🏜️ Έρημος',under:'🐠 Βυθός',candy:'🍭 Γλυκά',volcano:'🌋 Ηφαίστειο',island:'🏴‍☠️ Νησί πειρατών',farm:'🚜 Φάρμα',park:'🛝 Παιδική χαρά',cave:'🦇 Σπηλιά',mount:'🏔️ Βουνά',rainbow:'🌈 Ουράνιο τόξο',haunted:'🏚️ Στοιχειωμένο',stadium:'⚽ Γήπεδο',jungle:'🌴 Ζούγκλα',magic:'✨ Μαγικός κόσμος'});
+// ---- Πρωτότυποι ήρωες και πλάσματα (SVG) ----
+const EMB={star:'<path d="M0-9l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z" fill="#fde047" stroke="#92400e" stroke-width="1"/>',bolt:'<path d="M3-10l-9 11h6l-3 9 9-12h-6z" fill="#fde047" stroke="#92400e" stroke-width="1"/>',heart:'<path d="M0 8C-12-1-8-10 0-4 8-10 12-1 0 8z" fill="#fff" stroke="#be123c" stroke-width="1"/>',flame:'<path d="M0-10C8-2 9 3 4 8-2 11-8 8-6 2-4-1-1-2 0-10z" fill="#fde047" stroke="#b45309" stroke-width="1"/>',drop:'<path d="M0-10C8 0 9 6 0 9-9 6-8 0 0-10z" fill="#e0f2fe" stroke="#0369a1" stroke-width="1"/>',moon:'<path d="M4-9A9 9 0 1 0 5 8 7 7 0 0 1 4-9z" fill="#fef9c3" stroke="#6b21a8" stroke-width="1"/>',leaf:'<path d="M-8 8C-8-6 2-10 9-9 10-1 4 8-8 8z" fill="#bbf7d0" stroke="#166534" stroke-width="1"/>',sun:'<circle r="6" fill="#fde047" stroke="#b45309" stroke-width="1"/><path d="M0-10v-3M0 10v3M-10 0h-3M10 0h3" stroke="#b45309" stroke-width="2"/>'};
+function hero(o){const{suit,cape,boot,belt='#fde047',mask,hair,skin='#fcd9b6',emb,pose='up',girl,helmet}=o;
+ let s='';
+ s+=`<path d="M-18-22L-40 42Q0 56 40 42L18-22Z" fill="${cape}" stroke="#1f2937" stroke-width="2"/>`;
+ s+=`<rect x="-16" y="20" width="13" height="28" rx="5" fill="${suit}" stroke="#1f2937" stroke-width="2"/><rect x="3" y="20" width="13" height="28" rx="5" fill="${suit}" stroke="#1f2937" stroke-width="2"/><rect x="-18" y="40" width="17" height="12" rx="5" fill="${boot}" stroke="#1f2937" stroke-width="2"/><rect x="1" y="40" width="17" height="12" rx="5" fill="${boot}" stroke="#1f2937" stroke-width="2"/>`;
+ s+=`<rect x="-20" y="-26" width="40" height="52" rx="12" fill="${suit}" stroke="#1f2937" stroke-width="2"/>`;
+ if(girl)s+=`<path d="M-20 14 L-26 30 L26 30 L20 14Z" fill="${suit}" stroke="#1f2937" stroke-width="2"/>`;
+ s+=`<rect x="-20" y="10" width="40" height="7" fill="${belt}" stroke="#1f2937" stroke-width="1.5"/>`;
+ s+=`<g transform="translate(0,-6)">${EMB[emb]}</g>`;
+ if(pose=='up')s+=`<rect x="-35" y="-24" width="13" height="32" rx="6.5" fill="${suit}" stroke="#1f2937" stroke-width="2" transform="rotate(20 -28 -8)"/><circle cx="-36" cy="9" r="6" fill="${skin}" stroke="#1f2937" stroke-width="1.5"/><rect x="22" y="-52" width="13" height="32" rx="6.5" fill="${suit}" stroke="#1f2937" stroke-width="2" transform="rotate(25 28 -36)"/><circle cx="37" cy="-56" r="6" fill="${skin}" stroke="#1f2937" stroke-width="1.5"/>`;
+ else s+=`<rect x="-36" y="-22" width="13" height="30" rx="6.5" fill="${suit}" stroke="#1f2937" stroke-width="2" transform="rotate(35 -28 -8)"/><circle cx="-22" cy="8" r="6" fill="${skin}" stroke="#1f2937" stroke-width="1.5"/><rect x="23" y="-22" width="13" height="30" rx="6.5" fill="${suit}" stroke="#1f2937" stroke-width="2" transform="rotate(-35 28 -8)"/><circle cx="22" cy="8" r="6" fill="${skin}" stroke="#1f2937" stroke-width="1.5"/>`;
+ s+=`<circle cx="0" cy="-40" r="16" fill="${skin}" stroke="#1f2937" stroke-width="2"/>`;
+ if(hair)s+=girl?`<path d="M-17-40A17 17 0 0 1 17-40Q10-48 0-47-10-48-17-40z" fill="${hair}" stroke="#1f2937" stroke-width="1.5"/><path d="M15-44q14 4 10 22-4-10-12-12z" fill="${hair}" stroke="#1f2937" stroke-width="1.5"/>`:`<path d="M-16-42A16 16 0 0 1 16-42Q8-52 0-50-8-52-16-42z" fill="${hair}" stroke="#1f2937" stroke-width="1.5"/>`;
+ if(helmet)s+=`<path d="M-17-38A17 17 0 0 1 17-38L17-34H-17z" fill="${helmet}" stroke="#1f2937" stroke-width="2"/>`;
+ if(mask)s+=`<path d="M-17-44h34v11q-8 5-17 0-9 5-17 0z" fill="${mask}" stroke="#1f2937" stroke-width="1.5"/><ellipse cx="-7" cy="-39" rx="4.5" ry="3.2" fill="#fff"/><ellipse cx="7" cy="-39" rx="4.5" ry="3.2" fill="#fff"/><circle cx="-6.5" cy="-39" r="1.8" fill="#111"/><circle cx="7.5" cy="-39" r="1.8" fill="#111"/>`;
+ else s+=`<circle cx="-6" cy="-40" r="2.4" fill="#111"/><circle cx="6" cy="-40" r="2.4" fill="#111"/>`;
+ s+=`<path d="M-6-31q6 6 12 0" stroke="#7f1d1d" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+ return s}
+function robot(o){const{c,c2,eye}=o;return `<line x1="0" y1="-58" x2="0" y2="-48" stroke="#475569" stroke-width="3"/><circle cx="0" cy="-60" r="4" fill="${eye}"/><rect x="-17" y="-50" width="34" height="26" rx="8" fill="${c}" stroke="#1f2937" stroke-width="2"/><rect x="-11" y="-42" width="22" height="10" rx="5" fill="#0f172a"/><circle cx="-5" cy="-37" r="3" fill="${eye}"/><circle cx="5" cy="-37" r="3" fill="${eye}"/><rect x="-22" y="-22" width="44" height="40" rx="8" fill="${c}" stroke="#1f2937" stroke-width="2"/><circle cx="0" cy="-4" r="9" fill="${c2}" stroke="#1f2937" stroke-width="2"/><circle cx="0" cy="-4" r="4" fill="${eye}"/><rect x="-36" y="-20" width="12" height="30" rx="6" fill="${c2}" stroke="#1f2937" stroke-width="2"/><rect x="24" y="-20" width="12" height="30" rx="6" fill="${c2}" stroke="#1f2937" stroke-width="2"/><rect x="-16" y="18" width="12" height="24" rx="4" fill="${c2}" stroke="#1f2937" stroke-width="2"/><rect x="4" y="18" width="12" height="24" rx="4" fill="${c2}" stroke="#1f2937" stroke-width="2"/><rect x="-19" y="40" width="18" height="10" rx="4" fill="#475569" stroke="#1f2937" stroke-width="2"/><rect x="1" y="40" width="18" height="10" rx="4" fill="#475569" stroke="#1f2937" stroke-width="2"/>`}
+function mon(o){const{c,c2,ears='none',horns=0,eyes=2,fang=0,tail=0}=o;let s='';
+ if(tail)s+=`<path d="M30 20Q52 10 46 -8 40 4 30 8z" fill="${c}" stroke="#1f2937" stroke-width="2"/>`;
+ s+=`<path d="M-8 42h-8v10h14zM8 42h8v10h-14z" fill="${c2}" stroke="#1f2937" stroke-width="2"/>`;
+ if(ears=='round')s+=`<circle cx="-26" cy="-32" r="11" fill="${c}" stroke="#1f2937" stroke-width="2"/><circle cx="26" cy="-32" r="11" fill="${c}" stroke="#1f2937" stroke-width="2"/><circle cx="-26" cy="-32" r="5" fill="${c2}"/><circle cx="26" cy="-32" r="5" fill="${c2}"/>`;
+ if(ears=='long')s+=`<ellipse cx="-14" cy="-52" rx="7" ry="17" fill="${c}" stroke="#1f2937" stroke-width="2"/><ellipse cx="14" cy="-52" rx="7" ry="17" fill="${c}" stroke="#1f2937" stroke-width="2"/>`;
+ if(horns)s+=`<path d="M-22-34L-30-56-12-42zM22-34L30-56 12-42z" fill="#fef3c7" stroke="#1f2937" stroke-width="2"/>`;
+ s+=`<ellipse cx="0" cy="8" rx="38" ry="40" fill="${c}" stroke="#1f2937" stroke-width="2.5"/><ellipse cx="0" cy="20" rx="22" ry="22" fill="${c2}" opacity=".85"/>`;
+ s+=`<ellipse cx="-30" cy="22" rx="7" ry="12" fill="${c}" stroke="#1f2937" stroke-width="2" transform="rotate(20 -30 22)"/><ellipse cx="30" cy="22" rx="7" ry="12" fill="${c}" stroke="#1f2937" stroke-width="2" transform="rotate(-20 30 22)"/>`;
+ const ey=eyes==1?[[0,-12,11]]:eyes==3?[[-17,-10,7],[0,-18,7],[17,-10,7]]:[[-14,-12,9],[14,-12,9]];
+ ey.forEach(([x,y,r])=>s+=`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#1f2937" stroke-width="2"/><circle cx="${x+1}" cy="${y+1}" r="${r*.45}" fill="#111"/>`);
+ s+=`<path d="M-14 8Q0 24 14 8" fill="#7f1d1d" stroke="#1f2937" stroke-width="2"/>`;
+ if(fang)s+=`<path d="M-9 11l3 7 3-5zM9 11l-3 7-3-5z" fill="#fff" stroke="#1f2937" stroke-width="1.2"/>`;
+ return s}
+const GA={
+ h1:['Αστέρι',hero({suit:'#2563eb',cape:'#dc2626',boot:'#dc2626',mask:'#dc2626',hair:'#1f2937',emb:'star'})],
+ h2:['Κεραυνός',hero({suit:'#eab308',cape:'#7c3aed',boot:'#7c3aed',belt:'#7c3aed',mask:'#7c3aed',hair:'#92400e',emb:'bolt',pose:'hips'})],
+ h3:['Σκιά',hero({suit:'#312e81',cape:'#111827',boot:'#111827',belt:'#a78bfa',mask:'#111827',emb:'moon',pose:'hips'})],
+ h4:['Φλόγα',hero({suit:'#dc2626',cape:'#f97316',boot:'#7f1d1d',mask:'#fde047',hair:'#7c2d12',emb:'flame'})],
+ h5:['Πράσινος Δύναμης',hero({suit:'#16a34a',cape:'#065f46',boot:'#14532d',mask:'#14532d',hair:'#422006',emb:'leaf',pose:'hips'})],
+ h6:['Αστραπή',hero({suit:'#ec4899',cape:'#7e22ce',boot:'#7e22ce',belt:'#fef08a',mask:'#7e22ce',hair:'#f59e0b',emb:'heart',girl:1})],
+ h7:['Κύμα',hero({suit:'#0891b2',cape:'#1d4ed8',boot:'#1e3a8a',belt:'#e0f2fe',mask:'#1e3a8a',hair:'#0f172a',emb:'drop',girl:1,pose:'hips'})],
+ h8:['Ηλιοφόρος',hero({suit:'#f97316',cape:'#fde047',boot:'#b45309',belt:'#fef3c7',helmet:'#fde047',emb:'sun',hair:'#111827'})],
+ r1:['Ρομποήρωας',robot({c:'#3b82f6',c2:'#93c5fd',eye:'#fde047'})],
+ r2:['Κακό ρομπότ',robot({c:'#7f1d1d',c2:'#475569',eye:'#ef4444'})],
+ m1:['Φλογούλης',mon({c:'#fb923c',c2:'#fde68a',ears:'round'})],
+ m2:['Νεροφούσκα',mon({c:'#38bdf8',c2:'#e0f2fe',ears:'long'})],
+ m3:['Φυλλούλης',mon({c:'#4ade80',c2:'#dcfce7',ears:'round'})],
+ m4:['Κεραυνούλης',mon({c:'#a5b4fc',c2:'#eef2ff',ears:'round'})],
+ m5:['Ροζούλα',mon({c:'#f9a8d4',c2:'#fdf2f8',ears:'round'})],
+ m6:['Κυκλωπούλης',mon({c:'#a78bfa',c2:'#ede9fe',eyes:1,horns:1})],
+ m7:['Τρίμματης (κακός)',mon({c:'#7f1d1d',c2:'#fca5a5',eyes:3,horns:1,fang:1})],
+ m8:['Πράσινο τέρας',mon({c:'#65a30d',c2:'#d9f99d',horns:1,fang:1,tail:1})]};
+const E={chars:'🧒 👧 👦 👩 👨 👵 👴 🧑‍🏫 🦸 🦹 🧙 🧚 🥷 👮 🧑‍🚀 🤖 👽 👻 🐶 🐱 🐭 🐰 🦊 🐻 🐼 🐸 🦁 🐯 🐵 🦄 🐉 🦖 🐧 🦆 🐢 🐙 🐝 🦋 🦕 🐺 🦅 🦉 🐬 🦈 🐘 🦒 🦓 🐞 🧜 🧛 🧞 🧟 🦹‍♀️ 🦸‍♀️ 🦸‍♂️ 🥸 🤠 👸 🤴 🧑‍🚒 🧑‍🍳 🧑‍🎤 🧑‍⚕️ 🏴‍☠️ 🐲 🦇 🕷️'.split(' '),
+ faces:'😀 😂 😍 😎 🤔 😢 😭 😡 😱 😴 🤩 😳 🤯 😈 🥳 🤒'.split(' '),
+ stuff:'🏠 🏰 🌳 🌲 🌸 ⛰️ 🚗 🚌 🚀 ✈️ ⛵ 🚲 🍎 🍕 🍦 ⚽ 🎈 🎁 ⭐ 🌙 ☀️ ☁️ 🌈 ⚡ ❤️ 💡 📚 🔑 🗺️ 💻 📱 🎸 🏆 💰 🔦 🪄 ⚔️ 🛡️ 📦 🔥 💎 👑 🗡️ 🏹 🔮 🧪 🪐 🛸 🚁 🚒 🏎️ 🛹 🎮 🎨 🥇 🎂 🍩 🍭 🍔 🍉 🌋 🌊 💣 🧲 🪁 🎯 🧸 🚪 🪜 🗝️ 📜 ⛺ 🌴 🌵'.split(' ')};
+const SND=[['ΜΠΟΥΜ!','#ef4444'],['ΠΑΦ!','#f97316'],['ΒΡΟΥΜ!','#6366f1'],['ΖΖΖ…','#06b6d4'],['ΧΑ ΧΑ!','#10b981'],['ΟΥΑΟΥ!','#ec4899'],['ΣΠΛΑΤ!','#3b82f6'],['ΤΟΚ ΤΟΚ','#a16207'],['ΜΙΑΟΥ!','#d946ef'],['ΓΑΒ!','#f59e0b']];
+const IDEAS=['Ένα παιδί βρίσκει ένα μυστηριώδες κουτί στον κήπο… τι έχει μέσα;','Το κατοικίδιό σου αρχίζει να μιλάει! Τι σου λέει;','Ένας ήρωας σώζει την πόλη από έναν ιδιότροπο δράκο.','Ταξιδεύεις με διαστημόπλοιο και συναντάς ένα φιλικό εξωγήινο.','Η τάξη σου κάνει εκδρομή και χάνεται ο δάσκαλος!','Ένα ρομπότ μαθαίνει να κάνει φίλους.','Ένα παγωτό… που δεν λιώνει ποτέ!','Μια μέρα στη ζωή ενός ποντικιού στην τάξη της πληροφορικής.'];
+const snap=()=>{undo.push(JSON.stringify(S));if(undo.length>40)undo.shift()};
+const say=t=>{$('msg').textContent=t;clearTimeout(say.t);say.t=setTimeout(()=>$('msg').textContent='',5000)};
+const auto=()=>{try{localStorage.setItem('comic_auto',JSON.stringify({S,uid}))}catch(e){}};
+function wrapT(t,w,fs){const mc=Math.max(4,Math.floor((w-28)/(fs*.56)));let L=[],c='';String(t).split(/\s+/).forEach(wd=>{if((c+' '+wd).trim().length>mc&&c){L.push(c);c=wd}else c=(c+' '+wd).trim()});if(c)L.push(c);return L.length?L:['']}
+function geo(o,pw){const fs=o.t=='c'?20:22,lh=fs*1.25,w=o.t=='c'?(o.w||pw-40):(o.w||200);const L=wrapT(o.txt,w,fs);return{fs,lh,w,L,h:Math.max(o.t=='c'?44:58,L.length*lh+26)}}
+function spPath(w,h,tx,ty){const a=-w/2,b=w/2,c=-h/2,d=h/2,r=Math.min(24,h/2),cl=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));const side=ty>d?'b':ty<c?'t':tx<a?'l':tx>b?'r':'b';const bx=cl(tx,a+r+16,b-r-16),by=cl(ty,c+r+14,d-r-14);let p=`M${a+r},${c}`;
+ if(side=='t')p+=`L${bx-14},${c}L${tx},${ty}L${bx+14},${c}`;p+=`L${b-r},${c}Q${b},${c} ${b},${c+r}`;
+ if(side=='r')p+=`L${b},${by-12}L${tx},${ty}L${b},${by+12}`;p+=`L${b},${d-r}Q${b},${d} ${b-r},${d}`;
+ if(side=='b')p+=`L${bx+14},${d}L${tx},${ty}L${bx-14},${d}`;p+=`L${a+r},${d}Q${a},${d} ${a},${d-r}`;
+ if(side=='l')p+=`L${a},${by+12}L${tx},${ty}L${a},${by-12}`;return p+`L${a},${c+r}Q${a},${c} ${a+r},${c}Z`}
+function shoutPts(w,h){const n=16,rx=w/2*1.05+12,ry=h/2*1.1+12;let p=[];for(let i=0;i<n*2;i++){const an=i*Math.PI/n,k=i%2?.82:1;p.push((Math.cos(an)*rx*k).toFixed(1)+','+(Math.sin(an)*ry*k).toFixed(1))}return p.join(' ')}
+function inner(o,pw){
+ if(o.t=='e')return `<rect x="-48" y="-48" width="96" height="96" fill="transparent"/><text font-size="84" text-anchor="middle" dominant-baseline="central" font-family="'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif">${o.e}</text>`;
+ if(o.t=='g')return `<rect x="-52" y="-62" width="104" height="124" fill="transparent"/><g transform="scale(1.15)">${(GA[o.g]||['',''])[1]}</g>`;
+ if(o.t=='x')return `<text font-size="58" font-weight="900" text-anchor="middle" dominant-baseline="central" fill="${o.c}" stroke="#111" stroke-width="9" paint-order="stroke" stroke-linejoin="round" font-family="${FONT}">${esc(o.txt)}</text>`;
+ const g=geo(o,pw),y0=-(g.L.length-1)*g.lh/2;const tx=g.L.map((l,i)=>`<tspan x="0" y="${y0+i*g.lh}">${esc(l)}</tspan>`).join('');
+ const txt=`<text text-anchor="middle" dominant-baseline="central" font-size="${g.fs}" font-family="${FONT}" fill="#111">${tx}</text>`;
+ if(o.t=='c')return `<rect x="${-g.w/2}" y="${-g.h/2}" width="${g.w}" height="${g.h}" fill="#fde68a" stroke="#111" stroke-width="3"/>${txt}`;
+ const ttx=o.tx??-g.w*.2,tty=o.ty??g.h/2+45;
+ if(o.k=='shout')return `<polygon points="${shoutPts(g.w,g.h)}" fill="#fef08a" stroke="#111" stroke-width="3.5" stroke-linejoin="round"/>${txt}`;
+ if(o.k=='think'){const rx=g.w/2*1.08,ry=g.h/2*1.25,d=Math.hypot(ttx,tty)||1,ux=ttx/d,uy=tty/d,e=1/Math.hypot(ux/rx,uy/ry);let c='';[[14,9],[32,6.5],[47,4.5]].forEach(([k,r])=>{if(e+k<d+20)c+=`<circle cx="${ux*(e+k)}" cy="${uy*(e+k)}" r="${r}" fill="#fff" stroke="#111" stroke-width="3"/>`});return `<ellipse rx="${rx}" ry="${ry}" fill="#fff" stroke="#111" stroke-width="3"/>${c}${txt}`}
+ return `<path d="${spPath(g.w,g.h,ttx,tty)}" fill="#fff" stroke="#111" stroke-width="3.5" stroke-linejoin="round"/>${txt}`}
+function build(ex){const L=LAY[S.lay];let s=`<rect width="1000" height="${L.h}" fill="#fff"/><text x="500" y="44" text-anchor="middle" font-size="34" font-weight="700" fill="#111" font-family="${FONT}">${esc(S.title||'')}</text>`;
+ L.r.forEach((r,i)=>{const [x,y,w,h]=r,Pn=S.panels[i];s+=`<g transform="translate(${x},${y})"><clipPath id="c${i}"><rect width="${w}" height="${h}"/></clipPath><g clip-path="url(#c${i})" data-p="${i}"><g data-p="${i}">${BG[Pn.bg](w,h)}</g>`;
+  Pn.it.forEach(o=>{s+=`<g class="it" data-id="${o.id}" data-p="${i}" transform="translate(${o.x},${o.y}) rotate(${o.r||0}) scale(${(o.f||1)*o.s},${o.s})" style="cursor:move">${inner(o,w)}</g>`});
+  s+=`</g><rect width="${w}" height="${h}" fill="none" stroke="#111" stroke-width="5" pointer-events="none"/>`;
+  if(!ex){s+=`<g pointer-events="none"><circle cx="22" cy="22" r="16" fill="${i==sp?'#f97316':'#64748b'}" stroke="#fff" stroke-width="3"/><text x="22" y="23" text-anchor="middle" dominant-baseline="central" font-size="18" font-weight="700" fill="#fff" font-family="${FONT}">${i+1}</text>${i==sp?`<rect x="3" y="3" width="${w-6}" height="${h-6}" fill="none" stroke="#f97316" stroke-width="5" stroke-dasharray="14 8"/>`:''}</g>`}
+  s+='</g>'});return s}
+function render(){const L=LAY[S.lay],sv=$('svg');sv.setAttribute('viewBox',`0 0 1000 ${L.h}`);sv.innerHTML=build(false);
+ if(sel!=null){const g=sv.querySelector(`.it[data-id="${sel}"]`);if(g){const bb=g.getBBox(),o=find(sel).o;g.insertAdjacentHTML('beforeend',`<rect x="${bb.x-5}" y="${bb.y-5}" width="${bb.width+10}" height="${bb.height+10}" fill="none" stroke="#3b82f6" stroke-width="3" stroke-dasharray="7 5" pointer-events="none"/>`);
+  if(o.t=='b'&&o.k!='shout'){const gg=geo(o,0);g.insertAdjacentHTML('beforeend',`<circle data-tail="1" cx="${o.tx??-gg.w*.2}" cy="${o.ty??gg.h/2+45}" r="11" fill="#ef4444" stroke="#fff" stroke-width="3" style="cursor:grab"/>`)}}}
+ $('ttl').value!==S.title&&($('ttl').value=S.title);$('pinfo').textContent=`Επιλεγμένο καρέ: ${sp+1} · Ό,τι προσθέσεις μπαίνει εκεί. Πάτησε σε ένα καρέ για να το επιλέξεις.`;auto()}
+function find(id){for(const p of S.panels){const o=p.it.find(x=>x.id==id);if(o)return{o,p}}return{}}
+function cur(){return S.panels[sp]}
+function pw(i){return LAY[S.lay].r[i]}
+function add(o){snap();const r=pw(sp),w=r[2],h=r[3];Object.assign(o,{id:uid++,x:w/2+(Math.random()*40-20),y:h/2+(Math.random()*40-20),s:1,r:0,f:1},o.t=='x'?{r:-8}:{});if(o.t=='c'){o.y=34;o.x=w/2}cur().it.push(o);sel=o.id;render();selUI()}
+function palette(){const pl=$('pal');pl.innerHTML='';
+ const T=[['bg','🏞️ Φόντο'],['chars','🧒 Ήρωες'],['hero','🦸 Υπερήρωες'],['mons','👾 Πλάσματα'],['faces','😀 Εκφράσεις'],['stuff','🌳 Πράγματα'],['bub','💬 Συννεφάκια'],['snd','💥 Ήχοι']];
+ $('tabs').innerHTML='';T.forEach(([k,n])=>{const b=document.createElement('button');b.textContent=n;b.className=k==tab?'on':'';b.onclick=()=>{tab=k;palette()};$('tabs').appendChild(b)});
+ if(tab=='bg'){const g=document.createElement('div');g.className='scn';Object.keys(BG).forEach(k=>{const b=document.createElement('button');b.innerHTML=`<svg viewBox="0 0 120 70">${BG[k](120,70)}</svg>${BGN[k]}`;b.onclick=()=>{snap();cur().bg=k;render()};g.appendChild(b)});pl.appendChild(g)}
+ else if(tab=='hero'||tab=='mons'){const g=document.createElement('div');g.className='pr';Object.keys(GA).filter(k=>tab=='hero'?/^[hr]/.test(k):/^m/.test(k)).forEach(k=>{const b=document.createElement('button');b.title=GA[k][0];b.style.cssText='width:76px;height:96px;display:flex;flex-direction:column;align-items:center;font-size:11px;padding:2px';b.innerHTML=`<svg viewBox="-50 -64 100 128" width="60" height="76">${GA[k][1]}</svg>${GA[k][0]}`;b.onclick=()=>add({t:'g',g:k});g.appendChild(b)});pl.appendChild(g)}
+ else if(tab=='bub'){const g=document.createElement('div');g.className='pr';[['💬 Μιλάω',{t:'b',k:'say',w:200,txt:'Γράψε εδώ…'}],['💭 Σκέφτομαι',{t:'b',k:'think',w:200,txt:'Χμμ…'}],['💥 Φωνάζω',{t:'b',k:'shout',w:180,txt:'Ωωω!'}],['📝 Λεζάντα',{t:'c',txt:'Την επόμενη μέρα…'}]].forEach(([n,o])=>{const b=document.createElement('button');b.className='w';b.textContent=n;b.onclick=()=>add({...o});g.appendChild(b)});pl.appendChild(g)}
+ else if(tab=='snd'){const g=document.createElement('div');g.className='pr';SND.forEach(([n,c])=>{const b=document.createElement('button');b.className='w';b.style.color=c;b.textContent=n;b.onclick=()=>add({t:'x',txt:n,c});g.appendChild(b)});const b=document.createElement('button');b.className='w';b.textContent='✏️ Δικός μου ήχος';b.onclick=()=>add({t:'x',txt:'ΒΟΥΣ!',c:'#ef4444'});g.appendChild(b);pl.appendChild(g)}
+ else{const g=document.createElement('div');g.className='pr';E[tab].forEach(e=>{const b=document.createElement('button');b.textContent=e;b.onclick=()=>add({t:'e',e});g.appendChild(b)});pl.appendChild(g)}}
+function selUI(){const d=$('sel');d.innerHTML='';const f=sel!=null?find(sel):{};const o=f.o;
+ if(!o){d.innerHTML='<span class="hint">👆 Πάτησε πάνω σε ένα στοιχείο του κόμικ για να το αλλάξεις: μέγεθος, κείμενο, περιστροφή ή διαγραφή. Το κόκκινο κουκκίδι στο συννεφάκι μετακινεί την ουρά του.</span>';return}
+ const B=(t,fn,tt)=>{const b=document.createElement('button');b.textContent=t;b.title=tt||'';b.onclick=()=>{fn();render()};d.appendChild(b);return b};
+ const ch=fn=>()=>{snap();fn()};
+ B('➖',ch(()=>o.s=Math.max(.3,o.s/1.15)),'Μικραίνω');B('➕',ch(()=>o.s=Math.min(4,o.s*1.15)),'Μεγαλώνω');B('↺',ch(()=>o.r=(o.r||0)-10),'Γυρνάω αριστερά');B('↻',ch(()=>o.r=(o.r||0)+10),'Γυρνάω δεξιά');
+ if(o.t=='e'||o.t=='g')B('↔️',ch(()=>o.f=-(o.f||1)),'Αναποδογυρίζω');
+ B('⬆️',ch(()=>{const a=f.p.it;a.splice(a.indexOf(o),1);a.push(o)}),'Μπροστά');
+ B('⧉',()=>{snap();const c={...o,id:uid++,x:o.x+30,y:o.y+30};f.p.it.push(c);sel=c.id;selUI()},'Αντίγραφο');
+ B('🗑️',()=>{snap();f.p.it.splice(f.p.it.indexOf(o),1);sel=null;selUI()},'Διαγραφή');
+ if(o.t!='e'&&o.t!='g'){const i=document.createElement('input');i.value=o.txt;i.maxLength=120;i.placeholder='Γράψε το κείμενο…';i.oninput=()=>{o.txt=i.value;render()};i.onfocus=()=>snap();d.appendChild(i);
+  if(o.t=='b'){B('↔ πιο φαρδύ',ch(()=>o.w=Math.min(400,(o.w||200)+30)));B('↔ πιο στενό',ch(()=>o.w=Math.max(100,(o.w||200)-30)))}
+  if(o.t=='x')['#ef4444','#f97316','#eab308','#10b981','#3b82f6','#8b5cf6','#ec4899','#ffffff'].forEach(c=>{const b=B('',ch(()=>o.c=c));b.className='sw';b.style.background=c})}}
+// drag
+let drag=null;const svg=$('svg');
+function pt(e){const p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(svg.getScreenCTM().inverse())}
+svg.addEventListener('pointerdown',e=>{const p=pt(e);const t=e.target;
+ const it=t.closest('.it');const pi=(t.closest('[data-p]')||{dataset:{}}).dataset.p;
+ if(t.dataset.tail&&sel!=null){snap();const f=find(sel);drag={m:'tail',o:f.o,pi:+it.dataset.p};svg.setPointerCapture(e.pointerId);e.preventDefault();return}
+ if(it){const id=+it.dataset.id,i=+it.dataset.p;if(sel!=id){sel=id;sp=i;selUI()}else sp=i;const o=find(id).o,r=pw(i);snap();drag={m:'move',o,pi:i,dx:p.x-r[0]-o.x,dy:p.y-r[1]-o.y};svg.setPointerCapture(e.pointerId);render();e.preventDefault();return}
+ if(pi!==undefined&&pi!==''){sp=+pi;sel=null;selUI();render()}});
+svg.addEventListener('pointermove',e=>{if(!drag)return;const p=pt(e),r=pw(drag.pi),o=drag.o;
+ if(drag.m=='move'){o.x=Math.max(0,Math.min(r[2],p.x-r[0]-drag.dx));o.y=Math.max(0,Math.min(r[3],p.y-r[1]-drag.dy))}
+ else{const a=((o.r||0)*Math.PI)/180,dx=p.x-r[0]-o.x,dy=p.y-r[1]-o.y,sc=o.s,fl=1;const ca=Math.cos(-a),sa=Math.sin(-a);o.tx=(dx*ca-dy*sa)/sc;o.ty=(dx*sa+dy*ca)/sc}
+ render()});
+const endD=()=>{drag=null};svg.addEventListener('pointerup',endD);svg.addEventListener('pointercancel',endD);
+document.addEventListener('keydown',e=>{if((e.key=='Delete'||e.key=='Backspace')&&sel!=null&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){const f=find(sel);if(f.o){snap();f.p.it.splice(f.p.it.indexOf(f.o),1);sel=null;selUI();render();e.preventDefault()}}});
+// layout buttons
+function layBtns(){const l=$('lay');l.innerHTML='';Object.keys(LAY).forEach(k=>{const b=document.createElement('button');b.title=LAY[k].n;b.className=S.lay==k?'on':'';const R=LAY[k].r,H=LAY[k].h;b.innerHTML=`<svg width="40" height="${Math.round(40*H/1000*1.0)+6}" viewBox="0 0 1000 ${H}">${R.map(r=>`<rect x="${r[0]}" y="${r[1]}" width="${r[2]}" height="${r[3]}" fill="#fb923c" stroke="#7c2d12" stroke-width="22"/>`).join('')}</svg>`;b.onclick=()=>{snap();S.lay=k;if(sp>=R.length)sp=R.length-1;sel=null;layBtns();render();selUI()};l.appendChild(b)})}
+$('ttl').oninput=e=>{S.title=e.target.value;render()};
+$('bUndo').onclick=()=>{if(!undo.length){say('Δεν έχεις κάτι να γυρίσεις πίσω.');return}S=JSON.parse(undo.pop());sel=null;layBtns();render();selUI();say('↩️ Γύρισες ένα βήμα πίσω.')};
+$('bIdea').onclick=()=>say('🎲 Ιδέα: '+IDEAS[Math.floor(Math.random()*IDEAS.length)]);
+function ask(m,yes,no='Όχι'){const d=document.createElement('div');d.className='dlg';d.innerHTML=`<div><div style="font-size:50px">🤔</div><p>${m}</p><div class="bar"><button class="b r" id="y">Ναι</button><button class="b g" id="n">${no}</button></div></div>`;document.body.appendChild(d);d.querySelector('#n').onclick=()=>d.remove();d.querySelector('#y').onclick=()=>{d.remove();yes()}}
+$('bNew').onclick=()=>ask('Να ξεκινήσουμε νέο κόμικ; Αν δεν το έχεις αποθηκεύσει, θα χαθεί.',()=>{snap();S={title:'Το κόμικ μου',lay:'2',panels:[newP(),newP(),newP(),newP(),newP(),newP()]};sp=0;sel=null;layBtns();render();selUI();say('🆕 Νέο κόμικ! Διάλεξε φόντο και ήρωες.')});
+async function saveFile(name,blob){let dl=null;try{dl=window.claude&&await claude.use('downloads')}catch(e){}
+ if(dl&&dl.save){try{const buf=new Uint8Array(await blob.arrayBuffer());await dl.save({filename:name,data:buf,mimeType:blob.type});return true}catch(e){}}
+ const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();return true}
+const fname=ext=>'komiks-'+((S.title||'mou').replace(/[^\wα-ωΑ-Ωά-ώ]+/g,'-').slice(0,40))+'.'+ext;
+$('bSave').onclick=async()=>{if(await saveFile(fname('json'),new Blob([JSON.stringify({S,uid})],{type:'application/json'})))say('💾 Το κόμικ αποθηκεύτηκε! Για να το συνεχίσεις, πάτησε «Άνοιγμα» και διάλεξε το αρχείο.')};
+$('bOpen').onclick=()=>$('fi').click();
+$('fi').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const s=j.S||j;if(!s.panels||!LAY[s.lay])throw 0;snap();S=s;while(S.panels.length<6)S.panels.push(newP());uid=Math.max(j.uid||1,...S.panels.flatMap(p=>p.it.map(o=>o.id+1)),1);sp=0;sel=null;layBtns();render();selUI();say('📂 Το κόμικ άνοιξε!')}catch(x){say('😕 Αυτό το αρχείο δεν είναι κόμικ.')}e.target.value=''};
+$('bPng').onclick=()=>{const L=LAY[S.lay],W=1000,H=L.h,sc=2;const xml=`<svg xmlns="http://www.w3.org/2000/svg" width="${W*sc}" height="${H*sc}" viewBox="0 0 ${W} ${H}">${build(true)}</svg>`;
+ const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=W*sc;c.height=H*sc;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0);c.toBlob(async b=>{if(await saveFile(fname('png'),b))say('🖼️ Η εικόνα του κόμικ σώθηκε!')},'image/png')};
+ img.onerror=()=>say('😕 Δεν μπόρεσα να φτιάξω την εικόνα. Δοκίμασε «Αποθήκευση».');img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml)};
+try{const a=JSON.parse(localStorage.getItem('comic_auto')||'null');if(a&&a.S&&a.S.panels&&LAY[a.S.lay]){S=a.S;uid=a.uid||100;while(S.panels.length<6)S.panels.push(newP())}else S=sample()}catch(e){S=sample()}
+layBtns();palette();render();selUI();
+</script><script id="prcomic">$('bPrint').onclick=()=>{const L=LAY[S.lay],land=L.h<700;prnOut('Το κόμικ μου','<svg viewBox="0 0 1000 '+L.h+'" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:'+(land?'135':'215')+'mm;border:2px solid #94a3b8">'+build(true)+'</svg>',{land:land?1:0})};</script><script id="prjs">
+const escP=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function prBtn(fn,t,cls){const b=document.createElement('button');b.className=cls||'btn g';b.type='button';b.textContent=t||'🖨️ Εκτύπωση';b.onclick=fn;return b}
+function prMsg(t){let m=document.getElementById('prn-toast');if(m)m.remove();m=document.createElement('div');m.id='prn-toast';m.textContent=t;document.body.appendChild(m);setTimeout(()=>m.remove(),6000)}
+function prPop(title,inner){const w=window.open('','_blank');if(!w){prMsg('Η εκτύπωση δεν άνοιξε. Δοκίμασε Ctrl+P ή άνοιξε το παιχνίδι σε νέα καρτέλα.');return}
+ const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+ w.document.write('<!doctype html><html lang="el"><head><meta charset="utf-8"><title>'+escP(title)+'</title><style>'+css+'#prn{display:block!important;max-width:800px;margin:0 auto;padding:12px}</style></head><body class="printing"><div id="prn">'+inner+'</div></body></html>');w.document.close();setTimeout(()=>{try{w.focus();w.print()}catch(e){}},700)}
+function prnOut(title,html,o){o=o||{};
+ const old=document.getElementById('prn');if(old)old.remove();
+ const p=document.createElement('div');p.id='prn';
+ html=String(html).replace(/\sid="([^"]*)"/g,' id="p_$1"').replace(/url\(#([^)]+)\)/g,'url(#p_$1)');
+ p.innerHTML='<h1 class="ph">'+escP(title)+'</h1>'+(o.noName?'':'<div class="pn">Όνομα: <i></i> Τάξη: <i></i></div>')+html+'<p class="pf">DigiKidsEdu</p>';
+ document.body.appendChild(p);
+ let st=document.getElementById('prs');if(!st){st=document.createElement('style');st.id='prs';document.head.appendChild(st)}
+ st.textContent='@page{size:A4 '+(o.land?'landscape':'portrait')+';margin:10mm}';
+ document.body.classList.add('printing');
+ let started=false,ended=false;
+ const end=()=>{if(ended)return;ended=true;document.body.classList.remove('printing');const q=document.getElementById('prn');if(q)q.remove();removeEventListener('afterprint',end)};
+ addEventListener('beforeprint',()=>{started=true},{once:true});addEventListener('afterprint',end);
+ setTimeout(()=>{try{window.print()}catch(e){}
+  setTimeout(()=>{if(!started){const inner=p.innerHTML;end();prPop(title,inner)}else if(!ended){addEventListener('pointerdown',end,{once:true,capture:true});setTimeout(end,120000)}},500)},60)}
+
+function prDip(what,name){return '<div class="dip"><div style="font-size:60pt">🎓</div><div class="dt">Δίπλωμα</div><div class="dx">Απονέμεται στον/στην</div><div class="dn">'+(name?escP(name):'&nbsp;'.repeat(24))+'</div><div class="dx">'+escP(what)+'</div></div>'}
+</script></body></html>
