@@ -148,7 +148,7 @@ function monster(seed){const r=_rng(seed*7919+13),pk=a=>a[Math.floor(r()*a.lengt
  if(mouth===2)s+='<path d="M36 65q14 14 28 0z" fill="'+K+'"/><path d="M45 71q5 7 10 0z" fill="#ff6f91" stroke="none"/>';
  if(mouth===3)s+='<path d="M34 70l6-6l6 6l6-6l6 6l6-6l6 6" fill="none" stroke-width="3.4"/>';
  return '<svg viewBox="0 0 100 100" aria-hidden="true">'+s+'</g></svg>'}
-tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθητών (τερατάκια)',desc:'Πόντοι συμπεριφοράς σαν Class Dojo. Κάθε μαθητής έχει το δικό του τερατάκι.',badge:'Νέο',run(b){
+tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθητών',desc:'Πόντοι συμπεριφοράς σαν Class Dojo, με δικό του avatar για κάθε μαθητή.',badge:'Νέο',run(b){
  const POS=[['👋','Συμμετοχή',1],['🤝','Βοήθεια στους άλλους',1],['✏️','Επιμέλεια',1],['🧩','Ομαδικότητα',1],['🤫','Ησυχία',1],['🌟','Εξαιρετική δουλειά',2]],NEG=[['🔊','Φασαρία',-1],['⏰','Αργοπορία',-1],['🎒','Ξέχασε το υλικό',-1],['🙉','Δεν άκουσε',-1]];
  const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
  let D=store.get('dojo',null);if(!D||!D.classes||!D.classes.length){D={cur:'c1',classes:[{id:'c1',name:'Η τάξη μου',students:[]}]}}
