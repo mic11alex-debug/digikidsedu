@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Τουβλοσπάστης</title><link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@600;800&display=swap" rel="stylesheet"></head><body>
+<script src="arc.js"></script>
+<script>
+const A=ARC,cx=A.cx;
+const LV=[
+["..........","RRRRRRRRRR","OOOOOOOOOO","YYYYYYYYYY","GGGGGGGGGG","BBBBBBBBBB"],
+["R........R","RO......OR","ROY....YOR","ROYG..GYOR","ROYGBBGYOR","SSSSSSSSSS"],
+["..PPPPPP..",".PYYYYYYP.","PYYSYYSYYP","PYYYYYYYYP","PYSYYYYSYP",".PYSSSSYP.","..PPPPPP.."],
+["BBBB..GGGG","B..B..G..G","B..B..G..G","BBBB..GGGG","..........","SRSRSRSRSR","RRRRRRRRRR"],
+["S.S.S.S.S.",".O.O.O.O.O","Y.Y.Y.Y.Y.",".G.G.G.G.G","B.B.B.B.B.",".P.P.P.P.P","XXXXXXXXXX"],
+["XRRRRRRRRX","XOSSSSSSOX","XYYYYYYYYX","XGG....GGX","XBB....BBX","XPPPPPPPPX","..........","S..S..S..S"]];
+const BC={R:'#ff4d6d',O:'#ff9a2e',Y:'#ffd23f',G:'#4ade80',B:'#4cc9f0',P:'#b37bff',S:'#c8cde0',X:'#8a6a4a'};
+let FW,FH,FX,FY,U,pad,balls,bricks,caps,level,lives,score,state,stT,lasers,shotT,shake=0,stars=[];
+A.onResize=()=>{FW=Math.min(A.W-16,A.H*.78);FH=Math.min(A.H-(A.touch?70:60),FW*1.25);FX=(A.W-FW)/2;FY=A.H-FH-(A.touch?10:8);U=FW/10;stars=[];for(let i=0;i<60;i++)stars.push([Math.random()*A.W,Math.random()*A.H,Math.random()*1.8+.4,Math.random()*6]);if(bricks)layout()};
+function layout(){for(const b of bricks){b.x=FX+b.c*U;b.y=FY+U*1.4+b.r*U*.5;b.w=U;b.h=U*.5}}
+function loadLevel(n){level=n;const L=LV[(n-1)%LV.length];bricks=[];L.forEach((row,r)=>[...row].forEach((ch,c)=>{if(ch=='.')return;bricks.push({r,c,k:ch,hp:ch=='S'?2+Math.floor((n-1)/6):ch=='X'?99:1,hit:0})}));layout();resetBall();caps=[];lasers=[];A.tip('Επίπεδο '+n)}
+function resetBall(){pad={x:FX+FW/2,w:U*2,tw:U*2,wideT:0,laserT:0,sticky:0};balls=[{x:pad.x,y:0,vx:0,vy:0,stuck:true,off:0}];state='serve'}
+function start(){A.onResize();score=0;lives=3;loadLevel(1)}
+function speed(){return FH*(.62+Math.min(.4,(level-1)*.06))}
+function launch(){for(const b of balls)if(b.stuck){const a=-Math.PI/2+A.rnd(-.35,.35)+b.off*.8;b.vx=Math.cos(a)*speed();b.vy=Math.sin(a)*speed();b.stuck=false}state='play';A.tone(600,.06,'square',.06)}
+A.setup({id:'breakout',title:'Τουβλοσπάστης',emoji:'🧱⚪🧱',title2:'linear-gradient(180deg,#4cc9f0,#b37bff)',cardBg:'#e6ecff',desc:'Κράτα το μπαλάκι στο παιχνίδι με τη ρακέτα και σπάσε όλα τα τούβλα! Μάζεψε τα δώρα που πέφτουν: μεγάλη ρακέτα, πολλά μπαλάκια, λέιζερ…',
+ modes:[{label:'▶ Παίξε',small:'6 επίπεδα και πάλι από την αρχή',fn:start}],help:'🖱️ κίνησε το ποντίκι ή το δάχτυλο · <b>←</b><b>→</b> · <b>Space</b> ή κλικ για εκτόξευση',bestText:()=>'🏆 Ρεκόρ: '+A.get('best.s',0)});
+let ptrX=null;A.cv.addEventListener('pointermove',e=>{ptrX=e.clientX});A.cv.addEventListener('pointerdown',e=>{ptrX=e.clientX;if(A.running&&!A.paused){if(state=='serve')launch();else if(pad.laserT>0)shoot()}});
+A.onKey=k=>{if(!A.running)return;if(k==' '){if(state=='serve')launch();else if(pad.laserT>0)shoot()}};
+function shoot(){if(shotT>0)return;shotT=.28;lasers.push({x:pad.x-pad.w*.4,y:FH*.9+FY},{x:pad.x+pad.w*.4,y:FH*.9+FY});A.tone(1200,.08,'square',.05,600)}
+const CAPS=[['W','⟷','#4ade80','Μεγάλη ρακέτα'],['M','⚪⚪','#4cc9f0','Τρία μπαλάκια'],['L','⚡','#ff4d6d','Λέιζερ'],['S','🐢','#ffd23f','Αργό μπαλάκι'],['C','🧲','#b37bff','Κολλητική ρακέτα'],['H','❤','#ff7ab0','Μία ζωή']];
+function hitBrick(b,ball){if(b.k=='X'){A.tone(200,.05,'square',.05);b.hit=.15;return}b.hp--;b.hit=.15;if(b.hp>0){A.tone(900,.05,'square',.05);return}
+ bricks.splice(bricks.indexOf(b),1);const pts=b.k=='S'?50:10+(6-b.r)*2;score+=pts;A.tone(500+b.r*60,.07,'square',.06);A.burst(b.x+b.w/2,b.y+b.h/2,10,[BC[b.k],'#fff'],180,.6,3);
+ if(Math.random()<.16){const c=A.pick(CAPS);caps.push({x:b.x+b.w/2,y:b.y+b.h/2,c})}
+ if(!bricks.some(x=>x.k!='X')){state='clear';stT=0;A.win();score+=lives*100}}
+function collideBall(o,dt){let nx=o.x+o.vx*dt,ny=o.y+o.vy*dt;const r=U*.17;
+ if(nx<FX+r){nx=FX+r;o.vx=Math.abs(o.vx);A.tone(300,.03,'sine',.04)}if(nx>FX+FW-r){nx=FX+FW-r;o.vx=-Math.abs(o.vx);A.tone(300,.03,'sine',.04)}if(ny<FY+r){ny=FY+r;o.vy=Math.abs(o.vy);A.tone(300,.03,'sine',.04)}
+ for(const b of bricks){if(nx+r>b.x&&nx-r<b.x+b.w&&ny+r>b.y&&ny-r<b.y+b.h){const ox=Math.min(nx+r-b.x,b.x+b.w-(nx-r)),oy=Math.min(ny+r-b.y,b.y+b.h-(ny-r));if(ox<oy){o.vx*=-1;nx+=o.vx>0?ox:-ox}else{o.vy*=-1;ny+=o.vy>0?oy:-oy}hitBrick(b,o);break}}
+ const py=FY+FH*.92;if(o.vy>0&&ny+r>=py&&o.y+r<=py+U*.3&&Math.abs(nx-pad.x)<pad.w/2+r){const off=(nx-pad.x)/(pad.w/2);const a=-Math.PI/2+off*1.05;const sp=Math.hypot(o.vx,o.vy);o.vx=Math.cos(a)*sp;o.vy=Math.sin(a)*sp;ny=py-r;A.tone(440,.05,'triangle',.08);if(pad.sticky>0){o.stuck=true;o.off=off*.5;state='serve'}}
+ o.x=nx;o.y=ny}
+A.loop((dt,t)=>{const W=A.W,H=A.H;
+ if(A.running&&bricks){stT+=dt;const kL=A.keys.ArrowLeft||A.keys.a,kR=A.keys.ArrowRight||A.keys.d;if(kL||kR){ptrX=null;pad.x+=(kR-kL)*FW*1.4*dt}else if(ptrX!=null)pad.x+=(ptrX-pad.x)*Math.min(1,dt*20);
+  pad.tw=U*(pad.wideT>0?3.2:2);pad.w+=(pad.tw-pad.w)*Math.min(1,dt*10);pad.x=A.clamp(pad.x,FX+pad.w/2,FX+FW-pad.w/2);pad.wideT-=dt;pad.laserT-=dt;pad.sticky-=dt;shotT-=dt;
+  if(state=='clear'){if(stT>1.8)loadLevel(level+1)}
+  else{for(const b of balls){if(b.stuck){b.x=pad.x+b.off*pad.w*.5;b.y=FY+FH*.92-U*.18}else{const sub=3;for(let i=0;i<sub;i++)collideBall(b,dt/sub);const sp=Math.hypot(b.vx,b.vy),tg=speed()*(b.slow>0?.65:1);b.slow=(b.slow||0)-dt;b.vx*=tg/sp;b.vy*=tg/sp;if(Math.abs(b.vy)<tg*.25){b.vy=Math.sign(b.vy||-1)*tg*.25}}}
+   balls=balls.filter(b=>b.y<FY+FH+20);if(!balls.length){lives--;A.lose();shake=.5;if(lives<=0){A.running=false;const [bb,nb]=A.best('s',score);A.gameOver({title:'Τέλος παιχνιδιού',score,msg:(nb?'🏆 Νέο ρεκόρ! ':'Ρεκόρ: '+bb+' · ')+'Επίπεδο '+level,stars:level>=5?3:level>=3?2:level>=2?1:0});A.post(level-1,6)}else resetBall()}
+   for(const c of caps){c.y+=FH*.25*dt;if(c.y>FY+FH*.92-U*.2&&c.y<FY+FH*.92+U*.3&&Math.abs(c.x-pad.x)<pad.w/2+U*.3){c.got=1;A.coin();A.text(c.x,c.y-20,c.c[3],c.c[2],U*.45);const k=c.c[0];if(k=='W')pad.wideT=15;if(k=='L')pad.laserT=12;if(k=='C')pad.sticky=15;if(k=='H')lives++;if(k=='S')balls.forEach(b=>b.slow=10);if(k=='M'){const b0=balls.find(b=>!b.stuck)||balls[0];for(const da of [-.4,.4]){const a=Math.atan2(b0.vy||-1,b0.vx||0)+da;balls.push({x:b0.x,y:b0.y,vx:Math.cos(a)*speed(),vy:Math.sin(a)*speed(),stuck:false})}if(b0.stuck)launch()}}}
+   caps=caps.filter(c=>!c.got&&c.y<FY+FH+20);
+   for(const l of lasers){l.y-=FH*1.4*dt;for(const b of bricks)if(l.x>b.x&&l.x<b.x+b.w&&l.y<b.y+b.h&&l.y>b.y){l.done=1;hitBrick(b);break}}lasers=lasers.filter(l=>!l.done&&l.y>FY)}
+  for(const b of bricks)b.hit=Math.max(0,b.hit-dt)}
+ A.stepFX(dt);
+ const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#160a3d');g.addColorStop(1,'#2a0f55');cx.fillStyle=g;cx.fillRect(0,0,W,H);for(const [x,y,r,p] of stars){cx.fillStyle=`rgba(255,255,255,${.25+.3*Math.sin(t*2+p)})`;cx.beginPath();cx.arc(x,y,r,0,7);cx.fill()}
+ cx.save();if(shake>0){cx.translate(A.rnd(-1,1)*shake*8,0);shake=Math.max(0,shake-dt*2)}
+ cx.fillStyle='rgba(10,5,40,.6)';cx.fillRect(FX,FY,FW,FH);cx.strokeStyle='#7c6cff';cx.lineWidth=4;cx.shadowColor='#7c6cff';cx.shadowBlur=14;cx.beginPath();cx.moveTo(FX-2,FY+FH);cx.lineTo(FX-2,FY-2);cx.lineTo(FX+FW+2,FY-2);cx.lineTo(FX+FW+2,FY+FH);cx.stroke();cx.shadowBlur=0;
+ cx.strokeStyle='rgba(124,108,255,.08)';cx.lineWidth=1;for(let i=1;i<10;i++){cx.beginPath();cx.moveTo(FX+i*U,FY);cx.lineTo(FX+i*U,FY+FH);cx.stroke()}
+ if(bricks){for(const b of bricks){const x=b.x+2,y=b.y+2,w=b.w-4,h=b.h-4;const col=BC[b.k];const gg=cx.createLinearGradient(x,y,x,y+h);gg.addColorStop(0,A.shade(col,b.hit?40:18));gg.addColorStop(1,A.shade(col,-22));cx.fillStyle=gg;A.rr(cx,x,y,w,h,h*.25);cx.fill();cx.fillStyle='rgba(255,255,255,.4)';A.rr(cx,x+4,y+3,w-8,h*.25,h*.1);cx.fill();cx.strokeStyle='rgba(10,5,40,.6)';cx.lineWidth=1.5;A.rr(cx,x,y,w,h,h*.25);cx.stroke();
+   if(b.k=='S'&&b.hp>0){cx.fillStyle='#1a1446';cx.font=`800 ${h*.6}px 'Anek Greek'`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(b.hp,x+w/2,y+h/2+1)}if(b.k=='X'){cx.fillStyle='rgba(0,0,0,.3)';for(const dx of [.2,.8])cx.beginPath(),cx.arc(x+w*dx,y+h/2,h*.12,0,7),cx.fill()}}
+  for(const c of caps){const r=U*.32;cx.save();cx.translate(c.x,c.y);const gg=cx.createLinearGradient(-r*1.4,0,r*1.4,0);gg.addColorStop(0,A.shade(c.c[2],-20));gg.addColorStop(.5,A.shade(c.c[2],25));gg.addColorStop(1,A.shade(c.c[2],-20));cx.fillStyle=gg;A.rr(cx,-r*1.5,-r*.75,r*3,r*1.5,r*.75);cx.fill();cx.strokeStyle='#1a1446';cx.lineWidth=2;cx.stroke();cx.fillStyle='#1a1446';cx.font=`800 ${r*.95}px 'Anek Greek'`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(c.c[1],0,1);cx.restore()}
+  for(const l of lasers){cx.strokeStyle='#ff4d6d';cx.lineWidth=4;cx.shadowColor='#ff4d6d';cx.shadowBlur=10;cx.beginPath();cx.moveTo(l.x,l.y);cx.lineTo(l.x,l.y+U*.4);cx.stroke();cx.shadowBlur=0}
+  // paddle
+  const py=FY+FH*.92,ph=U*.32;const pg=cx.createLinearGradient(0,py,0,py+ph);pg.addColorStop(0,'#e8ecff');pg.addColorStop(1,'#7f8bd6');cx.fillStyle=pg;A.rr(cx,pad.x-pad.w/2,py,pad.w,ph,ph/2);cx.fill();cx.strokeStyle='#1a1446';cx.lineWidth=2;cx.stroke();
+  cx.fillStyle=pad.sticky>0?'#b37bff':'#ff4d6d';A.rr(cx,pad.x-pad.w/2,py,ph*1.2,ph,ph/2);cx.fill();A.rr(cx,pad.x+pad.w/2-ph*1.2,py,ph*1.2,ph,ph/2);cx.fill();if(pad.laserT>0){cx.fillStyle='#ff4d6d';cx.fillRect(pad.x-pad.w*.4-3,py-8,6,8);cx.fillRect(pad.x+pad.w*.4-3,py-8,6,8)}
+  for(const b of balls){const r=U*.17;const bg=cx.createRadialGradient(b.x-r*.3,b.y-r*.3,1,b.x,b.y,r);bg.addColorStop(0,'#fff');bg.addColorStop(1,b.slow>0?'#ffd23f':'#9fe8ff');cx.shadowColor='#9fe8ff';cx.shadowBlur=12;cx.fillStyle=bg;cx.beginPath();cx.arc(b.x,b.y,r,0,7);cx.fill();cx.shadowBlur=0}
+  if(state=='serve'&&A.running){cx.fillStyle='rgba(255,255,255,.85)';cx.font=`800 ${U*.4}px 'Anek Greek'`;cx.textAlign='center';cx.fillText(A.touch?'Πάτα για εκτόξευση':'Κλικ ή Space για εκτόξευση',FX+FW/2,FY+FH*.75)}
+  if(state=='clear'){cx.font=`800 ${U*.8}px 'Anek Greek'`;cx.textAlign='center';cx.lineWidth=6;cx.strokeStyle='#1a1446';cx.fillStyle='#ffe14d';cx.strokeText('Μπράβο! 🎉',FX+FW/2,FY+FH*.55);cx.fillText('Μπράβο! 🎉',FX+FW/2,FY+FH*.55)}}
+ A.drawFX();cx.restore();if(A.running&&bricks)A.hud(['⭐ '+score,'❤ '+lives,'Επ. '+level])});
+</script></body></html>

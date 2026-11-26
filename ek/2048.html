@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>2048</title><link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@600;800&display=swap" rel="stylesheet"></head><body>
+<script src="arc.js"></script>
+<script>
+const A=ARC,cx=A.cx;let N=4,T,OX,OY,tiles,score,best,won,moved,undo,state,ID=0;
+const COL={2:['#fff4e0','#6b4b2a'],4:['#ffe8c2','#6b4b2a'],8:['#ffb36b','#fff'],16:['#ff8f5a','#fff'],32:['#ff6a5a','#fff'],64:['#ff3d5a','#fff'],128:['#ffd84d','#fff'],256:['#ffcb2b','#fff'],512:['#ffbe0b','#fff'],1024:['#4ade80','#fff'],2048:['#22c3ee','#fff'],4096:['#8b5cf6','#fff'],8192:['#d946ef','#fff']};
+A.onResize=()=>{const top=120;T=Math.floor(Math.min((A.W-30)/N,(A.H-top-30)/N,130));OX=Math.floor((A.W-N*T)/2);OY=Math.floor(top+(A.H-top-30-N*T)/2)};
+function start(n){N=n;A.onResize();tiles=[];score=0;won=false;undo=null;state='play';add();add();A.tip('Σύρε για να ενώσεις ίδιους αριθμούς! Φτάσε στο 2048 🎯',3000)}
+function grid(){const g=Array.from({length:N},()=>Array(N).fill(null));for(const t of tiles)if(!t.gone)g[t.y][t.x]=t;return g}
+function add(){const g=grid(),e=[];for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(!g[y][x])e.push([x,y]);if(!e.length)return;const [x,y]=A.pick(e);tiles.push({id:++ID,x,y,px:x,py:y,v:Math.random()<.9?2:4,s:0,pop:0})}
+function move(d){if(!A.running||state!='play')return;const snap=JSON.stringify({tiles:tiles.filter(t=>!t.gone).map(t=>({x:t.x,y:t.y,v:t.v})),score});tiles=tiles.filter(t=>!t.gone);for(const t of tiles){t.px=t.x;t.py=t.y;t.merged=false;t.anim=0}
+ const [dx,dy]={L:[-1,0],R:[1,0],U:[0,-1],D:[0,1]}[d];const order=[...Array(N).keys()];const xs=dx>0?order.slice().reverse():order,ys=dy>0?order.slice().reverse():order;let any=false,gain=0;
+ const g=grid();for(const y of ys)for(const x of xs){const t=g[y][x];if(!t)continue;let nx=x,ny=y;while(true){const tx=nx+dx,ty=ny+dy;if(tx<0||ty<0||tx>=N||ty>=N)break;const o=g[ty][tx];if(!o){nx=tx;ny=ty;continue}if(o.v==t.v&&!o.merged&&!t.merged){g[y][x]=null;t.x=tx;t.y=ty;t.gone=true;o.v*=2;o.merged=true;o.pop=1;gain+=o.v;any=true;if(o.v==2048&&!won){won=true;setTimeout(()=>{A.win();A.tip('🎉 ΤΑ ΚΑΤΑΦΕΡΕΣ! Έφτασες στο 2048! Συνέχισε για ρεκόρ!',4000)},300)}}break}
+  if(!t.gone&&(nx!=x||ny!=y)){g[y][x]=null;g[ny][nx]=t;t.x=nx;t.y=ny;any=true}}
+ if(!any){A.tone(150,.06,'square',.04);return}undo=snap;score+=gain;if(gain){A.tone(300+Math.log2(gain)*60,.1,'triangle',.08);A.text(OX+N*T/2,OY-30,'+'+gain,'#ffe14d',24)}else A.tone(400,.04,'sine',.05);
+ setTimeout(()=>{add();if(!canMove())over()},110)}
+function canMove(){const g=grid();for(let y=0;y<N;y++)for(let x=0;x<N;x++){const t=g[y][x];if(!t)return true;if(x<N-1&&g[y][x+1]&&g[y][x+1].v==t.v)return true;if(y<N-1&&g[y+1][x]&&g[y+1][x].v==t.v)return true}return false}
+function over(){state='over';const mx=Math.max(...tiles.map(t=>t.v));const [b,nb]=A.best('n'+N,score);A.lose();A.gameOver({title:'Δεν υπάρχουν κινήσεις',score,msg:(nb?'🏆 Νέο ρεκόρ! ':'Ρεκόρ: '+b+' · ')+'Μεγαλύτερο πλακίδιο: '+mx,stars:mx>=2048?3:mx>=1024?2:mx>=512?1:0,delay:900});A.post(Math.log2(mx),11)}
+function doUndo(){if(!undo||state!='play')return;const u=JSON.parse(undo);tiles=u.tiles.map(t=>({...t,id:++ID,px:t.x,py:t.y,s:1,pop:0}));score=u.score;undo=null;A.tone(500,.08,'sine',.06,300)}
+A.setup({id:'2048',title:'2048',emoji:'🔢✨🎯',title2:'linear-gradient(180deg,#ffbe0b,#ff3d5a)',cardBg:'#fff3df',desc:'Σύρε τα πλακάκια. Όταν ακουμπήσουν δύο ίδιοι αριθμοί, ενώνονται και διπλασιάζονται: 2+2=4, 4+4=8… Μπορείς να φτάσεις στο 2048;',
+ modes:[{label:'4 × 4',small:'κλασικό',fn:()=>start(4)},{label:'5 × 5',small:'πιο εύκολο',c:'c2',fn:()=>start(5)},{label:'3 × 3',small:'πολύ δύσκολο',c:'c5',fn:()=>start(3)}],help:'<b>←</b><b>↑</b><b>↓</b><b>→</b> ή σύρε · <b>Z</b> αναίρεση μίας κίνησης',bestText:()=>`🏆 4×4: ${A.get('best.n4',0)} · 5×5: ${A.get('best.n5',0)} · 3×3: ${A.get('best.n3',0)}`});
+A.onKey=k=>{const m={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D',a:'L',d:'R',w:'U',s:'D'}[k];if(m)move(m);if(k=='z'||k=='Z')doUndo()};A.swipe(d=>{if(d!='tap')move(d);else{}});
+A.cv.addEventListener('click',e=>{const bx=OX+N*T-110,by=OY-58;if(e.clientX>bx&&e.clientX<bx+110&&e.clientY>by&&e.clientY<by+40)doUndo()});
+A.loop((dt,t)=>{A.stepFX(dt);const W=A.W,H=A.H;const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#fff6e8');g.addColorStop(1,'#ffd9b0');cx.fillStyle=g;cx.fillRect(0,0,W,H);
+ for(let i=0;i<10;i++){cx.fillStyle='rgba(255,170,90,.08)';cx.font=`800 ${60+i*8}px 'Anek Greek'`;cx.fillText(String(2**(i+1)),(i*211)%W,(i*137+40)%H)}
+ if(!tiles)return;const gap=T*.08;
+ cx.fillStyle='#c9a27a';A.rr(cx,OX-gap,OY-gap,N*T+gap*2,N*T+gap*2,T*.14);cx.fill();for(let y=0;y<N;y++)for(let x=0;x<N;x++){cx.fillStyle='rgba(255,240,220,.45)';A.rr(cx,OX+x*T+gap,OY+y*T+gap,T-gap*2,T-gap*2,T*.1);cx.fill()}
+ for(const tl of tiles){tl.anim=Math.min(1,(tl.anim||0)+dt*9);const k=1-Math.pow(1-tl.anim,3);const X=OX+(tl.px+(tl.x-tl.px)*k)*T,Y=OY+(tl.py+(tl.y-tl.py)*k)*T;if(tl.gone&&tl.anim>=1)continue;tl.s=Math.min(1,tl.s+dt*7);tl.pop=Math.max(0,tl.pop-dt*5);const sc=(tl.s<1?tl.s:1)*(1+Math.sin(tl.pop*Math.PI)*.15);
+  const [bg,fg]=COL[tl.v]||['#1a1446','#fff'];const s=(T-gap*2)*sc,x0=X+T/2-s/2,y0=Y+T/2-s/2;cx.fillStyle='rgba(120,70,20,.25)';A.rr(cx,x0+2,y0+4,s,s,T*.1);cx.fill();const gg=cx.createLinearGradient(0,y0,0,y0+s);gg.addColorStop(0,A.shade(bg,8));gg.addColorStop(1,A.shade(bg,-10));cx.fillStyle=gg;A.rr(cx,x0,y0,s,s,T*.1);cx.fill();
+  if(tl.v>=128){cx.shadowColor=bg;cx.shadowBlur=18*(.6+.4*Math.sin(t*3));cx.strokeStyle='rgba(255,255,255,.6)';cx.lineWidth=2;A.rr(cx,x0,y0,s,s,T*.1);cx.stroke();cx.shadowBlur=0}
+  cx.fillStyle='rgba(255,255,255,.35)';A.rr(cx,x0+s*.08,y0+s*.06,s*.84,s*.16,s*.08);cx.fill();
+  const digits=String(tl.v).length;cx.fillStyle=fg;cx.font=`800 ${s*(digits<3?.48:digits<4?.38:.3)}px 'Anek Greek'`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(tl.v,X+T/2,Y+T/2+s*.03)}
+ // header
+ cx.textAlign='left';cx.textBaseline='middle';cx.fillStyle='#7a3d00';cx.font=`800 ${Math.min(48,T*.55)}px 'Anek Greek'`;cx.fillText('2048',OX,OY-80);
+ const bx=OX+N*T,by=OY-100;cx.textAlign='center';for(const [i,lab,val] of [[1,'ΠΟΝΤΟΙ',score],[0,'ΡΕΚΟΡ',Math.max(score,A.get('best.n'+N,0))]]){const x=bx-(i+1)*96-(i?8:0);cx.fillStyle='#c9a27a';A.rr(cx,x,by,90,44,10);cx.fill();cx.fillStyle='#fff4e0';cx.font="800 12px 'Anek Greek'";cx.fillText(lab,x+45,by+13);cx.fillStyle='#fff';cx.font="800 20px 'Anek Greek'";cx.fillText(val,x+45,by+31)}
+ cx.fillStyle=undo?'#ff8f5a':'#d8c0a8';A.rr(cx,OX+N*T-110,OY-52,110,38,10);cx.fill();cx.fillStyle='#fff';cx.font="800 16px 'Anek Greek'";cx.fillText('↶ Αναίρεση',OX+N*T-55,OY-33);
+ A.drawFX()});
+</script></body></html>

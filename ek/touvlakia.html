@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Τουβλάκια που πέφτουν</title><link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@600;800&display=swap" rel="stylesheet"></head><body>
+<script src="arc.js"></script>
+<script>
+const A=ARC,cx=A.cx;
+const SH={I:[[0,1],[1,1],[2,1],[3,1]],O:[[1,0],[2,0],[1,1],[2,1]],T:[[1,0],[0,1],[1,1],[2,1]],S:[[1,0],[2,0],[0,1],[1,1]],Z:[[0,0],[1,0],[1,1],[2,1]],J:[[0,0],[0,1],[1,1],[2,1]],L:[[2,0],[0,1],[1,1],[2,1]]};
+const COL={I:'#38d9f5',O:'#ffd23f',T:'#b06bff',S:'#4ade80',Z:'#ff4d6d',J:'#4c7dff',L:'#ff9a2e'};
+const CW=10,CH=20;let grid,cur,nextQ,hold,canHold,score,lines,level,dropT,lockT,over,clearing,cl,S,BX,BY,mode,sprint,startT,shake=0,stars=[];
+function cell(){return S}
+A.onResize=()=>{const H=A.H,W=A.W;S=Math.floor(Math.min((H-90)/CH,(W-40)/(CW+(W>H?11:7.5))));BX=Math.floor(W>H?(W-CW*S)/2-S*1.2:(W-CW*S)/2-S*2.6);BY=Math.floor((H-CH*S)/2+(W>H?0:-10));stars=[];for(let i=0;i<70;i++)stars.push([Math.random()*W,Math.random()*H,Math.random()*2+.5,Math.random()*6])};
+A.onResize();
+function bag(){const b=Object.keys(SH);for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function newPiece(k){return {k,cells:SH[k].map(c=>[...c]),x:3,y:k=='I'?-1:0,rot:0}}
+function next(){while(nextQ.length<7)nextQ.push(...bag());cur=newPiece(nextQ.shift());canHold=true;if(hit(cur,0,0)){end()}}
+function hit(p,dx,dy,cells=p.cells){for(const [x,y] of cells){const X=p.x+x+dx,Y=p.y+y+dy;if(X<0||X>=CW||Y>=CH)return true;if(Y>=0&&grid[Y][X])return true}return false}
+function rotate(dir){if(cur.k=='O')return;const n=cur.k=='I'?4:3;const c=cur.cells.map(([x,y])=>dir>0?[n-1-y,x]:[y,n-1-x]);for(const [dx,dy] of [[0,0],[-1,0],[1,0],[0,-1],[-2,0],[2,0],[0,1]]){if(!hit(cur,dx,dy,c)){cur.cells=c;cur.x+=dx;cur.y+=dy;lockT=Math.min(lockT,.5);A.tone(700,.04,'square',.05);return}}}
+function move(dx){if(!hit(cur,dx,0)){cur.x+=dx;A.tone(400,.03,'square',.04);if(onGround())lockT=Math.min(lockT,.5)}}
+function onGround(){return hit(cur,0,1)}
+function soft(){if(!hit(cur,0,1)){cur.y++;score+=1;dropT=0}}
+function ghostY(){let d=0;while(!hit(cur,0,d+1))d++;return d}
+function hard(){const d=ghostY();cur.y+=d;score+=d*2;for(const [x,y] of cur.cells)A.burst(BX+(cur.x+x+.5)*S,BY+(cur.y+y+1)*S,2,[COL[cur.k],'#fff'],120,.4,3);shake=.25;lock()}
+function doHold(){if(!canHold)return;canHold=false;const k=cur.k;if(hold){cur=newPiece(hold)}else next();hold=k;A.tone(500,.08,'triangle',.08)}
+function lock(){for(const [x,y] of cur.cells){const Y=cur.y+y;if(Y<0){end();return}grid[Y][cur.x+x]=cur.k}A.tone(160,.08,'triangle',.12);
+ const full=[];for(let y=0;y<CH;y++)if(grid[y].every(v=>v))full.push(y);
+ if(full.length){clearing={rows:full,t:0};const pts=[0,100,300,500,800][full.length]*level;score+=pts;lines+=full.length;const nl=Math.floor(lines/10)+1;if(nl>level){level=nl;A.tip('Επίπεδο '+level+'! 🚀');A.win()}
+  [0,3,7,12].slice(0,full.length+1).forEach((s,i)=>A.tone(523*Math.pow(2,s/12),.12,'square',.07,0,i*.06));
+  A.text(BX+CW*S/2,BY+full[0]*S,full.length==4?'ΤΕΤΡΑΠΛΟ! +'+pts:'+'+pts,full.length==4?'#ffe14d':'#fff',full.length==4?34:26);
+  for(const y of full)for(let x=0;x<CW;x++)A.burst(BX+(x+.5)*S,BY+(y+.5)*S,3,[COL[grid[y][x]],'#fff'],260,.7,3.5);if(mode==1&&lines>=40){finishSprint();return}}
+ else next()}
+function finishSprint(){const t=(performance.now()-startT)/1000;over=true;const [b,nb]=A.best('sprint',-Math.round(t*10));const bt=-b/10;A.win();A.gameOver({title:'40 γραμμές! 🏁',score:t.toFixed(1)+' δ',msg:nb?'🏆 Νέο ρεκόρ χρόνου!':'Ρεκόρ: '+bt.toFixed(1)+' δ',stars:t<120?3:t<200?2:1});A.post(40,40)}
+function end(){if(over)return;over=true;A.lose();const [b,nb]=A.best('marathon',score);A.gameOver({title:'Τέλος!',score,msg:(nb?'🏆 Νέο ρεκόρ! ':'Ρεκόρ: '+b+' · ')+`Γραμμές: ${lines}`,stars:score>8000?3:score>3000?2:score>800?1:0});A.post(lines,40)}
+function start(m){mode=m;grid=Array.from({length:CH},()=>Array(CW).fill(0));nextQ=[];hold=null;score=0;lines=0;level=1;dropT=0;lockT=.5;over=false;clearing=null;startT=performance.now();next()}
+A.setup({id:'tetris',title:'Τουβλάκια που πέφτουν',emoji:'🟦🟨🟥',title2:'linear-gradient(180deg,#38d9f5,#7c3aed)',cardBg:'#dff3ff',desc:'Γύρνα και τακτοποίησε τα τουβλάκια που πέφτουν. Γέμισε μια ολόκληρη γραμμή για να εξαφανιστεί!',
+ modes:[{label:'🧱 Μαραθώνιος',small:'όσο αντέξεις',fn:()=>start(0)},{label:'🏁 40 γραμμές',small:'όσο πιο γρήγορα',c:'c2',fn:()=>start(1)}],
+ help:'<b>←</b><b>→</b> κίνηση · <b>↑</b> γύρισμα · <b>↓</b> πιο γρήγορα · <b>Space</b> πέσιμο · <b>C</b> φύλαξη<br>Στην οθόνη αφής: σύρε, πάτα για γύρισμα, σύρε κάτω για πέσιμο',
+ bestText:()=>{const s=A.get('best.sprint',0);return `🏆 Μαραθώνιος: ${A.get('best.marathon',0)} · 40 γραμμές: ${s?(-s/10).toFixed(1)+' δ':'—'}`}});
+A.pad({left:{btns:[{k:'L',t:'◀'},{k:'R',t:'▶'},{k:'D',t:'▼'}]},right:{btns:[{k:'H',t:'⇄'},{k:'X',t:'⟲'},{k:'U',t:'⟳',big:1},{k:'S',t:'⤓'}]}});
+let das={};
+A.onKey=k=>{if(!A.running||A.paused||over||clearing)return;if(k=='ArrowLeft')move(-1);if(k=='ArrowRight')move(1);if(k=='ArrowUp'||k=='x')rotate(1);if(k=='z')rotate(-1);if(k==' ')hard();if(k=='c'||k=='Shift')doHold()};
+A.onPad=(k,on)=>{if(!on||!A.running||over||clearing)return;if(k=='L')move(-1);if(k=='R')move(1);if(k=='U')rotate(1);if(k=='X')rotate(-1);if(k=='S')hard();if(k=='H')doHold();das[k]=0};
+// touch drag
+let tch=null;A.cv.addEventListener('pointerdown',e=>{if(!A.running||over)return;tch={x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,t:performance.now(),mv:0}});
+A.cv.addEventListener('pointermove',e=>{if(!tch||clearing||over)return;const dx=e.clientX-tch.x;if(Math.abs(dx)>S*.9){move(Math.sign(dx));tch.x=e.clientX;tch.mv=1}const dy=e.clientY-tch.y;if(dy>S*.9){soft();tch.y=e.clientY;tch.mv=1}});
+A.cv.addEventListener('pointerup',e=>{if(!tch)return;const dy=e.clientY-tch.sy,dt=performance.now()-tch.t;if(!clearing&&!over){if(dy>S*3&&dt<250)hard();else if(!tch.mv&&dt<300)rotate(e.clientX<A.W/3?-1:1)}tch=null});
+function block(x,y,s,c,a=1){cx.globalAlpha=a;const g=cx.createLinearGradient(x,y,x+s,y+s);g.addColorStop(0,A.shade(c,22));g.addColorStop(1,A.shade(c,-18));cx.fillStyle=g;A.rr(cx,x+1,y+1,s-2,s-2,s*.18);cx.fill();cx.fillStyle='rgba(255,255,255,.45)';A.rr(cx,x+s*.16,y+s*.12,s*.68,s*.2,s*.1);cx.fill();cx.strokeStyle='rgba(10,5,40,.55)';cx.lineWidth=1.5;A.rr(cx,x+1,y+1,s-2,s-2,s*.18);cx.stroke();cx.globalAlpha=1}
+function mini(k,x,y,s){const c=SH[k];const minx=Math.min(...c.map(a=>a[0])),maxx=Math.max(...c.map(a=>a[0])),miny=Math.min(...c.map(a=>a[1])),maxy=Math.max(...c.map(a=>a[1]));const ox=x-(maxx-minx+1)*s/2,oy=y-(maxy-miny+1)*s/2;for(const [a,b] of c)block(ox+(a-minx)*s,oy+(b-miny)*s,s,COL[k])}
+function panel(x,y,w,h,title){cx.fillStyle='rgba(20,15,60,.6)';A.rr(cx,x,y,w,h,14);cx.fill();cx.strokeStyle='rgba(160,180,255,.35)';cx.lineWidth=2;cx.stroke();cx.fillStyle='#cfd8ff';cx.font=`800 ${Math.max(12,S*.55)}px 'Anek Greek'`;cx.textAlign='center';cx.fillText(title,x+w/2,y+S*.75)}
+A.loop((dt,t)=>{const W=A.W,H=A.H;
+ if(A.running&&!over){if(clearing){clearing.t+=dt;if(clearing.t>.35){for(const y of clearing.rows.sort((a,b)=>a-b)){grid.splice(y,1);grid.unshift(Array(CW).fill(0))}clearing=null;next()}}
+  else{const sp=Math.max(.05,Math.pow(.8-(level-1)*.007,level-1));const softOn=A.keys.ArrowDown||A.held.D;dropT+=dt;if(softOn&&dropT>.04){soft()}else if(dropT>sp){dropT=0;if(!hit(cur,0,1))cur.y++}
+   for(const [k,d] of [['ArrowLeft',-1],['ArrowRight',1],['L',-1],['R',1]]){if(A.keys[k]||A.held[k]){das[k]=(das[k]||0)+dt;if(das[k]>.17){das[k]-=.05;move(d)}}else das[k]=0}
+   if(onGround()){lockT-=dt;if(lockT<=0){lockT=.5;lock()}}else lockT=.5}}
+ A.stepFX(dt);
+ // bg
+ const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#1b1050');g.addColorStop(1,'#3a1670');cx.fillStyle=g;cx.fillRect(0,0,W,H);for(const [x,y,r,p] of stars){cx.fillStyle=`rgba(255,255,255,${.3+.3*Math.sin(t*2+p)})`;cx.beginPath();cx.arc(x,y,r,0,7);cx.fill()}
+ cx.save();if(shake>0){cx.translate(0,shake*10);shake=Math.max(0,shake-dt*2)}
+ cx.fillStyle='rgba(10,6,35,.75)';A.rr(cx,BX-8,BY-8,CW*S+16,CH*S+16,16);cx.fill();cx.strokeStyle='#7c6cff';cx.lineWidth=3;cx.stroke();
+ cx.strokeStyle='rgba(255,255,255,.05)';cx.lineWidth=1;for(let x=1;x<CW;x++){cx.beginPath();cx.moveTo(BX+x*S,BY);cx.lineTo(BX+x*S,BY+CH*S);cx.stroke()}for(let y=1;y<CH;y++){cx.beginPath();cx.moveTo(BX,BY+y*S);cx.lineTo(BX+CW*S,BY+y*S);cx.stroke()}
+ if(grid){for(let y=0;y<CH;y++)for(let x=0;x<CW;x++)if(grid[y][x]){let a=1;if(clearing&&clearing.rows.includes(y)){a=1-clearing.t/.35;cx.fillStyle=`rgba(255,255,255,${a})`;cx.fillRect(BX+x*S,BY+y*S,S,S)}block(BX+x*S,BY+y*S,S,COL[grid[y][x]],a)}
+  if(cur&&!over&&!clearing){const gy=ghostY();for(const [x,y] of cur.cells){const X=BX+(cur.x+x)*S,Y=BY+(cur.y+y+gy)*S;if(cur.y+y+gy>=0){cx.strokeStyle=COL[cur.k];cx.globalAlpha=.6;cx.lineWidth=2;A.rr(cx,X+3,Y+3,S-6,S-6,S*.15);cx.stroke();cx.globalAlpha=1}}
+   for(const [x,y] of cur.cells)if(cur.y+y>=0)block(BX+(cur.x+x)*S,BY+(cur.y+y)*S,S,COL[cur.k])}
+  // side panels
+  const land=W>H;const px=land?BX+CW*S+S*.8:BX+CW*S+S*.5,pw=land?S*4.6:S*3.6;panel(px,BY,pw,S*4.4,'ΕΠΟΜΕΝΑ');if(nextQ){mini(nextQ[0],px+pw/2,BY+S*2.4,S*.8);if(land){panel(px,BY+S*4.8,pw,S*6.5,'');for(let i=1;i<4;i++)mini(nextQ[i],px+pw/2,BY+S*5.6+(i-1)*S*2,S*.55)}}
+  const hx=land?BX-S*5.6:px,hy=land?BY:BY+S*4.8;panel(hx,hy,pw,S*4.4,'ΦΥΛΑΞΗ');if(hold)mini(hold,hx+pw/2,hy+S*2.4,S*.8);
+  const sy=land?BY+S*5:BY+S*9.6;panel(hx,sy,pw,S*(land?7:7.6),'');cx.textAlign='center';const fs=Math.max(12,S*.5),fb=Math.max(16,S*.85);const rows=[['ΠΟΝΤΟΙ',score],['ΓΡΑΜΜΕΣ',mode==1?lines+'/40':lines],['ΕΠΙΠΕΔΟ',level]];if(mode==1)rows.push(['ΧΡΟΝΟΣ',((over?0:(performance.now()-startT))/1000).toFixed(1)]);rows.forEach(([a,b],i)=>{cx.fillStyle='#cfd8ff';cx.font=`800 ${fs}px 'Anek Greek'`;cx.fillText(a,hx+pw/2,sy+S*(.9+i*1.65));cx.fillStyle='#fff';cx.font=`800 ${fb}px 'Anek Greek'`;cx.fillText(b,hx+pw/2,sy+S*(1.85+i*1.65))})}
+ A.drawFX();cx.restore()});
+</script></body></html>

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Πέρνα απέναντι</title><link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@600;800&display=swap" rel="stylesheet"></head><body>
+<script src="arc.js"></script>
+<script>
+const A=ARC,cx=A.cx;const COLS=11;let T,lanes,pl,camY,score,coins,state,stT,deathMsg,idleT,maxRow;
+A.onResize=()=>{T=Math.floor(Math.min(A.W/9,A.H/11));};A.onResize();
+const TIPS=['Πριν περάσεις τον δρόμο, κοίτα αριστερά, δεξιά και πάλι αριστερά! 👀','Πέρνα πάντα από τη διάβαση πεζών 🦓','Με κόκκινο φανάρι περιμένουμε, με πράσινο περνάμε 🚦','Στις γραμμές του τρένου, όταν αναβοσβήνει το κόκκινο φως, σταματάμε! 🚆','Μην τρέχεις ανάμεσα σε αυτοκίνητα που είναι σταματημένα 🚗','Στον δρόμο δεν παίζουμε· παίζουμε στην αυλή και στο πάρκο ⚽'];
+const CARC=['#ff4d6d','#4c7dff','#ffd23f','#4ade80','#ff9a2e','#b37bff','#f1f5f9'];
+function mkLane(row){const prev=lanes[row-1];let type;if(row<4)type='grass';else{const r=Math.random();type=r<.38?'road':r<.55?'river':r<.63?'rail':r<.7?'zebra':'grass';if(prev&&prev.type=='rail'&&type=='rail')type='grass';if(prev&&prev.type=='river'&&type=='river'&&prev.prev2)type='grass'}
+ const d=Math.random()<.5?1:-1,lvl=Math.min(1,row/150);const L={row,type,dir:d,items:[],trees:[],coins:[]};
+ if(type=='grass'){for(let c=0;c<COLS;c++)if(Math.random()<(row<4?.0:.22)&&c!=5)L.trees.push(c);if(row<4)L.trees=[0,COLS-1];if(Math.random()<.15){const c=A.ri(1,COLS-2);if(!L.trees.includes(c))L.coins.push(c)}}
+ if(type=='road'||type=='zebra'){L.speed=(1.2+Math.random()*1.6+lvl*1.8)*d;const big=Math.random()<.3;const len=big?2.2:1.2,gap=A.rnd(2.5,4.5);for(let x=-2;x<COLS+3;x+=len+gap+A.rnd(0,2))L.items.push({x,len,c:A.pick(CARC),kind:big?'truck':'car'});if(type=='zebra'){L.light='green';L.lt=A.rnd(2,5)}}
+ if(type=='river'){L.speed=(.8+Math.random()*1.2+lvl)*d;const pads=Math.random()<.3;if(pads){L.speed=0;for(let c=0;c<COLS;c++)if(Math.random()<.55)L.items.push({x:c,len:1,kind:'pad'});if(!L.items.some(i=>Math.abs(i.x-5)<1))L.items.push({x:5,len:1,kind:'pad'})}else for(let x=-3;x<COLS+3;x+=A.rnd(4,6)){const len=A.ri(2,4);L.items.push({x,len,kind:'log'})}}
+ if(type=='rail'){L.speed=0;L.train=null;L.next=A.rnd(2,6);L.warn=0}
+ return L}
+function start(){lanes=[];for(let r=0;r<30;r++)lanes.push(mkLane(r));pl={c:5,r:2,x:5,y:2,hop:0,dir:'U',ride:null,dead:false,from:null};camY=0;score=0;coins=0;state='play';idleT=0;maxRow=2;A.tip(TIPS[0],3500)}
+A.setup({id:'crossy',title:'Πέρνα απέναντι',emoji:'🐥🚗🦓',title2:'linear-gradient(180deg,#4ade80,#0f8a5a)',cardBg:'#e6ffe8',desc:'Βοήθησε το κοτοπουλάκι να περάσει δρόμους, ποτάμια και γραμμές τρένου! Περίμενε το πράσινο στη διάβαση και πρόσεχε τα φανάρια του τρένου. Μαθαίνουμε οδική ασφάλεια παίζοντας!',
+ modes:[{label:'▶ Παίξε',small:'πόσο μακριά θα φτάσεις;',fn:start}],help:'<b>↑</b> μπροστά · <b>←</b><b>→</b> πλάι · <b>↓</b> πίσω · στην οθόνη αφής: πάτα για μπροστά, σύρε για άλλη κατεύθυνση',bestText:()=>'🏆 Ρεκόρ: '+A.get('best.s',0)+' βήματα'});
+A.pad({right:{dpad:1}});
+function laneAt(r){while(lanes.length<=r+20)lanes.push(mkLane(lanes.length));return lanes[r]}
+function move(d){if(!A.running||state!='play'||pl.hop>0)return;let c=pl.c,r=pl.r;if(d=='U')r++;if(d=='D')r--;if(d=='L')c--;if(d=='R')c++;pl.dir=d;if(c<0||c>=COLS||r<Math.max(0,Math.floor(camY)-1))return;const L=laneAt(r);if(L.type=='grass'&&L.trees.includes(Math.round(c)))return;
+ pl.from={x:pl.x,y:pl.y};pl.c=c;pl.r=r;pl.hop=.14;pl.ride=null;idleT=0;A.tone(d=='U'?620:520,.05,'sine',.07,d=='U'?880:700);
+ if(r>maxRow){maxRow=r;score=r-2}}
+A.onKey=k=>{const m={ArrowUp:'U',ArrowDown:'D',ArrowLeft:'L',ArrowRight:'R',w:'U',s:'D',a:'L',d:'R'}[k];if(m)move(m)};A.onPad=(k,on)=>{if(on)move(k)};A.swipe(d=>move(d=='tap'?'U':d));
+function die(msg,kind){if(pl.dead)return;pl.dead=kind||'hit';state='dead';stT=0;deathMsg=msg;if(kind=='water'){A.tone(300,.4,'sine',.15,80)}else{A.noise(.3,1500,200,.3);A.tone(150,.3,'square',.1,60)}
+ const [b,nb]=A.best('s',score);A.gameOver({title:msg,score:score+' βήματα',msg:(nb?'🏆 Νέο ρεκόρ! ':'Ρεκόρ: '+b+' · ')+'<br><b>💡 '+A.pick(TIPS)+'</b>',stars:score>=100?3:score>=50?2:score>=20?1:0,delay:1300});A.post(Math.min(100,score),100)}
+function update(dt){if(!A.running&&state!='dead')return;
+ for(let r=Math.max(0,Math.floor(camY)-2);r<camY+16;r++){const L=laneAt(r);
+  if(L.type=='road'||L.type=='zebra'||(L.type=='river'&&L.speed)){let sp=L.speed;if(L.type=='zebra'){L.lt-=dt;if(L.lt<=0){L.light=L.light=='green'?'yellow':L.light=='yellow'?'red':'green';L.lt=L.light=='yellow'?1:L.light=='red'?A.rnd(3,5):A.rnd(3,6);if(Math.abs(L.row-pl.r)<4&&L.light=='red')A.tone(990,.08,'sine',.05)}
+    if(L.light!='green'){for(const it of L.items){const ahead=sp>0?(4.5-(it.x+it.len)):(it.x-6.5);const stopping=ahead>-0.1&&ahead<1.2;it.v=stopping?0:sp}}else for(const it of L.items)it.v=sp}
+   for(const it of L.items){const v=it.v??sp;it.x+=v*dt;const span=COLS+8;if(v>0&&it.x>COLS+3)it.x-=span;if(v<0&&it.x+it.len<-3)it.x+=span}}
+  if(L.type=='rail'){if(!L.train){L.next-=dt;if(L.next<1.6&&L.next>0){L.warn+=dt;if(Math.abs(L.row-pl.r)<5&&Math.floor(L.warn*4)!=Math.floor((L.warn-dt)*4))A.tone(880,.08,'square',.04)}if(L.next<=0){const d=Math.random()<.5?1:-1;L.train={x:d>0?-14:COLS+1,d,len:13};L.warn=0}}else{L.train.x+=L.train.d*22*dt;if(L.train.x>COLS+16||L.train.x<-30){L.train=null;L.next=A.rnd(3,8)}}}}
+ if(state=='dead'){stT+=dt;return}
+ // hop anim
+ if(pl.hop>0){pl.hop-=dt;const k=1-Math.max(0,pl.hop)/.14;pl.x=pl.from.x+(pl.c-pl.from.x)*k;pl.y=pl.from.y+(pl.r-pl.from.y)*k;if(pl.hop<=0){pl.x=pl.c;pl.y=pl.r;land()}}
+ else if(pl.ride){pl.x+=pl.ride.v*dt;pl.c=pl.x;if(pl.x<-.4||pl.x>COLS-.6)die('Σε πήρε το ρεύμα! 🌊','water')}
+ const L=laneAt(pl.r);
+ if(L.type=='road'||L.type=='zebra')for(const it of L.items){if(pl.x+.3>it.x&&pl.x-.3<it.x+it.len-.1)die(L.type=='zebra'&&L.light!='green'?'Ωχ! Δεν περίμενες το πράσινο!':'Ωχ! Σε χτύπησε αυτοκίνητο! 🚗','hit')}
+ if(L.type=='rail'&&L.train){if(pl.x+.3>L.train.x&&pl.x-.3<L.train.x+L.train.len)die('Ωχ! Ήρθε το τρένο! 🚆','hit')}
+ for(const c of L.coins)if(Math.abs(c-pl.x)<.4){L.coins=L.coins.filter(q=>q!==c);coins++;score+=0;A.coin();A.text(A.W/2,A.H*.4,'🪙 +1','#ffe14d',30)}
+ // camera
+ const target=pl.y-3.2;camY+=Math.max(0,(target-camY))*Math.min(1,dt*3);camY+=dt*Math.min(.55,.18+score*.004);idleT+=dt;
+ if(pl.y<camY-1.2)die('Έμεινες πίσω! Προχώρα πιο γρήγορα 🐢','hit')}
+function land(){const L=laneAt(pl.r);if(L.type=='river'){const it=L.items.find(i=>pl.x>i.x-.45&&pl.x<i.x+i.len-.55);if(!it){die('Πλουφ! Έπεσες στο ποτάμι 💦','water');A.burst(sx(pl.x),sy(pl.y),20,['#bfe9ff','#fff'],200,.7,3);return}pl.ride=it.kind=='pad'?{v:0}:it;if(it.kind!='pad'){pl.ride={get v(){return it.v??L.speed}}}A.tone(300,.06,'sine',.06)}}
+// ---- render (3/4 view) ----
+let OXp=0;function sx(c){return OXp+(c+.5)*T}function sy(r){return A.H-(r-camY+1)*T}
+function box(x,y,w,h,d,top,side,front){// x,y = screen top-left of top face
+ cx.fillStyle=side;cx.fillRect(x,y+h,w,d);cx.fillStyle=top;cx.fillRect(x,y,w,h);if(front){cx.fillStyle=front;cx.fillRect(x,y+h,w,d*.15)}cx.strokeStyle='rgba(10,5,30,.35)';cx.lineWidth=1;cx.strokeRect(x,y,w,h+d)}
+function drawLane(L,t){const y=sy(L.row),W=A.W;
+ if(L.type=='grass'){cx.fillStyle=L.row%2?'#8fd85a':'#84cf50';cx.fillRect(0,y-T*.5,W,T);cx.fillStyle='rgba(60,120,30,.25)';for(let i=0;i<8;i++){const x=((L.row*137+i*251)%W);cx.fillRect(x,y-T*.3+(i%3)*T*.2,3,6)}}
+ if(L.type=='road'||L.type=='zebra'){cx.fillStyle='#4a4f63';cx.fillRect(0,y-T*.5,W,T);cx.fillStyle='#5a6075';cx.fillRect(0,y-T*.5,W,3);const up=laneAt(L.row+1),dn=laneAt(L.row-1);if(up.type=='road'){cx.fillStyle='#f1f5f9';for(let x=0;x<W;x+=T*.9)cx.fillRect(x,y-T*.5-1,T*.45,3)}
+  if(L.type=='zebra'){const zx=OXp+5*T-T*.6;cx.fillStyle='#f1f5f9';for(let i=0;i<5;i++)cx.fillRect(zx+i*T*.32,y-T*.42,T*.18,T*.84);const lx=OXp+6.4*T;cx.fillStyle='#22263a';A.rr(cx,lx,y-T*1.25,T*.36,T*.9,5);cx.fill();cx.fillRect(lx+T*.14,y-T*.4,T*.08,T*.4);[['red','#ff3b3b'],['yellow','#ffd23f'],['green','#4ade80']].forEach(([n,c],i)=>{cx.fillStyle=L.light==n?c:'#3a3f55';if(L.light==n){cx.shadowColor=c;cx.shadowBlur=10}cx.beginPath();cx.arc(lx+T*.18,y-T*1.1+i*T*.27,T*.1,0,7);cx.fill();cx.shadowBlur=0})}}
+ if(L.type=='river'){const g=cx.createLinearGradient(0,y-T*.5,0,y+T*.5);g.addColorStop(0,'#3aa8f0');g.addColorStop(1,'#2b7fd6');cx.fillStyle=g;cx.fillRect(0,y-T*.5,W,T);cx.strokeStyle='rgba(255,255,255,.35)';cx.lineWidth=2;for(let i=0;i<6;i++){const x=((i*173+t*30*(L.dir))%W+W)%W;cx.beginPath();cx.moveTo(x,y-T*.1+(i%2)*T*.25);cx.quadraticCurveTo(x+10,y-T*.18+(i%2)*T*.25,x+20,y-T*.1+(i%2)*T*.25);cx.stroke()}}
+ if(L.type=='rail'){cx.fillStyle='#8a7a6a';cx.fillRect(0,y-T*.5,W,T);cx.fillStyle='#5a4030';for(let x=0;x<W;x+=T*.4)cx.fillRect(x,y-T*.38,T*.18,T*.76);cx.fillStyle='#c9ccd8';cx.fillRect(0,y-T*.25,W,4);cx.fillRect(0,y+T*.2,W,4);
+  const lx=OXp+(L.row%2?1.2:8.8)*T;const on=L.warn>0&&Math.floor(L.warn*4)%2;cx.fillStyle='#22263a';cx.fillRect(lx,y-T*1.2,4,T*.8);cx.fillStyle=on?'#ff3b3b':'#4a2030';if(on){cx.shadowColor='#ff3b3b';cx.shadowBlur=14}cx.beginPath();cx.arc(lx+2,y-T*1.25,T*.13,0,7);cx.fill();cx.shadowBlur=0}}
+function drawLaneObjs(L,t){const y=sy(L.row);
+ if(L.type=='grass'){for(const c of L.trees){const x=sx(c);cx.fillStyle='rgba(0,0,0,.2)';cx.beginPath();cx.ellipse(x+3,y+T*.25,T*.38,T*.14,0,0,7);cx.fill();box(x-T*.12,y-T*.1,T*.24,T*.12,T*.2,'#8a5a2a','#6a4220');const h=T*(.8+((c*7+L.row)%3)*.18);box(x-T*.38,y-h,T*.76,T*.5,h*.62,'#4fc24a','#2f8a2a');cx.fillStyle='rgba(255,255,255,.18)';cx.fillRect(x-T*.38,y-h,T*.76,T*.12)}
+  for(const c of L.coins){const x=sx(c),bob=Math.sin(t*4+c)*3;cx.fillStyle='rgba(0,0,0,.2)';cx.beginPath();cx.ellipse(x,y+T*.2,T*.18,T*.06,0,0,7);cx.fill();const w=Math.abs(Math.cos(t*3+c))*T*.22+3;const g=cx.createLinearGradient(x-w,0,x+w,0);g.addColorStop(0,'#c98a00');g.addColorStop(.5,'#ffe14d');g.addColorStop(1,'#c98a00');cx.fillStyle=g;cx.beginPath();cx.ellipse(x,y-T*.15+bob,w,T*.22,0,0,7);cx.fill();cx.strokeStyle='#7a5200';cx.lineWidth=1.5;cx.stroke()}}
+ if(L.type=='road'||L.type=='zebra')for(const it of L.items){const x0=OXp+it.x*T,w=it.len*T-4,d=it.v??L.speed;cx.fillStyle='rgba(0,0,0,.25)';cx.fillRect(x0+4,y-T*.05,w,T*.42);
+  if(it.kind=='truck'){box(x0,y-T*.75,w,T*.55,T*.38,'#e6e9f5','#b9bfd6');const cabx=d>0?x0+w-T*.6:x0;box(cabx,y-T*.62,T*.6,T*.42,T*.38,it.c,A.shade(it.c,-25));cx.fillStyle='#9fd8ff';cx.fillRect(d>0?cabx+T*.4:cabx+T*.05,y-T*.55,T*.15,T*.28)}
+  else{box(x0,y-T*.45,w,T*.42,T*.3,it.c,A.shade(it.c,-28));box(x0+w*.22,y-T*.68,w*.56,T*.26,T*.22,A.shade(it.c,15),A.shade(it.c,-15));cx.fillStyle='#9fd8ff';cx.fillRect(x0+w*.24,y-T*.66,w*.52,T*.1);cx.fillStyle='#ffe9a0';cx.fillRect(d>0?x0+w-5:x0+1,y-T*.4,4,T*.1)}
+  cx.fillStyle='#1a1a24';for(const wx of [.2,.8])cx.fillRect(x0+w*wx-T*.1,y-T*.04,T*.2,T*.12)}
+ if(L.type=='river')for(const it of L.items){const x0=OXp+it.x*T;if(it.kind=='pad'){const x=x0+T*.5;cx.fillStyle='#3fbf4a';cx.beginPath();cx.ellipse(x,y,T*.42,T*.3,0,.3,6.0);cx.lineTo(x,y);cx.fill();cx.strokeStyle='#1f7a2a';cx.lineWidth=2;cx.stroke();if((L.row+Math.round(it.x))%3==0){cx.fillStyle='#ff9ad5';cx.beginPath();cx.arc(x-T*.12,y-T*.05,T*.08,0,7);cx.fill()}}
+  else{const w=it.len*T-6;box(x0+3,y-T*.32,w,T*.42,T*.18,'#a8692e','#7a4518');cx.strokeStyle='rgba(80,40,10,.4)';for(let i=1;i<it.len*2;i++){cx.beginPath();cx.moveTo(x0+3+i*w/(it.len*2),y-T*.3);cx.lineTo(x0+3+i*w/(it.len*2),y+T*.08);cx.stroke()}cx.fillStyle='#d9a066';cx.beginPath();cx.ellipse(x0+6,y-T*.06,T*.06,T*.2,0,0,7);cx.fill()}}
+ if(L.type=='rail'&&L.train){const tr=L.train;for(let i=0;i<tr.len;i+=3.2){const x0=OXp+(tr.x+i)*T;const head=(tr.d>0&&i+3.2>=tr.len)||(tr.d<0&&i==0);box(x0+2,y-T*.85,T*3.1,T*.65,T*.42,head?'#ff4d6d':'#4c7dff',head?'#b3122a':'#2a4bb3');cx.fillStyle='#bfe9ff';for(let k=0;k<3;k++)cx.fillRect(x0+T*(.3+k*.95),y-T*.78,T*.6,T*.22)}}}
+function drawChick(x,y,t,dir,hop){const s=T*.42,j=hop>0?Math.sin((1-hop/.14)*Math.PI)*T*.35:0;cx.fillStyle='rgba(0,0,0,.25)';cx.beginPath();cx.ellipse(x,y+T*.22,s*.75,s*.25,0,0,7);cx.fill();cx.save();cx.translate(x,y-j);const fx=dir=='L'?-1:1;cx.scale(fx,1);
+ cx.fillStyle='#ff9a2e';cx.fillRect(-s*.35,s*.25,s*.15,s*.3);cx.fillRect(s*.15,s*.25,s*.15,s*.3);
+ box(-s*.6,-s*.75,s*1.2,s*.55,s*.55,'#fff3a0','#ffd23f');cx.fillStyle='#ffe14d';cx.fillRect(-s*.75,-s*.3,s*.2,s*.4);
+ box(-s*.1,-s*1.15,s*.2,s*.2,s*.15,'#ff4d6d','#c2183a');cx.fillStyle='#ff9a2e';cx.fillRect(s*.6,-s*.45,s*.25,s*.15);
+ cx.fillStyle='#1a1446';cx.fillRect(s*.28,-s*.62,s*.13,s*.15);cx.fillStyle='rgba(255,120,150,.6)';cx.fillRect(s*.25,-s*.38,s*.18,s*.08);cx.restore()}
+A.loop((dt,t)=>{update(dt);A.stepFX(dt);const W=A.W,H=A.H;OXp=(W-COLS*T)/2;
+ cx.fillStyle='#6cbf45';cx.fillRect(0,0,W,H);if(!lanes){cx.fillStyle='#84cf50';cx.fillRect(0,0,W,H);return}
+ const r0=Math.max(0,Math.floor(camY)-2),r1=Math.ceil(camY+H/T+2);for(let r=r1;r>=r0;r--)drawLane(laneAt(r),t);
+ for(let r=r1;r>=r0;r--){drawLaneObjs(laneAt(r),t);if(r==pl.r||(pl.hop>0&&r==Math.round(pl.y))){if(r==Math.round(pl.y)){if(pl.dead=='water'){}else if(pl.dead=='hit'){cx.save();cx.translate(sx(pl.x),sy(pl.y));cx.scale(1.3,.25);cx.translate(-sx(pl.x),-sy(pl.y));drawChick(sx(pl.x),sy(pl.y),t,pl.dir,0);cx.restore()}else drawChick(sx(pl.x),sy(pl.y),t,pl.dir,pl.hop)}}}
+ // edge fog
+ const fl=cx.createLinearGradient(0,0,OXp+T*.8,0);fl.addColorStop(0,'rgba(20,40,20,.55)');fl.addColorStop(1,'rgba(20,40,20,0)');cx.fillStyle=fl;cx.fillRect(0,0,OXp+T*.8,H);const fr=cx.createLinearGradient(W,0,W-OXp-T*.8,0);fr.addColorStop(0,'rgba(20,40,20,.55)');fr.addColorStop(1,'rgba(20,40,20,0)');cx.fillStyle=fr;cx.fillRect(W-OXp-T*.8,0,OXp+T*.8,H);
+ A.drawFX();if(A.running||state=='dead')A.hud(['👣 '+score,'🪙 '+coins])});
+</script></body></html>

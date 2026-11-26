@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Πήδα ψηλά</title><link href="https://fonts.googleapis.com/css2?family=Anek+Greek:wght@600;800&display=swap" rel="stylesheet"></head><body>
+<script src="arc.js"></script>
+<script>
+const A=ARC,cx=A.cx;let FW,FX,S,pl,plats,camY=0,score=0,state,stT,maxH=0,stars=[],ptrX=null,items;
+A.onResize=()=>{FW=Math.min(A.W,A.H*.7);FX=(A.W-FW)/2;S=FW/400;stars=[];for(let i=0;i<80;i++)stars.push([Math.random(),Math.random()*3000,Math.random()*1.5+.4])};A.onResize();
+function plat(y,kind){const w=70*S;return {x:A.rnd(FX+5,FX+FW-w-5),y,w,kind,vx:kind=='move'?A.rnd(40,90)*S*(Math.random()<.5?1:-1):0,broken:0,spring:kind=='norm'&&Math.random()<.08?A.rnd(.2,.8):null}}
+function start(){pl={x:A.W/2,y:A.H*.7,vx:0,vy:-600*S,face:1,sq:0,jet:0};plats=[];camY=0;maxH=0;score=0;state='play';items=[];plats.push({x:A.W/2-35*S,y:A.H*.8,w:70*S,kind:'norm',vx:0,broken:0});let y=A.H*.8;while(y>-A.H){y-=A.rnd(55,85)*S;plats.push(plat(y,'norm'))}A.tip('Πήδα από σύννεφο σε σύννεφο! Πρόσεχε τα σύννεφα που σπάνε ☁️',3000)}
+function genAbove(){let top=Math.min(...plats.map(p=>p.y));const d=Math.min(1,maxH/9000);while(top>camY-A.H*.2){const gapMin=55+d*45,gapMax=85+d*65;top-=A.rnd(gapMin,gapMax)*S;const r=Math.random();const kind=r<.12+d*.15?'move':r<.2+d*.25?'break':'norm';plats.push(plat(top,kind));if(kind=='break'&&Math.random()<.7){plats.push(plat(top-A.rnd(20,40)*S,'norm'))}if(Math.random()<.02)items.push({x:A.rnd(FX+20,FX+FW-20),y:top-40*S,k:'jet'});if(Math.random()<.05)items.push({x:A.rnd(FX+20,FX+FW-20),y:top-35*S,k:'star'})}}
+A.setup({id:'jump',title:'Πήδα ψηλά',emoji:'🐙☁️⭐',title2:'linear-gradient(180deg,#22c3ee,#7c3aed)',cardBg:'#e2f4ff',desc:'Ο Μπουμπούκος πηδάει μόνος του! Εσύ τον οδηγείς δεξιά–αριστερά για να πατήσει στα σύννεφα. Πόσο ψηλά θα φτάσεις; Ελατήρια και πύραυλοι βοηθάνε!',
+ modes:[{label:'▶ Παίξε',small:'μέχρι το διάστημα!',fn:start}],help:'<b>←</b><b>→</b> ή κίνηση ποντικιού · στην οθόνη αφής: πάτα αριστερά/δεξιά ή σύρε',bestText:()=>'🏆 Ρεκόρ: '+A.get('best.s',0)+' μ'});
+A.cv.addEventListener('pointermove',e=>{if(e.pointerType=='mouse'||e.buttons)ptrX=e.clientX});A.cv.addEventListener('pointerdown',e=>{ptrX=e.clientX});addEventListener('pointerup',e=>{if(e.pointerType!='mouse')ptrX=null});
+function update(dt){if(!A.running)return;const g=1300*S;
+ let ax=0;if(A.keys.ArrowLeft||A.keys.a)ax=-1;if(A.keys.ArrowRight||A.keys.d)ax=1;if(ax){pl.vx+=(ax*330*S-pl.vx)*Math.min(1,dt*10);ptrX=null}else if(ptrX!=null){const tx=A.touch?(ptrX<A.W/2?pl.x-200:pl.x+200):ptrX;pl.vx=A.clamp((tx-pl.x)*6,-360*S,360*S)}else pl.vx*=Math.pow(.02,dt);
+ if(pl.vx)pl.face=Math.sign(pl.vx);pl.x+=pl.vx*dt;if(pl.x<FX-15*S)pl.x=FX+FW+15*S;if(pl.x>FX+FW+15*S)pl.x=FX-15*S;
+ if(pl.jet>0){pl.jet-=dt;pl.vy=-900*S;if(Math.random()<.8)A.burst(pl.x,pl.y+20*S,1,['#ffd23f','#ff7a2a','#fff'],80,.4,4,200)}else pl.vy+=g*dt;
+ const oy=pl.y;pl.y+=pl.vy*dt;pl.sq=Math.max(0,pl.sq-dt*4);
+ if(pl.vy>0)for(const p of plats){if(p.broken)continue;if(pl.x>p.x-10*S&&pl.x<p.x+p.w+10*S&&oy+22*S<=p.y+2&&pl.y+22*S>=p.y){if(p.kind=='break'){p.broken=1;p.vy=0;A.noise(.2,1200,300,.15);continue}
+   if(p.spring!=null&&Math.abs(pl.x-(p.x+p.w*p.spring))<14*S){pl.vy=-1150*S;p.spr=1;A.tone(300,.3,'sine',.12,1400)}else{pl.vy=-620*S;A.tone(380,.08,'sine',.08,620)}pl.y=p.y-22*S;pl.sq=1;break}}
+ for(const p of plats){if(p.vx){p.x+=p.vx*dt;if(p.x<FX||p.x+p.w>FX+FW)p.vx*=-1}if(p.broken){p.vy=(p.vy||0)+g*dt;p.y+=p.vy*dt;p.broken+=dt}if(p.spr)p.spr=Math.max(0,p.spr-dt*4)}
+ for(const it of items){if(Math.hypot(it.x-pl.x,it.y-pl.y)<28*S){it.got=1;if(it.k=='jet'){pl.jet=2.5;A.tip('🚀 Πύραυλος!');A.tone(200,1,'sawtooth',.06,800)}else{score+=100;A.coin();A.text(it.x,it.y,'+100','#ffe14d',22)}}}items=items.filter(i=>!i.got&&i.y<camY+A.H+50);
+ const target=pl.y-A.H*.42;if(target<camY)camY=target;const h=Math.floor((A.H*.7-camY)/(10*S));if(h>maxH)maxH=h;
+ plats=plats.filter(p=>p.y<camY+A.H+60);genAbove();
+ if(pl.y>camY+A.H+40){A.running=false;A.lose();const tot=maxH+score;const [b,nb]=A.best('s',tot);A.gameOver({title:'Έπεσες! 🐙',score:tot+' μ',msg:(nb?'🏆 Νέο ρεκόρ!':'Ρεκόρ: '+b+' μ'),stars:tot>=3000?3:tot>=1500?2:tot>=500?1:0});A.post(Math.min(30,Math.floor(tot/100)),30)}}
+function cloudPlat(p,t){const x=p.x,y=p.y-camY,w=p.w,h=16*S;cx.save();if(p.broken){cx.globalAlpha=Math.max(0,1-p.broken*2);cx.translate(x+w/2,y);cx.rotate(p.broken*1.5);cx.translate(-x-w/2,-y)}
+ const col=p.kind=='move'?['#d9f3ff','#7cc8f0']:p.kind=='break'?['#f3e6d6','#c4a07a']:['#ffffff','#cfe0ff'];cx.fillStyle='rgba(30,40,100,.18)';cx.beginPath();cx.ellipse(x+w/2,y+h*.9,w*.5,h*.35,0,0,7);cx.fill();
+ const g=cx.createLinearGradient(0,y-h,0,y+h);g.addColorStop(0,col[0]);g.addColorStop(1,col[1]);cx.fillStyle=g;cx.beginPath();cx.arc(x+w*.25,y,h*.75,0,7);cx.arc(x+w*.5,y-h*.25,h*.95,0,7);cx.arc(x+w*.75,y,h*.75,0,7);cx.rect(x+w*.12,y-h*.1,w*.76,h*.75);cx.fill();
+ if(p.kind=='break'){cx.strokeStyle='#8a6a4a';cx.lineWidth=2;cx.beginPath();cx.moveTo(x+w*.45,y-h*.8);cx.lineTo(x+w*.55,y-h*.1);cx.lineTo(x+w*.48,y+h*.5);cx.stroke()}
+ if(p.kind=='move'){cx.fillStyle='#4c7dff';cx.font=`800 ${12*S}px 'Anek Greek'`;cx.textAlign='center';cx.fillText('↔',x+w/2,y+h*.4)}
+ if(p.spring!=null){const sx=x+w*p.spring,sy=y-h*.9;const ext=p.spr?14*S:6*S;cx.strokeStyle='#8a8fa8';cx.lineWidth=3;cx.beginPath();for(let i=0;i<=6;i++)cx.lineTo(sx+(i%2?-6:6)*S,sy-i*ext/6);cx.stroke();cx.fillStyle='#ff4d6d';A.rr(cx,sx-10*S,sy-ext-5*S,20*S,6*S,3);cx.fill()}cx.restore()}
+function drawHero(t){const x=pl.x,y=pl.y-camY,r=20*S;cx.save();cx.translate(x,y);const sq=pl.sq;cx.scale(pl.face*(1+sq*.2),1-sq*.2);
+ // tentacles
+ cx.strokeStyle='#d94fa0';cx.lineWidth=5*S;cx.lineCap='round';for(let i=0;i<4;i++){const bx=-r*.6+i*r*.4;cx.beginPath();cx.moveTo(bx,r*.6);cx.quadraticCurveTo(bx+Math.sin(t*10+i)*6*S,r*1.0,bx+Math.sin(t*10+i+1)*4*S,r*1.25+(pl.vy<0?-4*S:0));cx.stroke()}
+ const g=cx.createRadialGradient(-r*.3,-r*.4,2,0,0,r*1.2);g.addColorStop(0,'#ffd1ec');g.addColorStop(.4,'#ff7ac2');g.addColorStop(1,'#c2338a');cx.fillStyle=g;cx.beginPath();cx.ellipse(0,0,r,r*.9,0,0,7);cx.fill();cx.strokeStyle='#7a1450';cx.lineWidth=2.5;cx.stroke();
+ for(const [sx,sy,rr] of [[-r*.5,-r*.4,3],[r*.1,-r*.65,2.5],[-r*.1,r*.3,2]]){cx.fillStyle='rgba(255,255,255,.45)';cx.beginPath();cx.arc(sx,sy,rr*S,0,7);cx.fill()}
+ cx.fillStyle='#fff';cx.beginPath();cx.ellipse(r*.35,-r*.15,r*.3,r*.34,0,0,7);cx.fill();cx.stroke();cx.fillStyle='#1a1446';cx.beginPath();cx.arc(r*.43,-r*.12+(pl.vy>0?3*S:-2*S),r*.14,0,7);cx.fill();cx.fillStyle='#fff';cx.beginPath();cx.arc(r*.39,-r*.2,r*.05,0,7);cx.fill();
+ cx.strokeStyle='#7a1450';cx.beginPath();if(pl.vy<0)cx.arc(r*.35,r*.3,r*.18,.2,2.9);else cx.ellipse(r*.38,r*.35,r*.1,r*.13,0,0,7);cx.stroke();
+ if(pl.jet>0){cx.fillStyle='#9aa6d8';cx.fillRect(-r*1.15,-r*.5,r*.4,r*.9);cx.fillStyle='#ff4d6d';cx.beginPath();cx.moveTo(-r*1.15,-r*.5);cx.lineTo(-r*.95,-r*.85);cx.lineTo(-r*.75,-r*.5);cx.fill()}cx.restore()}
+A.loop((dt,t)=>{update(dt);A.stepFX(dt);const W=A.W,H=A.H;const alt=Math.min(1,maxH/12000);
+ const g=cx.createLinearGradient(0,0,0,H);const c1=alt<.5?['#7fd3ff','#4a8cff'][0]:'#2a1d6e';g.addColorStop(0,lerpC('#7fd3ff','#0b0630',alt));g.addColorStop(1,lerpC('#e6f6ff','#3a1d7a',alt));cx.fillStyle=g;cx.fillRect(0,0,W,H);
+ if(alt>.25)for(const [sx,sy,r] of stars){const y=((sy-camY*.2)%3000+3000)%3000*H/3000;cx.fillStyle=`rgba(255,255,255,${(alt-.25)*1.3*(.5+.5*Math.sin(t*3+sx*20))})`;cx.beginPath();cx.arc(sx*W,y,r,0,7);cx.fill()}
+ for(let i=0;i<5;i++){const y=((i*260-camY*.35)%(H+300)+H+300)%(H+300)-150;cx.fillStyle=`rgba(255,255,255,${.35*(1-alt)})`;const x=(i*197)%W;cx.beginPath();cx.ellipse(x,y,90,26,0,0,7);cx.ellipse(x+50,y-12,50,24,0,0,7);cx.fill()}
+ if(FX>0){cx.fillStyle='rgba(0,0,30,.25)';cx.fillRect(0,0,FX,H);cx.fillRect(FX+FW,0,FX,H)}
+ if(!plats)return;for(const p of plats)cloudPlat(p,t);
+ for(const it of items){const y=it.y-camY+Math.sin(t*4+it.x)*4;cx.font=`${26*S}px serif`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(it.k=='jet'?'🚀':'⭐',it.x,y)}
+ if(pl)drawHero(t);A.drawFX();if(A.running)A.hud(['📏 '+maxH+' μ','⭐ '+score])});
+function lerpC(a,b,k){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];const A1=p(a),B1=p(b);return `rgb(${A1.map((v,i)=>Math.round(v+(B1[i]-v)*k)).join(',')})`}
+</script></body></html>
