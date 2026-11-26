@@ -125,6 +125,97 @@ tool({id:'vathmologia',g:0,icon:'🏆',bg:'#a7f3d0',title:'Βαθμολογία 
  const save=()=>store.set('teams',T);const draw=()=>{const mx=Math.max(...T.map(t=>t.s));box.innerHTML='';T.forEach((t,i)=>{const nm=h('input',{type:'text',value:t.n,style:'width:100%;font-weight:800;font-size:20px;text-align:center'});nm.oninput=()=>{t.n=nm.value;save()};box.append(h('div',{class:'card',style:'margin:0;text-align:center;border-top:16px solid '+cols[i%6]+(t.s===mx&&mx>0?';background:#fff8d6;color:#1a1446':'')},nm,h('div',{class:'big'},(t.s===mx&&mx>0?'👑 ':'')+t.s),h('div',{class:'row',style:'justify-content:center'},[[-1,'−1','r'],[1,'+1','g'],[5,'+5','g'],[10,'+10','g']].map(([d,l,c])=>h('button',{class:'btn '+c,onclick:()=>{t.s+=d;save();draw()}},l)))))})};
  b.append(h('div',{class:'row'},h('button',{class:'btn y',onclick:()=>{if(T.length<6){T.push({n:'Ομάδα '+(T.length+1),s:0});save();draw()}}},'➕ Προσθήκη ομάδας'),h('button',{class:'btn s',onclick:()=>{if(T.length>2){T.pop();save();draw()}}},'➖ Αφαίρεση ομάδας'),h('button',{class:'btn r',onclick:()=>{T.forEach(t=>t.s=0);save();draw()}},'↺ Μηδενισμός')),box);draw()}});
 
+/* Βαθμολογία μαθητών (τερατάκια) */
+function _rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const MCOL=['#7ee8a2','#ff8fb8','#ffd23f','#7cc4ff','#c4a1ff','#ffa95c','#5eead4','#fb7185','#a3e635','#f0abfc'];
+function monster(seed){const r=_rng(seed*7919+13),pk=a=>a[Math.floor(r()*a.length)],K='#1a1446',c=pk(MCOL);
+ const bodies=['<ellipse cx="50" cy="58" rx="32" ry="33"/>','<rect x="18" y="28" width="64" height="60" rx="26"/>','<path d="M50 18c20 0 34 18 34 40c0 18-14 28-34 28S16 76 16 58c0-22 14-40 34-40z"/>','<path d="M20 36c10-8 50-8 60 0c8 16 6 40-2 48c-10 6-46 6-56 0c-8-8-10-32-2-48z"/>'];
+ const top=r()*6|0,eyes=1+(r()*3|0),mouth=r()*4|0,deco=r()*3|0;let s='<g stroke="'+K+'" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">';
+ if(top===1)s+='<path d="M28 34l-6-20l16 12z M72 34l6-20l-16 12z" fill="#fff"/>';
+ if(top===2)s+='<path d="M36 28l-8-16M64 28l8-16" fill="none"/><circle cx="27" cy="11" r="4.5" fill="#fb7185"/><circle cx="73" cy="11" r="4.5" fill="#fb7185"/>';
+ if(top===3)s+='<circle cx="24" cy="32" r="10" fill="'+c+'"/><circle cx="76" cy="32" r="10" fill="'+c+'"/>';
+ if(top===4)s+='<path d="M24 34l6-14l8 10l8-16l8 16l8-10l6 14z" fill="#ffd23f"/>';
+ if(top===5)s+='<path d="M42 28l8-22l8 22z" fill="#fff"/>';
+ s+='<g fill="'+c+'">'+pk(bodies)+'</g>';
+ s+='<path d="M20 62q-9 2-8 12M80 62q9 2 8 12" fill="none" stroke-width="4"/><ellipse cx="36" cy="90" rx="10" ry="5" fill="'+c+'"/><ellipse cx="64" cy="90" rx="10" ry="5" fill="'+c+'"/>';
+ if(deco===0)s+='<circle cx="30" cy="72" r="4" fill="#fff" fill-opacity=".5" stroke="none"/><circle cx="70" cy="74" r="5" fill="#fff" fill-opacity=".5" stroke="none"/><circle cx="64" cy="30" r="3" fill="#fff" fill-opacity=".5" stroke="none"/>';
+ if(deco===1)s+='<path d="M30 78h40M34 84h32" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3"/>';
+ const E=(x,y,rr)=>'<circle cx="'+x+'" cy="'+y+'" r="'+rr+'" fill="#fff"/><circle cx="'+(x+rr*.15)+'" cy="'+(y+rr*.1)+'" r="'+(rr*.5)+'" fill="'+K+'" stroke="none"/><circle cx="'+(x-rr*.1)+'" cy="'+(y-rr*.2)+'" r="'+(rr*.18)+'" fill="#fff" stroke="none"/>';
+ if(eyes===1)s+=E(50,46,13);else if(eyes===2)s+=E(37,46,9.5)+E(63,46,9.5);else s+=E(29,48,7.5)+E(50,40,7.5)+E(71,48,7.5);
+ s+='<circle cx="27" cy="62" r="5" fill="#ff6f91" fill-opacity=".55" stroke="none"/><circle cx="73" cy="62" r="5" fill="#ff6f91" fill-opacity=".55" stroke="none"/>';
+ if(mouth===0)s+='<path d="M37 66q13 13 26 0" fill="none" stroke-width="3.4"/>';
+ if(mouth===1)s+='<path d="M34 64h32q0 17-16 17T34 64z" fill="'+K+'"/><path d="M40 64v6M50 64v6M60 64v6" stroke="#fff" stroke-width="4" fill="none"/>';
+ if(mouth===2)s+='<path d="M36 65q14 14 28 0z" fill="'+K+'"/><path d="M45 71q5 7 10 0z" fill="#ff6f91" stroke="none"/>';
+ if(mouth===3)s+='<path d="M34 70l6-6l6 6l6-6l6 6l6-6l6 6" fill="none" stroke-width="3.4"/>';
+ return '<svg viewBox="0 0 100 100" aria-hidden="true">'+s+'</g></svg>'}
+tool({id:'dojo',g:0,icon:'👾',bg:'#b6f0c2',title:'Βαθμολογία μαθητών (τερατάκια)',desc:'Πόντοι συμπεριφοράς σαν Class Dojo. Κάθε μαθητής έχει το δικό του τερατάκι.',badge:'Νέο',run(b){
+ const POS=[['👋','Συμμετοχή',1],['🤝','Βοήθεια στους άλλους',1],['✏️','Επιμέλεια',1],['🧩','Ομαδικότητα',1],['🤫','Ησυχία',1],['🌟','Εξαιρετική δουλειά',2]],NEG=[['🔊','Φασαρία',-1],['⏰','Αργοπορία',-1],['🎒','Ξέχασε το υλικό',-1],['🙉','Δεν άκουσε',-1]];
+ const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+ let D=store.get('dojo',null);if(!D||!D.classes||!D.classes.length){D={cur:'c1',classes:[{id:'c1',name:'Η τάξη μου',students:[]}]}}
+ let mode=store.get('dojo_mode','lesson'),sort=store.get('dojo_sort','list'),snd=store.get('dojo_snd',true);
+ const SS={get(){try{return JSON.parse(sessionStorage.getItem('dke_dojo_s')||'{}')}catch(e){return {}}},set(v){try{sessionStorage.setItem('dke_dojo_s',JSON.stringify(v))}catch(e){}}};
+ let sp=SS.get();const save=()=>{store.set('dojo',D);SS.set(sp)};
+ const cls=()=>D.classes.find(c=>c.id===D.cur)||D.classes[0];
+ const pts=s=>mode==='lesson'?(sp[s.id]||0):(s.p||0);
+ const add=(s,v)=>{if(mode==='lesson')sp[s.id]=(sp[s.id]||0)+v;else s.p=(s.p||0)+v};
+ let ov=null;const closeOv=()=>{if(ov){ov.remove();ov=null}};
+ const root=h('div');b.append(root);
+ function award(list,label){const M=h('div',{style:'position:fixed;inset:0;z-index:80;background:rgba(10,6,34,.6);display:grid;place-items:center;padding:14px;overflow:auto',onclick:e=>{if(e.target===M)closeOv()}});ov=M;
+  const sOne=list.length===1?list[0]:null;const box=h('div',{class:'card',style:'max-width:560px;width:100%;margin:0'});
+  box.append(h('div',{class:'row',style:'justify-content:space-between;flex-wrap:nowrap'},h('div',{class:'row',style:'flex-wrap:nowrap'},sOne?h('div',{style:'width:64px;height:64px',html:monster(sOne.seed)}):h('div',{style:'font-size:46px'},'👏'),h('div',null,h('h3',{style:'margin:0'},label),h('div',{class:'mu'},mode==='lesson'?'Πόντοι μαθήματος':'Σωρευτικοί πόντοι'))),h('button',{class:'btn s',type:'button',onclick:closeOv},'✕')));
+  const give=(v)=>{list.forEach(s=>add(s,v));save();if(snd)beep(v>0?880:260,v>0?180:260,.12);closeOv();render(list.map(s=>s.id),v)};
+  const grid=(arr,col)=>h('div',{style:'display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:10px 0'},arr.map(x=>h('button',{class:'btn',type:'button',style:'margin:0;background:'+col+';color:#fff;text-align:left;font-size:16px;padding:8px 10px',onclick:()=>give(x[2])},x[0]+' '+x[1]+' ',h('b',null,(x[2]>0?'+':'')+x[2]))));
+  box.append(h('div',{class:'mu',style:'font-weight:800;margin-top:8px'},'Θετικά'),grid(POS,'#16a34a'),h('div',{class:'mu',style:'font-weight:800'},'Να βελτιωθεί'),grid(NEG,'#dc2626'));
+  const n=h('input',{type:'number',value:'1',min:'1',max:'20',style:'width:70px'});box.append(h('div',{class:'row'},h('span',{class:'mu'},'Άλλο:'),n,h('button',{class:'btn y',type:'button',onclick:()=>give(Math.abs(+n.value||1))},'➕ Δώσε'),h('button',{class:'btn s',type:'button',onclick:()=>give(-Math.abs(+n.value||1))},'➖ Αφαίρεσε')));
+  if(sOne)box.append(h('hr',{style:'border:0;border-top:2px dashed var(--dot)'}),h('div',{class:'row'},
+   h('button',{class:'btn s',type:'button',onclick:()=>{sOne.seed=(Math.random()*1e6)|0;save();closeOv();render()}},'🎲 Άλλο τερατάκι'),
+   h('button',{class:'btn s',type:'button',onclick:()=>{const v=prompt('Νέο όνομα',sOne.n);if(v&&v.trim()){sOne.n=v.trim();save();closeOv();render()}}},'✏️ Μετονομασία'),
+   h('button',{class:'btn r',type:'button',onclick:()=>{if(confirm('Διαγραφή του μαθητή «'+sOne.n+'»;')){const c=cls();c.students=c.students.filter(x=>x.id!==sOne.id);delete sp[sOne.id];save();closeOv();render()}}},'🗑 Διαγραφή')));
+  M.append(box);b.append(M)}
+ function render(pop,dv){const c=cls();root.innerHTML='';
+  const bar=h('div',{class:'card'});
+  const sel=h('select',{onchange:()=>{D.cur=sel.value;save();render()}},D.classes.map(x=>h('option',{value:x.id,selected:x.id===c.id},x.name)));
+  bar.append(h('div',{class:'row'},h('b',null,'Τάξη:'),sel,
+   h('button',{class:'btn s',type:'button',onclick:()=>{const v=prompt('Όνομα νέας τάξης (π.χ. Γ΄1)');if(v&&v.trim()){const n={id:uid(),name:v.trim(),students:[]};D.classes.push(n);D.cur=n.id;save();render()}}},'➕ Νέα τάξη'),
+   h('button',{class:'btn s',type:'button',onclick:()=>{const v=prompt('Νέο όνομα τάξης',c.name);if(v&&v.trim()){c.name=v.trim();save();render()}}},'✏️'),
+   h('button',{class:'btn s',type:'button',onclick:()=>{if(D.classes.length<2){alert('Χρειάζεται τουλάχιστον μία τάξη.');return}if(confirm('Διαγραφή της τάξης «'+c.name+'» και όλων των μαθητών της;')){D.classes=D.classes.filter(x=>x.id!==c.id);D.cur=D.classes[0].id;save();render()}}},'🗑')));
+  const tb=h('div',{class:'tabs',style:'margin-top:10px'},
+   h('button',{type:'button',class:mode==='lesson'?'on':'',onclick:()=>{mode='lesson';store.set('dojo_mode',mode);render()}},'📅 Μόνο για το τρέχον μάθημα'),
+   h('button',{type:'button',class:mode==='total'?'on':'',onclick:()=>{mode='total';store.set('dojo_mode',mode);render()}},'🏆 Σωρευτική βαθμολογία'));
+  bar.append(tb,h('div',{class:'mu'},mode==='lesson'?'Οι πόντοι κρατούνται μόνο όσο είναι ανοιχτό το μάθημα και χάνονται όταν κλείσεις τη σελίδα ή πατήσεις «Νέο μάθημα». Η λίστα μαθητών μένει.':'Οι πόντοι αποθηκεύονται σε αυτή τη συσκευή και μένουν όσο θέλεις, μέχρι να τους μηδενίσεις εσύ.'));
+  root.append(bar);
+  const stu=c.students.slice();if(sort==='pts')stu.sort((a,b2)=>pts(b2)-pts(a)||a.n.localeCompare(b2.n,'el'));else if(sort==='abc')stu.sort((a,b2)=>a.n.localeCompare(b2.n,'el'));
+  const tot=stu.reduce((a,s)=>a+pts(s),0);
+  const ctl=h('div',{class:'card'});const ta=h('textarea',{placeholder:'Γράψε ή κόλλησε ονόματα, ένα ανά γραμμή…',style:'min-height:90px;display:none'});
+  const addBox=h('div',null,ta,h('button',{class:'btn g',type:'button',style:'display:none',id:'dojoAddOk',onclick:()=>{lines(ta.value).forEach(n=>c.students.push({id:uid(),n,seed:(Math.random()*1e6)|0,p:0}));save();render()}},'✔ Πρόσθεσε'));
+  const ok=addBox.querySelector('#dojoAddOk');
+  const ssel=h('select',{onchange:()=>{sort=ssel.value;store.set('dojo_sort',sort);render()}},[['list','Όπως τους έβαλα'],['abc','Αλφαβητικά'],['pts','Περισσότεροι πόντοι']].map(x=>h('option',{value:x[0],selected:x[0]===sort},x[1])));
+  ctl.append(h('div',{class:'row'},
+   h('button',{class:'btn',type:'button',onclick:()=>{const sh=ta.style.display==='none';ta.style.display=sh?'block':'none';ok.style.display=sh?'inline-block':'none';if(sh)ta.focus()}},'➕ Πρόσθεσε μαθητές'),
+   h('button',{class:'btn y',type:'button',disabled:!stu.length,onclick:()=>award(stu,'Όλη η τάξη')},'👏 Όλη η τάξη'),ssel,
+   h('span',{class:'mu'},stu.length+' μαθητές · σύνολο '+tot+' πόντοι')),addBox);
+  const r2=h('div',{class:'row',style:'margin-top:8px'});
+  if(mode==='lesson')r2.append(h('button',{class:'btn s',type:'button',onclick:()=>{if(confirm('Νέο μάθημα: μηδενισμός των πόντων του μαθήματος;')){sp={};save();render()}}},'🔄 Νέο μάθημα (μηδενισμός)'));
+  else r2.append(
+   h('button',{class:'btn s',type:'button',onclick:()=>{if(confirm('Μηδενισμός της σωρευτικής βαθμολογίας για την τάξη «'+c.name+'»;')){c.students.forEach(s=>s.p=0);save();render()}}},'🔄 Μηδενισμός σωρευτικής'),
+   h('button',{class:'btn s',type:'button',onclick:()=>download('vathmologia-'+c.name.replace(/\s+/g,'_')+'.csv','﻿Μαθητής;Πόντοι\n'+c.students.map(s=>s.n.replace(/;/g,',')+';'+(s.p||0)).join('\n'),'text/csv;charset=utf-8')},'📄 Εξαγωγή CSV'),
+   h('button',{class:'btn s',type:'button',onclick:()=>download('dojo-backup.json',JSON.stringify(D),'application/json')},'💾 Αντίγραφο ασφαλείας'),
+   h('button',{class:'btn s',type:'button',onclick:()=>fi.click()},'📂 Επαναφορά'));
+  const fi=h('input',{type:'file',accept:'.json,application/json',style:'display:none',onchange:()=>{const f=fi.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const j=JSON.parse(rd.result);if(!j.classes||!j.classes.length)throw 0;if(confirm('Η επαναφορά αντικαθιστά τα τωρινά δεδομένα. Συνέχεια;')){D=j;save();render()}}catch(e){alert('Το αρχείο δεν είναι έγκυρο αντίγραφο.')}};rd.readAsText(f)}});
+  r2.append(fi,h('label',{style:'margin-left:auto;font-size:15px'},h('input',{type:'checkbox',checked:snd,onchange:e=>{snd=e.target.checked;store.set('dojo_snd',snd)}}),' 🔔 ήχος'));
+  ctl.append(r2);root.append(ctl);
+  if(!stu.length){root.append(h('div',{class:'note'},'Δεν υπάρχουν ακόμα μαθητές. Πάτα «➕ Πρόσθεσε μαθητές», γράψε τα ονόματα (ένα ανά γραμμή) και κάθε μαθητής παίρνει το δικό του τερατάκι!'))}
+  const gr=h('div',{style:'display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin:14px 0'});
+  stu.forEach(s=>{const p=pts(s),isPop=pop&&pop.includes(s.id);
+   const card=h('button',{type:'button',class:'dj',style:'all:unset;box-sizing:border-box;cursor:pointer;display:block;position:relative;background:var(--card);border:4px solid var(--line);border-radius:20px;padding:10px 8px 8px;box-shadow:0 5px 0 var(--line);text-align:center;transition:transform .12s',onclick:()=>award([s],s.n)},
+    h('span',{style:'position:absolute;top:-10px;right:-8px;min-width:36px;padding:1px 9px;border-radius:999px;border:3px solid var(--line);font-weight:800;font-size:17px;background:'+(p>0?'#16a34a;color:#fff':p<0?'#dc2626;color:#fff':'var(--sun);color:#1a1446')},String(p)),
+    h('div',{style:'width:84px;height:84px;margin:0 auto',html:monster(s.seed)}),
+    h('div',{style:'font-weight:800;font-size:16px;line-height:1.2;margin-top:4px;word-break:break-word'},s.n));
+   if(isPop){card.style.animation='djpop .5s';if(dv){const f=h('span',{style:'position:absolute;left:0;right:0;top:20px;font-weight:800;font-size:34px;pointer-events:none;animation:djfly 1s forwards;color:'+(dv>0?'#16a34a':'#dc2626')},(dv>0?'+':'')+dv);card.append(f)}}
+   gr.append(card)});root.append(gr)}
+ if(!$('#djcss')){document.head.append(h('style',{id:'djcss'},'@keyframes djpop{0%{transform:scale(1)}40%{transform:scale(1.12) rotate(-3deg)}100%{transform:scale(1)}}@keyframes djfly{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-40px)}}.dj:hover,.dj:focus-visible{transform:translateY(-3px);outline:4px solid var(--sun)}'))}
+ render();return closeOv}});
+
 /* Escape Room της τάξης */
 tool({id:'escape',g:0,icon:'🔐',bg:'#a5f3fc',title:'Escape Room της τάξης',desc:'Στήσε τη δική σου απόδραση: γρίφοι, κωδικός και χρονόμετρο για προβολή στον πίνακα.',badge:'Νέο',run(b){
  const TH={lab:{n:'Εργαστήριο υπολογιστών',bg:'linear-gradient(160deg,#1e3a8a,#0f172a)',em:['🗄️','💻','🖱️','⌨️','🔌','🖨️','💾','📡']},
