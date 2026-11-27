@@ -161,7 +161,7 @@ function update(dt){if(state!='play'&&state!='end')return;acc+=dt;let n=0;while(
   for(const f of flying)if(f.x<-15||f.x>levelW+25||f.y<-3)removeBody(f);flying=flying.filter(f=>!f.dead);
   const slow=world.bodies.every(b=>b.static||(Math.abs(b.vx)+Math.abs(b.vy)<.25&&Math.abs(b.w)<.4));if(slow)settleT+=dt;else settleT=0;
   if(flying[0]&&flying[0].bk=='black'&&!abilityUsed&&world.arb.size&&[...world.arb.values()].some(A=>(A.b1===flying[0]&&!A.b2.static)||(A.b2===flying[0]&&!A.b1.static))){flying[0].fuse=(flying[0].fuse||0)+dt;if(flying[0].fuse>1)ability()}
-  if(settleT>.5||flyT>6||!flying.length&&flyT>1.2){for(const f of flying)f.age=0;flying=[];if(targets>0){if(birds.length)nextBird();else{if(state=='play'){state='end';setTimeout(()=>finish(false),900)}}}}}
+  if(settleT>.5||flyT>4||!flying.length&&flyT>1.2){for(const f of flying)f.age=0;flying=[];if(targets>0){if(birds.length)nextBird();else{if(state=='play'){state='end';setTimeout(()=>finish(false),900)}}}}}
  if(targets<=0&&state=='play'){winT+=dt;if(winT>1.2){state='end';finish(true)}}
  for(const q of birds){if(q.tx!=null)q.x+=(q.tx-q.x)*Math.min(1,dt*4);q.hop+=dt}
  if(cur){cur.x+=(SL.x-cur.x)*Math.min(1,dt*5);cur.y+=(SL.y-cur.y)*Math.min(1,dt*5)}
