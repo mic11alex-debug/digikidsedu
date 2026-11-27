@@ -166,7 +166,7 @@ function update(dt){gT+=dt;
   else if(ai)runAI(dt);
   if(curW.dead)endTurnSoon();if(timer<=0){tip('Τέλος χρόνου! ⏰');endTurnSoon()}}
  for(const p of proj){const sub=4;for(let s=0;s<sub&&!p.done;s++){const d=dt/sub;p.t+=d;p.vy+=G*d;if(p.w.wind)p.vx+=wind*170*d;const nx=p.x+p.vx*d,ny=p.y+p.vy*d;
-   if(p.w.id=='baz'||p.mini){let hit=solid(nx,ny);for(const w of worms)if(!w.dead&&(w!==p.owner||p.t>.25)&&Math.hypot(w.x-nx,w.y-ny)<WR+3)hit=1;if(hit){p.done=1;explode(nx,ny,p.w.r,p.w.dmg);break}p.x=nx;p.y=ny;if(p.w.id=='baz'&&Math.random()<.5)parts.push({smoke:1,x:p.x,y:p.y,vx:rnd(-10,10),vy:rnd(-20,0),r:rnd(4,8),t:0,l:.7})}
+   if(p.w.id=='baz'||p.mini){let hit=solid(nx,ny);for(const w of worms)if(!w.dead&&(w!==p.owner||p.t>.25)&&Math.hypot(w.x-nx,w.y-14-ny)<24)hit=1;if(hit){p.done=1;explode(nx,ny,p.w.r,p.w.dmg);break}p.x=nx;p.y=ny;if(p.w.id=='baz'&&Math.random()<.5)parts.push({smoke:1,x:p.x,y:p.y,vx:rnd(-10,10),vy:rnd(-20,0),r:rnd(4,8),t:0,l:.7})}
    else{if(solid(nx,ny)){const n=normalAt(nx,ny);const dot=p.vx*n.x+p.vy*n.y;p.vx=(p.vx-2*dot*n.x)*.55;p.vy=(p.vy-2*dot*n.y)*.55;if(Math.abs(dot)>60)tone(500,.04,'square',.04);let k=0;while(solid(p.x,p.y)&&k++<8){p.x+=n.x;p.y+=n.y}}else{p.x=nx;p.y=ny}p.spin+=p.vx*d*.05;
     if(p.t>=p.w.fuse){p.done=1;explode(p.x,p.y,p.w.r,p.w.dmg);if(p.w.id=='clus')for(let i=0;i<5;i++){const q=-Math.PI/2+(i-2)*.38;proj.push({w:{id:'mini',r:24,dmg:18},mini:1,x:p.x,y:p.y-8,vx:Math.cos(q)*rnd(150,260),vy:Math.sin(q)*rnd(220,330),t:0,owner:null,spin:0})}}}
    if(p.y>WATER){p.done=1;for(let i=0;i<10;i++)parts.push({x:p.x,y:WATER,vx:rnd(-80,80),vy:rnd(-200,-60),r:rnd(2,4),c:'#bfe9ff',t:0,l:.7,g:1});tone(250,.3,'sine',.1,90)}
