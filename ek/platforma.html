@@ -71,7 +71,7 @@ function update(dt){if(!A.running&&state!='dead')return;stT+=dt;
  if(L&&!R){pl.vx=Math.max(-max,pl.vx-acc*dt);pl.face=-1}else if(R&&!L){pl.vx=Math.min(max,pl.vx+acc*dt);pl.face=1}else{pl.vx*=Math.pow(pl.on?.0005:.2,dt);if(Math.abs(pl.vx)<5)pl.vx=0}
  coyote=pl.on?.1:coyote-dt;if(jumpBuf>0&&coyote>0){pl.vy=-600;jumpBuf=0;coyote=0;A.tone(500,.12,'square',.05,900)}
  const g=jumpHeld()&&pl.vy<0?1100:2000;pl.vy=Math.min(900,pl.vy+g*dt);
- const sub=3;for(let i=0;i<sub;i++){moveX(pl,pl.vx*dt/sub);if(moveY(pl,pl.vy*dt/sub,true)){if(pl.vy<0)A.tone(150,.05,'square',.05);pl.vy=0}}
+ const sub=3;let gr=false;for(let i=0;i<sub;i++){moveX(pl,pl.vx*dt/sub);const vy0=pl.vy;if(moveY(pl,pl.vy*dt/sub,true)){if(vy0>0)gr=true;if(pl.vy<0)A.tone(150,.05,'square',.05);pl.vy=0}}pl.on=gr;
  if(Math.abs(pl.vx)>10&&pl.on)pl.run+=dt*Math.abs(pl.vx)*.06;
  // spikes / fall
  rectTiles(pl.x+3,pl.y+pl.h-6,pl.w-6,6,(tx,ty,c)=>{if(c=='^')spike()});if(pl.y>MH*TS+60){lives--;A.lose();if(lives<=0){pl.dead=1;state='dead';stT=0;const [b,nb]=A.best('s',score);A.gameOver({title:'Ωχ! Έπεσες 🦊',score,msg:(nb?'🏆 Νέο ρεκόρ! ':'Ρεκόρ: '+b),delay:600});A.post(lvi,3)}else respawn()}
