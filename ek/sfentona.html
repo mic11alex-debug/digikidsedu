@@ -158,7 +158,7 @@ function update(dt){if(state!='play'&&state!='end')return;acc+=dt;let n=0;while(
  for(const b of [...world.bodies])if(b.kind=='bird'&&!flying.includes(b)&&(b.age=(b.age||0)+dt)>2.5){parts.push({puff:1,x:b.x,y:b.y,r:.45,t:0,l:.5});removeBody(b)}
  if(flying.length){flyT+=dt;const b=flying[0];if(!b.dead&&flyT<4)trail.push({x:b.x,y:b.y,s:trail.length%2});
   if(flying.some(f=>f.bk=='black'&&!abilityUsed&&f.hitOnce))0;
-  for(const f of flying)if(f.x<-15||f.x>levelW+25||f.y<-3)removeBody(f);flying=flying.filter(f=>!f.dead);
+  for(const f of flying)if(f.x<-8||f.x>levelW+4||f.y<-3||f.y>40)removeBody(f);flying=flying.filter(f=>!f.dead);
   const slow=world.bodies.every(b=>b.static||(Math.abs(b.vx)+Math.abs(b.vy)<.25&&Math.abs(b.w)<.4));if(slow)settleT+=dt;else settleT=0;
   if(flying[0]&&flying[0].bk=='black'&&!abilityUsed&&world.arb.size&&[...world.arb.values()].some(A=>(A.b1===flying[0]&&!A.b2.static)||(A.b2===flying[0]&&!A.b1.static))){flying[0].fuse=(flying[0].fuse||0)+dt;if(flying[0].fuse>1)ability()}
   if(settleT>.5||flyT>4||!flying.length&&flyT>1.2){for(const f of flying)f.age=0;flying=[];if(targets>0){if(birds.length)nextBird();else{if(state=='play'){state='end';setTimeout(()=>finish(false),900)}}}}}
