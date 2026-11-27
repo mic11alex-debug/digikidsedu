@@ -197,7 +197,7 @@ function drawSky(){const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2
  mount('#7a4f8f',.62,.004,1.3,0);mount('#5b3a78',.7,.007,.9,2)}
 function mount(col,base,f,a,ph){cx.fillStyle=col;cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W;x+=10){const wx=(x-OX)/K;const y=H2(TH*base-(Math.abs(Math.sin(wx*f+ph))*150+Math.sin(wx*f*3.1+ph)*30)*a);cx.lineTo(x,y)}cx.lineTo(W,H);cx.fill()}
 function drawWater(back){const y0=H2(WATER);for(let L=0;L<(back?1:2);L++){const k=back?0:L+1;cx.fillStyle=back?'rgba(40,110,200,.6)':(L?'rgba(30,90,190,.85)':'rgba(70,150,230,.55)');cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W;x+=8){cx.lineTo(x,y0+k*8*K+Math.sin(x*.02/K+gT*(2+L)+k)*5*K)}cx.lineTo(W,H);cx.fill()}if(!back){cx.strokeStyle='rgba(255,255,255,.5)';cx.lineWidth=2;cx.beginPath();for(let x=0;x<=W;x+=8)cx.lineTo(x,y0+8*K+Math.sin(x*.02/K+gT*2+1)*5*K);cx.stroke()}}
-function drawWorm(w,t){const X=W2(w.x),Y=H2(w.y),s=K*1.15,T=TEAMS[w.team];cx.save();cx.translate(X,Y);cx.scale(w.dir*s,s);
+function drawWorm(w,t){const X=W2(w.x),Y=H2(w.y)-5.5*K,s=K*1.55,T=TEAMS[w.team];cx.save();cx.translate(X,Y);cx.scale(w.dir*s,s);
  const bob=Math.sin(t*3+w.bob)*1.2,wk=w.wk?Math.sin(w.wk)*2:0,hurt=w.hurt||0;
  // body: chubby segmented caterpillar
  const segs=[[-11,8],[-5,7],[1,4],[5,-3]];cx.lineWidth=2.4;
