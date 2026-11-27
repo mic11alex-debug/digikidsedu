@@ -94,7 +94,7 @@ let LV=0,birds=[],cur=null,flying=[],state='menu',drag=null,parts=[],texts=[],sc
 try{prog=JSON.parse(localStorage.getItem('sf.prog')||'[]')}catch(e){}
 function rs(){DPR=Math.min(2,devicePixelRatio||1);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;cx.setTransform(DPR,0,0,DPR,0,0);fitCam();clouds=null}
 addEventListener('resize',rs);
-function fitCam(){baseY=H*.86;const L=-3.2,Rr=levelW+1.2;camS=Math.min(W/(Rr-L),(baseY-46)/8);camX=L-(W/camS-(Rr-L))/2}
+function fitCam(){baseY=H*.86;const nb=(LEVELS[LV]&&LEVELS[LV].b.length)||3,L=Math.min(-3.2,-(1.1+Math.max(0,nb-2)*.7+.6)),Rr=levelW+1.2;camS=Math.min(W/(Rr-L),(baseY-46)/8);camX=L-(W/camS-(Rr-L))/2}
 const sx=x=>(x-camX)*camS,sy=y=>baseY-y*camS,wx=X=>X/camS+camX,wy=Y=>(baseY-Y)/camS;
 // ---------- levels ----------
 function blk(x,y,w,h,mat,a=0){world.bodies.push(new Body({x,y,hx:w/2,hy:h/2,a,density:MAT[mat].d,fric:MAT[mat].fr,hp:MAT[mat].hp,mat}))}
@@ -116,10 +116,10 @@ const LEVELS=[
 function loadLevel(i){LV=i;world.bodies=[];world.arb.clear();BID=0;targets=0;score=0;parts=[];texts=[];flying=[];trail=[];oldTrail=[];settleT=0;armT=1.2;abilityUsed=false;winT=0;
  world.bodies.push(new Body({x:12,y:-1,hx:60,hy:1,static:true,mat:'ground',fric:.9}));LEVELS[i].f();for(const b of world.bodies)if(!(b.static&&b.hx>30))b.x-=3.2;
  levelW=Math.max(...world.bodies.filter(b=>!b.static||b.hx<30).map(b=>b.x+b.br))+.8;fitCam();
- birds=LEVELS[i].b.map((k,j)=>({k,x:-1.1-j*.9,y:BIRDS[k].r,hop:Math.random()*6}));cur=null;nextBird();
+ birds=LEVELS[i].b.map((k,j)=>({k,x:-1.1-j*.7,y:BIRDS[k].r,hop:Math.random()*6}));cur=null;nextBird();
  for(let k=0;k<40;k++)step(1/120,10);for(const b of world.bodies){b.vx=b.vy=b.w=0;if(!b.static)b.asleep=true}
  state='play';$('menu').classList.add('h');$('over').classList.add('h');$('tb').style.display='flex';hint(H>W*1.1?'📱 Γύρισε τη συσκευή οριζόντια για μεγαλύτερη εικόνα!':'Τράβα το πουλάκι προς τα πίσω και άφησέ το!');ac()}
-function nextBird(){abilityUsed=false;if(!birds.length){cur=null;return}const b=birds.shift();cur={k:b.k,x:b.x,y:b.y,jump:0};birds.forEach((q,j)=>q.tx=-1.1-j*.9)}
+function nextBird(){abilityUsed=false;if(!birds.length){cur=null;return}const b=birds.shift();cur={k:b.k,x:b.x,y:b.y,jump:0};birds.forEach((q,j)=>q.tx=-1.1-j*.7)}
 let hintT=0;function hint(s){const h=$('hint');h.textContent=s;h.style.opacity=1;clearTimeout(hintT);hintT=setTimeout(()=>h.style.opacity=0,3200)}
 // ---------- audio ----------
 let AC=null;function ac(){if(!AC)try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}return AC}
@@ -161,7 +161,7 @@ function update(dt){if(state!='play'&&state!='end')return;acc+=dt;let n=0;while(
   for(const f of flying)if(f.x<-15||f.x>levelW+25||f.y<-3)removeBody(f);flying=flying.filter(f=>!f.dead);
   const slow=world.bodies.every(b=>b.static||(Math.abs(b.vx)+Math.abs(b.vy)<.25&&Math.abs(b.w)<.4));if(slow)settleT+=dt;else settleT=0;
   if(flying[0]&&flying[0].bk=='black'&&!abilityUsed&&world.arb.size&&[...world.arb.values()].some(A=>(A.b1===flying[0]&&!A.b2.static)||(A.b2===flying[0]&&!A.b1.static))){flying[0].fuse=(flying[0].fuse||0)+dt;if(flying[0].fuse>1)ability()}
-  if(settleT>.8||flyT>11||!flying.length&&settleT>.4){for(const f of flying)f.age=0;flying=[];if(targets>0){if(birds.length)nextBird();else{if(state=='play'){state='end';setTimeout(()=>finish(false),900)}}}}}
+  if(settleT>.5||flyT>6||!flying.length&&flyT>1.2){for(const f of flying)f.age=0;flying=[];if(targets>0){if(birds.length)nextBird();else{if(state=='play'){state='end';setTimeout(()=>finish(false),900)}}}}}
  if(targets<=0&&state=='play'){winT+=dt;if(winT>1.2){state='end';finish(true)}}
  for(const q of birds){if(q.tx!=null)q.x+=(q.tx-q.x)*Math.min(1,dt*4);q.hop+=dt}
  if(cur){cur.x+=(SL.x-cur.x)*Math.min(1,dt*5);cur.y+=(SL.y-cur.y)*Math.min(1,dt*5)}
