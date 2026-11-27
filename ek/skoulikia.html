@@ -197,7 +197,7 @@ function drawSky(){const g=cx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#2
  mount('#7a4f8f',.62,.004,1.3,0);mount('#5b3a78',.7,.007,.9,2)}
 function mount(col,base,f,a,ph){cx.fillStyle=col;cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W;x+=10){const wx=(x-OX)/K;const y=H2(TH*base-(Math.abs(Math.sin(wx*f+ph))*150+Math.sin(wx*f*3.1+ph)*30)*a);cx.lineTo(x,y)}cx.lineTo(W,H);cx.fill()}
 function drawWater(back){const y0=H2(WATER);for(let L=0;L<(back?1:2);L++){const k=back?0:L+1;cx.fillStyle=back?'rgba(40,110,200,.6)':(L?'rgba(30,90,190,.85)':'rgba(70,150,230,.55)');cx.beginPath();cx.moveTo(0,H);for(let x=0;x<=W;x+=8){cx.lineTo(x,y0+k*8*K+Math.sin(x*.02/K+gT*(2+L)+k)*5*K)}cx.lineTo(W,H);cx.fill()}if(!back){cx.strokeStyle='rgba(255,255,255,.5)';cx.lineWidth=2;cx.beginPath();for(let x=0;x<=W;x+=8)cx.lineTo(x,y0+8*K+Math.sin(x*.02/K+gT*2+1)*5*K);cx.stroke()}}
-function drawWorm(w,t){const X=W2(w.x),Y=H2(w.y)-5.5*K,s=K*1.55,T=TEAMS[w.team];cx.save();cx.translate(X,Y);cx.scale(w.dir*s,s);
+function drawWorm(w,t){const X=W2(w.x),Y=H2(w.y)-11.5*K,s=K*1.95,T=TEAMS[w.team];cx.save();cx.translate(X,Y);cx.scale(w.dir*s,s);
  const bob=Math.sin(t*3+w.bob)*1.2,wk=w.wk?Math.sin(w.wk)*2:0,hurt=w.hurt||0;
  // body: chubby segmented caterpillar
  const segs=[[-11,8],[-5,7],[1,4],[5,-3]];cx.lineWidth=2.4;
@@ -215,8 +215,8 @@ function drawWorm(w,t){const X=W2(w.x),Y=H2(w.y)-5.5*K,s=K*1.55,T=TEAMS[w.team];
  if(w===curW&&state=='aim'){cx.save();cx.translate(4,-2);cx.rotate(w.aim);const wp=WEAP[weapon];if(wp.id=='baz'){const g=cx.createLinearGradient(0,-3,0,3);g.addColorStop(0,'#9be36a');g.addColorStop(1,'#3d8a24');cx.fillStyle=g;cx.fillRect(-6,-3.5,26,7);cx.strokeStyle='#1a3a10';cx.lineWidth=1.4;cx.strokeRect(-6,-3.5,26,7);cx.fillStyle='#ffd23f';cx.fillRect(14,-3.5,3,7)}else{cx.font='12px serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(wp.ic,15,0)}cx.restore()}
  cx.restore();
  // label
- if(!w.dead){const ly=Y-K*46;cx.font=`800 ${Math.max(10,K*15)}px Anek Greek`;cx.textAlign='center';cx.lineWidth=3;cx.strokeStyle='#1a1446';cx.fillStyle=T.c;cx.strokeText(w.name,X,ly);cx.fillText(w.name,X,ly);const hp=Math.max(0,Math.round(w.shp));cx.fillStyle='#fff';cx.strokeText(hp,X,ly+Math.max(11,K*16));cx.fillText(hp,X,ly+Math.max(11,K*16))}
- if(w===curW&&state=='aim'){const ay=Y-K*(78+Math.sin(t*6)*5);cx.fillStyle='#ffe14d';cx.strokeStyle='#1a1446';cx.lineWidth=2;cx.beginPath();cx.moveTo(X,ay+K*12);cx.lineTo(X-K*8,ay);cx.lineTo(X+K*8,ay);cx.closePath();cx.fill();cx.stroke()}}
+ if(!w.dead){const ly=Y-K*58;cx.font=`800 ${Math.max(10,K*15)}px Anek Greek`;cx.textAlign='center';cx.lineWidth=3;cx.strokeStyle='#1a1446';cx.fillStyle=T.c;cx.strokeText(w.name,X,ly);cx.fillText(w.name,X,ly);const hp=Math.max(0,Math.round(w.shp));cx.fillStyle='#fff';cx.strokeText(hp,X,ly+Math.max(11,K*16));cx.fillText(hp,X,ly+Math.max(11,K*16))}
+ if(w===curW&&state=='aim'){const ay=Y-K*(92+Math.sin(t*6)*5);cx.fillStyle='#ffe14d';cx.strokeStyle='#1a1446';cx.lineWidth=2;cx.beginPath();cx.moveTo(X,ay+K*12);cx.lineTo(X-K*8,ay);cx.lineTo(X+K*8,ay);cx.closePath();cx.fill();cx.stroke()}}
 function drawAim(t){if(!(state=='aim'&&curW&&!curW.dead))return;const a=curW.aim,dx=Math.cos(a)*curW.dir,dy=Math.sin(a);const X=W2(curW.x),Y=H2(curW.y-4);const r=K*70;
  cx.strokeStyle='#fff';cx.lineWidth=2;const ax=X+dx*r,ay=Y+dy*r;cx.beginPath();cx.arc(ax,ay,K*8,0,7);cx.moveTo(ax-K*12,ay);cx.lineTo(ax-K*4,ay);cx.moveTo(ax+K*4,ay);cx.lineTo(ax+K*12,ay);cx.moveTo(ax,ay-K*12);cx.lineTo(ax,ay-K*4);cx.moveTo(ax,ay+K*4);cx.lineTo(ax,ay+K*12);cx.stroke();cx.fillStyle='#ff3b3b';cx.beginPath();cx.arc(ax,ay,K*2.5,0,7);cx.fill();
  if(charge>0){const n=14;for(let i=0;i<n;i++){const k=i/n;if(k>charge)break;const rr=K*(22+k*60);cx.fillStyle=`hsl(${60-k*60},100%,55%)`;cx.beginPath();cx.arc(X+dx*rr,Y+dy*rr,K*(2+k*5),0,7);cx.fill()}}}
