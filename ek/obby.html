@@ -6,7 +6,7 @@
 :root{--bg:#f0f9ff;--card:#fff;--tx:#1e293b;--mu:#64748b;--bd:#e2e8f0;--soft:#f1f5f9;--g1:#8b5cf6;--g2:#ec4899}
 @media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1b2e;--card:#16253d;--tx:#f1f5f9;--mu:#94a3b8;--bd:#2c4466;--soft:#1e3350}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;min-height:100vh}
+body{margin:0;font-family:Fredoka,system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:19px;padding-bottom:64px}
 header{background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:14px 16px;text-align:center}
 header h1{margin:0;font-size:clamp(26px,5vw,36px)}header p{margin:2px 0 0;opacity:.95;font-size:15px}
 main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
@@ -30,18 +30,24 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 .rl{list-style:none;padding:0;text-align:left;counter-reset:r}.rl li{counter-increment:r;background:#fff;color:#0f172a;border-radius:12px;padding:6px 10px;margin:4px 0;font-weight:700;display:flex;gap:8px}.rl li:before{content:counter(r);font-weight:900;min-width:22px}.rl li.me{background:#fde68a}.rl span{margin-left:auto;font-size:15px}
 #rcd{position:fixed;inset:0;background:#10304f99;z-index:60;display:none;align-items:center;justify-content:center;font:900 200px Fredoka,system-ui;color:#fff}
 .qi{display:flex;gap:8px;font-size:16px;font-weight:600;padding:3px 0;align-items:center}.qi.ok{color:#16a34a}.qi.ko{color:#94a3b8;text-decoration:line-through}.qi small{margin-left:auto;color:var(--mu);font-weight:600;text-decoration:none}
+#cfgb{display:none}.fs #cfgb{display:inline-block}.fs header,.fs .cfg,.fs #hint{display:none}.fs.cfgOn .cfg{display:block}.fs main{max-width:none;padding:4px 10px 0}.fs #cv,.fs #cv3{max-width:none}
+#qbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+#qtg{pointer-events:auto;width:min(640px,100%);background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:0;border-radius:18px 18px 0 0;font:700 17px Fredoka,system-ui,sans-serif;padding:11px 18px;display:flex;justify-content:space-between;cursor:pointer;box-shadow:0 -3px 12px rgba(0,0,0,.18)}
+#qpan{pointer-events:auto;display:none;width:min(640px,100%);background:var(--card);border:3px solid var(--bd);border-bottom:0;border-radius:18px 18px 0 0;max-height:55vh;overflow:auto;padding:10px 14px;margin-bottom:-2px}#qbar.open #qpan{display:block}
+#qt{position:fixed;left:50%;bottom:64px;transform:translateX(-50%);z-index:31;background:#16a34a;color:#fff;font-weight:700;font-size:17px;padding:8px 18px;border-radius:99px;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:92vw;text-align:center}#qt:empty{display:none}
 </style></head><body>
 <header><h1>🌈 Παρκούρ Ουρανού</h1><p>Πήδα από πλατφόρμα σε πλατφόρμα και φτάσε στο τέλος!</p></header>
-<main><div class="row"><button class="ch" id="rmb" style="background:#10b981;border-color:#059669;color:#fff">👥 Τάξη / Αγώνας</button></div>
+<main><div class="cfg"><div class="row"><button class="ch" id="rmb" style="background:#10b981;border-color:#059669;color:#fff">👥 Τάξη / Αγώνας</button></div>
 <div class="row"><div class="lab">Τρόπος παιχνιδιού</div><button class="ch on" data-m="2d">🟦 2D (πλάι)</button><button class="ch" data-m="3d">🧊 3D</button></div>
 <div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button><button class="ch" data-l="3">4 · Πολύ δύσκολο</button><button class="ch" data-l="4">5 · Μάστερ</button></div>
 <div class="row"><div class="lab">Χαρακτήρας</div><button class="ch" data-c="dog">🐶 Μίλης</button><button class="ch" data-c="cat">🐱 Νάσα</button><button class="ch" data-c="fox">🦊 Αλεπού</button><button class="ch" data-c="bunny">🐰 Λαγουδάκι</button><button class="ch" data-c="boy">🧒 Άλεξ</button><button class="ch" data-c="girl">👧 Μαρία</button><button class="ch" data-c="astro">👩‍🚀 Αστροναύτης</button><button class="ch" data-c="mage">🧙 Μάγος</button><button class="ch" data-c="knight">🛡️ Ιππότης</button><button class="ch" data-c="robot">🤖 Ρομποτάκι</button><button class="ch" data-c="builder">👷 Χτίστης</button><button class="ch" data-c="pirate">🏴‍☠️ Πειρατίνα</button><button class="ch" data-c="rookie">🟪 Πρωτάρης</button></div>
-<div class="row"><div class="pill"><small>Χρόνος</small><b id="tm">0.0</b></div><div class="pill"><small>Πτώσεις</small><b id="dc">0</b></div><div class="pill"><small>Πόντοι</small><b id="pt">0</b></div></div>
-<div class="card" id="qp" style="max-width:640px;margin:6px auto"></div><div id="qt" style="text-align:center;font-weight:700;color:#16a34a;min-height:26px;font-size:18px"></div><div style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><canvas id="cv3" style="display:none"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
+</div><div class="row"><button class="ch" id="cfgb">⚙️ Ρυθμίσεις</button><div class="pill"><small>Χρόνος</small><b id="tm">0.0</b></div><div class="pill"><small>Πτώσεις</small><b id="dc">0</b></div><div class="pill"><small>Πόντοι</small><b id="pt">0</b></div></div>
+<div id="cvw" style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><canvas id="cv3" style="display:none"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
 <div class="row" id="pad2"><button class="pad" data-k="l">◀</button><button class="pad" data-k="j">⤒</button><button class="pad" data-k="r">▶</button></div>
 <div class="row" id="pad3" style="display:none"><button class="pad" data-k="tl">⟲</button><button class="pad" data-k="fw">▲</button><button class="pad" data-k="bk">▼</button><button class="pad" data-k="tr">⟳</button><button class="pad" data-k="j">⤒</button></div>
 <div id="rmo"><div class="box" id="rmb2"></div></div><div id="rcd"></div>
 <div id="hint" style="text-align:center;color:var(--mu);font-size:15px"></div></main>
+<div id="qt"></div><div id="qbar"><div id="qpan"><div id="qp"></div></div><button id="qtg" type="button"><span id="qsum">🎯 Αποστολές</span><span id="qar">▲</span></button></div>
 <script>
 const $=id=>document.getElementById(id);const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 let AC;function beep(f,d=.12,t='sine',v=.08){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t;o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
@@ -93,7 +99,7 @@ function keyMap(map,down){
  document.querySelectorAll('[data-k]').forEach(b=>{const k=b.dataset.k;const on=e=>{keys[k]=1;e.preventDefault()},off=()=>{keys[k]=0};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)});
 }
 
-const CW=640,CH=420,cv=$('cv'),cx=cv.getContext('2d');cv.width=CW;cv.height=CH;
+const CW=640,CH=420,cv=$('cv'),cx=cv.getContext('2d');cv.width=CW;cv.height=CH;let RS=1;
 const ld=(k,d)=>{try{return localStorage.getItem(k)||d}catch(e){return d}},sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 let Lz=[],qd=[],Q=[],qsig='',QT=0,QF=0,QK=0,QNC=0,pts=0,C=[],cps={},mode=ld('ob_mode','2d'),lvl=+ld('ob_lvl','0')||0,cast=ld('ob_cast','dog'),keys={},t=0,deaths=0,won=false,started=false,pl,cp,P=[],H=[];
 const LV=[{n:16,g:[1.4,2.2],w:[4,5],dy:1,mv:0,sp:0},{n:24,g:[1.8,2.8],w:[3,4],dy:1.2,mv:.3,sp:.25},{n:32,g:[2.2,3.0],w:[2.4,3.2],dy:1.4,mv:.4,sp:.35},{n:40,g:[2.3,3.0],w:[2.2,3.0],dy:1.5,mv:.5,sp:.4},{n:50,g:[2.4,3.1],w:[2.0,2.8],dy:1.6,mv:.55,sp:.45}];
@@ -134,7 +140,7 @@ function qDone(i){if(qd[i])return;qd[i]=1;addP(15);qToast('✅ Αποστολή:
 function qStat(){const got=C.filter(c=>c.got&&!c.s).length,star=C.some(c=>c.got&&c.s),ncp=P.filter(p=>p.t==='cp').length;return{got,star,fl:Object.keys(cps).length,ncp}}
 function qTick(){if(won||!Q.length)return;const s=qStat();if(s.got>=QK)qDone(0);if(s.got>=QNC)qDone(1);if(s.fl>=s.ncp)qDone(2);if(s.star)qDone(3);
  const sig=qd.join('')+s.got+'|'+s.fl+'|'+(s.star?1:0)+'|'+(t>QT?1:0)+'|'+(deaths>QF?1:0)+'|'+(t|0);if(sig!==qsig){qsig=sig;qRender()}}
-function qRender(){const s=qStat();const pr=[s.got+'/'+QK,s.got+'/'+QNC,s.fl+'/'+s.ncp,s.star?'✔':'?',(t|0)+'/'+QT+' δλ',deaths+'/'+QF];
+function qRender(){const s=qStat();$('qsum').textContent='🎯 Αποστολές '+qd.filter(x=>x).length+'/6';const pr=[s.got+'/'+QK,s.got+'/'+QNC,s.fl+'/'+s.ncp,s.star?'✔':'?',(t|0)+'/'+QT+' δλ',deaths+'/'+QF];
  $('qp').innerHTML='<div style="font-weight:700;text-align:center;color:var(--mu);font-size:14px">🎯 ΑΠΟΣΤΟΛΕΣ ('+qd.filter(x=>x).length+'/6)</div>'+Q.map((q,i)=>{const ko=!qd[i]&&((i===4&&t>QT)||(i===5&&deaths>QF));return '<div class="qi '+(qd[i]?'ok':ko?'ko':'')+'"><span>'+(qd[i]?'✅':ko?'❌':'⬜')+'</span>'+q.t+'<small>'+(qd[i]?'έγινε!':pr[i])+'</small></div>'}).join('')}
 function qWin(){if(t<QT)qDone(4);if(deaths<=QF)qDone(5);qRender()}
 function crUpd(dt){if(pl&&pl.onp&&pl.onp.cr&&pl.onp.ct<0){pl.onp.ct=0;beep(240,.08,'triangle')}for(const p of P)if(p.cr&&p.ct>=0){p.ct+=dt;if(p.ct>.8)p.gone=1;if(p.ct>3.2){p.gone=0;p.ct=-1}}}
@@ -298,7 +304,7 @@ function up2(dt){P.forEach(platPos);const ax=(keys.r?1:0)-(keys.l?1:0);pl.vx=ax*
  for(const h of H){const p=P[h.p],sx=p.x+p.w/2+h.o;if(Math.abs(pl.x-sx)<.5&&pl.y>p.y-.55&&pl.y-1.6<p.y)die()}
  for(const c of C){if(c.got)continue;const p=P[c.p];if(Math.abs(pl.x-(p.x+p.w/2+c.o))<.7&&pl.y-1.9<p.y-.9&&pl.y>p.y-1.9){c.got=1;addP(c.s?30:10);beep(1040,.08,'square')}}
  lz2();if(pl.y>24)die()}
-function draw2(){const T=32,vw=CW/T,vh=CH/T;const cxp=pl.x-vw/2+2,cyp=pl.y-vh*.62;
+function draw2(){cx.setTransform(RS,0,0,RS,0,0);const T=32,vw=CW/T,vh=CH/T;const cxp=pl.x-vw/2+2,cyp=pl.y-vh*.62;
  const g=cx.createLinearGradient(0,0,0,CH);g.addColorStop(0,'#38bdf8');g.addColorStop(1,'#fef3c7');cx.fillStyle=g;cx.fillRect(0,0,CW,CH);
  cx.fillStyle='#fde047';cx.fillRect(540,26,50,50);cx.fillStyle='rgba(255,255,255,.85)';[[80,60],[320,90],[520,50]].forEach(([x,y])=>{const o=((x-cxp*5)%900+900)%900-100;cx.fillRect(o,y,90,20);cx.fillRect(o+14,y-12,56,14)});
  cx.fillStyle='rgba(100,150,200,.35)';for(let i=0;i<9;i++){const bx=((i*140-cxp*14)%1260+1260)%1260-120,bh=70+(i*37%60);cx.fillRect(bx,CH-bh-90,90,bh+90)}
@@ -321,7 +327,7 @@ function up3(dt){P.forEach(platPos);const fw=(keys.fw?1:0)-(keys.bk?1:0),tn=(key
  for(const h of H){const p=P[h.p],hx=p.x+p.w/2+h.o,hz=p.z+p.d/2;if(Math.abs(pl.x-hx)<.62&&Math.abs(pl.z-hz)<.62&&pl.y<p.y+p.h+.7&&pl.y+1.2>p.y+p.h)die()}
  for(const c of C){if(c.got)continue;const p=P[c.p];if(Math.abs(pl.x-(p.x+p.w/2+c.o))<.8&&Math.abs(pl.z-(p.z+p.d/2))<.8&&pl.y<p.y+p.h+1.6&&pl.y+1.6>p.y+p.h+.4){c.got=1;addP(c.s?30:10);beep(1040,.08,'square')}}
  lz3();if(pl.y<-9)die()}
-function draw3(){const c=E3.cam,S=E3.shade;c.yaw=pl.yaw;c.pitch=-.38;c.x=pl.x-Math.sin(pl.yaw)*6.5;c.z=pl.z-Math.cos(pl.yaw)*6.5;c.y=pl.y+4.2;
+function draw3(){cx.setTransform(RS,0,0,RS,0,0);const c=E3.cam,S=E3.shade;c.yaw=pl.yaw;c.pitch=-.38;c.x=pl.x-Math.sin(pl.yaw)*6.5;c.z=pl.z-Math.cos(pl.yaw)*6.5;c.y=pl.y+4.2;
  const g=cx.createLinearGradient(0,0,0,CH);g.addColorStop(0,'#38bdf8');g.addColorStop(1,'#fef3c7');cx.fillStyle=g;cx.fillRect(0,0,CW,CH);
  const pu=140+Math.sin(t*3)*25;const lava=[{p:[[-300,-8,-300],[300,-8,-300],[300,-8,300],[-300,-8,300]],n:[0,1,0],col:'rgb(239,'+(pu|0)+',40)'}];E3.render(cx,CW,CH,lava,true);
  const F=[],cols={start:['#3b82f6','#1d4ed8'],cp:['#14b8a6','#0f766e'],end:['#facc15','#ca8a04'],mv:['#fb923c','#c2410c'],n:['#4ade80','#15803d']};
@@ -465,7 +471,7 @@ function gl3(){
 }
 
 /* ---------- κοινά ---------- */
-function setMode(m){mode=m;cv.style.display=(m==='3d'&&GLok)?'none':'';cv3.style.display=(m==='3d'&&GLok)?'':'none';sv('ob_mode',m);sel('data-m',m);$('pad2').style.display=m==='2d'?'':'none';$('pad3').style.display=m==='3d'?'':'none';
+function setMode(m){mode=m;cv.style.display=(m==='3d'&&GLok)?'none':'';cv3.style.display=(m==='3d'&&GLok)?'':'none';if(window.fit)fit();sv('ob_mode',m);sel('data-m',m);$('pad2').style.display=m==='2d'?'':'none';$('pad3').style.display=m==='3d'?'':'none';
  $('hint').innerHTML=m==='2d'?'Κίνηση: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> ή <b>↑</b> · Πήδα από πλατφόρμα σε πλατφόρμα, απόφυγε τη λάβα και τα αγκάθια. Οι σημαίες σώζουν τη θέση σου. Φτάσε στη χρυσή πλατφόρμα! · ⚡ Τα λέιζερ αναβοσβήνουν: πέρασε όταν σβήνουν ή πήδα τα · 🟫 Οι αμμώδεις πλατφόρμες γκρεμίζονται · ⭐ Βρες το κρυφό αστέρι · 🎯 Ολοκλήρωσε τις αποστολές!':'Κίνηση: <b>W</b>/<b>S</b> ή <b>↑ ↓</b> · Στροφή: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> · Πήδα στις πλατφόρμες, απόφυγε τα κόκκινα κουτιά και τη λάβα. Οι σημαίες σώζουν τη θέση σου! · ⚡ Πήδα πάνω από τα λέιζερ ή πέρασε όταν σβήνουν · 🟫 Οι αμμώδεις πλατφόρμες γκρεμίζονται · ⭐ Βρες το αστέρι · 🎯 Ολοκλήρωσε τις αποστολές!';reset()}
 function setLvl(l){lvl=l;sv('ob_lvl',l);sel('data-l',l);reset()}
 function setCast(c){cast=c;sv('ob_cast',c);sel('data-c',c)}
@@ -510,6 +516,15 @@ function rmCount(st){rmOpen(false);const m=/^obby-(\d)-(2d|3d)$/.exec(st.game);i
   o.textContent=n;if(o.dataset.n!=n){o.dataset.n=n;beep(n===1?880:520,.12)}},60)}
 function rmReport(){if(RM&&!RM.teacher&&rmRound){const st=deaths===0?3:deaths<=2?2:1;rapi('score',{code:RM.code,pid:RM.pid,s:st,p:pts,d:1}).then(r=>{if(r&&r.ok){rmS=r}rmOpen(true)});rmRound=0}}
 $('rmb').onclick=()=>{rmOpen(true);if(RM)rmStart()};if(RM)rmStart();
-addEventListener('pointerdown',()=>window.focus());window.focus();GLok=gInit();setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
+addEventListener('pointerdown',()=>window.focus());window.focus();GLok=gInit();setCast(cast);sel('data-l',lvl);setMode(mode);
+function isFS(){return screen.width>800&&innerWidth>=screen.width-6&&innerHeight>=screen.height-6}
+function fit(){const fs=isFS();document.body.classList.toggle('fs',fs);const c=(mode==='3d'&&GLok)?cv3:cv,w0=$('cvw');let w=Math.min(640,innerWidth-20);
+ if(fs){c.style.width='640px';w0.style.width='640px';w0.style.maxWidth='none';const bh=document.body.getBoundingClientRect().height,ch=c.getBoundingClientRect().height;w=Math.max(320,Math.min((innerHeight-(bh-ch)-10)*CW/CH,innerWidth-24))}
+ const ww=Math.floor(w);cv.style.width=cv3.style.width=w0.style.width=ww+'px';w0.style.maxWidth='none';
+ RS=Math.round(Math.max(1,Math.min(3,ww*(devicePixelRatio||1)/CW))*4)/4;const bw=Math.round(CW*RS),bh2=Math.round(CH*RS);if(cv.width!==bw){cv.width=bw;cv.height=bh2}if(cv3.width!==bw){cv3.width=bw;cv3.height=bh2}}
+addEventListener('resize',fit);document.addEventListener('fullscreenchange',fit);
+$('cfgb').onclick=()=>{document.body.classList.toggle('cfgOn');fit()};
+$('qtg').onclick=()=>{const o=$('qbar').classList.toggle('open');$('qar').textContent=o?'▼':'▲'};
+fit();;requestAnimationFrame(loop);
 
 </script></body></html>
