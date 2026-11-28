@@ -418,6 +418,11 @@ function gAvatar(root,kind,ph,air,mov){
  if(kind==='pirate'){B(root,0,1.1,-.02,.7,.5,.38,'#2563eb');B(root,0,.84,0,.7,.1,.38,'#3a2410');B(root,0,.84,-.2,.14,.1,.03,'#facc15');B(root,-.18,1.48,-.01,.14,.2,.4,'#c2410c');B(root,0,1.86,0,.84,.14,.58,'#1f2937');B(root,0,1.78,0,.64,.12,.6,'#7f1d1d');B(root,0,1.88,-.3,.12,.12,.03,'#f8fafc');B(root,.13,1.58,-.3,.16,.16,.03,'#111827')}
  if(kind==='rookie'){[-.18,0,.18].forEach((x,i)=>gdraw(GMS.cone,M4.mul(root,gt(x,1.83,0,0,0,.2,.28+(i===1?.1:0),.2)),{c:hc('#4c1d95')}));B(root,0,.84,0,.68,.1,.38,'#f472b6');gdraw(GMS.star,M4.mul(root,gt(0,1.05,-.19,0,0,.3,.3,.08)),{c:hc('#fde047'),e:[.3,.25,0]})}
 }
+const BK={};['milis','nasa'].forEach(k=>{BK[k]={};['back','turn'].forEach(v=>{const i=new Image();i.src='../logo/'+k+'_'+v+'.webp?v=3';BK[k][v]=i})});
+function gSprite(k,ph,air,mv){const B=BK[k],turn=mv&&(keys.tl||keys.tr);let im=turn?B.turn:B.back,fl=false;
+ if(turn)fl=!!keys.tl;else if(mv&&!air)fl=Math.floor(t*8)%2===1;
+ if(!(im&&im.complete&&im.naturalWidth))return false;
+ const H=190,W=H*im.naturalWidth/im.naturalHeight;GCX.clearRect(0,0,256,256);GCX.save();GCX.translate(128,250);if(fl)GCX.scale(-1,1);if(air)GCX.rotate(-.04);GCX.drawImage(im,-W/2,-H,W,H);GCX.restore();return true}
 let gShake=0;
 function gl3(){
  if(!GLok)return;gl.viewport(0,0,cv3.width,cv3.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gBound=null;
@@ -455,8 +460,8 @@ function gl3(){
  // παίκτης
  const ph=mv?t*14:0,air=!pl.onp;
  if(BLK[cast])gAvatar(gt(px,py,pz,-pl.yaw,0,1,1,1),cast,ph,air,mv);
- else{GCX.clearRect(0,0,256,256);drawChar(GCX,128,244,150,cast,1,'back',ph,air);gl.bindTexture(gl.TEXTURE_2D,GTX.spr);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,GSC);
-  gdraw(GMS.qz,gt(px,py+1.36,pz,-pl.yaw,0,3,3,1),{tx:GTX.spr,lit:0,fog:0,nodepth:0})}
+ else{if(!(SPK[cast]&&gSprite(SPK[cast],ph,air,mv))){GCX.clearRect(0,0,256,256);drawChar(GCX,128,244,150,cast,1,'back',ph,air)}gl.bindTexture(gl.TEXTURE_2D,GTX.spr);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,GSC);
+  gdraw(GMS.qz,gt(px,py+1.24,pz,-pl.yaw,0,2.6,2.6,1),{tx:GTX.spr,lit:0,fog:0,nodepth:0})}
 }
 
 /* ---------- κοινά ---------- */
