@@ -178,7 +178,7 @@ const esc=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[
 function go(o){Object.assign(st,o);R();window.scrollTo(0,0)}
 function nextCase(){return CASES.find(c=>unlocked(c)&&!(prog[c.id]>0))||CASES.find(c=>unlocked(c))}
 function nav(){return `<nav>${[['home','🏠','Αρχική'],['hand','🧰','Εργαλεία'],['prof','👤','Προφίλ']].map(([k,i,l])=>`<button class="${st.tab==k&&st.ci==null?'on':''}" onclick="go({tab:'${k}',ci:null})"><span>${i}</span>${l}</button>`).join('')}</nav>`}
-function R(){const a=$('#app');let h='';
+function R(){const a=$('#app');let h='';try{parent.postMessage({dkDepth:depth()},'*')}catch(e){}
  if(st.ci!=null)h=caseView(CASES[st.ci]);
  else if(st.tab=='hand')h=handView();else if(st.tab=='prof')h=profView();else h=homeView();
  a.innerHTML=`<div class="fade">${h}</div>`+(st.ci==null?nav():'');
@@ -201,7 +201,9 @@ function caseView(c){const hd=(sub)=>`<div class="top"><button class="rb" onclic
  const lab=c.opts.find(o=>o[0]==c.truth);
  return hd('Αποτέλεσμα')+`<div class="panel res"><div class="st">${stars(s)}</div><h2>${ok?'Μπράβο, ντετέκτιβ!':'Σχεδόν!'}</h2><p>${ok?c.res[c.truth]:'Η σωστή απάντηση ήταν: <b>'+lab[1]+' '+lab[2]+'</b>. '+c.res[c.truth]}</p><p>${c.why}</p>${miss.length?`<div class="clue n"><h5>Στοιχεία που έχασες</h5>${miss.map(t=>`${t.ic} <b>${t.n}</b>: ${t.x}`).join('<br><br>')}</div>`:'<div class="clue k"><h5>🔍 Βρήκες όλα τα βασικά στοιχεία!</h5></div>'}<div class="rule">💡 ${c.rule}</div></div>`
   +(CASES[st.ci+1]&&unlocked(CASES[st.ci+1])?`<button class="big" style="background:linear-gradient(180deg,${CASES[st.ci+1].c1},${CASES[st.ci+1].c2})" onclick="openCase(${st.ci+1})">Επόμενη υπόθεση ➜</button>`:'')+`<button class="big w" onclick="back()">🏠 Αρχική</button>`}
-function back(){go({ci:null,tab:'home'})}
+function back(){if(st.ci==null)return;const m={intro:null,res:'intro',verdict:'res',result:null}[st.phase];m?go({phase:m}):go({ci:null,tab:'home'})}
+function depth(){return st.ci==null?0:{intro:1,res:2,verdict:3,result:3}[st.phase]||1}
+addEventListener('message',e=>{if(e.data&&e.data.dkBack){if($('#mod').innerHTML)closeM();else back()}});
 function clue(id){const c=CASES[st.ci],t=c.tools.find(x=>x.id==id);st.opened[id]=1;
  modal(`<button class="xx" onclick="closeM()">✕</button><div style="font-size:48px">${t.ic}</div><h3>${t.n}</h3><div class="clue ${t.k?'k':'n'}" style="text-align:left"><h5>${t.h}</h5>${t.im?'<div class="cl2">'+t.im.map(f=>'<div class="pic"><img src="nt/'+f+(/^mouflon[23]$/.test(f)?'.webp':'.jpg')+'" alt=""></div>').join('')+'</div>':''}${t.x}</div><button class="big" style="background:linear-gradient(180deg,${c.c1},${c.c2})" onclick="closeM()">Το κατάλαβα</button>`);R()}
 function decide(k){const c=CASES[st.ci];st.ans=k;const ok=k==c.truth,keys=c.tools.filter(t=>t.k),all=keys.every(t=>st.opened[t.id]),s=1+(ok?1:0)+(all?1:0);prog[c.id]=Math.max(prog[c.id]||0,s);sto.set('stars',prog);go({phase:'result'})}
