@@ -276,7 +276,13 @@ function drawBlock(c,x,y,h,kind,face,view,ph,air){
   if(sd){c.fillStyle='#111827';c.beginPath();c.ellipse(5,-58,4,3.8,0,0,7);c.fill();c.stroke();c.lineWidth=1.4;c.beginPath();c.moveTo(hx,-65);c.lineTo(11,-52);c.stroke();c.lineWidth=2.3}}
  if(kind==='rookie'){c.fillStyle='#4c1d95';[-6,0,6].forEach((k,i)=>{c.beginPath();c.moveTo(k-3.4,-67);c.lineTo(k+(i-1)*1.5,-76-(i===1?3:0));c.lineTo(k+3.4,-67);c.closePath();c.fill();c.stroke()})}
  c.restore()}
-function drawChar(c,x,y,h,kind,face,view,ph,air){(BLK[kind]?drawBlock:HUM[kind]?drawHuman:drawPet)(c,x,y,h,kind,face,view,ph,air)}
+const SPR={};['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp';SPR[k]=i});
+const SPK={dog:'milis',cat:'nasa'};
+function drawSprite(c,x,y,h,im,face,ph,air,moving){const H=h*1.22,W=H*im.naturalWidth/im.naturalHeight;const sw=Math.sin(ph);
+ c.save();c.translate(x,y);c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(0,1,W*.42,4.5,0,0,7);c.fill();
+ if(face<0)c.scale(-1,1);if(moving&&!air){c.translate(0,-Math.abs(sw)*4);c.rotate(sw*.07)}if(air)c.scale(.94,1.07);
+ c.drawImage(im,-W/2,-H,W,H);c.restore()}
+function drawChar(c,x,y,h,kind,face,view,ph,air){const im=SPR[SPK[kind]];if(im&&im.complete&&im.naturalWidth){drawSprite(c,x,y,h,im,face,ph,air,ph!==0);return}(BLK[kind]?drawBlock:HUM[kind]?drawHuman:drawPet)(c,x,y,h,kind,face,view,ph,air)}
 /* ---------- 2D ---------- */
 function up2(dt){P.forEach(platPos);const ax=(keys.r?1:0)-(keys.l?1:0);pl.vx=ax*5.5;if(ax)pl.face=ax;
  const sup=(x,y0,y1)=>{for(const p of P){if(p.gone)continue;if(x+.3>p.x&&x-.3<p.x+p.w&&y0<=p.y+.06&&y1>=p.y)return p}return null};
@@ -299,7 +305,7 @@ function draw2(){const T=32,vw=CW/T,vh=CH/T;const cxp=pl.x-vw/2+2,cyp=pl.y-vh*.6
  P.forEach(p=>{if(p.cr&&!p.gone){const X=(p.x-cxp)*T,Y=(p.y-cyp)*T;cx.strokeStyle='rgba(60,30,10,.55)';cx.lineWidth=2;cx.beginPath();for(let k=1;k<p.w;k+=1.3){cx.moveTo(X+k*T,Y);cx.lineTo(X+k*T-5,Y+6);cx.lineTo(X+k*T+2,Y+11)}cx.stroke()}});
  H.forEach(h=>{const p=P[h.p],X=(p.x+p.w/2+h.o-cxp)*T,Y=(p.y-cyp)*T;cx.shadowColor='#ff2020';cx.shadowBlur=12;cx.fillStyle='#dc2626';for(let k=-1;k<=1;k+=2){cx.beginPath();cx.moveTo(X+k*16-14*0,Y);cx.lineTo(X+k*16/2-8+8,Y-20);cx.lineTo(X+k*16/2+8+8,Y);}cx.beginPath();cx.moveTo(X-17,Y);cx.lineTo(X-8,Y-22);cx.lineTo(X,Y);cx.lineTo(X+8,Y-22);cx.lineTo(X+17,Y);cx.closePath();cx.fill();cx.shadowBlur=0});
  C.forEach(c=>{if(c.got)return;const p=P[c.p],X=(p.x+p.w/2+c.o-cxp)*T,Y=(p.y-cyp)*T-30,w=Math.abs(Math.cos(t*3+c.p))*9+2;if(c.s){star2(X,Y-6,15);return}cx.fillStyle='#f59e0b';cx.beginPath();cx.ellipse(X,Y,w+2,11,0,0,7);cx.fill();cx.fillStyle='#fde047';cx.beginPath();cx.ellipse(X,Y,w,9,0,0,7);cx.fill()});
- const X=(pl.x-cxp)*T,Y=(pl.y-cyp)*T;drawChar(cx,X,Y,BLK[cast]?78:66,cast,pl.face||1,'side',(keys.l||keys.r)?t*14:0,!pl.onp)}
+ const X=(pl.x-cxp)*T,Y=(pl.y-cyp)*T;drawChar(cx,X,Y,BLK[cast]||SPK[cast]?78:66,cast,pl.face||1,'side',(keys.l||keys.r)?t*14:0,!pl.onp)}
 /* ---------- 3D ---------- */
 function up3(dt){P.forEach(platPos);const fw=(keys.fw?1:0)-(keys.bk?1:0),tn=(keys.tr?1:0)-(keys.tl?1:0);pl.yaw+=tn*1.9*dt;
  const sy=Math.sin(pl.yaw),cy=Math.cos(pl.yaw);const sp=fw?5.2:0;
