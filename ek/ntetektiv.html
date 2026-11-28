@@ -3,19 +3,19 @@
 <style>
 :root{--ink:#0a2a66;--tx:#1e293b;--mu:#64748b;--card:#fff;--soft:#f1f5f9;--bd:#dbeafe;--g:#10b981;--r:#ef4444;--y:#fbbf24}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{background:#071f55}html,body{margin:0}
-body{font-family:Fredoka,"Trebuchet MS",system-ui,sans-serif;background:linear-gradient(180deg,#1177d1,#0b3d91 40%,#071f55) #071f55;min-height:100vh;color:var(--tx);font-size:17px}
-#app{max-width:520px;margin:0 auto;min-height:100vh;padding:0 14px 96px;position:relative}
+html{background:#063a3a}html,body{margin:0}
+body{font-family:Fredoka,"Trebuchet MS",system-ui,sans-serif;background:linear-gradient(180deg,#0f8a7a,#0b5d57 42%,#063a3a) #063a3a;min-height:100vh;color:var(--tx);font-size:17px}
+#app{max-width:1000px;margin:0 auto;min-height:100vh;padding:0 14px 96px;position:relative}
 .top{display:flex;align-items:center;gap:10px;padding:14px 0 6px}
 .rb{width:46px;height:46px;border-radius:50%;border:0;background:#fff;color:var(--ink);font-size:22px;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.18);cursor:pointer;flex:0 0 46px;display:grid;place-items:center;font-family:inherit}
 .rb:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
 .ttl{flex:1;color:#fff;min-width:0}.ttl small{display:block;color:#ffe066;font-weight:700;letter-spacing:.04em;font-size:13px}.ttl b{display:block;font-size:clamp(20px,5.4vw,26px);line-height:1.15;text-shadow:0 3px 0 rgba(0,0,0,.25)}
-.sub{color:#cfe6ff;font-weight:600;font-size:14px;margin:0 0 8px 2px}
+.sub{color:#d1fae5;font-weight:600;font-size:14px;margin:0 0 8px 2px}
 .hero{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.13);border:2px solid rgba(255,255,255,.25);border-radius:24px;padding:10px 14px;margin:6px 0 14px;color:#fff}
-.hero svg{flex:0 0 74px;width:74px;height:90px}.hero h1{margin:0;font-size:clamp(23px,6vw,30px);line-height:1.1}.hero p{margin:4px 0 0;color:#cfe6ff;font-weight:600;font-size:15px}
+.hero svg{flex:0 0 74px;width:74px;height:90px}.hero h1{margin:0;font-size:clamp(23px,6vw,30px);line-height:1.1}.hero p{margin:4px 0 0;color:#d1fae5;font-weight:600;font-size:15px}
 .stat{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}.stat span{background:#fff;color:var(--ink);border-radius:99px;font-weight:700;font-size:14px;padding:3px 12px}
-h3.sec{color:#7dd3fc;font-size:13px;letter-spacing:.06em;margin:4px 2px 0}h2.sec{color:#fff;margin:0 2px 10px;font-size:28px;text-shadow:0 3px 0 rgba(0,0,0,.3)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+h3.sec{color:#fde68a;font-size:13px;letter-spacing:.06em;margin:4px 2px 0}h2.sec{color:#fff;margin:0 2px 10px;font-size:28px;text-shadow:0 3px 0 rgba(0,0,0,.3)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr);gap:18px}.cc{min-height:200px}.hero{max-width:640px}}.nar{max-width:540px;margin:0 auto}#app.home .nar{max-width:none}
 .cc{position:relative;border:0;text-align:left;font-family:inherit;color:#fff;border-radius:26px;padding:14px 14px 12px;min-height:178px;cursor:pointer;border:3px solid rgba(255,255,255,.4);box-shadow:0 6px 0 rgba(0,0,0,.2);overflow:hidden;display:flex;flex-direction:column}
 .cc small{font-weight:700;font-size:12px;opacity:.95;letter-spacing:.04em}.cc b{font-size:clamp(17px,4.6vw,21px);line-height:1.15;margin-top:3px}
 .cc .em{position:absolute;left:12px;bottom:10px;font-size:54px;filter:drop-shadow(0 4px 3px rgba(0,0,0,.3))}
@@ -29,8 +29,8 @@ h3.sec{color:#7dd3fc;font-size:13px;letter-spacing:.06em;margin:4px 2px 0}h2.sec
 .cta:active{transform:translateX(-50%) translateY(4px);box-shadow:0 2px 0 #b46f00}
 nav{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(520px,100%);background:#fff;border-radius:26px 26px 0 0;display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -4px 18px rgba(0,0,0,.25);z-index:5}
 nav button{flex:1;border:0;background:none;font-family:inherit;font-weight:700;font-size:13px;color:#64748b;display:grid;gap:0;justify-items:center;cursor:pointer;padding:2px}nav button span{font-size:24px}nav button.on{color:#0e8a9b}
-.panel{background:#fff;border-radius:26px;border:3px solid #bae6fd;padding:16px;margin-bottom:14px;box-shadow:0 6px 0 rgba(0,0,0,.12)}
-.post{background:#fff;border-radius:22px;padding:14px;border:2px solid #bae6fd}
+.panel{background:#fff;border-radius:26px;border:3px solid #a7f3d0;padding:16px;margin-bottom:14px;box-shadow:0 6px 0 rgba(0,0,0,.12)}
+.post{background:#fff;border-radius:22px;padding:14px;border:2px solid #a7f3d0}
 .ph{display:flex;gap:10px;align-items:center;margin-bottom:8px}.av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:18px;flex:0 0 48px}
 .ph b{display:block;color:var(--ink);font-size:17px}.ph small{color:var(--mu);font-weight:600}
 .tag{display:inline-block;background:#ffe4e6;color:#be123c;border-radius:99px;font-weight:700;font-size:13px;padding:2px 10px;margin:2px 0 6px}
@@ -39,8 +39,8 @@ nav button{flex:1;border:0;background:none;font-family:inherit;font-weight:700;f
 .eng{display:flex;gap:12px;flex-wrap:wrap;color:#475569;font-weight:700;font-size:14px;margin-top:6px}
 .cm{background:#f8fafc;border-radius:12px;padding:6px 10px;margin:5px 0;font-weight:600;font-size:15px}.cm b{color:#0e7490}
 .dex{display:flex;gap:6px;align-items:flex-end;margin-top:12px}.dex svg{flex:0 0 96px;width:96px;height:120px}
-.say{position:relative;background:#fff;border:3px solid #bae6fd;border-radius:22px;padding:12px 14px;font-weight:600;color:#0f2a52;font-size:17px;line-height:1.35;flex:1;margin-bottom:22px}
-.say:before{content:"";position:absolute;left:-12px;bottom:24px;width:18px;height:18px;background:#fff;border-left:3px solid #bae6fd;border-bottom:3px solid #bae6fd;transform:rotate(45deg)}
+.say{position:relative;background:#fff;border:3px solid #a7f3d0;border-radius:22px;padding:12px 14px;font-weight:600;color:#0f2a52;font-size:17px;line-height:1.35;flex:1;margin-bottom:22px}
+.say:before{content:"";position:absolute;left:-12px;bottom:24px;width:18px;height:18px;background:#fff;border-left:3px solid #a7f3d0;border-bottom:3px solid #a7f3d0;transform:rotate(45deg)}
 .big{display:block;width:100%;border:0;font-family:inherit;color:#fff;font-weight:700;font-size:20px;padding:14px;border-radius:99px;cursor:pointer;margin-top:10px;text-shadow:0 2px 0 rgba(0,0,0,.2);box-shadow:0 6px 0 rgba(0,0,0,.25)}
 .big:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.25)}.big[disabled]{opacity:.45;pointer-events:none}.big.w{background:#fff;color:var(--ink);text-shadow:none;border:3px solid #cbd5e1}
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -60,15 +60,15 @@ nav button{flex:1;border:0;background:none;font-family:inherit;font-weight:700;f
 .res{text-align:center}.res .st{font-size:46px;letter-spacing:6px}.res h2{margin:6px 0;color:#0a2a66;font-size:28px}.res p{font-weight:600;text-align:left}
 .rule{background:#fef3c7;border:3px solid #fcd34d;border-radius:18px;padding:10px 14px;font-weight:600;text-align:left;margin:10px 0}
 .modal{position:fixed;inset:0;background:rgba(2,12,40,.78);backdrop-filter:blur(5px);display:grid;place-items:center;padding:16px;z-index:20}
-.mc{background:#fff;border:3px solid #bae6fd;border-radius:30px;width:min(480px,100%);padding:18px;text-align:center;max-height:94vh;overflow:auto}
+.mc{background:#fff;border:3px solid #a7f3d0;border-radius:30px;width:min(480px,100%);padding:18px;text-align:center;max-height:94vh;overflow:auto}
 .mc .xx{float:right;border:0;background:#eef2f7;width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer;font-family:inherit;color:#475569}
 .mc svg.dx{width:200px;height:230px;margin:0 auto;display:block}
-.chip{display:inline-block;background:#e0f2fe;border:2px solid #7dd3fc;color:#075985;font-weight:700;border-radius:99px;padding:4px 14px;margin:6px 0}
-.mc h3{margin:6px 0;color:#0a2a66;font-size:25px}.mc .tx{background:#fff;border:2px solid #e0f2fe;border-radius:20px;padding:12px;font-weight:600;color:#334155;margin:8px 0;line-height:1.4}
-.dots{display:flex;gap:7px;justify-content:center;margin:12px 0}.dots i{width:12px;height:12px;border-radius:50%;background:#cbd5e1}.dots i.on{width:34px;border-radius:9px;background:#0284c7}
+.chip{display:inline-block;background:#d1fae5;border:2px solid #5eead4;color:#0f766e;font-weight:700;border-radius:99px;padding:4px 14px;margin:6px 0}
+.mc h3{margin:6px 0;color:#0a2a66;font-size:25px}.mc .tx{background:#fff;border:2px solid #d1fae5;border-radius:20px;padding:12px;font-weight:600;color:#334155;margin:8px 0;line-height:1.4}
+.dots{display:flex;gap:7px;justify-content:center;margin:12px 0}.dots i{width:12px;height:12px;border-radius:50%;background:#cbd5e1}.dots i.on{width:34px;border-radius:9px;background:#0d9488}
 .mrow{display:flex;gap:10px}.mrow .big{margin-top:6px;font-size:18px}
 .hand{display:grid;gap:10px}.hand .tl{box-shadow:none;cursor:default}
-.note{color:#cfe6ff;font-size:14px;font-weight:600;text-align:center;margin:10px 4px}
+.note{color:#d1fae5;font-size:14px;font-weight:600;text-align:center;margin:10px 4px}
 @media(prefers-reduced-motion:no-preference){.fade{animation:fd .28s ease}@keyframes fd{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}}
 </style></head><body><div id="app"></div><div id="mod"></div><script>
 const $=s=>document.querySelector(s);
@@ -97,8 +97,8 @@ mouflon:`<svg viewBox="0 0 320 190"><defs><linearGradient id="mf1" x1="0" y1="0"
 flood:`<svg viewBox="0 0 320 190"><defs><linearGradient id="fl1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6b7a8c"/><stop offset="1" stop-color="#c9d3dd"/></linearGradient></defs><rect width="320" height="190" fill="url(#fl1)"/><g fill="#b9a68a"><rect x="0" y="30" width="70" height="90"/><rect x="78" y="50" width="60" height="70"/><rect x="190" y="40" width="64" height="80"/><rect x="258" y="60" width="62" height="60"/></g><g fill="#6a8aa8"><rect x="10" y="44" width="14" height="16"/><rect x="40" y="44" width="14" height="16"/><rect x="198" y="54" width="14" height="16"/><rect x="226" y="54" width="14" height="16"/></g><rect x="100" y="18" width="46" height="22" rx="3" fill="#2f6bd1"/><text x="123" y="33" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="sans-serif">STOP</text><rect y="116" width="320" height="76" fill="#8a6d3a" opacity=".92"/><path d="M0 130 Q40 122 80 130 T160 130 T240 130 T320 130" stroke="rgba(255,255,255,.4)" stroke-width="3" fill="none"/><g><rect x="130" y="108" width="60" height="22" rx="8" fill="#c0392b"/><rect x="142" y="96" width="34" height="16" rx="6" fill="#e07a6b"/></g><circle cx="160" cy="95" r="24" fill="rgba(0,0,0,.55)"/><path d="M152 83 L174 95 L152 107Z" fill="#fff"/><rect x="8" y="8" width="84" height="20" rx="10" fill="#e11d48"/><text x="50" y="22" text-anchor="middle" font-size="12" font-weight="700" fill="#fff" font-family="sans-serif">● ΖΩΝΤΑΝΑ</text></svg>`};
 const OPT3=[['real','✅','Αληθινή'],['fake','❌','Ψεύτικη'],['mis','⚠️','Παραπλανητική']];
 const CASES=[
-{id:1,t:'Καρχαρίας στην παραλία;',card:'Καρχαρίας στην παραλία;',em:'🦈',c1:'#0ea5b7',c2:'#0b6f8a',tool:'#0ea5b7',need:0,
- post:()=>`<div class="post"><div class="ph"><div class="av" style="background:#0b6f8a">ΚΤ</div><div><b>Κύπρος Τώρα Live</b><small>@kypros_now_live · Σήμερα, 09:42</small></div></div><span class="tag">ΕΚΤΑΚΤΟ</span><h4>ΚΑΡΧΑΡΙΑΣ ΣΤΗΝ ΑΚΤΗ ΤΗΣ ΛΑΡΝΑΚΑΣ!</h4><p>Κόσμος βγήκε τρέχοντας από το νερό. ΜΟΙΡΑΣΤΕΙΤΕ ΤΟ ΠΑΝΤΟΥ!</p><div class="pic"><img src="nt/shark2.jpg" alt="Φωτογραφία με καρχαρία κοντά στην ακτή" loading="lazy"></div><div class="eng"><span>👍 842 likes</span><span>💬 156 σχόλια</span><span>🔁 315 κοινοποιήσεις</span></div></div>`,
+{id:1,t:'Καρχαρίας στην παραλία;',card:'Καρχαρίας στην παραλία;',em:'🦈',c1:'#f97316',c2:'#c2410c',tool:'#f97316',need:0,
+ post:()=>`<div class="post"><div class="ph"><div class="av" style="background:#c2410c">ΚΤ</div><div><b>Κύπρος Τώρα Live</b><small>@kypros_now_live · Σήμερα, 09:42</small></div></div><span class="tag">ΕΚΤΑΚΤΟ</span><h4>ΚΑΡΧΑΡΙΑΣ ΣΤΗΝ ΑΚΤΗ ΤΗΣ ΛΑΡΝΑΚΑΣ!</h4><p>Κόσμος βγήκε τρέχοντας από το νερό. ΜΟΙΡΑΣΤΕΙΤΕ ΤΟ ΠΑΝΤΟΥ!</p><div class="pic"><img src="nt/shark2.jpg" alt="Φωτογραφία με καρχαρία κοντά στην ακτή" loading="lazy"></div><div class="eng"><span>👍 842 likes</span><span>💬 156 σχόλια</span><span>🔁 315 κοινοποιήσεις</span></div></div>`,
  comments:`<div class="cm"><b>@maria22:</b> Δεν ξαναμπαίνω θάλασσα!</div><div class="cm"><b>@nikos_cy:</b> Το έστειλα ήδη σε όλους!</div><div class="cm"><b>@kostas89:</b> Ποια παραλία ακριβώς;</div>`,
  intro:'Η ανάρτηση μοιράζεται σαν φωτιά και η φωτογραφία μοιάζει αληθινή. Θα την πιστέψουμε;',btn:'Πάμε να το ψάξουμε',
  tools:[
@@ -110,8 +110,8 @@ const CASES=[
  {id:'com',ic:'💬',n:'Σχόλια',d:'Τι λένε όσοι το είδαν;',k:0,h:'Τα σχόλια',x:'Όλοι φοβούνται και το προωθούν, αλλά κανείς δεν λέει «ήμουν εκεί». Ο φόβος κάνει τους ανθρώπους να μοιράζονται πριν ελέγξουν.'}],
  truth:'fake',opts:OPT3,res:{fake:'Ψεύτικη! Η εικόνα φτιάχτηκε από υπολογιστή και η σελίδα ήταν καινούργια, χωρίς καμία επιβεβαίωση.'},
  why:'Μια τρομακτική εικόνα και πολλά likes δεν αποδεικνύουν τίποτα. Η πηγή ήταν άγνωστη, η εικόνα είχε λάθη και κανένας αξιόπιστος δεν το έγραψε.',rule:'Πριν κοινοποιήσεις: κοίτα την εικόνα, ψάξε την πηγή και ψάξε αν το λένε κι άλλοι αξιόπιστοι.'},
-{id:2,t:'Αύριο δεν έχει σχολείο;',card:'Αύριο δεν έχει σχολείο;',em:'🎒',c1:'#f59e0b',c2:'#d97706',tool:'#f59e0b',need:0,
- post:()=>`<div class="post" style="background:#fffbeb;border-color:#fde68a"><div class="ph"><div class="av" style="background:#fff3c4;color:#d97706">💬</div><div><b>Ομάδα γονέων ΣΤ2</b><small>Προωθήθηκε 17 φορές</small></div></div><div style="background:#fff;border:2px solid #fde68a;border-radius:16px;padding:12px"><span class="tag" style="background:#ffedd5;color:#c2410c">🔥 ΕΚΤΑΚΤΟ</span><h4>ΑΥΡΙΟ ΔΕΝ ΘΑ ΓΙΝΕΙ ΜΑΘΗΜΑ ΛΟΓΩ ΖΕΣΤΗΣ</h4><p>Οι αρχές αποφάσισαν ότι οι μαθητές θα μείνουν σπίτι αύριο, επειδή η θερμοκρασία θα είναι πολύ ψηλή.</p><div class="pic"><img src="nt/school2.jpg" alt="Κλειδωμένη πύλη δημοτικού σχολείου" loading="lazy"></div></div><div class="cm"><b>Μάριος:</b> ΤΕΛΕΙΟΟΟΟ 😄</div><div class="cm"><b>Ελένη:</b> Είναι σίγουρο;</div><div class="cm"><b>Πέτρος:</b> Το έστειλε και η μαμά μου.</div><div class="cm"><b>Άννα:</b> Ποιος το ανακοίνωσε;</div></div>`,
+{id:2,t:'Αύριο δεν έχει σχολείο;',card:'Αύριο δεν έχει σχολείο;',em:'🎒',c1:'#84cc16',c2:'#4d7c0f',tool:'#65a30d',need:0,
+ post:()=>`<div class="post" style="background:#f7fee7;border-color:#d9f99d"><div class="ph"><div class="av" style="background:#ecfccb;color:#4d7c0f">💬</div><div><b>Ομάδα γονέων ΣΤ2</b><small>Προωθήθηκε 17 φορές</small></div></div><div style="background:#fff;border:2px solid #d9f99d;border-radius:16px;padding:12px"><span class="tag" style="background:#ecfccb;color:#3f6212">🔥 ΕΚΤΑΚΤΟ</span><h4>ΑΥΡΙΟ ΔΕΝ ΘΑ ΓΙΝΕΙ ΜΑΘΗΜΑ ΛΟΓΩ ΖΕΣΤΗΣ</h4><p>Οι αρχές αποφάσισαν ότι οι μαθητές θα μείνουν σπίτι αύριο, επειδή η θερμοκρασία θα είναι πολύ ψηλή.</p><div class="pic"><img src="nt/school2.jpg" alt="Κλειδωμένη πύλη δημοτικού σχολείου" loading="lazy"></div></div><div class="cm"><b>Μάριος:</b> ΤΕΛΕΙΟΟΟΟ 😄</div><div class="cm"><b>Ελένη:</b> Είναι σίγουρο;</div><div class="cm"><b>Πέτρος:</b> Το έστειλε και η μαμά μου.</div><div class="cm"><b>Άννα:</b> Ποιος το ανακοίνωσε;</div></div>`,
  intro:'Ζέστη έχει πράγματι! Πριν όμως πετάξουμε τις τσάντες στη γωνία, πώς μπορούμε να βεβαιωθούμε;',btn:'Ψάχνω την πηγή',
  tools:[
  {id:'know',ic:'📋',n:'Τι ξέρουμε πραγματικά;',d:'Χώρισε όσα λέει το μήνυμα από όσα λείπουν.',k:1,h:'Τι λείπει',x:'Το μήνυμα δεν λέει ποιος αποφάσισε, ποια ώρα το ανακοίνωσε, ούτε ποιες περιοχές αφορά. Λέει μόνο «αρμόδιες αρχές». Ένα μήνυμα χωρίς ονομασμένη πηγή δεν αρκεί.'},
@@ -121,8 +121,8 @@ const CASES=[
  {id:'logic',ic:'🌡️',n:'Λογική',d:'Μοιάζει πιθανό;',k:0,h:'Η λογική',x:'Είναι αλήθεια ότι έχει πολλή ζέστη, κι αυτό κάνει το μήνυμα να ακούγεται πιστευτό. Όμως το ότι ένα μήνυμα ακούγεται λογικό δεν το κάνει αληθινό.'}],
  truth:'mis',opts:OPT3,res:{mis:'Παραπλανητική! Το κείμενο ήταν παλιό και χωρίς πηγή. Δεν υπήρχε καμία σημερινή επίσημη ανακοίνωση.'},
  why:'Τα ψεύτικα μηνύματα συχνά βασίζονται σε κάτι που μοιάζει πιθανό (όπως ο καύσωνας) και ξαναστέλνονται μετά από καιρό.',rule:'Η πληροφορία είναι αξιόπιστη όταν έχει όνομα πηγής, ημερομηνία και την ίδια ανακοίνωση σε επίσημο κανάλι.'},
-{id:3,t:'Αγρινό στο σχολείο',card:'Αγρινό στο σχολείο',em:'📷',c1:'#8b5cf6',c2:'#6d28d9',tool:'#8b5cf6',need:0,
- post:()=>`<div class="post" style="background:#faf8ff;border-color:#ddd6fe"><div class="ph"><div class="av" style="background:#7c3aed">ΠΠ</div><div><b>Πάφος Παρατηρητής</b><small>@pafos_paratiritis · σήμερα</small></div></div><h4>ΑΓΡΙΝΟ ΣΤΗΝ ΑΥΛΗ ΣΧΟΛΕΙΟΥ ΟΡΕΙΝΟΥ ΧΩΡΙΟΥ ΤΗΣ ΠΑΦΟΥ! 😱</h4><div class="pic"><img src="nt/mouflon1.jpg" alt="Αγρινό στην αυλή σχολείου" loading="lazy" style="max-height:440px;object-fit:cover;object-position:50% 40%"></div><p>Την ανέβασε γονέας πριν λίγη ώρα. Πείτε το και σε άλλους!</p><div class="eng" style="color:#6d28d9"><span>480 αντιδράσεις</span><span>130 σχόλια</span><span>290 κοινοποιήσεις</span></div></div>`,
+{id:3,t:'Αγρινό στο σχολείο',card:'Αγρινό στο σχολείο',em:'📷',c1:'#ec4899',c2:'#9d174d',tool:'#ec4899',need:0,
+ post:()=>`<div class="post" style="background:#fdf2f8;border-color:#fbcfe8"><div class="ph"><div class="av" style="background:#be185d">ΠΠ</div><div><b>Πάφος Παρατηρητής</b><small>@pafos_paratiritis · σήμερα</small></div></div><h4>ΑΓΡΙΝΟ ΣΤΗΝ ΑΥΛΗ ΣΧΟΛΕΙΟΥ ΟΡΕΙΝΟΥ ΧΩΡΙΟΥ ΤΗΣ ΠΑΦΟΥ! 😱</h4><div class="pic"><img src="nt/mouflon1.jpg" alt="Αγρινό στην αυλή σχολείου" loading="lazy" style="max-height:440px;object-fit:cover;object-position:50% 40%"></div><p>Την ανέβασε γονέας πριν λίγη ώρα. Πείτε το και σε άλλους!</p><div class="eng" style="color:#9d174d"><span>480 αντιδράσεις</span><span>130 σχόλια</span><span>290 κοινοποιήσεις</span></div></div>`,
  intro:'Ένα άγριο ζώο στην αυλή σχολείου! Ακούγεται απίθανο, αλλά η φωτογραφία φαίνεται καθαρή. Τι να πιστέψουμε;',btn:'Κοιτάζω από κοντά',
  tools:[
  {id:'img',ic:'🖼️',n:'Εξέταση εικόνας',d:'Σκιές, αναλογίες, λεπτομέρειες.',k:1,h:'Η φωτογραφία',x:'Οι σκιές πέφτουν προς την ίδια μεριά, το κτίριο, ο φράχτης και το δέντρο έχουν σωστές αναλογίες και τα κέρατα του ζώου φαίνονται φυσικά. Δεν βρίσκεις παράξενο σημάδι επεξεργασίας.'},
@@ -133,8 +133,8 @@ const CASES=[
  {id:'tit',ic:'😱',n:'Ο τίτλος',d:'Ο τίτλος ταιριάζει με το περιεχόμενο;',k:0,h:'Ο τίτλος',x:'Ο τίτλος έχει θαυμαστικά και 😱, αλλά η ουσία (αγρινό στο σχολείο) ταιριάζει με τη φωτογραφία. Άρα απλώς είναι λίγο υπερβολικός.'}],
  truth:'real',opts:OPT3,res:{real:'Αληθινή! Δεν είναι όλα ψεύτικα. Εδώ όλοι οι έλεγχοι έβγαλαν σωστά.'},
  why:'Ένας καλός ερευνητής δεν λέει «ψεύτικο» για όλα. Ελέγχει και όταν όλα συμφωνούν, μπορεί να εμπιστευτεί.',rule:'Ψεύτικο δεν είναι ό,τι είναι παράξενο. Αξιόπιστο είναι ό,τι περνά τους ελέγχους.'},
-{id:4,t:'Το δέμα που δεν ήρθε',card:'Το δέμα που δεν ήρθε',em:'📱',c1:'#f87171',c2:'#dc2626',tool:'#ef6a5a',need:0,
- post:()=>`<div class="sms"><div class="bar"><span>18:42</span><span>●●● 5G 🔋</span></div><div class="bub"><div class="ph" style="margin-bottom:6px"><div class="av" style="background:#ef6a5a">📦</div><div><b>CyDelivery</b><small>Σήμερα, 18:42</small></div></div><b style="color:#dc2626">Έφτασε δέμα για σένα! 📦</b><p style="margin:4px 0">Δώσε <span class="hl">1,80 €</span> τέλος παράδοσης <span class="hl">πριν τις 18:00</span> αλλιώς γυρίζει πίσω.</p><span class="lk">👉 cydelivery-pay.example-login.net</span><div style="font-size:13px;color:#64748b;margin-top:6px"><i>«Απαιτείται σύνδεση με κάρτα για να συνεχίσεις.»</i></div></div></div>`,
+{id:4,t:'Το δέμα που δεν ήρθε',card:'Το δέμα που δεν ήρθε',em:'📱',c1:'#38bdf8',c2:'#0369a1',tool:'#0ea5e9',need:0,
+ post:()=>`<div class="sms"><div class="bar"><span>18:42</span><span>●●● 5G 🔋</span></div><div class="bub"><div class="ph" style="margin-bottom:6px"><div class="av" style="background:#0369a1">📦</div><div><b>CyDelivery</b><small>Σήμερα, 18:42</small></div></div><b style="color:#dc2626">Έφτασε δέμα για σένα! 📦</b><p style="margin:4px 0">Δώσε <span class="hl">1,80 €</span> τέλος παράδοσης <span class="hl">πριν τις 18:00</span> αλλιώς γυρίζει πίσω.</p><span class="lk">👉 cydelivery-pay.example-login.net</span><div style="font-size:13px;color:#64748b;margin-top:6px"><i>«Απαιτείται σύνδεση με κάρτα για να συνεχίσεις.»</i></div></div></div>`,
  intro:'Ένα δέμα που περιμένει! Πριν πατήσουμε τον σύνδεσμο, ας δούμε ποιος μας έγραψε πραγματικά.',btn:'Διαβάζω προσεκτικά',
  tools:[
  {id:'snd',ic:'👤',n:'Ποιος το έστειλε;',d:'Ποιος το έστειλε πραγματικά;',k:1,h:'Ο αποστολέας',x:'Το μήνυμα ήρθε από έναν άγνωστο ξένο αριθμό που ξεκινά διαφορετικά από τους αριθμούς των γνωστών εταιρειών. Μια πραγματική εταιρεία έχει επίσημο όνομα και δεν χρησιμοποιεί τυχαίους αριθμούς.'},
@@ -145,8 +145,8 @@ const CASES=[
  {id:'do',ic:'🛡️',n:'Τι κάνω;',d:'Ποιο είναι το σωστό βήμα.',k:0,h:'Το σωστό βήμα',x:'Δεν πατάς τον σύνδεσμο. Δείχνεις το μήνυμα σε έναν μεγάλο, το σβήνεις και μπλοκάρεις τον αριθμό. Αν περιμένεις δέμα, μπαίνεις μόνος στην επίσημη σελίδα της εταιρείας.'}],
  truth:'fake',opts:OPT3,res:{fake:'Ψεύτικο! Είναι απάτη (phishing): θέλει να κλέψει τα στοιχεία της κάρτας.'},
  why:'Το μήνυμα είχε άγνωστο αποστολέα, παραπλανητικό σύνδεσμο, βιασύνη και ζητούσε στοιχεία κάρτας.',rule:'Σταμάτα. Μην πατάς. Ρώτα έναν μεγάλο.'},
-{id:5,t:'Το βίντεο που τρέχει παντού',card:'Το βίντεο που τρέχει παντού',em:'🎬',c1:'#14b8a6',c2:'#0f766e',tool:'#14b8a6',need:0,
- post:()=>`<div class="post"><div class="ph"><div class="av" style="background:#0f766e">ΝΛ</div><div><b>Νέα Λεμεσού 24</b><small>@nea_lemesou24 · πριν 1 ώρα</small></div></div><h4>ΠΛΗΜΜΥΡΑ ΤΩΡΑ ΣΤΗ ΛΕΜΕΣΟ! 😨</h4><div class="pic"><img src="nt/flood.webp" alt="Βίντεο με πλημμυρισμένο δρόμο" loading="lazy"></div><p>Το βίντεο κάνει το γύρο του διαδικτύου. Δείτε τι γίνεται στους δρόμους!</p><div class="eng"><span>👁️ 12.400 προβολές</span><span>🔁 2.100 κοινοποιήσεις</span></div></div>`,
+{id:5,t:'Το βίντεο που τρέχει παντού',card:'Το βίντεο που τρέχει παντού',em:'🎬',c1:'#a78bfa',c2:'#5b21b6',tool:'#8b5cf6',need:0,
+ post:()=>`<div class="post"><div class="ph"><div class="av" style="background:#5b21b6">ΝΛ</div><div><b>Νέα Λεμεσού 24</b><small>@nea_lemesou24 · πριν 1 ώρα</small></div></div><h4>ΠΛΗΜΜΥΡΑ ΤΩΡΑ ΣΤΗ ΛΕΜΕΣΟ! 😨</h4><div class="pic"><img src="nt/flood.webp" alt="Βίντεο με πλημμυρισμένο δρόμο" loading="lazy"></div><p>Το βίντεο κάνει το γύρο του διαδικτύου. Δείτε τι γίνεται στους δρόμους!</p><div class="eng"><span>👁️ 12.400 προβολές</span><span>🔁 2.100 κοινοποιήσεις</span></div></div>`,
  intro:'Φαίνεται σοβαρό! Όμως ένα βίντεο μπορεί να είναι αληθινό και παρόλα αυτά να μας ξεγελά για το πότε ή το πού έγινε.',btn:'Ψάχνω το βίντεο',
  tools:[
  {id:'when',ic:'🕒',n:'Πότε γυρίστηκε;',d:'Ψάξε αν το βίντεο υπήρχε πριν.',k:1,h:'Η ημερομηνία',x:'Το ίδιο βίντεο υπάρχει στο διαδίκτυο από πριν από 3 χρόνια. Δεν γυρίστηκε σήμερα.'},
@@ -156,8 +156,8 @@ const CASES=[
  {id:'com',ic:'💬',n:'Σχόλια',d:'Τι λένε όσοι το είδαν;',k:0,h:'Τα σχόλια',x:'Κάποιοι έγραψαν «αυτό είναι παλιό». Τα σχόλια δεν είναι απόδειξη, αλλά σε βοηθούν να ξέρεις πού να ψάξεις.'}],
  truth:'mis',opts:OPT3,res:{mis:'Παραπλανητική! Το βίντεο ήταν αληθινό, αλλά παλιό και έδειχνε έναν δρόμο, όχι πλημμύρα σε όλη την πόλη.'},
  why:'Μερικές φορές μια φωτογραφία ή ένα βίντεο είναι αληθινό, αλλά το βάζουν σε λάθος γεγονός.',rule:'Ρώτα πάντα: πότε και πού γυρίστηκε; Αν δεν ξέρεις, μην το μοιράζεσαι.'},
-{id:6,t:'Ο καινούριος φίλος στο παιχνίδι',card:'Ο καινούριος φίλος στο παιχνίδι',em:'🕵️',c1:'#6366f1',c2:'#4338ca',tool:'#6366f1',need:0,
- post:()=>`<div class="post" style="background:#f5f3ff;border-color:#c7d2fe"><div class="ph"><div class="av" style="background:#4338ca">G</div><div><b>Gamer_Alex_13</b><small>Νέο μήνυμα στο παιχνίδι</small></div></div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Γεια! Παίζουμε μαζί; 🎮</div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Πες μου πού μένεις και σε ποιο σχολείο πας!</div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Μην το πεις σε κανέναν, είναι μυστικό μας 🤫</div></div>`,
+{id:6,t:'Ο καινούριος φίλος στο παιχνίδι',card:'Ο καινούριος φίλος στο παιχνίδι',em:'🕵️',c1:'#eab308',c2:'#92400e',tool:'#d97706',need:0,
+ post:()=>`<div class="post" style="background:#fefce8;border-color:#fde68a"><div class="ph"><div class="av" style="background:#92400e">G</div><div><b>Gamer_Alex_13</b><small>Νέο μήνυμα στο παιχνίδι</small></div></div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Γεια! Παίζουμε μαζί; 🎮</div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Πες μου πού μένεις και σε ποιο σχολείο πας!</div><div class="cm" style="background:#fff"><b>Gamer_Alex_13:</b> Μην το πεις σε κανέναν, είναι μυστικό μας 🤫</div></div>`,
  intro:'Ένας άγνωστος γράφει μέσα στο παιχνίδι και φαίνεται πολύ φιλικός. Ας δούμε ποιος είναι και τι ζητά.',btn:'Ψάχνω τον λογαριασμό',
  tools:[
  {id:'pro',ic:'👤',n:'Το προφίλ',d:'Πότε φτιάχτηκε και τι έχει;',k:1,h:'Το προφίλ',x:'Ο λογαριασμός φτιάχτηκε πριν από 2 μέρες. Η φωτογραφία του υπάρχει και σε άλλες σελίδες. Δεν μπορείς να ξέρεις ποιος κρύβεται πίσω από τον λογαριασμό.'},
@@ -181,7 +181,7 @@ function nav(){return `<nav>${[['home','🏠','Αρχική'],['hand','🧰','Ε
 function R(){const a=$('#app');let h='';try{parent.postMessage({dkDepth:depth()},'*')}catch(e){}
  if(st.ci!=null)h=caseView(CASES[st.ci]);
  else if(st.tab=='hand')h=handView();else if(st.tab=='prof')h=profView();else h=homeView();
- a.innerHTML=`<div class="fade">${h}</div>`+(st.ci==null?nav():'');
+ a.className=(st.ci==null&&st.tab=='home')?'home':'';a.innerHTML=`<div class="fade nar">${h}</div>`+(st.ci==null?nav():'');
 }
 function homeView(){const t=total(),nc=nextCase();
  return `<div class="hero">${dexSVG().replace('class="dx"','')}<div><h1>Κυνηγοί της αλήθειας</h1><p>Ψάξε αν μια είδηση από την Κύπρο λέει την αλήθεια.</p><div class="stat"><span>⭐ ${t}</span><span>🕵️ ${Object.values(prog).filter(x=>x>0).length}/${CASES.length}</span></div></div></div>
