@@ -276,13 +276,17 @@ function drawBlock(c,x,y,h,kind,face,view,ph,air){
   if(sd){c.fillStyle='#111827';c.beginPath();c.ellipse(5,-58,4,3.8,0,0,7);c.fill();c.stroke();c.lineWidth=1.4;c.beginPath();c.moveTo(hx,-65);c.lineTo(11,-52);c.stroke();c.lineWidth=2.3}}
  if(kind==='rookie'){c.fillStyle='#4c1d95';[-6,0,6].forEach((k,i)=>{c.beginPath();c.moveTo(k-3.4,-67);c.lineTo(k+(i-1)*1.5,-76-(i===1?3:0));c.lineTo(k+3.4,-67);c.closePath();c.fill();c.stroke()})}
  c.restore()}
-const SPR={};['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp';SPR[k]=i});
-const SPK={dog:'milis',cat:'nasa'};
-function drawSprite(c,x,y,h,im,face,ph,air,moving){const H=h*1.22,W=H*im.naturalWidth/im.naturalHeight;const sw=Math.sin(ph);
- c.save();c.translate(x,y);c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(0,1,W*.42,4.5,0,0,7);c.fill();
- if(face<0)c.scale(-1,1);if(moving&&!air){c.translate(0,-Math.abs(sw)*4);c.rotate(sw*.07)}if(air)c.scale(.94,1.07);
- c.drawImage(im,-W/2,-H,W,H);c.restore()}
-function drawChar(c,x,y,h,kind,face,view,ph,air){const im=SPR[SPK[kind]];if(im&&im.complete&&im.naturalWidth){drawSprite(c,x,y,h,im,face,ph,air,ph!==0);return}(BLK[kind]?drawBlock:HUM[kind]?drawHuman:drawPet)(c,x,y,h,kind,face,view,ph,air)}
+const SPR={},WK={milis:4,nasa:3},SPK={dog:'milis',cat:'nasa'};
+['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp';SPR[k]=i;WK[k]=Array.from({length:WK[k]},(_,j)=>{const w=new Image();w.src='../logo/'+k+'_w'+(j+1)+'.webp';return w})});
+const imOk=i=>i&&i.complete&&i.naturalWidth>0;
+function drawSprite(c,x,y,h,k,face,ph,air,moving){const fr=WK[k];let im=SPR[k];
+ if(air&&imOk(fr[1]))im=fr[1];else if(moving){const f=fr[Math.floor(ph/1.75)%fr.length];if(imOk(f))im=f}
+ if(!imOk(im))return false;
+ const H=h*1.22,W=H*im.naturalWidth/im.naturalHeight,sw=Math.sin(ph);
+ c.save();c.translate(x,y);c.fillStyle='rgba(0,0,0,.2)';c.beginPath();c.ellipse(0,1,W*.4,4.5,0,0,7);c.fill();
+ if(face<0)c.scale(-1,1);if(moving&&!air)c.translate(0,-Math.abs(sw)*2);if(air)c.rotate(-.06);
+ c.drawImage(im,-W/2,-H,W,H);c.restore();return true}
+function drawChar(c,x,y,h,kind,face,view,ph,air){const k=SPK[kind];if(k&&drawSprite(c,x,y,h,k,face,ph,air,ph!==0))return;(BLK[kind]?drawBlock:HUM[kind]?drawHuman:drawPet)(c,x,y,h,kind,face,view,ph,air)}
 /* ---------- 2D ---------- */
 function up2(dt){P.forEach(platPos);const ax=(keys.r?1:0)-(keys.l?1:0);pl.vx=ax*5.5;if(ax)pl.face=ax;
  const sup=(x,y0,y1)=>{for(const p of P){if(p.gone)continue;if(x+.3>p.x&&x-.3<p.x+p.w&&y0<=p.y+.06&&y1>=p.y)return p}return null};
