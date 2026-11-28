@@ -61,7 +61,7 @@ A.loop((dt,t)=>{const W=A.W,H=A.H;
  cx.fillStyle='rgba(10,6,35,.75)';A.rr(cx,BX-8,BY-8,CW*S+16,CH*S+16,16);cx.fill();cx.strokeStyle='#7c6cff';cx.lineWidth=3;cx.stroke();
  cx.strokeStyle='rgba(255,255,255,.05)';cx.lineWidth=1;for(let x=1;x<CW;x++){cx.beginPath();cx.moveTo(BX+x*S,BY);cx.lineTo(BX+x*S,BY+CH*S);cx.stroke()}for(let y=1;y<CH;y++){cx.beginPath();cx.moveTo(BX,BY+y*S);cx.lineTo(BX+CW*S,BY+y*S);cx.stroke()}
  if(grid){for(let y=0;y<CH;y++)for(let x=0;x<CW;x++)if(grid[y][x]){let a=1;if(clearing&&clearing.rows.includes(y)){a=1-clearing.t/.35;cx.fillStyle=`rgba(255,255,255,${a})`;cx.fillRect(BX+x*S,BY+y*S,S,S)}block(BX+x*S,BY+y*S,S,COL[grid[y][x]],a)}
-  if(GH&&cur&&!over&&!clearing){const gy=ghostY();for(const [x,y] of cur.cells){const X=BX+(cur.x+x)*S,Y=BY+(cur.y+y+gy)*S;if(cur.y+y+gy>=0){cx.strokeStyle=COL[cur.k];cx.globalAlpha=.6;cx.lineWidth=2;A.rr(cx,X+3,Y+3,S-6,S-6,S*.15);cx.stroke();cx.globalAlpha=1}}
+  if(cur&&!over&&!clearing){const gy=GH?ghostY():-999;for(const [x,y] of cur.cells){const X=BX+(cur.x+x)*S,Y=BY+(cur.y+y+gy)*S;if(GH&&cur.y+y+gy>=0){cx.strokeStyle=COL[cur.k];cx.globalAlpha=.6;cx.lineWidth=2;A.rr(cx,X+3,Y+3,S-6,S-6,S*.15);cx.stroke();cx.globalAlpha=1}}
    for(const [x,y] of cur.cells)if(cur.y+y>=0)block(BX+(cur.x+x)*S,BY+(cur.y+y)*S,S,COL[cur.k])}
   // side panels
   const land=W>H;const px=land?BX+CW*S+S*.8:BX+CW*S+S*.5,pw=land?S*4.6:S*3.6;panel(px,BY,pw,S*4.4,'ΕΠΟΜΕΝΑ');if(nextQ){mini(nextQ[0],px+pw/2,BY+S*2.4,S*.8);if(land){panel(px,BY+S*4.8,pw,S*6.5,'');for(let i=1;i<4;i++)mini(nextQ[i],px+pw/2,BY+S*5.6+(i-1)*S*2,S*.55)}}
