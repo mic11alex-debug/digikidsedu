@@ -280,7 +280,7 @@ function drawBlock(c,x,y,h,kind,face,view,ph,air){
 const SPR={},WK={milis:4,nasa:3},SPK={dog:'milis',cat:'nasa'};
 ['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp?v=2';SPR[k]=i;WK[k]=Array.from({length:WK[k]},(_,j)=>{const w=new Image();w.src='../logo/'+k+'_w'+(j+1)+'.webp?v=2';return w})});
 const imOk=i=>i&&i.complete&&i.naturalWidth>0;
-function drawSprite(c,x,y,h,k,face,ph,air,moving){const fr=WK[k];let im=SPR[k];
+function drawSprite(c,x,y,h,k,face,ph,air,moving){const fr=WK[k];let im=imOk(fr[0])?fr[0]:SPR[k];
  if(air&&imOk(fr[1]))im=fr[1];else if(moving){const f=fr[Math.floor(ph/1.75)%fr.length];if(imOk(f))im=f}
  if(!imOk(im))return false;
  const H=h*1.22,W=H*im.naturalWidth/im.naturalHeight,sw=Math.sin(ph);
