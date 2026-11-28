@@ -34,7 +34,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
 <button class="mb" id="mb" onclick="toMenu()" aria-label="Μενού">☰</button>
 <div class="tip" id="tip" style="opacity:0"></div>
 <div id="ctl">
- <div class="grp"><button class="cb" data-k="L">◀</button><button class="cb" data-k="R">▶</button><button class="cb" data-k="J">⤒</button></div>
+ <div class="grp"><button class="cb" data-k="L">◀</button><button class="cb" data-k="R">▶</button><button class="cb" data-k="J">⤒</button><button class="cb" data-k="T" title="Άλλαξε σκουλήκι (Tab)">🔄</button></div>
  <div class="grp" id="wps"></div>
  <div class="grp"><button class="cb" data-k="U">▲</button><button class="cb" data-k="D">▼</button><button class="cb fire" data-k="F">🔥</button></div>
 </div>
@@ -42,7 +42,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
 <div class="ov" id="menu"><div class="card">
  <canvas id="logo" width="400" height="130" style="position:static;width:300px;height:98px;margin:0 auto"></canvas>
  <h1>Σκουληκομαχίες</h1>
- <p>Δύο ομάδες σκουληκάκια σε ένα νησί! Σημάδεψε, πρόσεξε τον <b>αέρα</b> 🌬️ και ρίξε. Νικάει η ομάδα που θα μείνει τελευταία.</p>
+ <p>Δύο ομάδες σκουληκάκια σε ένα νησί! Σημάδεψε, πρόσεξε τον <b>αέρα</b> 🌬️ και ρίξε. Με το <b>Tab</b> διαλέγεις ποιο σκουλήκι θα παίξει. Νικάει η ομάδα που θα μείνει τελευταία.</p>
  <div class="grid2"><button class="bt b1" onclick="start(1)">🤖 Με τον υπολογιστή<small>εσύ: Κόκκινοι</small></button><button class="bt b2" onclick="start(2)">👫 Δύο παίκτες<small>στον ίδιο υπολογιστή</small></button></div>
  <div class="dif">Στάδιο: <span id="stg"></span></div>
  <div class="dif">Υπολογιστής: <button id="df0" onclick="setDiff(0)">😊 Εύκολος</button><button id="df1" onclick="setDiff(1)">🙂 Μέτριος</button><button id="df2" onclick="setDiff(2)">😈 Δύσκολος</button></div>
@@ -110,9 +110,10 @@ let tipT=0;function tip(s){const e=$('tip');e.textContent=s;e.style.opacity=1;cl
 function drawWeapBtns(){$('wps').innerHTML=WEAP.map((w,i)=>{const a=ammo[turnTeam][i];return `<button class="cb ${i==weapon?'sel':''}" onclick="selW(${i})" ${a<=0?'disabled':''} title="${w.n}">${w.ic}${w.limit?`<small>${a}</small>`:''}</button>`}).join('')}
 function selW(i){if(state!='aim'||ammo[turnTeam][i]<=0||(curW&&curW.mode&&curW.mode!='bung'))return;weapon=i;drawWeapBtns();tip(WEAP[i].n);tone(600,.05,'square',.05)}
 // ---------- input ----------
-addEventListener('keydown',e=>{if(state=='menu'||state=='draw')return;keys[e.key]=1;if(e.key==' '){e.preventDefault();if(!charging&&canAct()){charging=true;charge=0}}if(e.key=='Enter'||e.key=='Backspace'){e.preventDefault();jump()}if('123456789'.includes(e.key))selW(+e.key-1);if(e.key==' '&&state=='fly'){for(const p of proj)if(p.sheep)p.det=1}if(e.key.startsWith('Arrow'))e.preventDefault()});
+addEventListener('keydown',e=>{if(state=='menu'||state=='draw')return;if(e.key=='Tab'){e.preventDefault();swapWorm(e.shiftKey?-1:1);return}keys[e.key]=1;if(e.key==' '){e.preventDefault();if(!charging&&canAct()){charging=true;charge=0}}if(e.key=='Enter'||e.key=='Backspace'){e.preventDefault();jump()}if('123456789'.includes(e.key))selW(+e.key-1);if(e.key==' '&&state=='fly'){for(const p of proj)if(p.sheep)p.det=1}if(e.key.startsWith('Arrow'))e.preventDefault()});
 addEventListener('keyup',e=>{keys[e.key]=0;if(e.key==' '&&charging){fire()}});
-const held={};document.querySelectorAll('#ctl .cb[data-k]').forEach(b=>{const k=b.dataset.k;const on=e=>{e.preventDefault();held[k]=1;b.classList.add('on');if(k=='J')jump();if(k=='F'&&canAct()){charging=true;charge=0}};const off=e=>{if(!held[k])return;held[k]=0;b.classList.remove('on');if(k=='F'&&charging)fire()};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)});
+const held={};document.querySelectorAll('#ctl .cb[data-k]').forEach(b=>{const k=b.dataset.k;const on=e=>{e.preventDefault();held[k]=1;b.classList.add('on');if(k=='J')jump();if(k=='T')swapWorm();if(k=='F'&&canAct()){charging=true;charge=0}};const off=e=>{if(!held[k])return;held[k]=0;b.classList.remove('on');if(k=='F'&&charging)fire()};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)});
+function swapWorm(d){d=d||1;if(!canAct()||charging||(curW.mode&&curW.mode!='bung'))return;const L=worms.filter(w=>w.team==turnTeam&&!w.dead);if(L.length<2)return;const nx=L[(L.indexOf(curW)+d+L.length)%L.length];curW=nx;const T=worms.filter(w=>w.team==turnTeam);turnIdx[turnTeam]=(T.indexOf(nx)+1)%T.length;tone(700,.08,'triangle',.07,900);tip('Παίζεις με: '+nx.name+' ('+TEAMS[turnTeam].name+')')}
 function canAct(){return state=='aim'&&curW&&!curW.dead&&(MODE==2||(MODE==1&&turnTeam==0))}
 const toW=e=>({x:(e.clientX-OX)/K,y:(e.clientY-OY)/K});
 cv.addEventListener('pointerdown',e=>{if(!canAct())return;ac();const p=toW(e);aimDrag=p;setAimTo(p);cv.setPointerCapture(e.pointerId)});
