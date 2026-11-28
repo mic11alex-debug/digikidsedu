@@ -21,6 +21,7 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 #msg{text-align:center;font-weight:700;font-size:22px;min-height:34px;margin:8px 0}
 .card{background:var(--card);border:3px solid var(--bd);border-radius:18px;padding:12px}
 #cv{width:100%;max-width:640px;display:block;margin:6px auto;border-radius:14px;border:3px solid var(--bd);touch-action:none;background:#7dd3fc}
+#cv3{width:100%;max-width:640px;display:block;margin:6px auto;border-radius:14px;border:3px solid var(--bd);touch-action:none;background:linear-gradient(#38bdf8,#fef3c7)}
 .pad{width:64px;height:56px;border-radius:16px;border:0;background:#8b5cf6;color:#fff;font:700 26px Fredoka,system-ui;box-shadow:0 4px 0 #6d28d9;touch-action:none;user-select:none}.pad:active{transform:translateY(3px);box-shadow:none}
 #rmo{position:fixed;inset:0;background:#10304fcc;z-index:50;display:none;align-items:center;justify-content:center;padding:12px}#rmo.on{display:flex}
 #rmo .box{background:var(--card);border:3px solid var(--bd);border-radius:20px;padding:16px;max-width:460px;width:100%;max-height:92vh;overflow:auto;text-align:center}
@@ -36,7 +37,7 @@ main{max-width:640px;margin:0 auto;padding:14px 14px 30px}
 <div class="row"><div class="lab">Επίπεδο</div><button class="ch on" data-l="0">1 · Εύκολο</button><button class="ch" data-l="1">2 · Μέτριο</button><button class="ch" data-l="2">3 · Δύσκολο</button><button class="ch" data-l="3">4 · Πολύ δύσκολο</button><button class="ch" data-l="4">5 · Μάστερ</button></div>
 <div class="row"><div class="lab">Χαρακτήρας</div><button class="ch" data-c="dog">🐶 Μίλης</button><button class="ch" data-c="cat">🐱 Νάσα</button><button class="ch" data-c="fox">🦊 Αλεπού</button><button class="ch" data-c="bunny">🐰 Λαγουδάκι</button><button class="ch" data-c="boy">🧒 Άλεξ</button><button class="ch" data-c="girl">👧 Μαρία</button><button class="ch" data-c="astro">👩‍🚀 Αστροναύτης</button><button class="ch" data-c="mage">🧙 Μάγος</button><button class="ch" data-c="knight">🛡️ Ιππότης</button><button class="ch" data-c="robot">🤖 Ρομποτάκι</button><button class="ch" data-c="builder">👷 Χτίστης</button><button class="ch" data-c="pirate">🏴‍☠️ Πειρατίνα</button><button class="ch" data-c="rookie">🟪 Πρωτάρης</button></div>
 <div class="row"><div class="pill"><small>Χρόνος</small><b id="tm">0.0</b></div><div class="pill"><small>Πτώσεις</small><b id="dc">0</b></div><div class="pill"><small>Πόντοι</small><b id="pt">0</b></div></div>
-<div class="card" id="qp" style="max-width:640px;margin:6px auto"></div><div id="qt" style="text-align:center;font-weight:700;color:#16a34a;min-height:26px;font-size:18px"></div><div style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
+<div class="card" id="qp" style="max-width:640px;margin:6px auto"></div><div id="qt" style="text-align:center;font-weight:700;color:#16a34a;min-height:26px;font-size:18px"></div><div style="position:relative;max-width:640px;margin:auto"><canvas id="cv"></canvas><canvas id="cv3" style="display:none"></canvas><div id="win" style="display:none;position:absolute;inset:0;background:rgba(15,23,42,.72);border-radius:14px;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center"><div style="font-size:54px">🏆</div><div id="wt" style="font-size:26px;font-weight:700"></div><div class="row"><button class="btn" id="nx">Επόμενο επίπεδο ▶</button><button class="btn g" id="rp">Ξανά</button></div></div></div>
 <div class="row" id="pad2"><button class="pad" data-k="l">◀</button><button class="pad" data-k="j">⤒</button><button class="pad" data-k="r">▶</button></div>
 <div class="row" id="pad3" style="display:none"><button class="pad" data-k="tl">⟲</button><button class="pad" data-k="fw">▲</button><button class="pad" data-k="bk">▼</button><button class="pad" data-k="tr">⟳</button><button class="pad" data-k="j">⤒</button></div>
 <div id="rmo"><div class="box" id="rmb2"></div></div><div id="rcd"></div>
@@ -277,7 +278,7 @@ function drawBlock(c,x,y,h,kind,face,view,ph,air){
  if(kind==='rookie'){c.fillStyle='#4c1d95';[-6,0,6].forEach((k,i)=>{c.beginPath();c.moveTo(k-3.4,-67);c.lineTo(k+(i-1)*1.5,-76-(i===1?3:0));c.lineTo(k+3.4,-67);c.closePath();c.fill();c.stroke()})}
  c.restore()}
 const SPR={},WK={milis:4,nasa:3},SPK={dog:'milis',cat:'nasa'};
-['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp';SPR[k]=i;WK[k]=Array.from({length:WK[k]},(_,j)=>{const w=new Image();w.src='../logo/'+k+'_w'+(j+1)+'.webp';return w})});
+['milis','nasa'].forEach(k=>{const i=new Image();i.src='../logo/'+k+'_body.webp?v=2';SPR[k]=i;WK[k]=Array.from({length:WK[k]},(_,j)=>{const w=new Image();w.src='../logo/'+k+'_w'+(j+1)+'.webp?v=2';return w})});
 const imOk=i=>i&&i.complete&&i.naturalWidth>0;
 function drawSprite(c,x,y,h,k,face,ph,air,moving){const fr=WK[k];let im=SPR[k];
  if(air&&imOk(fr[1]))im=fr[1];else if(moving){const f=fr[Math.floor(ph/1.75)%fr.length];if(imOk(f))im=f}
@@ -330,8 +331,136 @@ function draw3(){const c=E3.cam,S=E3.shade;c.yaw=pl.yaw;c.pitch=-.38;c.x=pl.x-Ma
  C.forEach(c=>{if(c.got)return;const p=P[c.p],mx=p.x+p.w/2+c.o,mz=p.z+p.d/2,w=Math.abs(Math.cos(t*3+c.p))*.22+.06,y=p.y+p.h+.9;F.push(...E3.box(mx-w,y-.25,mz-.25,mx+w,y+.25,mz+.25,c.s?'#67e8f9':'#fde047',c.s?'#0891b2':'#f59e0b',-1))});
  E3.render(cx,CW,CH,F);
  const q=E3.proj([pl.x,pl.y,pl.z],CW,CH);if(q)drawChar(cx,q[0],q[1],1.6*CH*.95/q[2],cast,1,'back',t*14*((keys.fw||keys.bk)?1:0),!pl.onp)}
+/* ---------- 3D: WebGL (δικός μας renderer, χωρίς εξωτερική βιβλιοθήκη) ---------- */
+const cv3=$('cv3');let gl=null,GLok=false,GU={},GP=null,GMS={},GTX={},GVP=null,GSC=null,GCX=null;
+const M4={
+ mul(a,b){const o=new Float32Array(16);for(let i=0;i<4;i++)for(let j=0;j<4;j++){let s=0;for(let k=0;k<4;k++)s+=a[k*4+j]*b[i*4+k];o[i*4+j]=s}return o},
+ trs(tx,ty,tz,ry,rx,SX,SY,SZ){const cy=Math.cos(ry),sy=Math.sin(ry),c=Math.cos(rx),s=Math.sin(rx);
+  return new Float32Array([cy*SX,0,-sy*SX,0, sy*s*SY,c*SY,cy*s*SY,0, sy*c*SZ,-s*SZ,cy*c*SZ,0, tx,ty,tz,1])},
+ persp(f,a,n,r){const t=1/Math.tan(f/2),o=new Float32Array(16);o[0]=t/a;o[5]=t;o[10]=(r+n)/(n-r);o[11]=-1;o[14]=2*r*n/(n-r);return o},
+ look(e,t){let zx=e[0]-t[0],zy=e[1]-t[1],zz=e[2]-t[2],l=Math.hypot(zx,zy,zz);zx/=l;zy/=l;zz/=l;
+  let xx=zz,xy=0,xz=-zx;l=Math.hypot(xx,xz);xx/=l;xz/=l;
+  const yx=zy*xz-zz*xy,yy=zz*xx-zx*xz,yz=zx*xy-zy*xx;
+  return new Float32Array([xx,yx,zx,0, xy,yy,zy,0, xz,yz,zz,0, -(xx*e[0]+xy*e[1]+xz*e[2]),-(yx*e[0]+yy*e[1]+yz*e[2]),-(zx*e[0]+zy*e[1]+zz*e[2]),1])}
+};
+const hc=(h,a)=>{const n=parseInt(h.slice(1),16);return[(n>>16&255)/255,(n>>8&255)/255,(n&255)/255,a==null?1:a]};
+function gmesh(V,I){const vb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(V),gl.STATIC_DRAW);const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(I),gl.STATIC_DRAW);return{vb,ib,n:I.length}}
+function gGeo(){
+ const V=[],I=[];let b=0;const quad=(p,n)=>{for(let k=0;k<4;k++)V.push(...p[k],...n,k==1||k==2?1:0,k>=2?1:0);I.push(b,b+1,b+2,b,b+2,b+3);b+=4};
+ // κουτί ±.5
+ [[[-.5,-.5,.5],[.5,-.5,.5],[.5,.5,.5],[-.5,.5,.5],[0,0,1]],[[.5,-.5,-.5],[-.5,-.5,-.5],[-.5,.5,-.5],[.5,.5,-.5],[0,0,-1]],[[.5,-.5,.5],[.5,-.5,-.5],[.5,.5,-.5],[.5,.5,.5],[1,0,0]],[[-.5,-.5,-.5],[-.5,-.5,.5],[-.5,.5,.5],[-.5,.5,-.5],[-1,0,0]],[[-.5,.5,.5],[.5,.5,.5],[.5,.5,-.5],[-.5,.5,-.5],[0,1,0]],[[-.5,-.5,-.5],[.5,-.5,-.5],[.5,-.5,.5],[-.5,-.5,.5],[0,-1,0]]].forEach(f=>quad(f.slice(0,4),f[4]));
+ GMS.box=gmesh(V,I);
+ V.length=0;I.length=0;b=0;quad([[-.5,0,.5],[.5,0,.5],[.5,0,-.5],[-.5,0,-.5]],[0,1,0]);GMS.qy=gmesh(V,I);
+ V.length=0;I.length=0;b=0;quad([[-.5,-.5,0],[.5,-.5,0],[.5,.5,0],[-.5,.5,0]],[0,0,1]);GMS.qz=gmesh(V,I);
+ // κύλινδρος (άξονας Υ, ύψος 1, ακτίνα .5)
+ V.length=0;I.length=0;b=0;const S=14;for(let i=0;i<=S;i++){const a=i/S*Math.PI*2,c=Math.cos(a),s=Math.sin(a);V.push(c*.5,-.5,s*.5,c,0,s,i/S,0,c*.5,.5,s*.5,c,0,s,i/S,1)}for(let i=0;i<S;i++){I.push(i*2,i*2+1,i*2+2,i*2+1,i*2+3,i*2+2)}b=(S+1)*2;
+ [[.5,1],[-.5,-1]].forEach(([y,ny])=>{const c0=b;V.push(0,y,0,0,ny,0,.5,.5);for(let i=0;i<=S;i++){const a=i/S*Math.PI*2;V.push(Math.cos(a)*.5,y,Math.sin(a)*.5,0,ny,0,.5,.5)}for(let i=0;i<S;i++)I.push(c0,c0+1+i,c0+2+i);b+=S+2});
+ GMS.cyl=gmesh(V,I);
+ // κώνος (βάση y=0, κορυφή y=1)
+ V.length=0;I.length=0;b=0;const C=10;for(let i=0;i<=C;i++){const a=i/C*Math.PI*2,c=Math.cos(a),s=Math.sin(a);V.push(c*.5,0,s*.5,c*.8,.5,s*.8,i/C,0,0,1,0,c*.8,.5,s*.8,i/C,1)}for(let i=0;i<C;i++)I.push(i*2,i*2+2,i*2+1);
+ GMS.cone=gmesh(V,I);
+ // σφαίρα
+ V.length=0;I.length=0;b=0;const LA=8,LO=12;for(let i=0;i<=LA;i++){const th=i/LA*Math.PI;for(let j=0;j<=LO;j++){const ph=j/LO*Math.PI*2,x=Math.sin(th)*Math.cos(ph),y=Math.cos(th),z=Math.sin(th)*Math.sin(ph);V.push(x*.5,y*.5,z*.5,x,y,z,j/LO,i/LA)}}for(let i=0;i<LA;i++)for(let j=0;j<LO;j++){const a=i*(LO+1)+j;I.push(a,a+1,a+LO+1,a+1,a+LO+2,a+LO+1)}
+ GMS.sph=gmesh(V,I);
+ // οκτάεδρο (φλόγα)
+ V.length=0;I.length=0;b=0;{const P=[[0,.5,0],[.4,0,0],[0,0,.4],[-.4,0,0],[0,0,-.4],[0,-.5,0]];const F=[[0,1,2],[0,2,3],[0,3,4],[0,4,1],[5,2,1],[5,3,2],[5,4,3],[5,1,4]];F.forEach(f=>{const a=P[f[0]],c=P[f[1]],d=P[f[2]];const u=[c[0]-a[0],c[1]-a[1],c[2]-a[2]],v=[d[0]-a[0],d[1]-a[1],d[2]-a[2]];let n=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];const l=Math.hypot(...n);n=n.map(q=>q/l);f.forEach(k=>V.push(...P[k],...n,0,0));I.push(b,b+1,b+2);b+=3})}
+ GMS.oct=gmesh(V,I);
+ // αστέρι (πρίσμα)
+ V.length=0;I.length=0;b=0;{const pts=[];for(let k=0;k<10;k++){const a=-Math.PI/2+k*Math.PI/5,r=k%2?.22:.5;pts.push([Math.cos(a)*r,-Math.sin(a)*r])}const T=.12;
+  [[T,1],[-T,-1]].forEach(([z,nz])=>{const c0=b;V.push(0,0,z,0,0,nz,.5,.5);pts.forEach(p=>V.push(p[0],p[1],z,0,0,nz,0,0));b+=11;for(let k=0;k<10;k++)I.push(c0,c0+1+k,c0+1+(k+1)%10)});
+  for(let k=0;k<10;k++){const p=pts[k],q=pts[(k+1)%10];const dx=q[0]-p[0],dy=q[1]-p[1],l=Math.hypot(dx,dy),nx=dy/l,ny=-dx/l;V.push(p[0],p[1],T,nx,ny,0,0,0,q[0],q[1],T,nx,ny,0,0,0,q[0],q[1],-T,nx,ny,0,0,0,p[0],p[1],-T,nx,ny,0,0,0);I.push(b,b+1,b+2,b,b+2,b+3);b+=4}}
+ GMS.star=gmesh(V,I)}
+function gTex(c,mip){const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.REPEAT);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.REPEAT);
+ if(mip){gl.generateMipmap(gl.TEXTURE_2D);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR_MIPMAP_LINEAR)}else gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);return t}
+function gInit(){try{
+ gl=cv3.getContext('webgl',{antialias:true,alpha:true,premultipliedAlpha:true});if(!gl)return false;
+ const dpr=Math.min(devicePixelRatio||1,2);cv3.width=CW*dpr;cv3.height=CH*dpr;
+ const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(o));return o};
+ const pr=gl.createProgram();
+ gl.attachShader(pr,sh(gl.VERTEX_SHADER,'attribute vec3 aP,aN;attribute vec2 aT;uniform mat4 uM,uVP;uniform vec2 uUS,uUO;varying vec3 vN;varying vec2 vT;varying float vD;void main(){vec4 w=uM*vec4(aP,1.);gl_Position=uVP*w;vN=mat3(uM)*aN;vT=aT*uUS+uUO;vD=gl_Position.w;}'));
+ gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,'precision mediump float;varying vec3 vN;varying vec2 vT;varying float vD;uniform vec4 uC;uniform sampler2D uTx;uniform float uUT,uLit,uFog;uniform vec3 uE;void main(){vec4 c=uC;if(uUT>.5)c*=texture2D(uTx,vT);if(c.a<.02)discard;vec3 n=normalize(vN);float d=max(dot(n,normalize(vec3(.45,.8,.35))),0.);float h=n.y*.5+.5;vec3 l=mix(vec3(.52,.5,.56),vec3(.8,.84,.92),h)+vec3(.5)*d;vec3 col=c.rgb*mix(vec3(1.),l,uLit)+uE;float f=uFog*clamp((vD-55.)/200.,0.,1.);col=mix(col,vec3(.85,.93,.98),f);gl_FragColor=vec4(col*c.a,c.a);}'));
+ gl.linkProgram(pr);if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw new Error('link');gl.useProgram(pr);GP=pr;
+ ['uM','uVP','uUS','uUO','uC','uTx','uUT','uLit','uFog','uE'].forEach(n=>GU[n]=gl.getUniformLocation(pr,n));
+ ['aP','aN','aT'].forEach((n,i)=>{GU[n]=gl.getAttribLocation(pr,n);gl.enableVertexAttribArray(GU[n])});
+ gGeo();
+ // υφές: τουβλάκι, λάβα
+ const st=document.createElement('canvas');st.width=st.height=64;let g=st.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,64,64);g.fillStyle='rgba(0,0,0,.22)';g.beginPath();g.arc(34,36,16,0,7);g.fill();g.fillStyle='#e8e8e8';g.beginPath();g.arc(32,32,15,0,7);g.fill();g.fillStyle='#fff';g.beginPath();g.arc(31,31,12,0,7);g.fill();g.fillStyle='rgba(0,0,0,.12)';g.beginPath();g.arc(33,34,12,.2,2.6);g.lineTo(32,32);g.fill();g.strokeStyle='rgba(0,0,0,.22)';g.lineWidth=2;g.strokeRect(0,0,64,64);GTX.stud=gTex(st,true);
+ const lv=document.createElement('canvas');lv.width=lv.height=128;g=lv.getContext('2d');g.fillStyle='#ef4b1a';g.fillRect(0,0,128,128);for(let i=0;i<40;i++){const x=(i*53)%128,y=(i*97)%128,r=8+(i*7)%16;const q=g.createRadialGradient(x,y,1,x,y,r);q.addColorStop(0,i%3?'#ffb020':'#ffe066');q.addColorStop(1,'rgba(239,75,26,0)');g.fillStyle=q;[[0,0],[128,0],[-128,0],[0,128],[0,-128]].forEach(o=>{g.save();g.translate(o[0],o[1]);g.beginPath();g.arc(x,y,r,0,7);g.fill();g.restore()})}GTX.lava=gTex(lv,true);
+ GSC=document.createElement('canvas');GSC.width=GSC.height=256;GCX=GSC.getContext('2d');GTX.spr=gTex(GSC,false);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+ gl.enable(gl.DEPTH_TEST);gl.depthFunc(gl.LEQUAL);gl.enable(gl.BLEND);gl.blendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA);
+ cv3.addEventListener('webglcontextlost',e=>{e.preventDefault();GLok=false;setMode(mode)});
+ return true}catch(e){console.warn('webgl',e);return false}}
+let gBound=null;
+function gdraw(mesh,M,o){o=o||{};if(gBound!==mesh){gl.bindBuffer(gl.ARRAY_BUFFER,mesh.vb);gl.vertexAttribPointer(GU.aP,3,gl.FLOAT,false,32,0);gl.vertexAttribPointer(GU.aN,3,gl.FLOAT,false,32,12);gl.vertexAttribPointer(GU.aT,2,gl.FLOAT,false,32,24);gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,mesh.ib);gBound=mesh}
+ gl.uniformMatrix4fv(GU.uM,false,M);const c=o.c||[1,1,1,1];gl.uniform4f(GU.uC,c[0],c[1],c[2],c[3]);const e=o.e||[0,0,0];gl.uniform3f(GU.uE,e[0],e[1],e[2]);
+ gl.uniform1f(GU.uUT,o.tx?1:0);if(o.tx){gl.bindTexture(gl.TEXTURE_2D,o.tx)}gl.uniform1f(GU.uLit,o.lit==null?1:o.lit);gl.uniform1f(GU.uFog,o.fog==null?1:o.fog);
+ const us=o.us||[1,1],uo=o.uo||[0,0];gl.uniform2f(GU.uUS,us[0],us[1]);gl.uniform2f(GU.uUO,uo[0],uo[1]);
+ gl.blendFunc(o.add?gl.ONE:gl.ONE,o.add?gl.ONE:gl.ONE_MINUS_SRC_ALPHA);if(o.nodepth)gl.depthMask(false);
+ gl.drawElements(gl.TRIANGLES,mesh.n,gl.UNSIGNED_SHORT,0);if(o.nodepth)gl.depthMask(true)}
+const gt=M4.trs;
+function gAvatar(root,kind,ph,air,mov){
+ const o=BLK[kind],col=k=>({c:hc(k)}),B=(M,x,y,z,w,h,d,c,e,lit)=>gdraw(GMS.box,M4.mul(M,gt(x,y,z,0,0,w,h,d)),{c:hc(c),e:e,lit:lit});
+ const sw=mov&&!air?Math.sin(ph)*.8:0;
+ // πόδια
+ [[-.15,1],[.15,-1]].forEach(([x,s])=>{const L=M4.mul(root,gt(x,.55,0,0,air?s*.5:sw*s,1,1,1));B(L,0,-.275,0,.27,.56,.3,o.l);B(L,0,-.49,-.05,.29,.14,.4,o.sh)});
+ // κορμός
+ B(root,0,.9,0,.66,.7,.36,o.t);
+ // χέρια
+ [[-.43,1],[.43,-1]].forEach(([x,s])=>{const A=M4.mul(root,gt(x,1.2,0,0,air?-2.7:-sw*s,1,1,1));B(A,0,-.31,0,.2,.62,.22,o.a);B(A,0,-.66,0,.22,.17,.24,o.hand)});
+ // κεφάλι
+ const hx=kind==='robot'?.5:.56;B(root,0,1.55,0,hx,.56,hx,o.h);
+ const eye=(x,c)=>{B(root,x,1.58,-.285,.13,.15,.03,c||'#ffffff');B(root,x,1.57,-.3,.06,.08,.03,'#1e1b4b')};
+ if(kind==='knight'){B(root,0,1.56,-.29,.5,.13,.03,'#111827');B(root,-.1,1.56,-.31,.08,.06,.02,'#7dd3fc',[.2,.4,.5]);B(root,.1,1.56,-.31,.08,.06,.02,'#7dd3fc',[.2,.4,.5]);B(root,0,1.84,0,.62,.14,.62,'#c5d0de');B(root,0,2.0,0,.1,.3,.34,'#ef4444');B(root,0,.98,0,.68,.1,.38,o.acc);B(root,0,1.05,-.2,.22,.22,.03,'#e5e7eb');B(root,0,1.05,-.22,.08,.08,.02,'#ef4444');B(root,-.36,1.28,0,.22,.14,.3,'#c5d0de');B(root,.36,1.28,0,.22,.14,.3,'#c5d0de');
+  const cp_=Math.sin(ph*.5)*.08*(mov?1:0);B(M4.mul(root,gt(0,1.3,.2,0,.12+cp_,1,1,1)),0,-.35,0,.6,.75,.05,'#b91c1c')}
+ else if(kind==='robot'){[-.12,.12].forEach(x=>B(root,x,1.58,-.26,.12,.12,.03,o.acc,[.1,.6,.7],0));B(root,0,1.4,-.26,.22,.05,.03,'#111827');gdraw(GMS.cyl,M4.mul(root,gt(0,1.97,0,0,0,.05,.3,.05)),{c:hc('#475569')});gdraw(GMS.sph,M4.mul(root,gt(0,2.15,0,0,0,.14,.14,.14)),{c:hc('#ef4444'),e:[.35,0,0]});B(root,-.29,1.55,0,.06,.22,.2,'#6b7280');B(root,.29,1.55,0,.06,.22,.2,'#6b7280');B(root,0,1.05,-.19,.32,.26,.03,'#fef3c7');B(root,-.07,1.07,-.2,.06,.06,.02,'#ef4444',[.5,0,0]);B(root,.07,1.07,-.2,.06,.06,.02,'#22c55e',[0,.4,0]);B(root,0,1.0,.22,.42,.42,.16,'#9ca3af')}
+ else{eye(-.13);eye(.13);B(root,0,1.4,-.285,.22,.05,.03,'#7c2d12');}
+ if(kind==='builder'){gdraw(GMS.sph,M4.mul(root,gt(0,1.78,0,0,0,.72,.58,.72)),{c:hc('#f97316')});B(root,0,1.76,0,.78,.06,.78,'#ea580c');B(root,0,1.8,-.35,.14,.1,.06,'#fef08a',[.5,.45,0]);B(root,0,1.2,0,.7,.12,.4,'#ef4444');B(root,0,.84,0,.68,.1,.38,'#7c4a1e');B(root,0,.9,0,.68,.12,.38,'#f97316')}
+ if(kind==='pirate'){B(root,0,1.1,-.02,.7,.5,.38,'#2563eb');B(root,0,.84,0,.7,.1,.38,'#3a2410');B(root,0,.84,-.2,.14,.1,.03,'#facc15');B(root,-.18,1.48,-.01,.14,.2,.4,'#c2410c');B(root,0,1.86,0,.84,.14,.58,'#1f2937');B(root,0,1.78,0,.64,.12,.6,'#7f1d1d');B(root,0,1.88,-.3,.12,.12,.03,'#f8fafc');B(root,.13,1.58,-.3,.16,.16,.03,'#111827')}
+ if(kind==='rookie'){[-.18,0,.18].forEach((x,i)=>gdraw(GMS.cone,M4.mul(root,gt(x,1.83,0,0,0,.2,.28+(i===1?.1:0),.2)),{c:hc('#4c1d95')}));B(root,0,.84,0,.68,.1,.38,'#f472b6');gdraw(GMS.star,M4.mul(root,gt(0,1.05,-.19,0,0,.3,.3,.08)),{c:hc('#fde047'),e:[.3,.25,0]})}
+}
+let gShake=0;
+function gl3(){
+ if(!GLok)return;gl.viewport(0,0,cv3.width,cv3.height);gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);gBound=null;
+ const sy=Math.sin(pl.yaw),cy=Math.cos(pl.yaw),px=pl.x,py=pl.y,pz=-pl.z;
+ const eye=[px-sy*7,py+3.3,pz+cy*7],tg=[px+sy*2,py+1.7,pz-cy*2];
+ GVP=M4.mul(M4.persp(55*Math.PI/180,CW/CH,.3,500),M4.look(eye,tg));gl.uniformMatrix4fv(GU.uVP,false,GVP);gl.activeTexture(gl.TEXTURE0);gl.uniform1i(GU.uTx,0);
+ const mv=keys.fw||keys.bk;
+ // λάβα
+ gdraw(GMS.qy,gt(px,-8,pz,0,0,900,1,900),{c:[1,.75+.2*Math.sin(t*3),.7,1],tx:GTX.lava,lit:0,fog:0,us:[70,70],uo:[t*.015,t*.01]});
+ // βουνά & σύννεφα
+ for(let i=0;i<12;i++){const a=i*Math.PI/6+.3,r=200+(i%3)*25,w=46+(i%4)*14,h=30+(i%5)*9,x=px+Math.cos(a)*r,z=pz+Math.sin(a)*r;gdraw(GMS.cone,gt(x,-8,z,0,0,w,h,w),{c:hc(i%2?'#7f93b5':'#6f86ab')});gdraw(GMS.cone,gt(x,-8+h*.68,z,0,0,w*.34,h*.32,w*.34),{c:hc('#f8fafc')})}
+ for(let i=0;i<9;i++){const a=i*.7+t*.01,r=95+(i%4)*14,x=px+Math.cos(a)*r,z=pz+Math.sin(a)*r,y=34+(i%3)*8;[[0,0,0,16,4,7],[6,2,2,9,4,6],[-6,1,-2,10,3.5,6]].forEach(q=>gdraw(GMS.box,gt(x+q[0],y+q[1],z+q[2],0,0,q[3],q[4],q[5]),{c:[1,1,1,.92],lit:0}))}
+ // πλατφόρμες
+ for(const p of P){if(p.gone)continue;const cx_=p.x+p.w/2+(p.cr&&p.ct>0?Math.sin(t*70)*.05:0),cz=-(p.z+p.d/2);if(Math.abs(cx_-px)>110||Math.abs(cz-pz)>110)continue;
+  const k=p.cr?['#e7d3a8','#92704a']:p.t==='n'?PAL[p.i%PAL.length]:{start:['#3b82f6','#1d4ed8'],cp:['#14b8a6','#0f766e'],end:['#facc15','#ca8a04'],mv:['#fb923c','#c2410c']}[p.t];
+  gdraw(GMS.box,gt(cx_,p.y+p.h/2,cz,0,0,p.w,p.h,p.d),{c:hc(k[1])});
+  gdraw(GMS.qy,gt(cx_,p.y+p.h+.003,cz,0,0,p.w,1,p.d),{c:hc(k[0]),tx:GTX.stud,us:[Math.max(1,Math.round(p.w)),Math.max(1,Math.round(p.d))]});
+  if(p.t==='cp'||p.t==='end'){
+   gdraw(GMS.cyl,gt(cx_,p.y+p.h+1.2,cz,0,0,.1,2.4,.1),{c:hc('#f8fafc')});
+   gdraw(GMS.box,gt(cx_+.45,p.y+p.h+1.95,cz,Math.sin(t*3)*.15,0,.8,.55,.05),{c:hc(p.t==='end'?'#facc15':cp===p.i?'#22c55e':'#f87171'),e:p.t==='end'?[.3,.22,0]:[0,0,0]});
+   [[.45,1],[p.w-.45,1]].forEach(([dx])=>{const tx=p.x+dx,fl=1+Math.sin(t*14+dx)*.15;gdraw(GMS.cyl,gt(tx,p.y+p.h+.55,cz+p.d*.32,0,0,.13,1.1,.13),{c:hc('#7c4a1e')});gdraw(GMS.cyl,gt(tx,p.y+p.h+1.15,cz+p.d*.32,0,0,.3,.14,.3),{c:hc('#475569')});gdraw(GMS.oct,gt(tx,p.y+p.h+1.45,cz+p.d*.32,0,0,.5*fl,.8*fl,.5*fl),{c:hc('#fb923c'),e:[.6,.3,0],lit:0})})}
+ }
+ // αγκάθια
+ for(const h of H){const p=P[h.p],hx=p.x+p.w/2+h.o,hz=-(p.z+p.d/2),y=p.y+p.h;[[0,0,.8],[-.28,-.28,.62],[.28,-.28,.62],[-.28,.28,.62],[.28,.28,.62]].forEach(q=>gdraw(GMS.cone,gt(hx+q[0],y,hz+q[1],0,0,.3,q[2],.3),{c:hc('#ef4444'),e:[.3,0,0]}))}
+ // λέιζερ
+ for(const l of Lz){const p=P[l.p],mz=-(p.z+p.d/2+l.o),y=p.y+p.h;[p.x,p.x+p.w].forEach(x=>gdraw(GMS.cyl,gt(x,y+.7,mz,0,0,.22,1.4,.22),{c:hc('#475569')}));
+  if(lzOn(l)){gdraw(GMS.box,gt(p.x+p.w/2,y+.45,mz,0,0,p.w,.3,.3),{c:[1,.1,.2,.9],add:1,lit:0,fog:0});gdraw(GMS.box,gt(p.x+p.w/2,y+.45,mz,0,0,p.w,.1,.1),{c:[1,1,1,1],lit:0,fog:0})}
+  else if(lzWarn(l)&&Math.sin(t*30)>0)gdraw(GMS.box,gt(p.x+p.w/2,y+.45,mz,0,0,p.w,.05,.05),{c:[1,.3,.4,.7],add:1,lit:0,fog:0})}
+ // νομίσματα & αστέρι
+ C.forEach((c,i)=>{if(c.got)return;const p=P[c.p],x=p.x+p.w/2+c.o,z=-(p.z+p.d/2),y=p.y+p.h+.95+Math.sin(t*3+i)*.1;
+  if(c.s)gdraw(GMS.star,gt(x,y+.1,z,t*2,0,1,1,1),{c:hc('#22d3ee'),e:[.1,.5,.55]});else gdraw(GMS.cyl,gt(x,y,z,t*3+i,Math.PI/2,.75,.12,.75),{c:hc('#fbbf24'),e:[.4,.28,0]})});
+ // σκιά παίκτη
+ let top=null;for(const p of P){if(p.gone)continue;const tp=p.y+p.h;if(px>p.x&&px<p.x+p.w&&-pz>p.z&&-pz<p.z+p.d&&tp<=py+.15&&(top===null||tp>top))top=tp}
+ if(top!==null){const s=Math.max(.45,1.05-(py-top)*.07);gdraw(GMS.qy,gt(px,top+.012,pz,0,0,s,1,s),{c:[0,0,0,.28],lit:0,fog:0,nodepth:1,tx:null})}
+ // παίκτης
+ const ph=mv?t*14:0,air=!pl.onp;
+ if(BLK[cast])gAvatar(gt(px,py,pz,-pl.yaw,0,1,1,1),cast,ph,air,mv);
+ else{GCX.clearRect(0,0,256,256);drawChar(GCX,128,244,150,cast,1,'back',ph,air);gl.bindTexture(gl.TEXTURE_2D,GTX.spr);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,GSC);
+  gdraw(GMS.qz,gt(px,py+1.36,pz,-pl.yaw,0,3,3,1),{tx:GTX.spr,lit:0,fog:0,nodepth:0})}
+}
+
 /* ---------- κοινά ---------- */
-function setMode(m){mode=m;sv('ob_mode',m);sel('data-m',m);$('pad2').style.display=m==='2d'?'':'none';$('pad3').style.display=m==='3d'?'':'none';
+function setMode(m){mode=m;cv.style.display=(m==='3d'&&GLok)?'none':'';cv3.style.display=(m==='3d'&&GLok)?'':'none';sv('ob_mode',m);sel('data-m',m);$('pad2').style.display=m==='2d'?'':'none';$('pad3').style.display=m==='3d'?'':'none';
  $('hint').innerHTML=m==='2d'?'Κίνηση: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> ή <b>↑</b> · Πήδα από πλατφόρμα σε πλατφόρμα, απόφυγε τη λάβα και τα αγκάθια. Οι σημαίες σώζουν τη θέση σου. Φτάσε στη χρυσή πλατφόρμα! · ⚡ Τα λέιζερ αναβοσβήνουν: πέρασε όταν σβήνουν ή πήδα τα · 🟫 Οι αμμώδεις πλατφόρμες γκρεμίζονται · ⭐ Βρες το κρυφό αστέρι · 🎯 Ολοκλήρωσε τις αποστολές!':'Κίνηση: <b>W</b>/<b>S</b> ή <b>↑ ↓</b> · Στροφή: <b>← →</b> ή <b>A D</b> · Άλμα: <b>Διάστημα</b> · Πήδα στις πλατφόρμες, απόφυγε τα κόκκινα κουτιά και τη λάβα. Οι σημαίες σώζουν τη θέση σου! · ⚡ Πήδα πάνω από τα λέιζερ ή πέρασε όταν σβήνουν · 🟫 Οι αμμώδεις πλατφόρμες γκρεμίζονται · ⭐ Βρες το αστέρι · 🎯 Ολοκλήρωσε τις αποστολές!';reset()}
 function setLvl(l){lvl=l;sv('ob_lvl',l);sel('data-l',l);reset()}
 function setCast(c){cast=c;sv('ob_cast',c);sel('data-c',c)}
@@ -340,7 +469,7 @@ document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMode(b.dataset
 $('rp').onclick=reset;$('nx').onclick=()=>setLvl(lvl+1);
 keyMap(code=>{if(mode==='2d')return{ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j'}[code];return{ArrowUp:'fw',KeyW:'fw',ArrowDown:'bk',KeyS:'bk',ArrowLeft:'tl',KeyA:'tl',ArrowRight:'tr',KeyD:'tr',Space:'j'}[code]});
 let lt=performance.now();
-function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(keys.l||keys.r||keys.j||keys.fw||keys.bk||keys.tl||keys.tr)started=true;if(!won){if(started||rmRound)t+=dt;$('tm').textContent=t.toFixed(1);crUpd(dt);qTick();mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():draw3();requestAnimationFrame(loop)}
+function loop(n){const dt=Math.min(.04,(n-lt)/1000);lt=n;if(keys.l||keys.r||keys.j||keys.fw||keys.bk||keys.tl||keys.tr)started=true;if(!won){if(started||rmRound)t+=dt;$('tm').textContent=t.toFixed(1);crUpd(dt);qTick();mode==='2d'?up2(dt):up3(dt)}mode==='2d'?draw2():GLok?gl3():draw3();requestAnimationFrame(loop)}
 
 /* ---------- Αγώνας τάξης ---------- */
 const HEROES=['🐶','🐱','🦊','🐼','🐸','🦁','🐵','🐯','🐰','🐧','🐙','🦄'];let RM=null,rmS=null,rmI=0,rmOff=0,rmDone=0,rmRound=0,rmHero=ld('ob_hero','🐶'),rmErr='';
@@ -376,6 +505,6 @@ function rmCount(st){rmOpen(false);const m=/^obby-(\d)-(2d|3d)$/.exec(st.game);i
   o.textContent=n;if(o.dataset.n!=n){o.dataset.n=n;beep(n===1?880:520,.12)}},60)}
 function rmReport(){if(RM&&!RM.teacher&&rmRound){const st=deaths===0?3:deaths<=2?2:1;rapi('score',{code:RM.code,pid:RM.pid,s:st,p:pts,d:1}).then(r=>{if(r&&r.ok){rmS=r}rmOpen(true)});rmRound=0}}
 $('rmb').onclick=()=>{rmOpen(true);if(RM)rmStart()};if(RM)rmStart();
-addEventListener('pointerdown',()=>window.focus());window.focus();setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
+addEventListener('pointerdown',()=>window.focus());window.focus();GLok=gInit();setCast(cast);sel('data-l',lvl);setMode(mode);requestAnimationFrame(loop);
 
 </script></body></html>
